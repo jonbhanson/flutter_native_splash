@@ -1,3 +1,7 @@
+## [0.1.3] - (25th August 2019)
+
+* Update README.md
+
 ## [0.1.2] - (25th August 2019)
 
 * Fix Travis CI filename
