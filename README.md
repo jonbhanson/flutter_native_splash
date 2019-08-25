@@ -1,4 +1,9 @@
 # flutter_native_splash
+<p>
+  <img alt="Travis (.org)" src="https://img.shields.io/travis/henriquearthur/flutter_native_splash">
+  <img alt="Pub" src="https://img.shields.io/pub/v/flutter_native_splash">
+</p>
+
 Automatically generate native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
 This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
 
