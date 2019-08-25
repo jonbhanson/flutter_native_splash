@@ -1,8 +1,10 @@
 # flutter_native_splash
 Automatically generate native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
-This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [https://github.com/franzsilva](https://github.com/franzsilva).
+This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
 
-![Demo image](https://raw.githubusercontent.com/henriquearthur/flutter_native_splash/master/splash_demo.gif)
+<p>
+	<img src="https://raw.githubusercontent.com/henriquearthur/flutter_native_splash/master/splash_demo.gif" width="250" height="443"  />
+</p>
 
 ## Usage
 First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml file](https://pub.dev/packages/flutter_native_splash#-installing-tab-). You should add the package to `dev_dependencies` because you don't need this plugin your APK.
