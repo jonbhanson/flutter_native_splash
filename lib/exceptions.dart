@@ -45,3 +45,15 @@ class CantFindMainActivityPath implements Exception {
         '$message';
   }
 }
+
+class LaunchScreenStoryboardModified implements Exception {
+  const LaunchScreenStoryboardModified([this.message]);
+  final String message;
+
+  @override
+  String toString() {
+    return '*** ERROR [flutter_native_splash] ***\n'
+        'LaunchScreenStoryboardModified\n'
+        '$message';
+  }
+}

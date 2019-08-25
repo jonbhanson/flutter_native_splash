@@ -4,24 +4,26 @@ import 'dart:io';
 
 import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/android.dart' as android;
+import 'package:flutter_native_splash/ios.dart' as ios;
 import 'package:yaml/yaml.dart';
 
+/// Create splash screen for Android and iOS
 void createSplash() {
   Map<String, dynamic> config = _getConfig();
 
-  if (!config.containsKey("android") || config['android']) {
-    String image = config['image'];
-    String color = config['color'];
+  String image = config['image'];
+  String color = config['color'];
 
+  if (!config.containsKey("android") || config['android']) {
     android.createSplash(image, color);
   }
 
   if (!config.containsKey("ios") || config['ios']) {
-    // TODO: Create splash on iOS
-    // ios.createSplash(image, color);
+    ios.createSplash(image, color);
   }
 }
 
+/// Get config from `pubspec.yaml` or `flutter_native_splash.yaml`
 Map<String, dynamic> _getConfig() {
   // if `flutter_native_splash.yaml` exists use it as config file, otherwise use `pubspec.yaml`
   String filePath = (FileSystemEntity.typeSync("flutter_native_splash.yaml") !=

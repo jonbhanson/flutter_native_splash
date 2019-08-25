@@ -1,23 +1,23 @@
 import 'package:flutter_native_splash/constants.dart';
 import 'package:flutter_native_splash/exceptions.dart';
-import 'package:flutter_native_splash/xml_templates.dart' as xml_templates;
+import 'package:flutter_native_splash/templates.dart' as templates;
 import 'package:image/image.dart';
 import 'dart:io';
 
 // Image template
 class AndroidDrawableTemplate {
-  AndroidDrawableTemplate({this.size, this.directoryName});
-
   final String directoryName;
-  final int size;
+  final double divider;
+
+  AndroidDrawableTemplate({this.directoryName, this.divider});
 }
 
 final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
-  AndroidDrawableTemplate(directoryName: 'drawable-mdpi', size: 144),
-  AndroidDrawableTemplate(directoryName: 'drawable-hdpi', size: 216),
-  AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', size: 288),
-  AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', size: 432),
-  AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', size: 576),
+  AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 2.0),
+  AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 1.8),
+  AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 1.4),
+  AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.2),
+  AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
 ];
 
 /// Create Android splash screen
@@ -54,19 +54,12 @@ void _applyImage(String imagePath) {
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
 void _saveImage(AndroidDrawableTemplate template, Image image) {
-  Image newFile;
-
-  if (image.width >= template.size) {
-    newFile = copyResize(image,
-        width: template.size,
-        height: template.size,
-        interpolation: Interpolation.average);
-  } else {
-    newFile = copyResize(image,
-        width: template.size,
-        height: template.size,
-        interpolation: Interpolation.linear);
-  }
+  Image newFile = copyResize(
+    image,
+    width: image.width ~/ template.divider,
+    height: image.height ~/ template.divider,
+    interpolation: Interpolation.linear,
+  );
 
   File(androidResFolder + template.directoryName + '/' + 'splash.png')
       .create(recursive: true)
@@ -108,7 +101,7 @@ Future _updateLaunchBackgroundFileWithImagePath() async {
 
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
-    lines.insert(lines.length - 1, xml_templates.launchBackgroundItemXml);
+    lines.insert(lines.length - 1, templates.androidLaunchBackgroundItemXml);
   }
 
   launchBackgroundFile.writeAsString(lines.join('\n'));
@@ -117,7 +110,7 @@ Future _updateLaunchBackgroundFileWithImagePath() async {
 /// Creates launch_background.xml with splash image path
 Future _createLaunchBackgroundFileWithImagePath() async {
   File file = await File(androidLaunchBackgroundFile).create(recursive: true);
-  return await file.writeAsString(xml_templates.launchBackgroundXml);
+  return await file.writeAsString(templates.androidLaunchBackgroundXml);
 }
 
 /// Create or update colors.xml adding splash screen background color
@@ -170,7 +163,7 @@ void _updateColorsFileWithColor(File colorsFile, String color) {
 /// Creates a colors.xml file if it was missing from android/app/src/main/res/values/colors.xml
 void _createColorsFile(String color) {
   File(androidColorsFile).create(recursive: true).then((File colorsFile) {
-    colorsFile.writeAsString(xml_templates.colorsXml).then((File file) {
+    colorsFile.writeAsString(templates.androidColorsXml).then((File file) {
       _updateColorsFileWithColor(colorsFile, color);
     });
   });
@@ -240,7 +233,7 @@ Future _updateStylesFileWithImagePath() async {
 
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
-    lines.insert(endStyleLine, xml_templates.stylesItemXml);
+    lines.insert(endStyleLine, templates.androidStylesItemXml);
   }
 
   stylesFile.writeAsString(lines.join('\n'));
@@ -249,7 +242,7 @@ Future _updateStylesFileWithImagePath() async {
 /// Creates styles.xml with full screen property
 void _createStylesFileWithImagePath() {
   File(androidStylesFile).create(recursive: true).then((File colorsFile) {
-    colorsFile.writeAsString(xml_templates.stylesXml);
+    colorsFile.writeAsString(templates.androidStylesXml);
   });
 }
 
@@ -264,6 +257,7 @@ Future _applyMainActivityUpdate() async {
   }
 }
 
+/// Get MainActivity.java path based on package name on AndroidManifest.xml
 Future _getMainActivityPath() async {
   File androidManifest = File(androidManifestFile);
   final List<String> lines = await androidManifest.readAsLines();
@@ -327,19 +321,19 @@ void _addMainActivitySplashLines(File mainActivityFile, List<String> lines) {
 
     // Before 'public class ...' add the following lines
     if (line.contains('public class MainActivity extends FlutterActivity {')) {
-      newLines.add(xml_templates.mainActivityLines1);
+      newLines.add(templates.androidMainActivityLines1);
     }
 
     newLines.add(line);
 
     // After 'super.onCreate ...' add the following lines
     if (line.contains('super.onCreate(savedInstanceState);')) {
-      newLines.add(xml_templates.mainActivityLines2);
+      newLines.add(templates.androidMainActivityLines2);
     }
 
     // After 'GeneratedPluginRegistrant ...' add the following lines
     if (line.contains('GeneratedPluginRegistrant.registerWith(this);')) {
-      newLines.add(xml_templates.mainActivityLines3);
+      newLines.add(templates.androidMainActivityLines3);
     }
   }
 
