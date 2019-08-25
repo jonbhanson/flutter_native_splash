@@ -1,3 +1,8 @@
+## [0.1.2] - (25th August 2019)
+
+* Fix Travis CI filename
+
+
 ## [0.1.1] - (25th August 2019)
 
 * Added Travis CI and updates to README.md
