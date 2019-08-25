@@ -6,7 +6,7 @@ Added in `pubspec.yaml`:
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.1.0
+  flutter_native_splash: ^0.1.1
 
 flutter_native_splash:
   image: assets/splash.png
