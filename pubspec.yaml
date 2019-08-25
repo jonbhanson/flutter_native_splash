@@ -1,0 +1,19 @@
+name: flutter_native_splash
+description: A new Flutter package project.
+version: 0.0.1
+homepage: https://github.com/henriquearthur/flutter_native_splash
+author:
+- Henrique Arthur <eu@henriquearthur.com.br>
+
+environment:
+  sdk: ">=2.2.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  yaml: ^2.1.16
+  image: ^2.1.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
