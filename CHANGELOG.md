@@ -1,3 +1,8 @@
+## [0.1.4] - (25th August 2019)
+
+* Fix code style issues pointed by `dartanalzyer`
+* Fix typo in README.md
+
 ## [0.1.3] - (25th August 2019)
 
 * Update README.md
