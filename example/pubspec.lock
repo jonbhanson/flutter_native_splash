@@ -79,10 +79,10 @@ packages:
   flutter_native_splash:
     dependency: "direct dev"
     description:
-      path: "/home/henrique/Flutter/flutter_native_splash"
-      relative: false
-    source: path
-    version: "0.1.0"
+      name: flutter_native_splash
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.3"
   flutter_test:
     dependency: "direct dev"
     description: flutter

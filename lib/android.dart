@@ -30,7 +30,7 @@ createSplash(String imagePath, String color) async {
   _applyColor(color);
   _applyStylesXml();
 
-  _applyMainActivityUpdate();
+  await _applyMainActivityUpdate();
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
@@ -104,7 +104,7 @@ Future _updateLaunchBackgroundFileWithImagePath() async {
     lines.insert(lines.length - 1, templates.androidLaunchBackgroundItemXml);
   }
 
-  launchBackgroundFile.writeAsString(lines.join('\n'));
+  await launchBackgroundFile.writeAsString(lines.join('\n'));
 }
 
 /// Creates launch_background.xml with splash image path
@@ -194,7 +194,7 @@ Future _overwriteLaunchBackgroundWithNewSplashColor(String color) async {
       lines.add('');
     }
   }
-  launchBackgroundFile.writeAsString(lines.join('\n'));
+  await launchBackgroundFile.writeAsString(lines.join('\n'));
 }
 
 /// Create or update styles.xml full screen mode setting
@@ -236,7 +236,7 @@ Future _updateStylesFileWithImagePath() async {
     lines.insert(endStyleLine, templates.androidStylesItemXml);
   }
 
-  stylesFile.writeAsString(lines.join('\n'));
+  await stylesFile.writeAsString(lines.join('\n'));
 }
 
 /// Creates styles.xml with full screen property

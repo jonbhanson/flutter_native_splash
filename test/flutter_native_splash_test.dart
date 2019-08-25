@@ -1,3 +1,1 @@
-void main() {
-  // TODO: Add tests
-}
+void main() {}

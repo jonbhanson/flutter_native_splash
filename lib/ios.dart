@@ -23,8 +23,8 @@ final List<IosLaunchImageTemplate> splashImages = <IosLaunchImageTemplate>[
 /// Create iOS splash screen
 createSplash(String imagePath, String color) async {
   _applyImage(imagePath);
-  _applyLaunchScreenStoryboard(imagePath, color);
-  _applyStatusBarChanges();
+  await _applyLaunchScreenStoryboard(imagePath, color);
+  await _applyStatusBarChanges();
 }
 
 /// Create splash screen images for original size, @2x and @3x
@@ -105,7 +105,7 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
 
   // Found the color line, replace with new color information
   if (foundExistingColor) {
-    HexColor hex = new HexColor(color);
+    HexColor hex = HexColor(color);
     double appleRed = hex.r / 255;
     double appleGreen = hex.g / 255;
     double appleBlue = hex.b / 255;
@@ -136,7 +136,7 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
         "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
   }
 
-  file.writeAsString(lines.join('\n'));
+  await file.writeAsString(lines.join('\n'));
 }
 
 /// Creates LaunchScreen.storyboard with splash image path
@@ -201,7 +201,7 @@ Future _updateInfoPlistFile() async {
     newLines.add(line);
   }
 
-  infoPlistFile.writeAsString(newLines.join('\n'));
+  await infoPlistFile.writeAsString(newLines.join('\n'));
 }
 
 /// Update AppDelegate.m with code to remove status bar hidden property after app loaded
@@ -223,5 +223,5 @@ Future _updateAppDelegateFile() async {
     newLines.add(line);
   }
 
-  appDelegateFile.writeAsString(newLines.join('\n'));
+  await appDelegateFile.writeAsString(newLines.join('\n'));
 }
