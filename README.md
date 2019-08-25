@@ -9,6 +9,11 @@ This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/pac
 ## Usage
 First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml file](https://pub.dev/packages/flutter_native_splash#-installing-tab-). You should add the package to `dev_dependencies` because you don't need this plugin your APK.
 
+```yaml
+dev_dependencies:
+  flutter_native_splash: ^0.1.0
+```
+
 Don't forget to `flutter pub get`.
 
 ### 1. Setting the splash screen
