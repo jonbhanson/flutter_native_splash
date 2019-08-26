@@ -246,19 +246,41 @@ void _createStylesFileWithImagePath() {
   });
 }
 
-/// Update MainActivity.java adding code to remove full screen mode after app load
+/// Update MainActivity adding code to remove full screen mode after app load
 Future _applyMainActivityUpdate() async {
-  final String mainActivityPath = await _getMainActivityPath();
+  final String language = await _javaOrKotlin();
+  String mainActivityPath;
+
+  if (language == 'java') {
+    mainActivityPath = await _getMainActivityJavaPath();
+  } else if (language == 'kotlin') {
+    mainActivityPath = await _getMainActivityKotlinPath();
+  }
+
   final File mainActivityFile = File(mainActivityPath);
   final List<String> lines = await mainActivityFile.readAsLines();
 
-  if (_needToUpdateMainActivity(lines)) {
-    _addMainActivitySplashLines(mainActivityFile, lines);
+  if (_needToUpdateMainActivity(language, lines)) {
+    _addMainActivitySplashLines(language, mainActivityFile, lines);
+  }
+}
+
+Future _javaOrKotlin() async {
+  var mainActivityJavaPath = await _getMainActivityJavaPath();
+  var mainActivityKotlinPath = await _getMainActivityKotlinPath();
+
+  if (File(mainActivityJavaPath).existsSync()) {
+    return 'java';
+  } else if (File(mainActivityKotlinPath).existsSync()) {
+    return 'kotlin';
+  } else {
+    throw CantFindMainActivityPath(
+        "Not able to determinate MainActivity path. Maybe the problem is your package path OR your AndroidManifest.xml 'package' attribute on manifest.");
   }
 }
 
 /// Get MainActivity.java path based on package name on AndroidManifest.xml
-Future _getMainActivityPath() async {
+Future _getMainActivityJavaPath() async {
   File androidManifest = File(androidManifestFile);
   final List<String> lines = await androidManifest.readAsLines();
 
@@ -288,22 +310,61 @@ Future _getMainActivityPath() async {
   }
 
   if (!foundPath) {
-    throw CantFindMainActivityPath(
-        "Not able to determinate MainActivity.java path. Maybe the problem is your package path OR your AndroidManifest.xml 'package' attribute on manifest.");
+    return false;
   }
 
   return mainActivityPath;
 }
 
-/// Check if MainActivity.java needs to be updated with code required for splash screen
-bool _needToUpdateMainActivity(List<String> lines) {
+/// Get MainActivity.kt path based on package name on AndroidManifest.xml
+Future _getMainActivityKotlinPath() async {
+  File androidManifest = File(androidManifestFile);
+  final List<String> lines = await androidManifest.readAsLines();
+
+  bool foundPath = false;
+  String mainActivityPath = 'android/app/src/main/kotlin/';
+
+  for (int x = 0; x < lines.length; x++) {
+    String line = lines[x];
+
+    if (line.contains('package="')) {
+      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)">');
+
+      var matches = regExp.allMatches(line);
+      var match = matches.elementAt(0);
+
+      String package = match.group(1);
+      List<String> packageSplitted = package.split('.');
+
+      String path1 = packageSplitted[0];
+      String path2 = packageSplitted[1];
+      String path3 = packageSplitted[2];
+
+      mainActivityPath += "$path1/$path2/$path3/MainActivity.kt";
+      foundPath = true;
+      break;
+    }
+  }
+
+  if (!foundPath) {
+    return false;
+  }
+
+  return mainActivityPath;
+}
+
+/// Check if MainActivity needs to be updated with code required for splash screen
+bool _needToUpdateMainActivity(String language, List<String> lines) {
   bool foundExisting = false;
+
+  String javaLine = 'boolean flutter_native_splash = true;';
+  String kotlinLine = 'val flutter_native_splash = true';
 
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
 
     // if file contains our variable we're assuming it contains all required code
-    if (line.contains('boolean flutter_native_splash = true;')) {
+    if (line.contains((language == 'java') ? javaLine : kotlinLine)) {
       foundExisting = true;
       break;
     }
@@ -313,27 +374,61 @@ bool _needToUpdateMainActivity(List<String> lines) {
 }
 
 /// Add in MainActivity.java the code required for removing full screen mode of splash screen after app loaded
-void _addMainActivitySplashLines(File mainActivityFile, List<String> lines) {
+void _addMainActivitySplashLines(
+    String language, File mainActivityFile, List<String> lines) {
   List<String> newLines = [];
+
+  List<String> javaReferenceLines = [
+    'public class MainActivity extends FlutterActivity {',
+    'super.onCreate(savedInstanceState);',
+    'GeneratedPluginRegistrant.registerWith(this);',
+  ];
+
+  List<String> kotlinReferenceLines = [
+    'class MainActivity: FlutterActivity() {',
+    'super.onCreate(savedInstanceState)',
+    'GeneratedPluginRegistrant.registerWith(this)',
+  ];
 
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
 
-    // Before 'public class ...' add the following lines
-    if (line.contains('public class MainActivity extends FlutterActivity {')) {
-      newLines.add(templates.androidMainActivityLines1);
+    if (language == 'java') {
+      // Before 'public class ...' add the following lines
+      if (line.contains(javaReferenceLines[0])) {
+        newLines.add(templates.androidMainActivityJavaLines1);
+      }
+
+      newLines.add(line);
+
+      // After 'super.onCreate ...' add the following lines
+      if (line.contains(javaReferenceLines[1])) {
+        newLines.add(templates.androidMainActivityJavaLines2);
+      }
+
+      // After 'GeneratedPluginRegistrant ...' add the following lines
+      if (line.contains(javaReferenceLines[2])) {
+        newLines.add(templates.androidMainActivityJavaLines3);
+      }
     }
 
-    newLines.add(line);
+    if (language == 'kotlin') {
+      // Before 'class MainActivity ...' add the following lines
+      if (line.contains(kotlinReferenceLines[0])) {
+        newLines.add(templates.androidMainActivityKotlinLines1);
+      }
 
-    // After 'super.onCreate ...' add the following lines
-    if (line.contains('super.onCreate(savedInstanceState);')) {
-      newLines.add(templates.androidMainActivityLines2);
-    }
+      newLines.add(line);
 
-    // After 'GeneratedPluginRegistrant ...' add the following lines
-    if (line.contains('GeneratedPluginRegistrant.registerWith(this);')) {
-      newLines.add(templates.androidMainActivityLines3);
+      // After 'super.onCreate ...' add the following lines
+      if (line.contains(kotlinReferenceLines[1])) {
+        newLines.add(templates.androidMainActivityKotlinLines2);
+      }
+
+      // After 'GeneratedPluginRegistrant ...' add the following lines
+      if (line.contains(kotlinReferenceLines[2])) {
+        newLines.add(templates.androidMainActivityKotlinLines3);
+      }
     }
   }
 

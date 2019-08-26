@@ -34,17 +34,17 @@ const String androidStylesXml = '''
 </resources>
 ''';
 
-const String androidMainActivityLines1 = '''
+const String androidMainActivityJavaLines1 = '''
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 ''';
 
-const String androidMainActivityLines2 = '''
+const String androidMainActivityJavaLines2 = '''
     boolean flutter_native_splash = true;
     getWindow().setStatusBarColor(0x00000000);
 ''';
 
-const String androidMainActivityLines3 = '''
+const String androidMainActivityJavaLines3 = '''
     ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
       @Override
@@ -53,6 +53,26 @@ const String androidMainActivityLines3 = '''
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
       }
     });
+''';
+
+const String androidMainActivityKotlinLines1 = '''
+import android.view.ViewTreeObserver
+import android.view.WindowManager
+''';
+
+const String androidMainActivityKotlinLines2 = '''
+    val flutter_native_splash = true
+    window.statusBarColor = 0x00000000
+''';
+
+const String androidMainActivityKotlinLines3 = '''
+    val vto = flutterView.viewTreeObserver
+    vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+      override fun onGlobalLayout() {
+        flutterView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+      }
+    })
 ''';
 
 const String iOSLaunchScreenStoryboardContent = '''
