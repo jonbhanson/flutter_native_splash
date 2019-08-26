@@ -1,3 +1,4 @@
+// Android-related constants
 const String androidColorsFile = 'android/app/src/main/res/values/colors.xml';
 const String androidManifestFile = 'android/app/src/main/AndroidManifest.xml';
 const String androidLaunchBackgroundFile =
@@ -5,6 +6,7 @@ const String androidLaunchBackgroundFile =
 const String androidStylesFile = 'android/app/src/main/res/values/styles.xml';
 const String androidResFolder = 'android/app/src/main/res/';
 
+// iOS-related constants
 const String iOSAssetsLaunchImageFolder =
     'ios/Runner/Assets.xcassets/LaunchImage.imageset/';
 const String iOSLaunchScreenStoryboardFile =

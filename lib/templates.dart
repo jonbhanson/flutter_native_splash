@@ -1,3 +1,4 @@
+// Android-related templates
 const String androidColorsXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -75,6 +76,7 @@ const String androidMainActivityKotlinLines3 = '''
     })
 ''';
 
+// iOS-related templates
 const String iOSLaunchScreenStoryboardContent = '''
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
