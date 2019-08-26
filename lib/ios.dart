@@ -22,9 +22,10 @@ final List<IosLaunchImageTemplate> splashImages = <IosLaunchImageTemplate>[
 
 /// Create iOS splash screen
 createSplash(String imagePath, String color) async {
-  _applyImage(imagePath);
+  await _applyImage(imagePath);
   await _applyLaunchScreenStoryboard(imagePath, color);
-  await _applyStatusBarChanges();
+  await _applyInfoPList();
+  await _applyAppDelegate();
 }
 
 /// Create splash screen images for original size, @2x and @3x
@@ -147,20 +148,19 @@ Future _createLaunchScreenStoryboard(String imagePath, String color) async {
   return _updateLaunchScreenStoryboard(imagePath, color);
 }
 
-/// Update Info.plist and AppDelegate.m for status bar behaviour (hidden/visible)
-Future _applyStatusBarChanges() async {
+/// Update Info.plist for status bar behaviour (hidden/visible)
+Future _applyInfoPList() async {
   final File infoPlistFile = File(iOSInfoPlistFile);
   final List<String> lines = await infoPlistFile.readAsLines();
 
-  if (_needToUpdateForStatusBar(lines)) {
-    print(
-        "[iOS] Updating Info.plist and AppDelegate.m for status bar hidden/visible");
-    _addStatusBarChanges();
+  if (_needToUpdateInfoPlist(lines)) {
+    print("[iOS] Updating Info.plist for status bar hidden/visible");
+    await _updateInfoPlistFile(infoPlistFile, lines);
   }
 }
 
 /// Check if Info.plist needs to be updated with code required for status bar hidden
-bool _needToUpdateForStatusBar(List<String> lines) {
+bool _needToUpdateInfoPlist(List<String> lines) {
   bool foundExisting = false;
 
   for (int x = 0; x < lines.length; x++) {
@@ -177,17 +177,8 @@ bool _needToUpdateForStatusBar(List<String> lines) {
   return !foundExisting;
 }
 
-/// Add the code required for removing full screen mode of splash screen after app loaded
-void _addStatusBarChanges() {
-  _updateInfoPlistFile();
-  _updateAppDelegateFile();
-}
-
 /// Update Infop.list with status bar hidden directive
-Future _updateInfoPlistFile() async {
-  final File infoPlistFile = File(iOSInfoPlistFile);
-  final List<String> lines = await infoPlistFile.readAsLines();
-
+Future _updateInfoPlistFile(File infoPlistFile, List<String> lines) async {
   List<String> newLines = [];
 
   for (int x = 0; x < lines.length; x++) {
@@ -204,23 +195,86 @@ Future _updateInfoPlistFile() async {
   await infoPlistFile.writeAsString(newLines.join('\n'));
 }
 
-/// Update AppDelegate.m with code to remove status bar hidden property after app loaded
-Future _updateAppDelegateFile() async {
-  final File appDelegateFile = File(iOSAppDelegateFile);
+/// Add the code required for removing full screen mode of splash screen after app loaded
+Future _applyAppDelegate() async {
+  String language = await _objectiveCOrSwift();
+  String appDelegatePath;
+
+  if (language == 'objective-c') {
+    appDelegatePath = iOSAppDelegateObjCFile;
+  } else if (language == 'swift') {
+    appDelegatePath = iOSAppDelegateSwiftFile;
+  }
+
+  final File appDelegateFile = File(appDelegatePath);
   final List<String> lines = await appDelegateFile.readAsLines();
 
-  List<String> newLines = [];
+  if (_needToUpdateAppDelegate(language, lines)) {
+    print("[iOS] Updating AppDelegate for status bar hidden/visible");
+    await _updateAppDelegate(language, appDelegateFile, lines);
+  }
+}
+
+Future _objectiveCOrSwift() async {
+  if (File(iOSAppDelegateObjCFile).existsSync()) {
+    return 'objective-c';
+  } else if (File(iOSAppDelegateSwiftFile).existsSync()) {
+    return 'swift';
+  } else {
+    throw CantFindAppDelegatePath("Not able to determinate AppDelegate path.");
+  }
+}
+
+/// Check if AppDelegate needs to be updated with code required for splash screen
+bool _needToUpdateAppDelegate(String language, List<String> lines) {
+  bool foundExisting = false;
+
+  String objectiveCLine = 'int flutter_native_splash = 1;';
+  String swiftLine = 'var flutter_native_splash = 1';
 
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
 
-    // Before '[GeneratedPlugin ...' add the following lines
+    // if file contains our variable we're assuming it contains all required code
     if (line
-        .contains('[GeneratedPluginRegistrant registerWithRegistry:self];')) {
-      newLines.add(templates.iOSAppDelegateLines);
+        .contains((language == 'objective-c') ? objectiveCLine : swiftLine)) {
+      foundExisting = true;
+      break;
+    }
+  }
+
+  return !foundExisting;
+}
+
+/// Update AppDelegate with code to remove status bar hidden property after app loaded
+Future _updateAppDelegate(
+    String language, File appDelegateFile, List<String> lines) async {
+  List<String> newLines = [];
+
+  String objectiveCReferenceLine =
+      '[GeneratedPluginRegistrant registerWithRegistry:self];';
+  String swiftReferenceLine = 'GeneratedPluginRegistrant.register(with: self)';
+
+  for (int x = 0; x < lines.length; x++) {
+    String line = lines[x];
+
+    if (language == 'objective-c') {
+      // Before '[GeneratedPlugin ...' add the following lines
+      if (line.contains(objectiveCReferenceLine)) {
+        newLines.add(templates.iOSAppDelegateObjectiveCLines);
+      }
+
+      newLines.add(line);
     }
 
-    newLines.add(line);
+    if (language == 'swift') {
+      // Before 'GeneratedPlugin ...' add the following lines
+      if (line.contains(swiftReferenceLine)) {
+        newLines.add(templates.iOSAppDelegateSwiftLines);
+      }
+
+      newLines.add(line);
+    }
   }
 
   await appDelegateFile.writeAsString(newLines.join('\n'));

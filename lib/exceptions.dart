@@ -46,6 +46,18 @@ class CantFindMainActivityPath implements Exception {
   }
 }
 
+class CantFindAppDelegatePath implements Exception {
+  const CantFindAppDelegatePath([this.message]);
+  final String message;
+
+  @override
+  String toString() {
+    return '*** ERROR [flutter_native_splash] ***\n'
+        'CantFindAppDelegatePath\n'
+        '$message';
+  }
+}
+
 class InvalidNativeFile implements Exception {
   const InvalidNativeFile([this.message]);
   final String message;

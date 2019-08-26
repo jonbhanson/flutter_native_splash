@@ -8,18 +8,18 @@ import 'package:flutter_native_splash/ios.dart' as ios;
 import 'package:yaml/yaml.dart';
 
 /// Create splash screen for Android and iOS
-void createSplash() {
+void createSplash() async {
   Map<String, dynamic> config = _getConfig();
 
   String image = config['image'];
   String color = config['color'];
 
   if (!config.containsKey("android") || config['android']) {
-    android.createSplash(image, color);
+    await android.createSplash(image, color);
   }
 
   if (!config.containsKey("ios") || config['ios']) {
-    ios.createSplash(image, color);
+    await ios.createSplash(image, color);
   }
 }
 

@@ -120,6 +120,12 @@ String iOSInfoPlistLines = '''
 	<true/>
 ''';
 
-String iOSAppDelegateLines = '''
+String iOSAppDelegateObjectiveCLines = '''
+    int flutter_native_splash = 1;
     UIApplication.sharedApplication.statusBarHidden = false;
+''';
+
+String iOSAppDelegateSwiftLines = '''
+    var flutter_native_splash = 1
+    UIApplication.shared.isStatusBarHidden = false
 ''';
