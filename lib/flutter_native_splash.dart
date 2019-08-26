@@ -9,7 +9,7 @@ import 'package:yaml/yaml.dart';
 
 /// Create splash screen for Android and iOS
 void createSplash() async {
-  Map<String, dynamic> config = _getConfig();
+  Map<String, dynamic> config = await _getConfig();
 
   String image = config['image'];
   String color = config['color'];

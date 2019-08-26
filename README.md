@@ -3,6 +3,7 @@
 [![Build Status](https://img.shields.io/travis/henriquearthur/flutter_native_splash)](https://travis-ci.org/henriquearthur/flutter_native_splash)
 
 Automatically generates native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
+
 This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
 
 <p>
@@ -10,11 +11,11 @@ This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/pac
 </p>
 
 ## Usage
-First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml file](https://pub.dev/packages/flutter_native_splash#-installing-tab-). You should add the package to `dev_dependencies` because you don't need this plugin your APK.
+First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml file](https://pub.dev/packages/flutter_native_splash#-installing-tab-). You should add the package to `dev_dependencies` because you don't need this plugin in your APK.
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.1.4
+  flutter_native_splash: ^0.1.5
 ```
 
 Don't forget to `flutter pub get`.
@@ -57,9 +58,9 @@ When the package finishes running your splash screen is ready.
 * Your splash image will be resized to `mdpi`, `hdpi`, `xhdpi`, `xxhdpi` and `xxxhdpi` drawables.
 * An `<item>` tag containing a `<bitmap>` for your splash image drawable will be added in `launch_background.xml`
 * Background color will be added in `colors.xml` and referenced in `launch_background.xml`.
-* Code for full screen mode toggle will be added in `styles.xml` and `MainActivity.java`.
+* Code for full screen mode toggle will be added in `styles.xml` and `MainActivity`.
 
 ### iOS
 * Your splash image will be resized to `@3x` and `@2x` images.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
-* Code for hidden status bar toggle will be adde in `Info.plist` and `AppDelegate.m`.
+* Code for hidden status bar toggle will be adde in `Info.plist` and `AppDelegate`.
