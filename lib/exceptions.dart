@@ -46,6 +46,18 @@ class CantFindMainActivityPath implements Exception {
   }
 }
 
+class InvalidNativeFile implements Exception {
+  const InvalidNativeFile([this.message]);
+  final String message;
+
+  @override
+  String toString() {
+    return '*** ERROR [flutter_native_splash] ***\n'
+        'InvalidNativeFile\n'
+        '$message';
+  }
+}
+
 class LaunchScreenStoryboardModified implements Exception {
   const LaunchScreenStoryboardModified([this.message]);
   final String message;

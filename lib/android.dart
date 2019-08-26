@@ -101,7 +101,11 @@ Future _updateLaunchBackgroundFileWithImagePath() async {
 
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
-    lines.insert(lines.length - 1, templates.androidLaunchBackgroundItemXml);
+    if (lines.isEmpty) {
+      throw InvalidNativeFile("File 'launch_background.xml' contains 0 lines.");
+    } else {
+      lines.insert(lines.length - 1, templates.androidLaunchBackgroundItemXml);
+    }
   }
 
   await launchBackgroundFile.writeAsString(lines.join('\n'));
@@ -153,8 +157,12 @@ void _updateColorsFileWithColor(File colorsFile, String color) {
 
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
-    lines.insert(
-        lines.length - 1, '\t<color name="splash_color">$color</color>');
+    if (lines.isEmpty) {
+      throw InvalidNativeFile("File 'colors.xml' contains 0 lines.");
+    } else {
+      lines.insert(
+          lines.length - 1, '\t<color name="splash_color">$color</color>');
+    }
   }
 
   colorsFile.writeAsStringSync(lines.join('\n'));
@@ -233,7 +241,11 @@ Future _updateStylesFileWithImagePath() async {
 
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
-    lines.insert(endStyleLine, templates.androidStylesItemXml);
+    if (lines.isEmpty) {
+      throw InvalidNativeFile("File 'styles.xml' contains 0 lines.");
+    } else {
+      lines.insert(endStyleLine, templates.androidStylesItemXml);
+    }
   }
 
   await stylesFile.writeAsString(lines.join('\n'));
