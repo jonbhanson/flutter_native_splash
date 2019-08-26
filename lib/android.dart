@@ -373,7 +373,7 @@ bool _needToUpdateMainActivity(String language, List<String> lines) {
   return !foundExisting;
 }
 
-/// Add in MainActivity.java the code required for removing full screen mode of splash screen after app loaded
+/// Add in MainActivity the code required for removing full screen mode of splash screen after app loaded
 void _addMainActivitySplashLines(
     String language, File mainActivityFile, List<String> lines) {
   List<String> newLines = [];
