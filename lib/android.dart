@@ -22,13 +22,13 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 
 /// Create Android splash screen
 createSplash(String imagePath, String color) async {
-  _applyImage(imagePath);
+  await _applyImage(imagePath);
   await _applyLaunchBackgroundXml();
 
   // _applyColor will update launch_background.xml which may be created in _applyLaunchBackgroundXml
   // that's why we need to await _applyLaunchBackgroundXml()
-  _applyColor(color);
-  _applyStylesXml();
+  await _applyColor(color);
+  await _applyStylesXml();
 
   await _applyMainActivityUpdate();
 }
