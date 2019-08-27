@@ -121,7 +121,9 @@ Future _createLaunchBackgroundFileWithImagePath() async {
 void _applyColor(color) {
   final File colorsXml = File(androidColorsFile);
 
-  color = "#" + color;
+  if (!color.contains("#")) {
+    color = "#" + color;
+  }
 
   if (colorsXml.existsSync()) {
     print(

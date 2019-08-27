@@ -63,7 +63,9 @@ void _saveImage(IosLaunchImageTemplate template, img.Image image) {
 
 /// Update LaunchScreen.storyboard adding width, height and color
 Future _applyLaunchScreenStoryboard(String imagePath, String color) {
-  color = "#" + color;
+  if (!color.contains("#")) {
+    color = "#" + color;
+  }
 
   final File file = File(iOSLaunchScreenStoryboardFile);
 
