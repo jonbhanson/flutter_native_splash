@@ -21,9 +21,9 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 ];
 
 /// Create Android splash screen
-createSplash(String imagePath, String color) async {
+createSplash(String imagePath, String color, bool full) async {
   await _applyImage(imagePath);
-  await _applyLaunchBackgroundXml();
+  await _applyLaunchBackgroundXml(full);
 
   // _applyColor will update launch_background.xml which may be created in _applyLaunchBackgroundXml
   // that's why we need to await _applyLaunchBackgroundXml()
@@ -69,23 +69,23 @@ void _saveImage(AndroidDrawableTemplate template, Image image) {
 }
 
 /// Create or update launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml() {
+Future _applyLaunchBackgroundXml(bool full) {
   final File launchBackgroundFile = File(androidLaunchBackgroundFile);
 
   if (launchBackgroundFile.existsSync()) {
     print("[Android] Updating launch_background.xml with splash image path");
-    return _updateLaunchBackgroundFileWithImagePath();
+    return _updateLaunchBackgroundFileWithImagePath(full);
   } else {
     print(
         "[Android] No launch_background.xml file found in your Android project");
     print(
         "[Android] Creating launch_background.xml file and adding it to your Android project");
-    return _createLaunchBackgroundFileWithImagePath();
+    return _createLaunchBackgroundFileWithImagePath(full);
   }
 }
 
 /// Updates launch_background.xml adding splash image path
-Future _updateLaunchBackgroundFileWithImagePath() async {
+Future _updateLaunchBackgroundFileWithImagePath(bool full) async {
   final File launchBackgroundFile = File(androidLaunchBackgroundFile);
   final List<String> lines = await launchBackgroundFile.readAsLines();
   bool foundExisting = false;
@@ -104,7 +104,13 @@ Future _updateLaunchBackgroundFileWithImagePath() async {
     if (lines.isEmpty) {
       throw InvalidNativeFile("File 'launch_background.xml' contains 0 lines.");
     } else {
-      lines.insert(lines.length - 1, templates.androidLaunchBackgroundItemXml);
+      if (full == null || !full) {
+        lines.insert(
+            lines.length - 1, templates.androidLaunchBackgroundItemXml);
+      } else {
+        lines.insert(
+            lines.length - 1, templates.androidLaunchBackgroundItemXmlFill);
+      }
     }
   }
 
@@ -112,9 +118,13 @@ Future _updateLaunchBackgroundFileWithImagePath() async {
 }
 
 /// Creates launch_background.xml with splash image path
-Future _createLaunchBackgroundFileWithImagePath() async {
+Future _createLaunchBackgroundFileWithImagePath(bool full) async {
   File file = await File(androidLaunchBackgroundFile).create(recursive: true);
-  return await file.writeAsString(templates.androidLaunchBackgroundXml);
+  if (full == null || !full) {
+    return await file.writeAsString(templates.androidLaunchBackgroundXml);
+  } else {
+    return await file.writeAsString(templates.androidLaunchBackgroundXmlFill);
+  }
 }
 
 /// Create or update colors.xml adding splash screen background color
