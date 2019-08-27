@@ -1,3 +1,7 @@
+## [0.1.6+2] - (27th August 2019)
+
+* Yup, I released a new version because a quote was missing
+
 ## [0.1.6+1] - (27th August 2019)
 
 * Updated README.md adding quotes on `color` property

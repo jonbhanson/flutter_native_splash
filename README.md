@@ -15,7 +15,7 @@ First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml fil
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.1.6+1
+  flutter_native_splash: ^0.1.6+2
 ```
 
 Don't forget to `flutter pub get`.
@@ -30,12 +30,13 @@ flutter_native_splash:
 ```
 
 * `image` must be a `png` file.
+* You can use `#` in `color` as well. `color: "#42a5f5"`
 
 You can also set `android` or `ios` to `false` if you don't want to create a splash screen for a specific platform.
 ```yaml
 flutter_native_splash:
   image: assets/images/splash.png
-  color: 42a5f5
+  color: "42a5f5"
   android: false
 ```
 
