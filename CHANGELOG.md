@@ -1,3 +1,7 @@
+## [0.1.6] - (26th August 2019)
+
+* Fix bug where `MainActivity` file could not be found with custom package names
+
 ## [0.1.5] - (26th August 2019)
 
 * Add support for Kotlin

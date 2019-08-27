@@ -309,13 +309,9 @@ Future _getMainActivityJavaPath() async {
       var match = matches.elementAt(0);
 
       String package = match.group(1);
-      List<String> packageSplitted = package.split('.');
+      String path = package.replaceAll('.', '/');
 
-      String path1 = packageSplitted[0];
-      String path2 = packageSplitted[1];
-      String path3 = packageSplitted[2];
-
-      mainActivityPath += "$path1/$path2/$path3/MainActivity.java";
+      mainActivityPath += "$path/MainActivity.java";
       foundPath = true;
       break;
     }
@@ -346,13 +342,9 @@ Future _getMainActivityKotlinPath() async {
       var match = matches.elementAt(0);
 
       String package = match.group(1);
-      List<String> packageSplitted = package.split('.');
+      String path = package.replaceAll('.', '/');
 
-      String path1 = packageSplitted[0];
-      String path2 = packageSplitted[1];
-      String path3 = packageSplitted[2];
-
-      mainActivityPath += "$path1/$path2/$path3/MainActivity.kt";
+      mainActivityPath += "$path/MainActivity.kt";
       foundPath = true;
       break;
     }
