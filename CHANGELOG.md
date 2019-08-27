@@ -1,3 +1,8 @@
+## [0.1.6+1] - (27th August 2019)
+
+* Updated README.md adding quotes on `color` property
+* Add support for colors with `#` prefix
+
 ## [0.1.6] - (26th August 2019)
 
 * Fix bug where `MainActivity` file could not be found with custom package names
