@@ -182,17 +182,21 @@ bool _needToUpdateInfoPlist(List<String> lines) {
 /// Update Infop.list with status bar hidden directive
 Future _updateInfoPlistFile(File infoPlistFile, List<String> lines) async {
   List<String> newLines = [];
+  int lastDictLine;
 
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
 
-    // Before '</dict>' add the following lines
+    // Find last `</dict>` on file
     if (line.contains('</dict>')) {
-      newLines.add(templates.iOSInfoPlistLines);
+      lastDictLine = x;
     }
 
     newLines.add(line);
   }
+
+  // Before last '</dict>' add the lines
+  newLines.insert(lastDictLine, templates.iOSInfoPlistLines);
 
   await infoPlistFile.writeAsString(newLines.join('\n'));
 }
