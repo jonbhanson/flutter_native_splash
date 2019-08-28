@@ -385,13 +385,13 @@ void _addMainActivitySplashLines(
   List<String> newLines = [];
 
   List<String> javaReferenceLines = [
-    'public class MainActivity extends FlutterActivity {',
+    'public class MainActivity extends',
     'super.onCreate(savedInstanceState);',
     'GeneratedPluginRegistrant.registerWith(this);',
   ];
 
   List<String> kotlinReferenceLines = [
-    'class MainActivity: FlutterActivity() {',
+    'class MainActivity:',
     'super.onCreate(savedInstanceState)',
     'GeneratedPluginRegistrant.registerWith(this)',
   ];
