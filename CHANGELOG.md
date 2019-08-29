@@ -1,3 +1,8 @@
+## [0.1.7] - (27th August 2019)
+
+* Fix a bug that duplicates entries on `Info.plist` when using multiple `</dict>` on iOS ([#5](https://github.com/henriquearthur/flutter_native_splash/issues/5))
+* Fix missing imports on `MainActivity` when not using default class signature ([#7](https://github.com/henriquearthur/flutter_native_splash/issues/7))
+
 ## [0.1.6+2] - (27th August 2019)
 
 * Yup, I released a new version because a quote was missing
