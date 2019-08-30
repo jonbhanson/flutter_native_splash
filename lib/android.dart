@@ -21,9 +21,9 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 ];
 
 /// Create Android splash screen
-createSplash(String imagePath, String color, bool full) async {
+createSplash(String imagePath, String color, bool fill) async {
   await _applyImage(imagePath);
-  await _applyLaunchBackgroundXml(full);
+  await _applyLaunchBackgroundXml(fill);
 
   // _applyColor will update launch_background.xml which may be created in _applyLaunchBackgroundXml
   // that's why we need to await _applyLaunchBackgroundXml()
@@ -69,23 +69,23 @@ void _saveImage(AndroidDrawableTemplate template, Image image) {
 }
 
 /// Create or update launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml(bool full) {
+Future _applyLaunchBackgroundXml(bool fill) {
   final File launchBackgroundFile = File(androidLaunchBackgroundFile);
 
   if (launchBackgroundFile.existsSync()) {
     print("[Android] Updating launch_background.xml with splash image path");
-    return _updateLaunchBackgroundFileWithImagePath(full);
+    return _updateLaunchBackgroundFileWithImagePath(fill);
   } else {
     print(
         "[Android] No launch_background.xml file found in your Android project");
     print(
         "[Android] Creating launch_background.xml file and adding it to your Android project");
-    return _createLaunchBackgroundFileWithImagePath(full);
+    return _createLaunchBackgroundFileWithImagePath(fill);
   }
 }
 
 /// Updates launch_background.xml adding splash image path
-Future _updateLaunchBackgroundFileWithImagePath(bool full) async {
+Future _updateLaunchBackgroundFileWithImagePath(bool fill) async {
   final File launchBackgroundFile = File(androidLaunchBackgroundFile);
   final List<String> lines = await launchBackgroundFile.readAsLines();
   bool foundExisting = false;
@@ -104,7 +104,7 @@ Future _updateLaunchBackgroundFileWithImagePath(bool full) async {
     if (lines.isEmpty) {
       throw InvalidNativeFile("File 'launch_background.xml' contains 0 lines.");
     } else {
-      if (full == null || !full) {
+      if (fill == null || !fill) {
         lines.insert(
             lines.length - 1, templates.androidLaunchBackgroundItemXml);
       } else {
@@ -118,9 +118,9 @@ Future _updateLaunchBackgroundFileWithImagePath(bool full) async {
 }
 
 /// Creates launch_background.xml with splash image path
-Future _createLaunchBackgroundFileWithImagePath(bool full) async {
+Future _createLaunchBackgroundFileWithImagePath(bool fill) async {
   File file = await File(androidLaunchBackgroundFile).create(recursive: true);
-  if (full == null || !full) {
+  if (fill == null || !fill) {
     return await file.writeAsString(templates.androidLaunchBackgroundXml);
   } else {
     return await file.writeAsString(templates.androidLaunchBackgroundXmlFill);
