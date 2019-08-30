@@ -13,9 +13,10 @@ void createSplash() async {
 
   String image = config['image'];
   String color = config['color'];
+  bool full = config['full'];
 
   if (!config.containsKey("android") || config['android']) {
-    await android.createSplash(image, color);
+    await android.createSplash(image, color,full);
   }
 
   if (!config.containsKey("ios") || config['ios']) {
