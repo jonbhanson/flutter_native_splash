@@ -465,8 +465,11 @@ Future<bool> _supportStatusBarCode() async {
     String line = lines[x];
 
     if (line.contains('minSdkVersion')) {
-      int minSdkVersion =
-          int.parse(line.replaceAll('minSdkVersion', '').trim());
+      RegExp regExp = RegExp(r'minSdkVersion([ \t]*)([0-9]*)');
+      var matches = regExp.allMatches(line);
+      var match = matches.elementAt(0);
+
+      int minSdkVersion = int.parse(match.group(2));
 
       // android.view.Window.setStatusBarColor was introduced in API 21
       if (minSdkVersion >= 21) {

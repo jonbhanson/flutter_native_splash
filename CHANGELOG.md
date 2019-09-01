@@ -1,3 +1,7 @@
+## [0.1.7+2] - (1th September 2019)
+
+* Fix a bug on `minSdkVersion` reading ([#13](https://github.com/henriquearthur/flutter_native_splash/issues/13))
+
 ## [0.1.7+1] - (1th September 2019)
 
 * Check for `minSdkVersion` >= 21 to add code for changing status bar color to transparent ([#12](https://github.com/henriquearthur/flutter_native_splash/issues/12))
