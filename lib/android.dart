@@ -275,7 +275,7 @@ Future _applyMainActivityUpdate() async {
   final List<String> lines = await mainActivityFile.readAsLines();
 
   if (_needToUpdateMainActivity(language, lines)) {
-    _addMainActivitySplashLines(language, mainActivityFile, lines);
+    await _addMainActivitySplashLines(language, mainActivityFile, lines);
   }
 }
 
@@ -380,8 +380,8 @@ bool _needToUpdateMainActivity(String language, List<String> lines) {
 }
 
 /// Add in MainActivity the code required for removing full screen mode of splash screen after app loaded
-void _addMainActivitySplashLines(
-    String language, File mainActivityFile, List<String> lines) {
+Future _addMainActivitySplashLines(
+    String language, File mainActivityFile, List<String> lines) async {
   List<String> newLines = [];
 
   List<String> javaReferenceLines = [
@@ -396,6 +396,13 @@ void _addMainActivitySplashLines(
     'GeneratedPluginRegistrant.registerWith(this)',
   ];
 
+  bool hasSupportForStatusBar = await _supportStatusBarCode();
+
+  if (!hasSupportForStatusBar) {
+    print(
+        "[Android] [Warning] Status bar will NOT be transparent because your min SDK version is < 21. Changing status bar color method was added in API 21.");
+  }
+
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
 
@@ -409,7 +416,11 @@ void _addMainActivitySplashLines(
 
       // After 'super.onCreate ...' add the following lines
       if (line.contains(javaReferenceLines[1])) {
-        newLines.add(templates.androidMainActivityJavaLines2);
+        if (hasSupportForStatusBar) {
+          newLines.add(templates.androidMainActivityJavaLines2WithStatusBar);
+        } else {
+          newLines.add(templates.androidMainActivityJavaLines2WithoutStatusBar);
+        }
       }
 
       // After 'GeneratedPluginRegistrant ...' add the following lines
@@ -428,7 +439,12 @@ void _addMainActivitySplashLines(
 
       // After 'super.onCreate ...' add the following lines
       if (line.contains(kotlinReferenceLines[1])) {
-        newLines.add(templates.androidMainActivityKotlinLines2);
+        if (hasSupportForStatusBar) {
+          newLines.add(templates.androidMainActivityKotlinLines2WithStatusBar);
+        } else {
+          newLines
+              .add(templates.androidMainActivityKotlinLines2WithoutStatusBar);
+        }
       }
 
       // After 'GeneratedPluginRegistrant ...' add the following lines
@@ -438,5 +454,28 @@ void _addMainActivitySplashLines(
     }
   }
 
-  mainActivityFile.writeAsString(newLines.join('\n'));
+  await mainActivityFile.writeAsString(newLines.join('\n'));
+}
+
+Future<bool> _supportStatusBarCode() async {
+  final File buildGradleFile = File(androidBuildGradleAppFile);
+  final List<String> lines = await buildGradleFile.readAsLines();
+
+  for (int x = 0; x < lines.length; x++) {
+    String line = lines[x];
+
+    if (line.contains('minSdkVersion')) {
+      int minSdkVersion =
+          int.parse(line.replaceAll('minSdkVersion', '').trim());
+
+      // android.view.Window.setStatusBarColor was introduced in API 21
+      if (minSdkVersion >= 21) {
+        return true;
+      }
+
+      break;
+    }
+  }
+
+  return false;
 }

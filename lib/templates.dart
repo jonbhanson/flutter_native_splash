@@ -40,9 +40,13 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 ''';
 
-const String androidMainActivityJavaLines2 = '''
+const String androidMainActivityJavaLines2WithStatusBar = '''
     boolean flutter_native_splash = true;
     getWindow().setStatusBarColor(0x00000000);
+''';
+
+const String androidMainActivityJavaLines2WithoutStatusBar = '''
+    boolean flutter_native_splash = true;
 ''';
 
 const String androidMainActivityJavaLines3 = '''
@@ -61,9 +65,13 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 ''';
 
-const String androidMainActivityKotlinLines2 = '''
+const String androidMainActivityKotlinLines2WithStatusBar = '''
     val flutter_native_splash = true
     window.statusBarColor = 0x00000000
+''';
+
+const String androidMainActivityKotlinLines2WithoutStatusBar = '''
+    val flutter_native_splash = true
 ''';
 
 const String androidMainActivityKotlinLines3 = '''
