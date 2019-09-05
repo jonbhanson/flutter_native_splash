@@ -1,8 +1,10 @@
+import 'dart:io';
+
+import 'package:color/color.dart';
 import 'package:flutter_native_splash/constants.dart';
 import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/templates.dart' as templates;
 import 'package:image/image.dart';
-import 'dart:io';
 
 // Image template
 class AndroidDrawableTemplate {
@@ -29,8 +31,14 @@ createSplash(String imagePath, String color) async {
   // that's why we need to await _applyLaunchBackgroundXml()
   await _applyColor(color);
   await _applyStylesXml();
+  await _applyMainActivityUpdate(_generatePrimaryColorDarkFromColor(color));
+}
 
-  await _applyMainActivityUpdate();
+/// Generates the primaryColorDark that will be used for the status bar
+String _generatePrimaryColorDarkFromColor(String color) {
+  String baseColor = color.contains('#') ? color.replaceAll("#", "") : color;
+  var primaryColorDark = ColorFilter.darken(HexColor(baseColor), [0.07]);
+  return primaryColorDark.toHexColor().toString();
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
@@ -261,7 +269,7 @@ void _createStylesFileWithImagePath() {
 }
 
 /// Update MainActivity adding code to remove full screen mode after app load
-Future _applyMainActivityUpdate() async {
+Future _applyMainActivityUpdate(String primaryColorDark) async {
   final String language = await _javaOrKotlin();
   String mainActivityPath;
 
@@ -275,7 +283,8 @@ Future _applyMainActivityUpdate() async {
   final List<String> lines = await mainActivityFile.readAsLines();
 
   if (_needToUpdateMainActivity(language, lines)) {
-    await _addMainActivitySplashLines(language, mainActivityFile, lines);
+    await _addMainActivitySplashLines(
+        language, mainActivityFile, lines, primaryColorDark);
   }
 }
 
@@ -363,8 +372,8 @@ Future _getMainActivityKotlinPath() async {
 bool _needToUpdateMainActivity(String language, List<String> lines) {
   bool foundExisting = false;
 
-  String javaLine = 'boolean flutter_native_splash = true;';
-  String kotlinLine = 'val flutter_native_splash = true';
+  String javaLine = 'boolean flutterNativeSplash = true;';
+  String kotlinLine = 'val flutterNativeSplash = true';
 
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
@@ -380,8 +389,8 @@ bool _needToUpdateMainActivity(String language, List<String> lines) {
 }
 
 /// Add in MainActivity the code required for removing full screen mode of splash screen after app loaded
-Future _addMainActivitySplashLines(
-    String language, File mainActivityFile, List<String> lines) async {
+Future _addMainActivitySplashLines(String language, File mainActivityFile,
+    List<String> lines, String primaryColorDar) async {
   List<String> newLines = [];
 
   List<String> javaReferenceLines = [
@@ -417,7 +426,8 @@ Future _addMainActivitySplashLines(
       // After 'super.onCreate ...' add the following lines
       if (line.contains(javaReferenceLines[1])) {
         if (hasSupportForStatusBar) {
-          newLines.add(templates.androidMainActivityJavaLines2WithStatusBar);
+          newLines.add(templates.androidMainActivityJavaLines2WithStatusBar
+              .replaceFirst('primaryColorDark', '0xff$primaryColorDar'));
         } else {
           newLines.add(templates.androidMainActivityJavaLines2WithoutStatusBar);
         }
@@ -440,7 +450,8 @@ Future _addMainActivitySplashLines(
       // After 'super.onCreate ...' add the following lines
       if (line.contains(kotlinReferenceLines[1])) {
         if (hasSupportForStatusBar) {
-          newLines.add(templates.androidMainActivityKotlinLines2WithStatusBar);
+          newLines.add(templates.androidMainActivityKotlinLines2WithStatusBar
+              .replaceFirst('primaryColorDark', '0xff$primaryColorDar'));
         } else {
           newLines
               .add(templates.androidMainActivityKotlinLines2WithoutStatusBar);

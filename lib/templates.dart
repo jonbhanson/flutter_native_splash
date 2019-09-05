@@ -41,12 +41,12 @@ import android.view.WindowManager;
 ''';
 
 const String androidMainActivityJavaLines2WithStatusBar = '''
-    boolean flutter_native_splash = true;
-    getWindow().setStatusBarColor(0x00000000);
+    boolean flutterNativeSplash = true;
+    getWindow().setStatusBarColor(primaryColorDark);
 ''';
 
 const String androidMainActivityJavaLines2WithoutStatusBar = '''
-    boolean flutter_native_splash = true;
+    boolean flutterNativeSplash = true;
 ''';
 
 const String androidMainActivityJavaLines3 = '''
@@ -66,12 +66,12 @@ import android.view.WindowManager
 ''';
 
 const String androidMainActivityKotlinLines2WithStatusBar = '''
-    val flutter_native_splash = true
-    window.statusBarColor = 0x00000000
+    val flutterNativeSplash = true
+    window.statusBarColor = primaryColorDark
 ''';
 
 const String androidMainActivityKotlinLines2WithoutStatusBar = '''
-    val flutter_native_splash = true
+    val flutterNativeSplash = true
 ''';
 
 const String androidMainActivityKotlinLines3 = '''
@@ -131,11 +131,11 @@ String iOSInfoPlistLines = '''
 ''';
 
 String iOSAppDelegateObjectiveCLines = '''
-    int flutter_native_splash = 1;
+    int flutterNativeSplash = 1;
     UIApplication.sharedApplication.statusBarHidden = false;
 ''';
 
 String iOSAppDelegateSwiftLines = '''
-    var flutter_native_splash = 1
+    var flutterNativeSplash = 1
     UIApplication.shared.isStatusBarHidden = false
 ''';
