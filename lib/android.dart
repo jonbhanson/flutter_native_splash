@@ -21,14 +21,18 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 ];
 
 /// Create Android splash screen
-createSplash(String imagePath, String color, bool fill) async {
+createSplash(String imagePath, String color, bool fill,
+    bool androidDisableFullscreen) async {
   await _applyImage(imagePath);
   await _applyLaunchBackgroundXml(fill);
 
   // _applyColor will update launch_background.xml which may be created in _applyLaunchBackgroundXml
   // that's why we need to await _applyLaunchBackgroundXml()
   await _applyColor(color);
-  await _applyStylesXml();
+
+  if (!androidDisableFullscreen) {
+    await _applyStylesXml();
+  }
 
   await _applyMainActivityUpdate();
 }
