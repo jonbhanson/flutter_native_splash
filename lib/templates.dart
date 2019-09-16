@@ -55,9 +55,13 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 ''';
 
-const String androidMainActivityJavaLines2 = '''
-    boolean flutter_native_splash = true;
-    getWindow().setStatusBarColor(0x00000000);
+const String androidMainActivityJavaLines2WithStatusBar = '''
+    boolean flutterNativeSplash = true;
+    getWindow().setStatusBarColor(primaryColorDark);
+''';
+
+const String androidMainActivityJavaLines2WithoutStatusBar = '''
+    boolean flutterNativeSplash = true;
 ''';
 
 const String androidMainActivityJavaLines3 = '''
@@ -76,9 +80,13 @@ import android.view.ViewTreeObserver
 import android.view.WindowManager
 ''';
 
-const String androidMainActivityKotlinLines2 = '''
-    val flutter_native_splash = true
-    window.statusBarColor = 0x00000000
+const String androidMainActivityKotlinLines2WithStatusBar = '''
+    val flutterNativeSplash = true
+    window.statusBarColor = primaryColorDark
+''';
+
+const String androidMainActivityKotlinLines2WithoutStatusBar = '''
+    val flutterNativeSplash = true
 ''';
 
 const String androidMainActivityKotlinLines3 = '''
@@ -138,11 +146,11 @@ String iOSInfoPlistLines = '''
 ''';
 
 String iOSAppDelegateObjectiveCLines = '''
-    int flutter_native_splash = 1;
+    int flutterNativeSplash = 1;
     UIApplication.sharedApplication.statusBarHidden = false;
 ''';
 
 String iOSAppDelegateSwiftLines = '''
-    var flutter_native_splash = 1
+    var flutterNativeSplash = 1
     UIApplication.shared.isStatusBarHidden = false
 ''';

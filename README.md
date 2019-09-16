@@ -15,7 +15,7 @@ First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml fil
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.1.7
+  flutter_native_splash: ^0.1.7+2
 ```
 
 Don't forget to `flutter pub get`.
@@ -58,6 +58,9 @@ flutter pub pub run flutter_native_splash:create
 ```
 
 When the package finishes running your splash screen is ready.
+
+## Notes
+* If `minSdkVersion` < 21 the code for changing status bar color to transparent will not be added. If later on you change your `minSdkVersion` to >= 21 you need to manually add code for changing status bar color if you want to.
 
 ## Recommendations
 * If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
