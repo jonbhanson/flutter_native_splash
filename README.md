@@ -40,6 +40,16 @@ flutter_native_splash:
   android: false
 ```
 
+In case your image should use all available screen (width and height) you can use `fill` property.
+```yaml
+flutter_native_splash:
+  image: assets/images/splash.png
+  color: "42a5f5"
+  fill: true
+```
+
+*Note: `fill` property is not yet implemented for iOS splash screens.*
+
 ### 2. Run the package
 After adding your settings, run the package with
 
