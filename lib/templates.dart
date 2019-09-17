@@ -51,17 +51,19 @@ const String androidStylesXml = '''
 ''';
 
 const String androidMainActivityJavaLines1 = '''
+import android.os.Build;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 ''';
 
 const String androidMainActivityJavaLines2WithStatusBar = '''
-    boolean flutterNativeSplash = true;
-    getWindow().setStatusBarColor(primaryColorDark);
-''';
-
-const String androidMainActivityJavaLines2WithoutStatusBar = '''
-    boolean flutterNativeSplash = true;
+    boolean flutter_native_splash = true;
+    int originalStatusBarColor = 0;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        originalStatusBarColor = getWindow().getStatusBarColor();
+        getWindow().setStatusBarColor({{{primaryColorDark}}});
+    }
+    int originalStatusBarColorFinal = originalStatusBarColor;
 ''';
 
 const String androidMainActivityJavaLines3 = '''
@@ -71,22 +73,27 @@ const String androidMainActivityJavaLines3 = '''
       public void onGlobalLayout() {
         getFlutterView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          getWindow().setStatusBarColor(originalStatusBarColorFinal);
+        }
       }
     });
 ''';
 
 const String androidMainActivityKotlinLines1 = '''
+import android.os.Build
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 ''';
 
 const String androidMainActivityKotlinLines2WithStatusBar = '''
-    val flutterNativeSplash = true
-    window.statusBarColor = primaryColorDark
-''';
-
-const String androidMainActivityKotlinLines2WithoutStatusBar = '''
-    val flutterNativeSplash = true
+    val flutter_native_splash = true
+    var originalStatusBarColor = 0
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        originalStatusBarColor = window.statusBarColor
+        window.statusBarColor = {{{primaryColorDark}}}.toInt()
+    }
+    val originalStatusBarColorFinal = originalStatusBarColor
 ''';
 
 const String androidMainActivityKotlinLines3 = '''
@@ -95,6 +102,9 @@ const String androidMainActivityKotlinLines3 = '''
       override fun onGlobalLayout() {
         flutterView.viewTreeObserver.removeOnGlobalLayoutListener(this)
         window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+          window.statusBarColor = originalStatusBarColorFinal
+        }
       }
     })
 ''';
@@ -146,11 +156,11 @@ String iOSInfoPlistLines = '''
 ''';
 
 String iOSAppDelegateObjectiveCLines = '''
-    int flutterNativeSplash = 1;
+    int flutter_native_splash = 1;
     UIApplication.sharedApplication.statusBarHidden = false;
 ''';
 
 String iOSAppDelegateSwiftLines = '''
-    var flutterNativeSplash = 1
+    var flutter_native_splash = 1
     UIApplication.shared.isStatusBarHidden = false
 ''';
