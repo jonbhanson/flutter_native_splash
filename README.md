@@ -48,8 +48,15 @@ flutter_native_splash:
   color: "42a5f5"
   fill: true
 ```
-
 *Note: `fill` property is not yet implemented for iOS splash screens.*
+
+If you want to disable full screen splash screen on Android you can use `android_disable_fullscreen` property.
+```yaml
+flutter_native_splash:
+  image: assets/images/splash.png
+  color: "42a5f5"
+  android_disable_fullscreen: true
+```
 
 ### 2. Run the package
 After adding your settings, run the package with
