@@ -1,3 +1,7 @@
+## [0.1.8+1] - (16th September 2019)
+
+* Documentation improvements
+
 ## [0.1.8] - (16th September 2019)
 
 * Added `fill` property to use full screen images on Android (thanks [@Bwofls2](https://github.com/Bwolfs2) - PR [#8](https://github.com/henriquearthur/flutter_native_splash/pull/8)) 
