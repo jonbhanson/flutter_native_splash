@@ -2,6 +2,7 @@
 
 * Added `fill` property to use full screen images on Android (thanks [@Bwofls2](https://github.com/Bwolfs2) - PR [#8](https://github.com/henriquearthur/flutter_native_splash/pull/8)) 
 * Added `android_disable_fullscreen` property to disable opening app in full screen on Android ([#14](https://github.com/henriquearthur/flutter_native_splash/issues/14))
+* Status bar color on Android is now generated dynamically by using same principles as Material Design (thanks [@yiss](https://github.com/yiss) - PR [#16](https://github.com/henriquearthur/flutter_native_splash/pull/16))
 
 ## [0.1.7+2] - (1th September 2019)
 

@@ -1,6 +1,7 @@
 # flutter_native_splash
 [![pub package](https://img.shields.io/pub/v/flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
 [![Build Status](https://img.shields.io/travis/henriquearthur/flutter_native_splash)](https://travis-ci.org/henriquearthur/flutter_native_splash)
+[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
 
 Automatically generates native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
 
@@ -15,7 +16,7 @@ First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml fil
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.1.7+2
+  flutter_native_splash: ^0.1.8
 ```
 
 Don't forget to `flutter pub get`.
@@ -60,7 +61,8 @@ flutter pub pub run flutter_native_splash:create
 When the package finishes running your splash screen is ready.
 
 ## Notes
-* If `minSdkVersion` < 21 the code for changing status bar color to transparent will not be added. If later on you change your `minSdkVersion` to >= 21 you need to manually add code for changing status bar color if you want to.
+* If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. (issue [#9](https://github.com/henriquearthur/flutter_native_splash/issues/9))
+* This package modifies `launch_background.xml`, `styles.xml` and `MainActivity` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open a issue](https://github.com/henriquearthur/flutter_native_splash/issues/new) if you find any bugs.
 
 ## Recommendations
 * If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
