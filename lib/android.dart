@@ -387,8 +387,8 @@ Future _getMainActivityKotlinPath() async {
 bool _needToUpdateMainActivity(String language, List<String> lines) {
   bool foundExisting = false;
 
-  String javaLine = 'boolean flutterNativeSplash = true;';
-  String kotlinLine = 'val flutterNativeSplash = true';
+  String javaLine = 'boolean flutter_native_splash = true;';
+  String kotlinLine = 'val flutter_native_splash = true';
 
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
@@ -426,7 +426,18 @@ Future _addMainActivitySplashLines(String language, File mainActivityFile,
     if (language == 'java') {
       // Before 'public class ...' add the following lines
       if (line.contains(javaReferenceLines[0])) {
-        newLines.add(templates.androidMainActivityJavaLines1);
+        // If import not added already
+        if (!lines.contains(templates.androidMainActivityJavaImportLines1)) {
+          newLines.add(templates.androidMainActivityJavaImportLines1);
+        }
+
+        if (!lines.contains(templates.androidMainActivityJavaImportLines2)) {
+          newLines.add(templates.androidMainActivityJavaImportLines2);
+        }
+
+        if (!lines.contains(templates.androidMainActivityJavaImportLines3)) {
+          newLines.add(templates.androidMainActivityJavaImportLines3);
+        }
       }
 
       newLines.add(line);
@@ -446,7 +457,18 @@ Future _addMainActivitySplashLines(String language, File mainActivityFile,
     if (language == 'kotlin') {
       // Before 'class MainActivity ...' add the following lines
       if (line.contains(kotlinReferenceLines[0])) {
-        newLines.add(templates.androidMainActivityKotlinLines1);
+        // If import not added already
+        if (!lines.contains(templates.androidMainActivityKotlinImportLines1)) {
+          newLines.add(templates.androidMainActivityKotlinImportLines1);
+        }
+
+        if (!lines.contains(templates.androidMainActivityKotlinImportLines2)) {
+          newLines.add(templates.androidMainActivityKotlinImportLines2);
+        }
+
+        if (!lines.contains(templates.androidMainActivityKotlinImportLines3)) {
+          newLines.add(templates.androidMainActivityKotlinImportLines3);
+        }
       }
 
       newLines.add(line);

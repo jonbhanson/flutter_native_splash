@@ -50,11 +50,11 @@ const String androidStylesXml = '''
 </resources>
 ''';
 
-const String androidMainActivityJavaLines1 = '''
-import android.os.Build;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
-''';
+const String androidMainActivityJavaImportLines1 = 'import android.os.Build;';
+const String androidMainActivityJavaImportLines2 =
+    'import android.view.ViewTreeObserver;';
+const String androidMainActivityJavaImportLines3 =
+    'import android.view.WindowManager;';
 
 const String androidMainActivityJavaLines2WithStatusBar = '''
     boolean flutter_native_splash = true;
@@ -80,11 +80,11 @@ const String androidMainActivityJavaLines3 = '''
     });
 ''';
 
-const String androidMainActivityKotlinLines1 = '''
-import android.os.Build
-import android.view.ViewTreeObserver
-import android.view.WindowManager
-''';
+const String androidMainActivityKotlinImportLines1 = 'import android.os.Build';
+const String androidMainActivityKotlinImportLines2 =
+    'import android.view.ViewTreeObserver';
+const String androidMainActivityKotlinImportLines3 =
+    'import android.view.WindowManager';
 
 const String androidMainActivityKotlinLines2WithStatusBar = '''
     val flutter_native_splash = true

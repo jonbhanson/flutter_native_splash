@@ -1,3 +1,7 @@
+## [0.1.8+2] - (16th September 2019)
+
+* Fix code being added multiple times to `MainActivity` ([#19](https://github.com/henriquearthur/flutter_native_splash/issues/19))
+
 ## [0.1.8+1] - (16th September 2019)
 
 * Documentation improvements
