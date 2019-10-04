@@ -1,3 +1,7 @@
+## [0.1.8+3] - (4th October 2019)
+
+* Prevent unhandler int exception in `color` argument (thanks [@wemersonrv](https://github.com/wemersonrv) - PR [#23](https://github.com/henriquearthur/flutter_native_splash/pull/23))
+
 ## [0.1.8+2] - (16th September 2019)
 
 * Fix code being added multiple times to `MainActivity` ([#19](https://github.com/henriquearthur/flutter_native_splash/issues/19))
