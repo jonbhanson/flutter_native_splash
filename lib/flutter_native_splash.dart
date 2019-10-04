@@ -12,7 +12,7 @@ void createSplash() async {
   Map<String, dynamic> config = await _getConfig();
 
   String image = config['image'];
-  String color = config['color'];
+  String color = config['color'].toString();
   bool fill = config['fill'] ?? false;
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
 
