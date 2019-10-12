@@ -329,7 +329,7 @@ Future _getMainActivityJavaPath() async {
     String line = lines[x];
 
     if (line.contains('package="')) {
-      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)">');
+      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
 
       var matches = regExp.allMatches(line);
       var match = matches.elementAt(0);
@@ -362,7 +362,7 @@ Future _getMainActivityKotlinPath() async {
     String line = lines[x];
 
     if (line.contains('package="')) {
-      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)">');
+      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
 
       var matches = regExp.allMatches(line);
       var match = matches.elementAt(0);
