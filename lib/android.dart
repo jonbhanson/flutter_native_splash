@@ -25,8 +25,11 @@ final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
 /// Create Android splash screen
 createSplash(String imagePath, String color, bool fill,
     bool androidDisableFullscreen) async {
-  await _applyImage(imagePath);
-  await _applyLaunchBackgroundXml(fill);
+  if (imagePath.isNotEmpty) {
+    await _applyImage(imagePath);
+  }
+
+  await _applyLaunchBackgroundXml(imagePath, fill);
 
   // _applyColor will update launch_background.xml which may be created in _applyLaunchBackgroundXml
   // that's why we need to await _applyLaunchBackgroundXml()
@@ -82,18 +85,22 @@ void _saveImage(AndroidDrawableTemplate template, Image image) {
 }
 
 /// Create or update launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml(bool fill) {
+Future _applyLaunchBackgroundXml(String imagePath, bool fill) {
   final File launchBackgroundFile = File(androidLaunchBackgroundFile);
 
   if (launchBackgroundFile.existsSync()) {
-    print("[Android] Updating launch_background.xml with splash image path");
-    return _updateLaunchBackgroundFileWithImagePath(fill);
+    if (imagePath.isNotEmpty) {
+      print("[Android] Updating launch_background.xml with splash image path");
+      return _updateLaunchBackgroundFileWithImagePath(fill);
+    }
+
+    return Future.value(false);
   } else {
     print(
         "[Android] No launch_background.xml file found in your Android project");
     print(
         "[Android] Creating launch_background.xml file and adding it to your Android project");
-    return _createLaunchBackgroundFileWithImagePath(fill);
+    return _createLaunchBackgroundFileWithImagePath(imagePath, fill);
   }
 }
 
@@ -106,7 +113,8 @@ Future _updateLaunchBackgroundFileWithImagePath(bool fill) async {
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
 
-    if (line.contains('android:src="@drawable/splash"')) {
+    if (line.contains('android:src="@drawable/splash"') ||
+        line.contains('android:drawable="@color/splash_color"')) {
       foundExisting = true;
       break;
     }
@@ -131,13 +139,25 @@ Future _updateLaunchBackgroundFileWithImagePath(bool fill) async {
 }
 
 /// Creates launch_background.xml with splash image path
-Future _createLaunchBackgroundFileWithImagePath(bool fill) async {
+Future _createLaunchBackgroundFileWithImagePath(
+    String imagePath, bool fill) async {
   File file = await File(androidLaunchBackgroundFile).create(recursive: true);
+  String fileContent;
+
   if (fill == null || !fill) {
-    return await file.writeAsString(templates.androidLaunchBackgroundXml);
+    fileContent = templates.androidLaunchBackgroundXml;
+
+    if (imagePath.isEmpty) {
+      fileContent.replaceAll(templates.androidLaunchBackgroundItemXml, '');
+    }
   } else {
-    return await file.writeAsString(templates.androidLaunchBackgroundXmlFill);
+    fileContent = templates.androidLaunchBackgroundXmlFill;
+
+    if (imagePath.isEmpty) {
+      fileContent.replaceAll(templates.androidLaunchBackgroundXmlFill, '');
+    }
   }
+  return await file.writeAsString(fileContent);
 }
 
 /// Create or update colors.xml adding splash screen background color
@@ -329,7 +349,7 @@ Future _getMainActivityJavaPath() async {
     String line = lines[x];
 
     if (line.contains('package="')) {
-      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)">');
+      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
 
       var matches = regExp.allMatches(line);
       var match = matches.elementAt(0);
@@ -362,7 +382,7 @@ Future _getMainActivityKotlinPath() async {
     String line = lines[x];
 
     if (line.contains('package="')) {
-      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)">');
+      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
 
       var matches = regExp.allMatches(line);
       var match = matches.elementAt(0);

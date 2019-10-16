@@ -11,7 +11,7 @@ import 'package:yaml/yaml.dart';
 void createSplash() async {
   Map<String, dynamic> config = await _getConfig();
 
-  String image = config['image'];
+  String image = config['image'] ?? '';
   String color = config['color'].toString();
   bool fill = config['fill'] ?? false;
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
@@ -48,12 +48,6 @@ Map<String, dynamic> _getConfig() {
   for (MapEntry<dynamic, dynamic> entry
       in yamlMap['flutter_native_splash'].entries) {
     config[entry.key] = entry.value;
-  }
-
-  if (!config.containsKey('image')) {
-    stderr.writeln(InvalidConfigException(
-        "Your `flutter_native_splash` section does not contain a `image`."));
-    exit(1);
   }
 
   if (!config.containsKey('color')) {

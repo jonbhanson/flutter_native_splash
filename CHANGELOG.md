@@ -1,3 +1,7 @@
+## [0.1.9] - (16th October 2019)
+
+* `image` parameter is now optional ([#26](https://github.com/henriquearthur/flutter_native_splash/issues/26))
+
 ## [0.1.8+3] - (4th October 2019)
 
 * Prevent unhandler int exception in `color` argument (thanks [@wemersonrv](https://github.com/wemersonrv) - PR [#23](https://github.com/henriquearthur/flutter_native_splash/pull/23))

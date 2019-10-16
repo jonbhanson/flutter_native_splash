@@ -22,7 +22,10 @@ final List<IosLaunchImageTemplate> splashImages = <IosLaunchImageTemplate>[
 
 /// Create iOS splash screen
 createSplash(String imagePath, String color) async {
-  await _applyImage(imagePath);
+  if (imagePath.isNotEmpty) {
+    await _applyImage(imagePath);
+  }
+
   await _applyLaunchScreenStoryboard(imagePath, color);
   await _applyInfoPList();
   await _applyAppDelegate();
@@ -119,24 +122,26 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
     throw LaunchScreenStoryboardModified(
         "Not able to find 'backgroundColor' color tag in LaunchScreen.storyboard. Background color for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
   }
+  if (imagePath.isNotEmpty) {
+    // Found the image line, replace with new image information
+    if (foundExistingImage) {
+      final File file = File(imagePath);
 
-  // Found the image line, replace with new image information
-  if (foundExistingImage) {
-    final File file = File(imagePath);
+      if (!file.existsSync()) {
+        throw NoImageFileFoundException("The file $imagePath was not found.");
+      }
 
-    if (!file.existsSync()) {
-      throw NoImageFileFoundException("The file $imagePath was not found.");
+      final img.Image image =
+          img.decodeImage(File(imagePath).readAsBytesSync());
+      int width = image.width;
+      int height = image.height;
+
+      lines[imageLine] =
+          '        <image name="LaunchImage" width="$width" height="$height"/>';
+    } else {
+      throw LaunchScreenStoryboardModified(
+          "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
     }
-
-    final img.Image image = img.decodeImage(File(imagePath).readAsBytesSync());
-    int width = image.width;
-    int height = image.height;
-
-    lines[imageLine] =
-        '        <image name="LaunchImage" width="$width" height="$height"/>';
-  } else {
-    throw LaunchScreenStoryboardModified(
-        "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
   }
 
   await file.writeAsString(lines.join('\n'));
