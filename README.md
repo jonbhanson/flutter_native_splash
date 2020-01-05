@@ -68,7 +68,7 @@ flutter_native_splash:
 After adding your settings, run the package with
 
 ```
-flutter pub pub run flutter_native_splash:create
+flutter pub run flutter_native_splash:create
 ```
 
 When the package finishes running your splash screen is ready.
