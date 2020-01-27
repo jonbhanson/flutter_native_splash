@@ -2,15 +2,18 @@ library flutter_native_splash;
 
 import 'dart:io';
 
-import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/android.dart' as android;
+import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/ios.dart' as ios;
 import 'package:yaml/yaml.dart';
 
 /// Create splash screen for Android and iOS
 void createSplash() async {
   Map<String, dynamic> config = await _getConfig();
+  await createSplashByConfig(config);
+}
 
+Future<void> createSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
   String color = config['color'].toString();
   bool fill = config['fill'] ?? false;
