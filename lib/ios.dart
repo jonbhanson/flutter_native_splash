@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:color/color.dart';
 import 'package:flutter_native_splash/constants.dart';
 import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/templates.dart' as templates;
 import 'package:image/image.dart' as img;
-import 'dart:io';
+import 'package:xml/xml.dart' as xml;
+
+part 'ios_storyboard_helpers.dart';
 
 // Image template
 class IosLaunchImageTemplate {
@@ -21,12 +25,12 @@ final List<IosLaunchImageTemplate> splashImages = <IosLaunchImageTemplate>[
 ];
 
 /// Create iOS splash screen
-createSplash(String imagePath, String color) async {
+createSplash(String imagePath, String color, bool fill) async {
   if (imagePath.isNotEmpty) {
     await _applyImage(imagePath);
   }
 
-  await _applyLaunchScreenStoryboard(imagePath, color);
+  await _applyLaunchScreenStoryboard(imagePath, color, fill);
   await _applyInfoPList();
   await _applyAppDelegate();
 }
@@ -65,7 +69,7 @@ void _saveImage(IosLaunchImageTemplate template, img.Image image) {
 }
 
 /// Update LaunchScreen.storyboard adding width, height and color
-Future _applyLaunchScreenStoryboard(String imagePath, String color) {
+Future _applyLaunchScreenStoryboard(String imagePath, String color, bool fill) {
   if (!color.contains("#")) {
     color = "#" + color;
   }
@@ -75,84 +79,90 @@ Future _applyLaunchScreenStoryboard(String imagePath, String color) {
   if (file.existsSync()) {
     print(
         "[iOS] Updating LaunchScreen.storyboard with width, height and color");
-    return _updateLaunchScreenStoryboard(imagePath, color);
+    return _updateLaunchScreenStoryboard(imagePath, color, fill);
   } else {
     print("[iOS] No LaunchScreen.storyboard file found in your iOS project");
     print(
         "[iOS] Creating LaunchScreen.storyboard file and adding it to your iOS project");
-    return _createLaunchScreenStoryboard(imagePath, color);
+    return _createLaunchScreenStoryboard(imagePath, color, fill);
   }
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
-Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
+Future _updateLaunchScreenStoryboard(
+    String imagePath, String color, bool fill) async {
   final File file = File(iOSLaunchScreenStoryboardFile);
-  final List<String> lines = await file.readAsLines();
 
-  bool foundExistingColor = false;
-  int colorLine;
-
-  bool foundExistingImage = false;
-  int imageLine;
-
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
-
-    if (line.contains('<color key="backgroundColor"')) {
-      foundExistingColor = true;
-      colorLine = x;
-    }
-
-    if (line.contains('<image name="LaunchImage"')) {
-      foundExistingImage = true;
-      imageLine = x;
-    }
-  }
+  final xibDocument = xml.parse(file.readAsStringSync());
 
   // Found the color line, replace with new color information
-  if (foundExistingColor) {
-    HexColor hex = HexColor(color);
-    double appleRed = hex.r / 255;
-    double appleGreen = hex.g / 255;
-    double appleBlue = hex.b / 255;
+  final colorElement = _findSingleElement(xibDocument, 'color');
+  HexColor hex = HexColor(color);
+  double appleRed = hex.r / 255;
+  double appleGreen = hex.g / 255;
+  double appleBlue = hex.b / 255;
 
-    lines[colorLine] =
-        '                        <color key="backgroundColor" red="$appleRed" green="$appleGreen" blue="$appleBlue" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>';
-  } else {
-    throw LaunchScreenStoryboardModified(
-        "Not able to find 'backgroundColor' color tag in LaunchScreen.storyboard. Background color for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
-  }
+  _updateXmlElementAttribute(colorElement, 'red', '$appleRed');
+  _updateXmlElementAttribute(colorElement, 'green', '$appleGreen');
+  _updateXmlElementAttribute(colorElement, 'blue', '$appleBlue');
+
   if (imagePath.isNotEmpty) {
     // Found the image line, replace with new image information
-    if (foundExistingImage) {
-      final File file = File(imagePath);
+    final imageElement = _findSingleElement(xibDocument, 'image');
+    final File file = File(imagePath);
 
-      if (!file.existsSync()) {
-        throw NoImageFileFoundException("The file $imagePath was not found.");
+    if (!file.existsSync()) {
+      throw NoImageFileFoundException("The file $imagePath was not found.");
+    }
+
+    final img.Image image = img.decodeImage(File(imagePath).readAsBytesSync());
+    int width = image.width;
+    int height = image.height;
+
+    _updateXmlElementAttribute(imageElement, 'width', '$width');
+    _updateXmlElementAttribute(imageElement, 'height', '$height');
+
+    // Update imageView contentMode
+    final imageViewElement = _findSingleElement(xibDocument, 'imageView');
+    _updateXmlElementAttribute(
+        imageViewElement, 'contentMode', fill ? 'scaleAspectFill' : 'center');
+
+    if (fill) {
+      // Found constraints, add resize constraints
+      final constraintsElement = _findSingleElement(xibDocument, 'constraints');
+      final firstConstraint =
+          constraintsElement.findElements('constraint').first;
+
+      if (firstConstraint == null) {
+        throw LaunchScreenStoryboardModified(
+            "No 'constraint' tag found in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
       }
 
-      final img.Image image =
-          img.decodeImage(File(imagePath).readAsBytesSync());
-      int width = image.width;
-      int height = image.height;
-
-      lines[imageLine] =
-          '        <image name="LaunchImage" width="$width" height="$height"/>';
-    } else {
-      throw LaunchScreenStoryboardModified(
-          "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
+      final constraintFirstItem = firstConstraint.getAttribute('firstItem');
+      final constraintSecondItem = firstConstraint.getAttribute('secondItem');
+      _updateEqualityConstraint(constraintsElement,
+          firstItem: constraintFirstItem,
+          attribute: 'height',
+          secondItem: constraintSecondItem,
+          id: 'TH5-eB-1BE');
+      _updateEqualityConstraint(constraintsElement,
+          firstItem: constraintFirstItem,
+          attribute: 'width',
+          secondItem: constraintSecondItem,
+          id: 'svg-M5-4iO');
     }
   }
 
-  await file.writeAsString(lines.join('\n'));
+  file.writeAsStringSync(xibDocument.toXmlString(pretty: true, indent: '    '));
 }
 
 /// Creates LaunchScreen.storyboard with splash image path
-Future _createLaunchScreenStoryboard(String imagePath, String color) async {
+Future _createLaunchScreenStoryboard(
+    String imagePath, String color, fill) async {
   File file = await File(iOSLaunchScreenStoryboardFile).create(recursive: true);
   await file.writeAsString(templates.iOSLaunchScreenStoryboardContent);
 
-  return _updateLaunchScreenStoryboard(imagePath, color);
+  return _updateLaunchScreenStoryboard(imagePath, color, fill);
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)

@@ -24,7 +24,7 @@ Future<void> createSplashByConfig(Map<String, dynamic> config) async {
   }
 
   if (!config.containsKey("ios") || config['ios']) {
-    await ios.createSplash(image, color);
+    await ios.createSplash(image, color, fill);
   }
 }
 
