@@ -91,4 +91,4 @@ When the package finishes running your splash screen is ready.
 ### iOS
 * Your splash image will be resized to `@3x` and `@2x` images.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
-* Code for hidden status bar toggle will be adde in `Info.plist` and `AppDelegate`.
+* Code for hidden status bar toggle will be added in `Info.plist` and `AppDelegate`.
