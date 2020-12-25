@@ -28,15 +28,27 @@ Add your settings to your project's `pubspec.yaml` file or create a file in your
 flutter_native_splash:
   image: assets/images/splash.png
   color: "42a5f5"
+  image_dark: assets/images/splash-invert.png
+  color_dark: "042a49"
 ```
 
-* `image` must be a `png` file.
-* You can use `#` in `color` as well. `color: "#42a5f5"`
+* Images must be `png` files.
+* You can use `#` in color parameters as well. `color: "#42a5f5"`
 
-You can omit `image` parameter if you just want a colored splash screen:
+*Note: dark mode is not yet implemented for iOS splash screens.*
+
+You can omit `image_dark` and `color_dark` if you want a single splash screen regardless of dark mode:
+```yaml
+flutter_native_splash:
+  image: assets/images/splash.png
+  color: "42a5f5"
+```
+
+You can omit `image` and/or the `image_dark` parameter if you just want a colored splash screens:
 ```yaml
 flutter_native_splash:
   color: "42a5f5"
+  color_dark: "042a49"
 ```
 
 You can also set `android` or `ios` to `false` if you don't want to create a splash screen for a specific platform.
@@ -87,6 +99,7 @@ When the package finishes running your splash screen is ready.
 * An `<item>` tag containing a `<bitmap>` for your splash image drawable will be added in `launch_background.xml`
 * Background color will be added in `colors.xml` and referenced in `launch_background.xml`.
 * Code for full screen mode toggle will be added in `styles.xml` and `MainActivity`.
+* Dark mode variants are placed in `drawable-night`, `values-night`, etc. resource folders.
 
 ### iOS
 * Your splash image will be resized to `@3x` and `@2x` images.
