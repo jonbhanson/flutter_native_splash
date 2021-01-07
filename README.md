@@ -8,7 +8,7 @@ Automatically generates native code for adding splash screens in Android and iOS
 This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
 
 <p>
-	<img src="https://raw.githubusercontent.com/henriquearthur/flutter_native_splash/master/splash_demo.gif" width="250" height="443"  />
+  <img src="https://raw.githubusercontent.com/henriquearthur/flutter_native_splash/master/splash_demo.gif" width="250" height="443"  />
 </p>
 
 ## Usage
@@ -28,15 +28,25 @@ Add your settings to your project's `pubspec.yaml` file or create a file in your
 flutter_native_splash:
   image: assets/images/splash.png
   color: "42a5f5"
+  image_dark: assets/images/splash-invert.png
+  color_dark: "042a49"
 ```
 
-* `image` must be a `png` file.
-* You can use `#` in `color` as well. `color: "#42a5f5"`
+* Images must be `png` files.
+* You can use `#` in color parameters as well. `color: "#42a5f5"`
 
-You can omit `image` parameter if you just want a colored splash screen:
+You can omit `image_dark` and `color_dark` if you want a single splash screen regardless of dark mode:
+```yaml
+flutter_native_splash:
+  image: assets/images/splash.png
+  color: "42a5f5"
+```
+
+You can omit `image` and/or the `image_dark` parameter if you just want a colored splash screens:
 ```yaml
 flutter_native_splash:
   color: "42a5f5"
+  color_dark: "042a49"
 ```
 
 You can also set `android` or `ios` to `false` if you don't want to create a splash screen for a specific platform.
@@ -75,7 +85,7 @@ When the package finishes running your splash screen is ready.
 
 ## Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. (issue [#9](https://github.com/henriquearthur/flutter_native_splash/issues/9))
-* This package modifies `launch_background.xml`, `styles.xml` and `MainActivity` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open a issue](https://github.com/henriquearthur/flutter_native_splash/issues/new) if you find any bugs.
+* This package modifies `launch_background.xml`, `styles.xml` and `MainActivity` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com/henriquearthur/flutter_native_splash/issues/new) if you find any bugs.
 
 ## Recommendations
 * If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
@@ -87,8 +97,10 @@ When the package finishes running your splash screen is ready.
 * An `<item>` tag containing a `<bitmap>` for your splash image drawable will be added in `launch_background.xml`
 * Background color will be added in `colors.xml` and referenced in `launch_background.xml`.
 * Code for full screen mode toggle will be added in `styles.xml` and `MainActivity`.
+* Dark mode variants are placed in `drawable-night`, `values-night`, etc. resource folders.
 
 ### iOS
 * Your splash image will be resized to `@3x` and `@2x` images.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
-* Code for hidden status bar toggle will be adde in `Info.plist` and `AppDelegate`.
+* The background color is implemented by using a single pixel png file and stretching it to fit the screen.
+* Code for hidden status bar toggle will be added in `Info.plist` and `AppDelegate`.

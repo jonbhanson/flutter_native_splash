@@ -1,4 +1,3 @@
-import 'package:color/color.dart';
 import 'package:flutter_native_splash/constants.dart';
 import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/templates.dart' as templates;
@@ -20,20 +19,32 @@ final List<IosLaunchImageTemplate> splashImages = <IosLaunchImageTemplate>[
       fileName: 'LaunchImage@3x.png', divider: 1), // original image must be @3x
 ];
 
+final List<IosLaunchImageTemplate> splashImagesDark = <IosLaunchImageTemplate>[
+  IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
+  IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 2),
+  IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
+  // original image must be @3x
+];
+
 /// Create iOS splash screen
-createSplash(String imagePath, String color) async {
+createSplash(String imagePath, String darkImagePath, String color,
+    String darkColor) async {
   if (imagePath.isNotEmpty) {
     await _applyImage(imagePath);
   }
+  if (darkImagePath.isNotEmpty) {
+    await _applyImage(darkImagePath, dark: true);
+  }
 
   await _applyLaunchScreenStoryboard(imagePath, color);
+  await _createBackgroundColor(color, darkColor, darkColor.isNotEmpty);
   await _applyInfoPList();
   await _applyAppDelegate();
 }
 
 /// Create splash screen images for original size, @2x and @3x
-void _applyImage(String imagePath) {
-  print("[iOS] Creating splash images");
+void _applyImage(String imagePath, {bool dark = false}) {
+  print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final File file = File(imagePath);
 
@@ -43,9 +54,16 @@ void _applyImage(String imagePath) {
 
   final img.Image image = img.decodeImage(File(imagePath).readAsBytesSync());
 
-  for (IosLaunchImageTemplate template in splashImages) {
+  for (IosLaunchImageTemplate template
+      in dark ? splashImagesDark : splashImages) {
     _saveImage(template, image);
   }
+  File(iOSAssetsLaunchImageFolder + 'Contents.json')
+      .create(recursive: true)
+      .then((File file) {
+    file.writeAsStringSync(
+        dark ? templates.iOSContentsJsonDark : templates.iOSContentsJson);
+  });
 }
 
 /// Saves splash screen image to the project
@@ -89,42 +107,65 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
   final File file = File(iOSLaunchScreenStoryboardFile);
   final List<String> lines = await file.readAsLines();
 
-  bool foundExistingColor = false;
-  int colorLine;
+  bool foundExistingBackgroundImage = false;
 
   bool foundExistingImage = false;
   int imageLine;
 
+  bool foundExistingLaunchBackgroundSubview = false;
+
+  int subviewCount = 0;
+  int subviewTagLine;
+
+  int constraintCount = 0;
+  int constraintClosingTagLine;
+
   for (int x = 0; x < lines.length; x++) {
     String line = lines[x];
-
-    if (line.contains('<color key="backgroundColor"')) {
-      foundExistingColor = true;
-      colorLine = x;
-    }
 
     if (line.contains('<image name="LaunchImage"')) {
       foundExistingImage = true;
       imageLine = x;
     }
+
+    if (line.contains('<image name="LaunchBackground"')) {
+      foundExistingBackgroundImage = true;
+    }
+
+    if (line.contains('image="LaunchBackground"')) {
+      foundExistingLaunchBackgroundSubview = true;
+    }
+
+    if (line.contains('<subviews>')) {
+      subviewCount++;
+      subviewTagLine = x;
+    }
+
+    if (line.contains('</constraints>')) {
+      constraintCount++;
+      constraintClosingTagLine = x;
+    }
   }
 
-  // Found the color line, replace with new color information
-  if (foundExistingColor) {
-    HexColor hex = HexColor(color);
-    double appleRed = hex.r / 255;
-    double appleGreen = hex.g / 255;
-    double appleBlue = hex.b / 255;
+  // Found the image line, replace with new image information
+  if (foundExistingImage) {
+    if (!foundExistingLaunchBackgroundSubview) {
+      if (subviewCount != 1) {
+        throw LaunchScreenStoryboardModified(
+            'Multiple subviews found.   Did you modify your default LaunchScreen.storyboard file?');
+      }
+      if (constraintCount != 1) {
+        throw LaunchScreenStoryboardModified(
+            'Multiple constraint blocks found.   Did you modify your default LaunchScreen.storyboard file?');
+      }
+      lines[subviewTagLine] =
+          lines[subviewTagLine] + '\n' + templates.iOSLaunchBackgroundSubview;
+      lines[constraintClosingTagLine] =
+          templates.iOSLaunchBackgroundConstraints +
+              lines[constraintClosingTagLine];
+    }
 
-    lines[colorLine] =
-        '                        <color key="backgroundColor" red="$appleRed" green="$appleGreen" blue="$appleBlue" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>';
-  } else {
-    throw LaunchScreenStoryboardModified(
-        "Not able to find 'backgroundColor' color tag in LaunchScreen.storyboard. Background color for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
-  }
-  if (imagePath.isNotEmpty) {
-    // Found the image line, replace with new image information
-    if (foundExistingImage) {
+    if (imagePath.isNotEmpty) {
       final File file = File(imagePath);
 
       if (!file.existsSync()) {
@@ -138,10 +179,16 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
 
       lines[imageLine] =
           '        <image name="LaunchImage" width="$width" height="$height"/>';
-    } else {
-      throw LaunchScreenStoryboardModified(
-          "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
     }
+    // Existing background image was not found, add it before the image line:
+    if (!foundExistingBackgroundImage) {
+      lines[imageLine] =
+          '        <image name="LaunchBackground" width="1" height="1"/>\n' +
+              lines[imageLine];
+    }
+  } else {
+    throw LaunchScreenStoryboardModified(
+        "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
   }
 
   await file.writeAsString(lines.join('\n'));
@@ -153,6 +200,33 @@ Future _createLaunchScreenStoryboard(String imagePath, String color) async {
   await file.writeAsString(templates.iOSLaunchScreenStoryboardContent);
 
   return _updateLaunchScreenStoryboard(imagePath, color);
+}
+
+Future<void> _createBackgroundColor(
+    String colorString, String darkColorString, bool dark) async {
+  img.Image background = img.Image(1, 1);
+  background.fill(
+      int.parse(colorString.replaceFirst('#', ''), radix: 16) + 0xFF000000);
+  await File(iOSAssetsLaunchImageBackgroundFolder + 'background.png')
+      .create(recursive: true)
+      .then((File file) => file.writeAsBytesSync(img.encodePng(background)));
+
+  if (darkColorString.isNotEmpty) {
+    background.fill(
+        int.parse(darkColorString.replaceFirst('#', ''), radix: 16) +
+            0xFF000000);
+    await File(iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png')
+        .create(recursive: true)
+        .then((File file) => file.writeAsBytesSync(img.encodePng(background)));
+  }
+
+  return File(iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
+      .create(recursive: true)
+      .then((File file) {
+    file.writeAsStringSync(dark
+        ? templates.iOSLaunchBackgroundDarkJson
+        : templates.iOSLaunchBackgroundJson);
+  });
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)

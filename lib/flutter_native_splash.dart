@@ -15,16 +15,18 @@ void createSplash() async {
 
 Future<void> createSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
+  String darkImage = config['image_dark'] ?? '';
   String color = config['color'].toString();
+  String darkColor = config['color_dark']?.toString() ?? '';
   bool fill = config['fill'] ?? false;
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
 
   if (!config.containsKey("android") || config['android']) {
-    await android.createSplash(image, color, fill, androidDisableFullscreen);
+    await android.createSplash(image, darkImage, color, darkColor, fill, androidDisableFullscreen);
   }
 
   if (!config.containsKey("ios") || config['ios']) {
-    await ios.createSplash(image, color);
+    await ios.createSplash(image, darkImage, color, darkColor);
   }
 }
 
@@ -56,6 +58,12 @@ Map<String, dynamic> _getConfig() {
   if (!config.containsKey('color')) {
     stderr.writeln(InvalidConfigException(
         "Your `flutter_native_splash` section does not contain a `color`."));
+    exit(1);
+  }
+
+  if (config.containsKey('image_dark') && !config.containsKey('color_dark')) {
+    stderr.writeln(InvalidConfigException(
+        "Your `flutter_native_splash` section contains `image_dark` but does not contain a `color_dark`."));
     exit(1);
   }
 

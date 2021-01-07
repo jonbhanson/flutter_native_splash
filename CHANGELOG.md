@@ -1,6 +1,13 @@
-## [0.1.9] - (16th October 2019)
+## [0.2.0] - (2021-Jan-07)
 
-* `image` parameter is now optional ([#26](https://github.com/henriquearthur/flutter_native_splash/issues/26))
+* Added dark mode.
+
+## [0.1.9] - 
+
+* (2020-Jan-27) Added createSplashByConfig for external usage
+* (2020-Jan-05) Fix run the package command (thanks [@tenhobi](https://github.com/tenhobi))
+* (2019-Oct-31) Removing comments from the example (thanks [@lucalves](https://github.com/lucalves))
+* (2019-Oct-16) `image` parameter is now optional ([#26](https://github.com/henriquearthur/flutter_native_splash/issues/26))
 
 ## [0.1.8+4] - (12th October 2019)
 
