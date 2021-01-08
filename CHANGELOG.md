@@ -1,3 +1,7 @@
+## [0.2.1] - (2021-Jan-08)
+
+* Modifications to raise [pub points](https://pub.dev/help/scoring): Adherence to [Pedantic](https://pub.dev/packages/pedantic) code standard, and [conditional imports](https://dart.dev/guides/libraries/create-library-packages#conditionally-importing-and-exporting-library-files) to avoid losing points for lack of multiple platform support.
+
 ## [0.2.0+1] - (2021-Jan-08)
 
 * Updated version number in README.md (thanks [@M123-dev](https://github.com/M123-dev))
@@ -19,7 +23,7 @@
 
 ## [0.1.8+3] - (4th October 2019)
 
-* Prevent unhandler int exception in `color` argument (thanks [@wemersonrv](https://github.com/wemersonrv) - PR [#23](https://github.com/henriquearthur/flutter_native_splash/pull/23))
+* Prevent unhandled int exception in `color` argument (thanks [@wemersonrv](https://github.com/wemersonrv) - PR [#23](https://github.com/henriquearthur/flutter_native_splash/pull/23))
 
 ## [0.1.8+2] - (16th September 2019)
 

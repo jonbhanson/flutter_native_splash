@@ -274,7 +274,6 @@ const String iOSLaunchBackgroundJson = '''
 }
 ''';
 
-
 const String iOSLaunchBackgroundDarkJson = '''
 {
   "images" : [

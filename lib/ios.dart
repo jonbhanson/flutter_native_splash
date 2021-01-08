@@ -1,8 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter_native_splash/constants.dart';
 import 'package:flutter_native_splash/exceptions.dart';
 import 'package:flutter_native_splash/templates.dart' as templates;
 import 'package:image/image.dart' as img;
-import 'dart:io';
 
 // Image template
 class IosLaunchImageTemplate {
@@ -27,7 +28,7 @@ final List<IosLaunchImageTemplate> splashImagesDark = <IosLaunchImageTemplate>[
 ];
 
 /// Create iOS splash screen
-createSplash(String imagePath, String darkImagePath, String color,
+void createSplash(String imagePath, String darkImagePath, String color,
     String darkColor) async {
   if (imagePath.isNotEmpty) {
     await _applyImage(imagePath);
@@ -46,16 +47,15 @@ createSplash(String imagePath, String darkImagePath, String color,
 void _applyImage(String imagePath, {bool dark = false}) {
   print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
-  final File file = File(imagePath);
+  final file = File(imagePath);
 
   if (!file.existsSync()) {
-    throw NoImageFileFoundException("The file $imagePath was not found.");
+    throw NoImageFileFoundException('The file $imagePath was not found.');
   }
 
-  final img.Image image = img.decodeImage(File(imagePath).readAsBytesSync());
+  final image = img.decodeImage(File(imagePath).readAsBytesSync());
 
-  for (IosLaunchImageTemplate template
-      in dark ? splashImagesDark : splashImages) {
+  for (var template in dark ? splashImagesDark : splashImages) {
     _saveImage(template, image);
   }
   File(iOSAssetsLaunchImageFolder + 'Contents.json')
@@ -68,7 +68,7 @@ void _applyImage(String imagePath, {bool dark = false}) {
 
 /// Saves splash screen image to the project
 void _saveImage(IosLaunchImageTemplate template, img.Image image) {
-  img.Image newFile = img.copyResize(
+  var newFile = img.copyResize(
     image,
     width: image.width ~/ template.divider,
     height: image.height ~/ template.divider,
@@ -84,44 +84,44 @@ void _saveImage(IosLaunchImageTemplate template, img.Image image) {
 
 /// Update LaunchScreen.storyboard adding width, height and color
 Future _applyLaunchScreenStoryboard(String imagePath, String color) {
-  if (!color.contains("#")) {
-    color = "#" + color;
+  if (!color.contains('#')) {
+    color = '#' + color;
   }
 
-  final File file = File(iOSLaunchScreenStoryboardFile);
+  final file = File(iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
     print(
-        "[iOS] Updating LaunchScreen.storyboard with width, height and color");
+        '[iOS] Updating LaunchScreen.storyboard with width, height and color');
     return _updateLaunchScreenStoryboard(imagePath, color);
   } else {
-    print("[iOS] No LaunchScreen.storyboard file found in your iOS project");
+    print('[iOS] No LaunchScreen.storyboard file found in your iOS project');
     print(
-        "[iOS] Creating LaunchScreen.storyboard file and adding it to your iOS project");
+        '[iOS] Creating LaunchScreen.storyboard file and adding it to your iOS project');
     return _createLaunchScreenStoryboard(imagePath, color);
   }
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
 Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
-  final File file = File(iOSLaunchScreenStoryboardFile);
-  final List<String> lines = await file.readAsLines();
+  final file = File(iOSLaunchScreenStoryboardFile);
+  final lines = await file.readAsLines();
 
-  bool foundExistingBackgroundImage = false;
+  var foundExistingBackgroundImage = false;
 
-  bool foundExistingImage = false;
+  var foundExistingImage = false;
   int imageLine;
 
-  bool foundExistingLaunchBackgroundSubview = false;
+  var foundExistingLaunchBackgroundSubview = false;
 
-  int subviewCount = 0;
+  var subviewCount = 0;
   int subviewTagLine;
 
-  int constraintCount = 0;
+  var constraintCount = 0;
   int constraintClosingTagLine;
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (line.contains('<image name="LaunchImage"')) {
       foundExistingImage = true;
@@ -166,16 +166,15 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
     }
 
     if (imagePath.isNotEmpty) {
-      final File file = File(imagePath);
+      final file = File(imagePath);
 
       if (!file.existsSync()) {
-        throw NoImageFileFoundException("The file $imagePath was not found.");
+        throw NoImageFileFoundException('The file $imagePath was not found.');
       }
 
-      final img.Image image =
-          img.decodeImage(File(imagePath).readAsBytesSync());
-      int width = image.width;
-      int height = image.height;
+      final image = img.decodeImage(File(imagePath).readAsBytesSync());
+      var width = image.width;
+      var height = image.height;
 
       lines[imageLine] =
           '        <image name="LaunchImage" width="$width" height="$height"/>';
@@ -196,7 +195,7 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
 
 /// Creates LaunchScreen.storyboard with splash image path
 Future _createLaunchScreenStoryboard(String imagePath, String color) async {
-  File file = await File(iOSLaunchScreenStoryboardFile).create(recursive: true);
+  var file = await File(iOSLaunchScreenStoryboardFile).create(recursive: true);
   await file.writeAsString(templates.iOSLaunchScreenStoryboardContent);
 
   return _updateLaunchScreenStoryboard(imagePath, color);
@@ -204,7 +203,7 @@ Future _createLaunchScreenStoryboard(String imagePath, String color) async {
 
 Future<void> _createBackgroundColor(
     String colorString, String darkColorString, bool dark) async {
-  img.Image background = img.Image(1, 1);
+  var background = img.Image(1, 1);
   background.fill(
       int.parse(colorString.replaceFirst('#', ''), radix: 16) + 0xFF000000);
   await File(iOSAssetsLaunchImageBackgroundFolder + 'background.png')
@@ -231,21 +230,21 @@ Future<void> _createBackgroundColor(
 
 /// Update Info.plist for status bar behaviour (hidden/visible)
 Future _applyInfoPList() async {
-  final File infoPlistFile = File(iOSInfoPlistFile);
-  final List<String> lines = await infoPlistFile.readAsLines();
+  final infoPlistFile = File(iOSInfoPlistFile);
+  final lines = await infoPlistFile.readAsLines();
 
   if (_needToUpdateInfoPlist(lines)) {
-    print("[iOS] Updating Info.plist for status bar hidden/visible");
+    print('[iOS] Updating Info.plist for status bar hidden/visible');
     await _updateInfoPlistFile(infoPlistFile, lines);
   }
 }
 
 /// Check if Info.plist needs to be updated with code required for status bar hidden
 bool _needToUpdateInfoPlist(List<String> lines) {
-  bool foundExisting = false;
+  var foundExisting = false;
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     // if file contains our variable we're assuming it contains all required code
     // it's okay to check only for the key because the key doesn't come on default create
@@ -260,11 +259,11 @@ bool _needToUpdateInfoPlist(List<String> lines) {
 
 /// Update Infop.list with status bar hidden directive
 Future _updateInfoPlistFile(File infoPlistFile, List<String> lines) async {
-  List<String> newLines = [];
+  var newLines = <String>[];
   int lastDictLine;
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     // Find last `</dict>` on file
     if (line.contains('</dict>')) {
@@ -291,11 +290,11 @@ Future _applyAppDelegate() async {
     appDelegatePath = iOSAppDelegateSwiftFile;
   }
 
-  final File appDelegateFile = File(appDelegatePath);
-  final List<String> lines = await appDelegateFile.readAsLines();
+  final appDelegateFile = File(appDelegatePath);
+  final lines = await appDelegateFile.readAsLines();
 
   if (_needToUpdateAppDelegate(language, lines)) {
-    print("[iOS] Updating AppDelegate for status bar hidden/visible");
+    print('[iOS] Updating AppDelegate for status bar hidden/visible');
     await _updateAppDelegate(language, appDelegateFile, lines);
   }
 }
@@ -306,19 +305,19 @@ Future _objectiveCOrSwift() async {
   } else if (File(iOSAppDelegateSwiftFile).existsSync()) {
     return 'swift';
   } else {
-    throw CantFindAppDelegatePath("Not able to determinate AppDelegate path.");
+    throw CantFindAppDelegatePath('Not able to determinate AppDelegate path.');
   }
 }
 
 /// Check if AppDelegate needs to be updated with code required for splash screen
 bool _needToUpdateAppDelegate(String language, List<String> lines) {
-  bool foundExisting = false;
+  var foundExisting = false;
 
-  String objectiveCLine = 'int flutter_native_splash = 1;';
-  String swiftLine = 'var flutter_native_splash = 1';
+  var objectiveCLine = 'int flutter_native_splash = 1;';
+  var swiftLine = 'var flutter_native_splash = 1';
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     // if file contains our variable we're assuming it contains all required code
     if (line
@@ -334,14 +333,14 @@ bool _needToUpdateAppDelegate(String language, List<String> lines) {
 /// Update AppDelegate with code to remove status bar hidden property after app loaded
 Future _updateAppDelegate(
     String language, File appDelegateFile, List<String> lines) async {
-  List<String> newLines = [];
+  var newLines = <String>[];
 
-  String objectiveCReferenceLine =
+  var objectiveCReferenceLine =
       '[GeneratedPluginRegistrant registerWithRegistry:self];';
-  String swiftReferenceLine = 'GeneratedPluginRegistrant.register(with: self)';
+  var swiftReferenceLine = 'GeneratedPluginRegistrant.register(with: self)';
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (language == 'objective-c') {
       // Before '[GeneratedPlugin ...' add the following lines

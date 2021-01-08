@@ -1,11 +1,9 @@
 # flutter_native_splash
 [![pub package](https://img.shields.io/pub/v/flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
 [![Build Status](https://img.shields.io/travis/henriquearthur/flutter_native_splash)](https://travis-ci.org/henriquearthur/flutter_native_splash)
-[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://makeapullrequest.com)
 
 Automatically generates native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
-
-This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
 
 <p>
   <img src="https://raw.githubusercontent.com/henriquearthur/flutter_native_splash/master/splash_demo.gif" width="250" height="443"  />
@@ -16,7 +14,7 @@ First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml fil
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.0+1
+  flutter_native_splash: ^0.2.1
 ```
 
 Don't forget to `flutter pub get`.
@@ -104,3 +102,9 @@ When the package finishes running your splash screen is ready.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
 * The background color is implemented by using a single pixel png file and stretching it to fit the screen.
 * Code for hidden status bar toggle will be added in `Info.plist` and `AppDelegate`.
+
+## Acknowledgments
+
+This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and it is currently maintained by [Jon Hanson](https://github.com/jonbhanson).
+
+This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).

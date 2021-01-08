@@ -33,7 +33,7 @@ final List<AndroidDrawableTemplate> splashImagesDark =
 ];
 
 /// Create Android splash screen
-createSplash(String imagePath, String darkImagePath, String color,
+void createSplash(String imagePath, String darkImagePath, String color,
     String darkColor, bool fill, bool androidDisableFullscreen) async {
   if (imagePath.isNotEmpty) {
     await _applyImage(imagePath);
@@ -66,7 +66,7 @@ createSplash(String imagePath, String darkImagePath, String color,
 
 /// Generates the primaryColorDark that will be used for the status bar
 String _generatePrimaryColorDarkFromColor(String color) {
-  String baseColor = color.contains('#') ? color.replaceAll("#", "") : color;
+  var baseColor = color.contains('#') ? color.replaceAll('#', '') : color;
   var primaryColorDark = ColorFilter.darken(HexColor(baseColor), [0.07]);
   return primaryColorDark.toHexColor().toString();
 }
@@ -75,16 +75,15 @@ String _generatePrimaryColorDarkFromColor(String color) {
 void _applyImage(String imagePath, {bool dark = false}) {
   print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
-  final File file = File(imagePath);
+  final file = File(imagePath);
 
   if (!file.existsSync()) {
-    throw NoImageFileFoundException("The file $imagePath was not found.");
+    throw NoImageFileFoundException('The file $imagePath was not found.');
   }
 
-  final Image image = decodeImage(File(imagePath).readAsBytesSync());
+  final image = decodeImage(File(imagePath).readAsBytesSync());
 
-  for (AndroidDrawableTemplate template
-      in dark ? splashImagesDark : splashImages) {
+  for (var template in dark ? splashImagesDark : splashImages) {
     _saveImage(template, image);
   }
 }
@@ -93,7 +92,7 @@ void _applyImage(String imagePath, {bool dark = false}) {
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
 void _saveImage(AndroidDrawableTemplate template, Image image) {
-  Image newFile = copyResize(
+  var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
     height: image.height ~/ template.divider,
@@ -110,9 +109,9 @@ void _saveImage(AndroidDrawableTemplate template, Image image) {
 /// Create or update launch_background.xml adding splash image path
 Future _applyLaunchBackgroundXml(String imagePath, bool fill,
     {bool dark = false}) {
-  final File launchBackgroundFile = File(
+  final launchBackgroundFile = File(
       dark ? androidLaunchDarkBackgroundFile : androidLaunchBackgroundFile);
-  
+
   if (launchBackgroundFile.existsSync()) {
     if (imagePath.isNotEmpty) {
       print('[Android] Updating ' +
@@ -135,14 +134,14 @@ Future _applyLaunchBackgroundXml(String imagePath, bool fill,
 
 /// Updates launch_background.xml adding splash image path
 Future _updateLaunchBackgroundFileWithImagePath(bool fill, bool dark) async {
-  final File launchBackgroundFile = dark
+  final launchBackgroundFile = dark
       ? File(androidLaunchDarkBackgroundFile)
       : File(androidLaunchBackgroundFile);
-  final List<String> lines = await launchBackgroundFile.readAsLines();
-  bool foundExisting = false;
+  final lines = await launchBackgroundFile.readAsLines();
+  var foundExisting = false;
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (line.contains('android:src="@drawable/splash"') ||
         line.contains('android:drawable="@color/splash_color"')) {
@@ -172,7 +171,7 @@ Future _updateLaunchBackgroundFileWithImagePath(bool fill, bool dark) async {
 /// Creates launch_background.xml with splash image path
 Future _createLaunchBackgroundFileWithImagePath(
     String imagePath, bool fill, bool dark) async {
-  File file = await File(
+  var file = await File(
           dark ? androidLaunchDarkBackgroundFile : androidLaunchBackgroundFile)
       .create(recursive: true);
   String fileContent;
@@ -181,13 +180,15 @@ Future _createLaunchBackgroundFileWithImagePath(
     fileContent = templates.androidLaunchBackgroundXml;
 
     if (imagePath.isEmpty) {
-      fileContent = fileContent.replaceAll(templates.androidLaunchBackgroundItemXml, '');
+      fileContent =
+          fileContent.replaceAll(templates.androidLaunchBackgroundItemXml, '');
     }
   } else {
     fileContent = templates.androidLaunchBackgroundXmlFill;
 
     if (imagePath.isEmpty) {
-      fileContent = fileContent.replaceAll(templates.androidLaunchBackgroundXmlFill, '');
+      fileContent =
+          fileContent.replaceAll(templates.androidLaunchBackgroundXmlFill, '');
     }
   }
   return await file.writeAsString(fileContent);
@@ -195,10 +196,10 @@ Future _createLaunchBackgroundFileWithImagePath(
 
 /// Create or update colors.xml adding splash screen background color
 void _applyColor(color, {bool dark = false}) {
-  final File colorsXml = File(dark ? androidColorsDarkFile : androidColorsFile);
+  final colorsXml = File(dark ? androidColorsDarkFile : androidColorsFile);
 
-  if (!color.contains("#")) {
-    color = "#" + color;
+  if (!color.contains('#')) {
+    color = '#' + color;
   }
 
   if (colorsXml.existsSync()) {
@@ -221,11 +222,11 @@ void _applyColor(color, {bool dark = false}) {
 
 /// Updates the colors.xml with the splash screen background color
 void _updateColorsFileWithColor(File colorsFile, String color) {
-  final List<String> lines = colorsFile.readAsLinesSync();
-  bool foundExisting = false;
+  final lines = colorsFile.readAsLinesSync();
+  var foundExisting = false;
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     // Update background color if tag exists
     if (line.contains('name="splash_color"')) {
@@ -265,12 +266,12 @@ void _createColorsFile(String color, File colorsXml) {
 /// Note: default color = "splash_color"
 Future _overwriteLaunchBackgroundWithNewSplashColor(
     String color, bool dark) async {
-  final File launchBackgroundFile = File(
+  final launchBackgroundFile = File(
       dark ? androidLaunchDarkBackgroundFile : androidLaunchBackgroundFile);
-  final List<String> lines = await launchBackgroundFile.readAsLines();
+  final lines = await launchBackgroundFile.readAsLines();
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
     if (line.contains('android:drawable')) {
       // Using RegExp replace the value of android:drawable to point to the new image
       // anything but a quote of any length: [^"]*
@@ -291,8 +292,7 @@ Future _overwriteLaunchBackgroundWithNewSplashColor(
 
 /// Create or update styles.xml full screen mode setting
 void _applyStylesXml({bool dark = false}) {
-  final File stylesFile =
-      File(dark ? androidStylesDarkFile : androidStylesFile);
+  final stylesFile = File(dark ? androidStylesDarkFile : androidStylesFile);
 
   if (stylesFile.existsSync()) {
     print('[Android] Updating ' +
@@ -312,12 +312,12 @@ void _applyStylesXml({bool dark = false}) {
 
 /// Updates styles.xml adding full screen property
 Future _updateStylesFileWithImagePath(File stylesFile) async {
-  final List<String> lines = await stylesFile.readAsLines();
-  bool foundExisting = false;
+  final lines = await stylesFile.readAsLines();
+  var foundExisting = false;
   int endStyleLine;
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (line.contains('android:windowFullscreen')) {
       foundExisting = true;
@@ -358,8 +358,8 @@ Future _applyMainActivityUpdate(String primaryColorDark) async {
     mainActivityPath = await _getMainActivityKotlinPath();
   }
 
-  final File mainActivityFile = File(mainActivityPath);
-  final List<String> lines = await mainActivityFile.readAsLines();
+  final mainActivityFile = File(mainActivityPath);
+  final lines = await mainActivityFile.readAsLines();
 
   if (_needToUpdateMainActivity(language, lines)) {
     await _addMainActivitySplashLines(
@@ -383,25 +383,25 @@ Future _javaOrKotlin() async {
 
 /// Get MainActivity.java path based on package name on AndroidManifest.xml
 Future _getMainActivityJavaPath() async {
-  File androidManifest = File(androidManifestFile);
-  final List<String> lines = await androidManifest.readAsLines();
+  var androidManifest = File(androidManifestFile);
+  final lines = await androidManifest.readAsLines();
 
-  bool foundPath = false;
-  String mainActivityPath = 'android/app/src/main/java/';
+  var foundPath = false;
+  var mainActivityPath = 'android/app/src/main/java/';
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (line.contains('package="')) {
-      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
+      var regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
 
       var matches = regExp.allMatches(line);
       var match = matches.elementAt(0);
 
-      String package = match.group(1);
-      String path = package.replaceAll('.', '/');
+      var package = match.group(1);
+      var path = package.replaceAll('.', '/');
 
-      mainActivityPath += "$path/MainActivity.java";
+      mainActivityPath += '$path/MainActivity.java';
       foundPath = true;
       break;
     }
@@ -416,25 +416,25 @@ Future _getMainActivityJavaPath() async {
 
 /// Get MainActivity.kt path based on package name on AndroidManifest.xml
 Future _getMainActivityKotlinPath() async {
-  File androidManifest = File(androidManifestFile);
-  final List<String> lines = await androidManifest.readAsLines();
+  var androidManifest = File(androidManifestFile);
+  final lines = await androidManifest.readAsLines();
 
-  bool foundPath = false;
-  String mainActivityPath = 'android/app/src/main/kotlin/';
+  var foundPath = false;
+  var mainActivityPath = 'android/app/src/main/kotlin/';
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (line.contains('package="')) {
-      RegExp regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
+      var regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
 
       var matches = regExp.allMatches(line);
       var match = matches.elementAt(0);
 
-      String package = match.group(1);
-      String path = package.replaceAll('.', '/');
+      var package = match.group(1);
+      var path = package.replaceAll('.', '/');
 
-      mainActivityPath += "$path/MainActivity.kt";
+      mainActivityPath += '$path/MainActivity.kt';
       foundPath = true;
       break;
     }
@@ -449,13 +449,13 @@ Future _getMainActivityKotlinPath() async {
 
 /// Check if MainActivity needs to be updated with code required for splash screen
 bool _needToUpdateMainActivity(String language, List<String> lines) {
-  bool foundExisting = false;
+  var foundExisting = false;
 
-  String javaLine = 'boolean flutter_native_splash = true;';
-  String kotlinLine = 'val flutter_native_splash = true';
+  var javaLine = 'boolean flutter_native_splash = true;';
+  var kotlinLine = 'val flutter_native_splash = true';
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     // if file contains our variable we're assuming it contains all required code
     if (line.contains((language == 'java') ? javaLine : kotlinLine)) {
@@ -470,22 +470,22 @@ bool _needToUpdateMainActivity(String language, List<String> lines) {
 /// Add in MainActivity the code required for removing full screen mode of splash screen after app loaded
 Future _addMainActivitySplashLines(String language, File mainActivityFile,
     List<String> lines, String primaryColorDark) async {
-  List<String> newLines = [];
+  var newLines = <String>[];
 
-  List<String> javaReferenceLines = [
+  var javaReferenceLines = <String>[
     'public class MainActivity extends',
     'super.onCreate(savedInstanceState);',
     'GeneratedPluginRegistrant.registerWith(this);',
   ];
 
-  List<String> kotlinReferenceLines = [
+  var kotlinReferenceLines = <String>[
     'class MainActivity:',
     'super.onCreate(savedInstanceState)',
     'GeneratedPluginRegistrant.registerWith(this)',
   ];
 
-  for (int x = 0; x < lines.length; x++) {
-    String line = lines[x];
+  for (var x = 0; x < lines.length; x++) {
+    var line = lines[x];
 
     if (language == 'java') {
       // Before 'public class ...' add the following lines
