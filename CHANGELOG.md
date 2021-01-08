@@ -1,3 +1,7 @@
+## [0.2.0+1] - (2021-Jan-08)
+
+* Updated version number in README.md (thanks [@M123-dev](https://github.com/M123-dev))
+
 ## [0.2.0] - (2021-Jan-07)
 
 * Added dark mode.
