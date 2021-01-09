@@ -1,3 +1,7 @@
+## [0.2.2] - (2021-Jan-09)
+
+* Corrected color of background PNG for iOS.  ([The channel order of a uint32 encoded color is BGRA.](https://pub.dev/documentation/image/latest/image/Color/fromRgb.html)) ([#115](https://github.com/henriquearthur/flutter_native_splash/issues/115))
+
 ## [0.2.1] - (2021-Jan-08)
 
 * Modifications to raise [pub points](https://pub.dev/help/scoring): Adherence to [Pedantic](https://pub.dev/packages/pedantic) code standard, and [conditional imports](https://dart.dev/guides/libraries/create-library-packages#conditionally-importing-and-exporting-library-files) to avoid losing points for lack of multiple platform support.

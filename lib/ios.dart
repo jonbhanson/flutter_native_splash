@@ -204,16 +204,23 @@ Future _createLaunchScreenStoryboard(String imagePath, String color) async {
 Future<void> _createBackgroundColor(
     String colorString, String darkColorString, bool dark) async {
   var background = img.Image(1, 1);
+  colorString = colorString.replaceFirst('#', '');
+  var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
+  var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
+  var blueChannel = int.parse(colorString.substring(4, 6), radix: 16);
   background.fill(
-      int.parse(colorString.replaceFirst('#', ''), radix: 16) + 0xFF000000);
+      0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
   await File(iOSAssetsLaunchImageBackgroundFolder + 'background.png')
       .create(recursive: true)
       .then((File file) => file.writeAsBytesSync(img.encodePng(background)));
 
   if (darkColorString.isNotEmpty) {
+    darkColorString = darkColorString.replaceFirst('#', '');
+    redChannel = int.parse(darkColorString.substring(0, 2), radix: 16);
+    greenChannel = int.parse(darkColorString.substring(2, 4), radix: 16);
+    blueChannel = int.parse(darkColorString.substring(4, 6), radix: 16);
     background.fill(
-        int.parse(darkColorString.replaceFirst('#', ''), radix: 16) +
-            0xFF000000);
+        0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
     await File(iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png')
         .create(recursive: true)
         .then((File file) => file.writeAsBytesSync(img.encodePng(background)));
