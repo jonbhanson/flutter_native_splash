@@ -1,3 +1,9 @@
+## [0.2.3] - (2021-Jan-11)
+
+* Further modifications to raise [pub points](https://pub.dev/help/scoring): The 
+public API's need to have dartdoc comments, so all public declarations that did not
+need to be public were changed to private.  Added doc comments for public APIs. 
+
 ## [0.2.2] - (2021-Jan-09)
 
 * Corrected color of background PNG for iOS.  ([The channel order of a uint32 encoded color is BGRA.](https://pub.dev/documentation/image/latest/image/Color/fromRgb.html)) ([#115](https://github.com/henriquearthur/flutter_native_splash/issues/115))

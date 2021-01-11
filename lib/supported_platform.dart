@@ -1,15 +1,32 @@
+/// ## If the current platform is supported, load dart.io.
+///
+/// Creating images necessary for the splash screens requires the io.dart package, which
+/// unfortunately does not have support for JS.  Because pub.dev docks pub points for
+/// packages not being cross-platform, it is necessary to use
+/// [conditional imports](https://dart.dev/guides/libraries/create-library-packages#conditionally-importing-and-exporting-library-files)
+/// to avoid losing pub points.  This library is included when the package is loaded on
+/// a supported platform, loads dart.io and the rest of the package.
+library flutter_native_splash_supported_platform;
+
 import 'dart:io';
 
-import 'package:flutter_native_splash/android.dart' as android;
-import 'package:flutter_native_splash/exceptions.dart';
-import 'package:flutter_native_splash/ios.dart' as ios;
+import 'package:color/color.dart';
+import 'package:image/image.dart';
 import 'package:yaml/yaml.dart';
 
+part 'android.dart';
+part 'constants.dart';
+part 'exceptions.dart';
+part 'ios.dart';
+part 'templates.dart';
+
+/// Function that will be called on supported platforms to create the splash screens.
 Future<void> tryCreateSplash() async {
   var config = await _getConfig();
   await tryCreateSplashByConfig(config);
 }
 
+/// Function that will be called on supported platforms to create the splash screen based on a config argument.
 Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
   String darkImage = config['image_dark'] ?? '';
@@ -19,12 +36,12 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
 
   if (!config.containsKey('android') || config['android']) {
-    await android.createSplash(
+    await _createAndroidSplash(
         image, darkImage, color, darkColor, fill, androidDisableFullscreen);
   }
 
   if (!config.containsKey('ios') || config['ios']) {
-    await ios.createSplash(image, darkImage, color, darkColor);
+    await _createiOSSplash(image, darkImage, color, darkColor);
   }
 }
 
@@ -41,7 +58,7 @@ Map<String, dynamic> _getConfig() {
   final Map yamlMap = loadYaml(yamlString);
 
   if (yamlMap == null || !(yamlMap['flutter_native_splash'] is Map)) {
-    stderr.writeln(NoConfigFoundException(
+    stderr.writeln(_NoConfigFoundException(
         'Your `$filePath` file does not contain a `flutter_native_splash` section.'));
     exit(1);
   }
@@ -54,13 +71,13 @@ Map<String, dynamic> _getConfig() {
   }
 
   if (!config.containsKey('color')) {
-    stderr.writeln(InvalidConfigException(
+    stderr.writeln(_InvalidConfigException(
         'Your `flutter_native_splash` section does not contain a `color`.'));
     exit(1);
   }
 
   if (config.containsKey('image_dark') && !config.containsKey('color_dark')) {
-    stderr.writeln(InvalidConfigException(
+    stderr.writeln(_InvalidConfigException(
         'Your `flutter_native_splash` section contains `image_dark` but does not contain a `color_dark`.'));
     exit(1);
   }

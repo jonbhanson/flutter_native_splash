@@ -1,5 +1,7 @@
-class NoConfigFoundException implements Exception {
-  const NoConfigFoundException([this.message]);
+part of flutter_native_splash_supported_platform;
+
+class _NoConfigFoundException implements Exception {
+  const _NoConfigFoundException([this.message]);
   final String message;
 
   @override
@@ -10,8 +12,8 @@ class NoConfigFoundException implements Exception {
   }
 }
 
-class InvalidConfigException implements Exception {
-  const InvalidConfigException([this.message]);
+class _InvalidConfigException implements Exception {
+  const _InvalidConfigException([this.message]);
   final String message;
 
   @override
@@ -22,8 +24,8 @@ class InvalidConfigException implements Exception {
   }
 }
 
-class NoImageFileFoundException implements Exception {
-  const NoImageFileFoundException([this.message]);
+class _NoImageFileFoundException implements Exception {
+  const _NoImageFileFoundException([this.message]);
   final String message;
 
   @override
@@ -34,8 +36,8 @@ class NoImageFileFoundException implements Exception {
   }
 }
 
-class CantFindMainActivityPath implements Exception {
-  const CantFindMainActivityPath([this.message]);
+class _CantFindMainActivityPath implements Exception {
+  const _CantFindMainActivityPath([this.message]);
   final String message;
 
   @override
@@ -46,8 +48,8 @@ class CantFindMainActivityPath implements Exception {
   }
 }
 
-class CantFindAppDelegatePath implements Exception {
-  const CantFindAppDelegatePath([this.message]);
+class _CantFindAppDelegatePath implements Exception {
+  const _CantFindAppDelegatePath([this.message]);
   final String message;
 
   @override
@@ -58,8 +60,8 @@ class CantFindAppDelegatePath implements Exception {
   }
 }
 
-class InvalidNativeFile implements Exception {
-  const InvalidNativeFile([this.message]);
+class _InvalidNativeFile implements Exception {
+  const _InvalidNativeFile([this.message]);
   final String message;
 
   @override
@@ -70,8 +72,8 @@ class InvalidNativeFile implements Exception {
   }
 }
 
-class LaunchScreenStoryboardModified implements Exception {
-  const LaunchScreenStoryboardModified([this.message]);
+class _LaunchScreenStoryboardModified implements Exception {
+  const _LaunchScreenStoryboardModified([this.message]);
   final String message;
 
   @override

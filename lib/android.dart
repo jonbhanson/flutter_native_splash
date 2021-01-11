@@ -1,45 +1,39 @@
-import 'dart:io';
+part of flutter_native_splash_supported_platform;
 
-import 'package:color/color.dart';
-import 'package:flutter_native_splash/constants.dart';
-import 'package:flutter_native_splash/exceptions.dart';
-import 'package:flutter_native_splash/templates.dart' as templates;
-import 'package:image/image.dart';
-
-// Image template
-class AndroidDrawableTemplate {
+/// Image template
+class _AndroidDrawableTemplate {
   final String directoryName;
   final double divider;
-
-  AndroidDrawableTemplate({this.directoryName, this.divider});
+  _AndroidDrawableTemplate({this.directoryName, this.divider});
 }
 
-final List<AndroidDrawableTemplate> splashImages = <AndroidDrawableTemplate>[
-  AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 2.0),
-  AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 1.8),
-  AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 1.4),
-  AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.2),
-  AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
+final List<_AndroidDrawableTemplate> _splashImages = <_AndroidDrawableTemplate>[
+  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 2.0),
+  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 1.8),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 1.4),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.2),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
 ];
 
-final List<AndroidDrawableTemplate> splashImagesDark =
-    <AndroidDrawableTemplate>[
-  AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 2.0),
-  AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 1.8),
-  AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 1.4),
-  AndroidDrawableTemplate(directoryName: 'drawable-night-xxhdpi', divider: 1.2),
-  AndroidDrawableTemplate(
+final List<_AndroidDrawableTemplate> _splashImagesDark =
+    <_AndroidDrawableTemplate>[
+  _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 2.0),
+  _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 1.8),
+  _AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 1.4),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xxhdpi', divider: 1.2),
+  _AndroidDrawableTemplate(
       directoryName: 'drawable-night-xxxhdpi', divider: 1.0),
 ];
 
 /// Create Android splash screen
-void createSplash(String imagePath, String darkImagePath, String color,
+void _createAndroidSplash(String imagePath, String darkImagePath, String color,
     String darkColor, bool fill, bool androidDisableFullscreen) async {
   if (imagePath.isNotEmpty) {
-    await _applyImage(imagePath);
+    await _applyImageAndroid(imagePath);
   }
   if (darkImagePath.isNotEmpty) {
-    await _applyImage(darkImagePath, dark: true);
+    await _applyImageAndroid(darkImagePath, dark: true);
   }
 
   await _applyLaunchBackgroundXml(imagePath, fill);
@@ -72,26 +66,26 @@ String _generatePrimaryColorDarkFromColor(String color) {
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImage(String imagePath, {bool dark = false}) {
+void _applyImageAndroid(String imagePath, {bool dark = false}) {
   print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final file = File(imagePath);
 
   if (!file.existsSync()) {
-    throw NoImageFileFoundException('The file $imagePath was not found.');
+    throw _NoImageFileFoundException('The file $imagePath was not found.');
   }
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
 
-  for (var template in dark ? splashImagesDark : splashImages) {
-    _saveImage(template, image);
+  for (var template in dark ? _splashImagesDark : _splashImages) {
+    _saveImageAndroid(template, image);
   }
 }
 
 /// Saves splash screen image to the project
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
-void _saveImage(AndroidDrawableTemplate template, Image image) {
+void _saveImageAndroid(_AndroidDrawableTemplate template, Image image) {
   var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -99,7 +93,7 @@ void _saveImage(AndroidDrawableTemplate template, Image image) {
     interpolation: Interpolation.linear,
   );
 
-  File(androidResFolder + template.directoryName + '/' + 'splash.png')
+  File(_androidResFolder + template.directoryName + '/' + 'splash.png')
       .create(recursive: true)
       .then((File file) {
     file.writeAsBytesSync(encodePng(newFile));
@@ -110,7 +104,7 @@ void _saveImage(AndroidDrawableTemplate template, Image image) {
 Future _applyLaunchBackgroundXml(String imagePath, bool fill,
     {bool dark = false}) {
   final launchBackgroundFile = File(
-      dark ? androidLaunchDarkBackgroundFile : androidLaunchBackgroundFile);
+      dark ? _androidLaunchDarkBackgroundFile : _androidLaunchBackgroundFile);
 
   if (launchBackgroundFile.existsSync()) {
     if (imagePath.isNotEmpty) {
@@ -135,8 +129,8 @@ Future _applyLaunchBackgroundXml(String imagePath, bool fill,
 /// Updates launch_background.xml adding splash image path
 Future _updateLaunchBackgroundFileWithImagePath(bool fill, bool dark) async {
   final launchBackgroundFile = dark
-      ? File(androidLaunchDarkBackgroundFile)
-      : File(androidLaunchBackgroundFile);
+      ? File(_androidLaunchDarkBackgroundFile)
+      : File(_androidLaunchBackgroundFile);
   final lines = await launchBackgroundFile.readAsLines();
   var foundExisting = false;
 
@@ -153,14 +147,13 @@ Future _updateLaunchBackgroundFileWithImagePath(bool fill, bool dark) async {
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
     if (lines.isEmpty) {
-      throw InvalidNativeFile("File 'launch_background.xml' contains 0 lines.");
+      throw _InvalidNativeFile(
+          "File 'launch_background.xml' contains 0 lines.");
     } else {
       if (fill == null || !fill) {
-        lines.insert(
-            lines.length - 1, templates.androidLaunchBackgroundItemXml);
+        lines.insert(lines.length - 1, _androidLaunchBackgroundItemXml);
       } else {
-        lines.insert(
-            lines.length - 1, templates.androidLaunchBackgroundItemXmlFill);
+        lines.insert(lines.length - 1, _androidLaunchBackgroundItemXmlFill);
       }
     }
   }
@@ -171,24 +164,23 @@ Future _updateLaunchBackgroundFileWithImagePath(bool fill, bool dark) async {
 /// Creates launch_background.xml with splash image path
 Future _createLaunchBackgroundFileWithImagePath(
     String imagePath, bool fill, bool dark) async {
-  var file = await File(
-          dark ? androidLaunchDarkBackgroundFile : androidLaunchBackgroundFile)
+  var file = await File(dark
+          ? _androidLaunchDarkBackgroundFile
+          : _androidLaunchBackgroundFile)
       .create(recursive: true);
   String fileContent;
 
   if (fill == null || !fill) {
-    fileContent = templates.androidLaunchBackgroundXml;
+    fileContent = _androidLaunchBackgroundXml;
 
     if (imagePath.isEmpty) {
-      fileContent =
-          fileContent.replaceAll(templates.androidLaunchBackgroundItemXml, '');
+      fileContent = fileContent.replaceAll(_androidLaunchBackgroundItemXml, '');
     }
   } else {
-    fileContent = templates.androidLaunchBackgroundXmlFill;
+    fileContent = _androidLaunchBackgroundXmlFill;
 
     if (imagePath.isEmpty) {
-      fileContent =
-          fileContent.replaceAll(templates.androidLaunchBackgroundXmlFill, '');
+      fileContent = fileContent.replaceAll(_androidLaunchBackgroundXmlFill, '');
     }
   }
   return await file.writeAsString(fileContent);
@@ -196,7 +188,7 @@ Future _createLaunchBackgroundFileWithImagePath(
 
 /// Create or update colors.xml adding splash screen background color
 void _applyColor(color, {bool dark = false}) {
-  final colorsXml = File(dark ? androidColorsDarkFile : androidColorsFile);
+  final colorsXml = File(dark ? _androidColorsDarkFile : _androidColorsFile);
 
   if (!color.contains('#')) {
     color = '#' + color;
@@ -241,7 +233,7 @@ void _updateColorsFileWithColor(File colorsFile, String color) {
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
     if (lines.isEmpty) {
-      throw InvalidNativeFile("File 'colors.xml' contains 0 lines.");
+      throw _InvalidNativeFile("File 'colors.xml' contains 0 lines.");
     } else {
       lines.insert(
           lines.length - 1, '\t<color name="splash_color">$color</color>');
@@ -254,7 +246,7 @@ void _updateColorsFileWithColor(File colorsFile, String color) {
 /// Creates a colors.xml file if it was missing from android/app/src/main/res/values/colors.xml
 void _createColorsFile(String color, File colorsXml) {
   colorsXml.create(recursive: true).then((File colorsFile) {
-    colorsFile.writeAsString(templates.androidColorsXml).then((File file) {
+    colorsFile.writeAsString(_androidColorsXml).then((File file) {
       _updateColorsFileWithColor(colorsFile, color);
     });
   });
@@ -267,7 +259,7 @@ void _createColorsFile(String color, File colorsXml) {
 Future _overwriteLaunchBackgroundWithNewSplashColor(
     String color, bool dark) async {
   final launchBackgroundFile = File(
-      dark ? androidLaunchDarkBackgroundFile : androidLaunchBackgroundFile);
+      dark ? _androidLaunchDarkBackgroundFile : _androidLaunchBackgroundFile);
   final lines = await launchBackgroundFile.readAsLines();
 
   for (var x = 0; x < lines.length; x++) {
@@ -292,7 +284,7 @@ Future _overwriteLaunchBackgroundWithNewSplashColor(
 
 /// Create or update styles.xml full screen mode setting
 void _applyStylesXml({bool dark = false}) {
-  final stylesFile = File(dark ? androidStylesDarkFile : androidStylesFile);
+  final stylesFile = File(dark ? _androidStylesDarkFile : _androidStylesFile);
 
   if (stylesFile.existsSync()) {
     print('[Android] Updating ' +
@@ -331,9 +323,9 @@ Future _updateStylesFileWithImagePath(File stylesFile) async {
   // Add new line if we didn't find an existing value
   if (!foundExisting) {
     if (lines.isEmpty) {
-      throw InvalidNativeFile("File 'styles.xml' contains 0 lines.");
+      throw _InvalidNativeFile("File 'styles.xml' contains 0 lines.");
     } else {
-      lines.insert(endStyleLine, templates.androidStylesItemXml);
+      lines.insert(endStyleLine, _androidStylesItemXml);
     }
   }
 
@@ -343,7 +335,7 @@ Future _updateStylesFileWithImagePath(File stylesFile) async {
 /// Creates styles.xml with full screen property
 void _createStylesFileWithImagePath(File stylesFile) {
   stylesFile.create(recursive: true).then((File colorsFile) {
-    colorsFile.writeAsString(templates.androidStylesXml);
+    colorsFile.writeAsString(_androidStylesXml);
   });
 }
 
@@ -376,14 +368,14 @@ Future _javaOrKotlin() async {
   } else if (File(mainActivityKotlinPath).existsSync()) {
     return 'kotlin';
   } else {
-    throw CantFindMainActivityPath(
+    throw _CantFindMainActivityPath(
         "Not able to determinate MainActivity path. Maybe the problem is your package path OR your AndroidManifest.xml 'package' attribute on manifest.");
   }
 }
 
 /// Get MainActivity.java path based on package name on AndroidManifest.xml
 Future _getMainActivityJavaPath() async {
-  var androidManifest = File(androidManifestFile);
+  var androidManifest = File(_androidManifestFile);
   final lines = await androidManifest.readAsLines();
 
   var foundPath = false;
@@ -416,7 +408,7 @@ Future _getMainActivityJavaPath() async {
 
 /// Get MainActivity.kt path based on package name on AndroidManifest.xml
 Future _getMainActivityKotlinPath() async {
-  var androidManifest = File(androidManifestFile);
+  var androidManifest = File(_androidManifestFile);
   final lines = await androidManifest.readAsLines();
 
   var foundPath = false;
@@ -491,16 +483,16 @@ Future _addMainActivitySplashLines(String language, File mainActivityFile,
       // Before 'public class ...' add the following lines
       if (line.contains(javaReferenceLines[0])) {
         // If import not added already
-        if (!lines.contains(templates.androidMainActivityJavaImportLines1)) {
-          newLines.add(templates.androidMainActivityJavaImportLines1);
+        if (!lines.contains(_androidMainActivityJavaImportLines1)) {
+          newLines.add(_androidMainActivityJavaImportLines1);
         }
 
-        if (!lines.contains(templates.androidMainActivityJavaImportLines2)) {
-          newLines.add(templates.androidMainActivityJavaImportLines2);
+        if (!lines.contains(_androidMainActivityJavaImportLines2)) {
+          newLines.add(_androidMainActivityJavaImportLines2);
         }
 
-        if (!lines.contains(templates.androidMainActivityJavaImportLines3)) {
-          newLines.add(templates.androidMainActivityJavaImportLines3);
+        if (!lines.contains(_androidMainActivityJavaImportLines3)) {
+          newLines.add(_androidMainActivityJavaImportLines3);
         }
       }
 
@@ -508,13 +500,13 @@ Future _addMainActivitySplashLines(String language, File mainActivityFile,
 
       // After 'super.onCreate ...' add the following lines
       if (line.contains(javaReferenceLines[1])) {
-        newLines.add(templates.androidMainActivityJavaLines2WithStatusBar
-            .replaceFirst('{{{primaryColorDark}}}', '0xff$primaryColorDark'));
+        newLines.add(_androidMainActivityJavaLines2WithStatusBar.replaceFirst(
+            '{{{primaryColorDark}}}', '0xff$primaryColorDark'));
       }
 
       // After 'GeneratedPluginRegistrant ...' add the following lines
       if (line.contains(javaReferenceLines[2])) {
-        newLines.add(templates.androidMainActivityJavaLines3);
+        newLines.add(_androidMainActivityJavaLines3);
       }
     }
 
@@ -522,16 +514,16 @@ Future _addMainActivitySplashLines(String language, File mainActivityFile,
       // Before 'class MainActivity ...' add the following lines
       if (line.contains(kotlinReferenceLines[0])) {
         // If import not added already
-        if (!lines.contains(templates.androidMainActivityKotlinImportLines1)) {
-          newLines.add(templates.androidMainActivityKotlinImportLines1);
+        if (!lines.contains(_androidMainActivityKotlinImportLines1)) {
+          newLines.add(_androidMainActivityKotlinImportLines1);
         }
 
-        if (!lines.contains(templates.androidMainActivityKotlinImportLines2)) {
-          newLines.add(templates.androidMainActivityKotlinImportLines2);
+        if (!lines.contains(_androidMainActivityKotlinImportLines2)) {
+          newLines.add(_androidMainActivityKotlinImportLines2);
         }
 
-        if (!lines.contains(templates.androidMainActivityKotlinImportLines3)) {
-          newLines.add(templates.androidMainActivityKotlinImportLines3);
+        if (!lines.contains(_androidMainActivityKotlinImportLines3)) {
+          newLines.add(_androidMainActivityKotlinImportLines3);
         }
       }
 
@@ -539,13 +531,13 @@ Future _addMainActivitySplashLines(String language, File mainActivityFile,
 
       // After 'super.onCreate ...' add the following lines
       if (line.contains(kotlinReferenceLines[1])) {
-        newLines.add(templates.androidMainActivityKotlinLines2WithStatusBar
-            .replaceFirst('{{{primaryColorDark}}}', '0xff$primaryColorDark'));
+        newLines.add(_androidMainActivityKotlinLines2WithStatusBar.replaceFirst(
+            '{{{primaryColorDark}}}', '0xff$primaryColorDark'));
       }
 
       // After 'GeneratedPluginRegistrant ...' add the following lines
       if (line.contains(kotlinReferenceLines[2])) {
-        newLines.add(templates.androidMainActivityKotlinLines3);
+        newLines.add(_androidMainActivityKotlinLines3);
       }
     }
   }

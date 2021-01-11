@@ -1,62 +1,64 @@
+part of flutter_native_splash_supported_platform;
+
 // Android-related templates
-const String androidColorsXml = '''
+const String _androidColorsXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="splash_color">#2196F3</color>
 </resources>
 ''';
 
-const String androidLaunchBackgroundItemXml = '''
+const String _androidLaunchBackgroundItemXml = '''
     <item>
         <bitmap android:gravity="center" android:src="@drawable/splash" />
     </item>
 ''';
 
-const String androidLaunchBackgroundXml = '''
+const String _androidLaunchBackgroundXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/splash_color" />
 
-  $androidLaunchBackgroundItemXml
+  $_androidLaunchBackgroundItemXml
 </layer-list>
 ''';
 
-const String androidLaunchBackgroundItemXmlFill = '''
+const String _androidLaunchBackgroundItemXmlFill = '''
     <item>
         <bitmap android:gravity="fill" android:src="@drawable/splash" />
     </item>
 ''';
 
-const String androidLaunchBackgroundXmlFill = '''
+const String _androidLaunchBackgroundXmlFill = '''
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/splash_color" />
 
-  $androidLaunchBackgroundItemXmlFill
+  $_androidLaunchBackgroundItemXmlFill
 </layer-list>
 ''';
 
-const String androidStylesItemXml = '''
+const String _androidStylesItemXml = '''
         <item name="android:windowFullscreen">true</item>
 ''';
 
-const String androidStylesXml = '''
+const String _androidStylesXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
-    $androidStylesItemXml
+    $_androidStylesItemXml
     </style>
 </resources>
 ''';
 
-const String androidMainActivityJavaImportLines1 = 'import android.os.Build;';
-const String androidMainActivityJavaImportLines2 =
+const String _androidMainActivityJavaImportLines1 = 'import android.os.Build;';
+const String _androidMainActivityJavaImportLines2 =
     'import android.view.ViewTreeObserver;';
-const String androidMainActivityJavaImportLines3 =
+const String _androidMainActivityJavaImportLines3 =
     'import android.view.WindowManager;';
 
-const String androidMainActivityJavaLines2WithStatusBar = '''
+const String _androidMainActivityJavaLines2WithStatusBar = '''
     boolean flutter_native_splash = true;
     int originalStatusBarColor = 0;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -66,7 +68,7 @@ const String androidMainActivityJavaLines2WithStatusBar = '''
     int originalStatusBarColorFinal = originalStatusBarColor;
 ''';
 
-const String androidMainActivityJavaLines3 = '''
+const String _androidMainActivityJavaLines3 = '''
     ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
     vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
       @Override
@@ -80,13 +82,13 @@ const String androidMainActivityJavaLines3 = '''
     });
 ''';
 
-const String androidMainActivityKotlinImportLines1 = 'import android.os.Build';
-const String androidMainActivityKotlinImportLines2 =
+const String _androidMainActivityKotlinImportLines1 = 'import android.os.Build';
+const String _androidMainActivityKotlinImportLines2 =
     'import android.view.ViewTreeObserver';
-const String androidMainActivityKotlinImportLines3 =
+const String _androidMainActivityKotlinImportLines3 =
     'import android.view.WindowManager';
 
-const String androidMainActivityKotlinLines2WithStatusBar = '''
+const String _androidMainActivityKotlinLines2WithStatusBar = '''
     val flutter_native_splash = true
     var originalStatusBarColor = 0
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -96,7 +98,7 @@ const String androidMainActivityKotlinLines2WithStatusBar = '''
     val originalStatusBarColorFinal = originalStatusBarColor
 ''';
 
-const String androidMainActivityKotlinLines3 = '''
+const String _androidMainActivityKotlinLines3 = '''
     val vto = flutterView.viewTreeObserver
     vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
       override fun onGlobalLayout() {
@@ -110,7 +112,7 @@ const String androidMainActivityKotlinLines3 = '''
 ''';
 
 // iOS-related templates
-const String iOSLaunchScreenStoryboardContent = '''
+const String _iOSLaunchScreenStoryboardContent = '''
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <dependencies>
@@ -150,22 +152,22 @@ const String iOSLaunchScreenStoryboardContent = '''
 </document>
 ''';
 
-String iOSInfoPlistLines = '''
+String _iOSInfoPlistLines = '''
 	<key>UIStatusBarHidden</key>
 	<true/>
 ''';
 
-String iOSAppDelegateObjectiveCLines = '''
+String _iOSAppDelegateObjectiveCLines = '''
     int flutter_native_splash = 1;
     UIApplication.sharedApplication.statusBarHidden = false;
 ''';
 
-String iOSAppDelegateSwiftLines = '''
+String _iOSAppDelegateSwiftLines = '''
     var flutter_native_splash = 1
     UIApplication.shared.isStatusBarHidden = false
 ''';
 
-const String iOSContentsJson = '''
+const String _iOSContentsJson = '''
 {
   "images" : [
     {
@@ -191,7 +193,7 @@ const String iOSContentsJson = '''
 }
 ''';
 
-const String iOSContentsJsonDark = '''
+const String _iOSContentsJsonDark = '''
 {
   "images" : [
     {
@@ -250,7 +252,7 @@ const String iOSContentsJsonDark = '''
 }
 ''';
 
-const String iOSLaunchBackgroundJson = '''
+const String _iOSLaunchBackgroundJson = '''
 {
   "images" : [
     {
@@ -274,7 +276,7 @@ const String iOSLaunchBackgroundJson = '''
 }
 ''';
 
-const String iOSLaunchBackgroundDarkJson = '''
+const String _iOSLaunchBackgroundDarkJson = '''
 {
   "images" : [
     {
@@ -329,12 +331,12 @@ const String iOSLaunchBackgroundDarkJson = '''
 }
 ''';
 
-const String iOSLaunchBackgroundSubview = '''
+const String _iOSLaunchBackgroundSubview = '''
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI">
                                 <rect key="frame" x="0.0" y="0.0" width="1" height="1"/>
                             </imageView>''';
 
-const String iOSLaunchBackgroundConstraints = '''
+const String _iOSLaunchBackgroundConstraints = '''
                             <constraint firstItem="tWc-Dq-wcI" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="SvB-DF-27J"/>
                             <constraint firstItem="tWc-Dq-wcI" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="VdF-Am-v6m"/>
                             <constraint firstItem="tWc-Dq-wcI" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="fVJ-Ko-pCh"/>

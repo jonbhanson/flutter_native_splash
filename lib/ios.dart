@@ -1,40 +1,37 @@
-import 'dart:io';
-
-import 'package:flutter_native_splash/constants.dart';
-import 'package:flutter_native_splash/exceptions.dart';
-import 'package:flutter_native_splash/templates.dart' as templates;
-import 'package:image/image.dart' as img;
+part of flutter_native_splash_supported_platform;
 
 // Image template
-class IosLaunchImageTemplate {
+class _IosLaunchImageTemplate {
   final String fileName;
   final double divider;
 
-  IosLaunchImageTemplate({this.fileName, this.divider});
+  _IosLaunchImageTemplate({this.fileName, this.divider});
 }
 
-final List<IosLaunchImageTemplate> splashImages = <IosLaunchImageTemplate>[
-  IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
-  IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 2),
-  IosLaunchImageTemplate(
+final List<_IosLaunchImageTemplate> _iOSSplashImages =
+    <_IosLaunchImageTemplate>[
+  _IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
+  _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 2),
+  _IosLaunchImageTemplate(
       fileName: 'LaunchImage@3x.png', divider: 1), // original image must be @3x
 ];
 
-final List<IosLaunchImageTemplate> splashImagesDark = <IosLaunchImageTemplate>[
-  IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
-  IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 2),
-  IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
+final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
+    <_IosLaunchImageTemplate>[
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 2),
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
   // original image must be @3x
 ];
 
 /// Create iOS splash screen
-void createSplash(String imagePath, String darkImagePath, String color,
+void _createiOSSplash(String imagePath, String darkImagePath, String color,
     String darkColor) async {
   if (imagePath.isNotEmpty) {
-    await _applyImage(imagePath);
+    await _applyImageiOS(imagePath);
   }
   if (darkImagePath.isNotEmpty) {
-    await _applyImage(darkImagePath, dark: true);
+    await _applyImageiOS(darkImagePath, dark: true);
   }
 
   await _applyLaunchScreenStoryboard(imagePath, color);
@@ -44,41 +41,40 @@ void createSplash(String imagePath, String darkImagePath, String color,
 }
 
 /// Create splash screen images for original size, @2x and @3x
-void _applyImage(String imagePath, {bool dark = false}) {
+void _applyImageiOS(String imagePath, {bool dark = false}) {
   print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final file = File(imagePath);
 
   if (!file.existsSync()) {
-    throw NoImageFileFoundException('The file $imagePath was not found.');
+    throw _NoImageFileFoundException('The file $imagePath was not found.');
   }
 
-  final image = img.decodeImage(File(imagePath).readAsBytesSync());
+  final image = decodeImage(File(imagePath).readAsBytesSync());
 
-  for (var template in dark ? splashImagesDark : splashImages) {
-    _saveImage(template, image);
+  for (var template in dark ? _iOSSplashImagesDark : _iOSSplashImages) {
+    _saveImageiOS(template, image);
   }
-  File(iOSAssetsLaunchImageFolder + 'Contents.json')
+  File(_iOSAssetsLaunchImageFolder + 'Contents.json')
       .create(recursive: true)
       .then((File file) {
-    file.writeAsStringSync(
-        dark ? templates.iOSContentsJsonDark : templates.iOSContentsJson);
+    file.writeAsStringSync(dark ? _iOSContentsJsonDark : _iOSContentsJson);
   });
 }
 
 /// Saves splash screen image to the project
-void _saveImage(IosLaunchImageTemplate template, img.Image image) {
-  var newFile = img.copyResize(
+void _saveImageiOS(_IosLaunchImageTemplate template, Image image) {
+  var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
     height: image.height ~/ template.divider,
-    interpolation: img.Interpolation.linear,
+    interpolation: Interpolation.linear,
   );
 
-  File(iOSAssetsLaunchImageFolder + template.fileName)
+  File(_iOSAssetsLaunchImageFolder + template.fileName)
       .create(recursive: true)
       .then((File file) {
-    file.writeAsBytesSync(img.encodePng(newFile));
+    file.writeAsBytesSync(encodePng(newFile));
   });
 }
 
@@ -88,7 +84,7 @@ Future _applyLaunchScreenStoryboard(String imagePath, String color) {
     color = '#' + color;
   }
 
-  final file = File(iOSLaunchScreenStoryboardFile);
+  final file = File(_iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
     print(
@@ -104,7 +100,7 @@ Future _applyLaunchScreenStoryboard(String imagePath, String color) {
 
 /// Updates LaunchScreen.storyboard adding splash image path
 Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
-  final file = File(iOSLaunchScreenStoryboardFile);
+  final file = File(_iOSLaunchScreenStoryboardFile);
   final lines = await file.readAsLines();
 
   var foundExistingBackgroundImage = false;
@@ -151,28 +147,27 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
   if (foundExistingImage) {
     if (!foundExistingLaunchBackgroundSubview) {
       if (subviewCount != 1) {
-        throw LaunchScreenStoryboardModified(
+        throw _LaunchScreenStoryboardModified(
             'Multiple subviews found.   Did you modify your default LaunchScreen.storyboard file?');
       }
       if (constraintCount != 1) {
-        throw LaunchScreenStoryboardModified(
+        throw _LaunchScreenStoryboardModified(
             'Multiple constraint blocks found.   Did you modify your default LaunchScreen.storyboard file?');
       }
       lines[subviewTagLine] =
-          lines[subviewTagLine] + '\n' + templates.iOSLaunchBackgroundSubview;
+          lines[subviewTagLine] + '\n' + _iOSLaunchBackgroundSubview;
       lines[constraintClosingTagLine] =
-          templates.iOSLaunchBackgroundConstraints +
-              lines[constraintClosingTagLine];
+          _iOSLaunchBackgroundConstraints + lines[constraintClosingTagLine];
     }
 
     if (imagePath.isNotEmpty) {
       final file = File(imagePath);
 
       if (!file.existsSync()) {
-        throw NoImageFileFoundException('The file $imagePath was not found.');
+        throw _NoImageFileFoundException('The file $imagePath was not found.');
       }
 
-      final image = img.decodeImage(File(imagePath).readAsBytesSync());
+      final image = decodeImage(File(imagePath).readAsBytesSync());
       var width = image.width;
       var height = image.height;
 
@@ -186,7 +181,7 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
               lines[imageLine];
     }
   } else {
-    throw LaunchScreenStoryboardModified(
+    throw _LaunchScreenStoryboardModified(
         "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
   }
 
@@ -195,24 +190,24 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
 
 /// Creates LaunchScreen.storyboard with splash image path
 Future _createLaunchScreenStoryboard(String imagePath, String color) async {
-  var file = await File(iOSLaunchScreenStoryboardFile).create(recursive: true);
-  await file.writeAsString(templates.iOSLaunchScreenStoryboardContent);
+  var file = await File(_iOSLaunchScreenStoryboardFile).create(recursive: true);
+  await file.writeAsString(_iOSLaunchScreenStoryboardContent);
 
   return _updateLaunchScreenStoryboard(imagePath, color);
 }
 
 Future<void> _createBackgroundColor(
     String colorString, String darkColorString, bool dark) async {
-  var background = img.Image(1, 1);
+  var background = Image(1, 1);
   colorString = colorString.replaceFirst('#', '');
   var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
   var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
   var blueChannel = int.parse(colorString.substring(4, 6), radix: 16);
   background.fill(
       0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
-  await File(iOSAssetsLaunchImageBackgroundFolder + 'background.png')
+  await File(_iOSAssetsLaunchImageBackgroundFolder + 'background.png')
       .create(recursive: true)
-      .then((File file) => file.writeAsBytesSync(img.encodePng(background)));
+      .then((File file) => file.writeAsBytesSync(encodePng(background)));
 
   if (darkColorString.isNotEmpty) {
     darkColorString = darkColorString.replaceFirst('#', '');
@@ -221,23 +216,22 @@ Future<void> _createBackgroundColor(
     blueChannel = int.parse(darkColorString.substring(4, 6), radix: 16);
     background.fill(
         0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
-    await File(iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png')
+    await File(_iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png')
         .create(recursive: true)
-        .then((File file) => file.writeAsBytesSync(img.encodePng(background)));
+        .then((File file) => file.writeAsBytesSync(encodePng(background)));
   }
 
-  return File(iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
+  return File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
       .create(recursive: true)
       .then((File file) {
-    file.writeAsStringSync(dark
-        ? templates.iOSLaunchBackgroundDarkJson
-        : templates.iOSLaunchBackgroundJson);
+    file.writeAsStringSync(
+        dark ? _iOSLaunchBackgroundDarkJson : _iOSLaunchBackgroundJson);
   });
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)
 Future _applyInfoPList() async {
-  final infoPlistFile = File(iOSInfoPlistFile);
+  final infoPlistFile = File(_iOSInfoPlistFile);
   final lines = await infoPlistFile.readAsLines();
 
   if (_needToUpdateInfoPlist(lines)) {
@@ -281,7 +275,7 @@ Future _updateInfoPlistFile(File infoPlistFile, List<String> lines) async {
   }
 
   // Before last '</dict>' add the lines
-  newLines.insert(lastDictLine, templates.iOSInfoPlistLines);
+  newLines.insert(lastDictLine, _iOSInfoPlistLines);
 
   await infoPlistFile.writeAsString(newLines.join('\n'));
 }
@@ -292,9 +286,9 @@ Future _applyAppDelegate() async {
   String appDelegatePath;
 
   if (language == 'objective-c') {
-    appDelegatePath = iOSAppDelegateObjCFile;
+    appDelegatePath = _iOSAppDelegateObjCFile;
   } else if (language == 'swift') {
-    appDelegatePath = iOSAppDelegateSwiftFile;
+    appDelegatePath = _iOSAppDelegateSwiftFile;
   }
 
   final appDelegateFile = File(appDelegatePath);
@@ -307,12 +301,12 @@ Future _applyAppDelegate() async {
 }
 
 Future _objectiveCOrSwift() async {
-  if (File(iOSAppDelegateObjCFile).existsSync()) {
+  if (File(_iOSAppDelegateObjCFile).existsSync()) {
     return 'objective-c';
-  } else if (File(iOSAppDelegateSwiftFile).existsSync()) {
+  } else if (File(_iOSAppDelegateSwiftFile).existsSync()) {
     return 'swift';
   } else {
-    throw CantFindAppDelegatePath('Not able to determinate AppDelegate path.');
+    throw _CantFindAppDelegatePath('Not able to determinate AppDelegate path.');
   }
 }
 
@@ -352,7 +346,7 @@ Future _updateAppDelegate(
     if (language == 'objective-c') {
       // Before '[GeneratedPlugin ...' add the following lines
       if (line.contains(objectiveCReferenceLine)) {
-        newLines.add(templates.iOSAppDelegateObjectiveCLines);
+        newLines.add(_iOSAppDelegateObjectiveCLines);
       }
 
       newLines.add(line);
@@ -361,7 +355,7 @@ Future _updateAppDelegate(
     if (language == 'swift') {
       // Before 'GeneratedPlugin ...' add the following lines
       if (line.contains(swiftReferenceLine)) {
-        newLines.add(templates.iOSAppDelegateSwiftLines);
+        newLines.add(_iOSAppDelegateSwiftLines);
       }
 
       newLines.add(line);

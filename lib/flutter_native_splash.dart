@@ -1,3 +1,6 @@
+/// ## Flutter Native Splash
+///
+/// This is the main entry point for the Flutter Native Splash package.
 library flutter_native_splash;
 
 /*
@@ -9,11 +12,12 @@ library flutter_native_splash;
 import 'unsupported_platform.dart' // Stub implementation
     if (dart.library.io) 'supported_platform.dart'; // dart:io implementation
 
-/// Create splash screen for Android and iOS
+/// Create splash screens for Android and iOS
 Future<void> createSplash() async {
   await tryCreateSplash();
 }
 
+/// Create splash screens for Android and iOS based on a config argument
 Future<void> createSplashByConfig(Map<String, dynamic> config) async {
   tryCreateSplashByConfig(config);
 }
