@@ -1,6 +1,6 @@
 name: flutter_native_splash
 description: Automatically generates native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
-version: 0.2.3
+version: 0.2.4
 homepage: https://github.com/henriquearthur/flutter_native_splash
 
 environment:
@@ -9,7 +9,7 @@ environment:
 dependencies:
   yaml: ^2.2.1
   image: ^2.1.19
-  color: ^2.1.1
+  xml: ^4.5.1
 
 dev_dependencies:
   pedantic: ^1.9.2

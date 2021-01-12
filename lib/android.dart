@@ -48,21 +48,7 @@ void _createAndroidSplash(String imagePath, String darkImagePath, String color,
     await _applyColor(darkColor, dark: true);
   }
 
-  if (!androidDisableFullscreen) {
-    await _applyStylesXml();
-    if (darkColor.isNotEmpty) {
-      await _applyStylesXml(dark: true);
-    }
-  }
-
-  await _applyMainActivityUpdate(_generatePrimaryColorDarkFromColor(color));
-}
-
-/// Generates the primaryColorDark that will be used for the status bar
-String _generatePrimaryColorDarkFromColor(String color) {
-  var baseColor = color.contains('#') ? color.replaceAll('#', '') : color;
-  var primaryColorDark = ColorFilter.darken(HexColor(baseColor), [0.07]);
-  return primaryColorDark.toHexColor().toString();
+  await _applyStylesXml(!androidDisableFullscreen);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
@@ -283,264 +269,59 @@ Future _overwriteLaunchBackgroundWithNewSplashColor(
 }
 
 /// Create or update styles.xml full screen mode setting
-void _applyStylesXml({bool dark = false}) {
-  final stylesFile = File(dark ? _androidStylesDarkFile : _androidStylesFile);
+Future<void> _applyStylesXml(bool fullScreen) async {
+  final stylesFile = File(_androidStylesFile);
 
-  if (stylesFile.existsSync()) {
-    print('[Android] Updating ' +
-        (dark ? 'dark mode ' : '') +
-        'styles.xml with full screen mode setting');
-    _updateStylesFileWithImagePath(stylesFile);
-  } else {
-    print('[Android] No ' +
-        (dark ? 'dark mode ' : '') +
-        'styles.xml file found in your Android project');
-    print('[Android] Creating ' +
-        (dark ? 'dark mode ' : '') +
-        'styles.xml file and adding it to your Android project');
+  if (!stylesFile.existsSync()) {
+    print('[Android] No styles.xml file found in your Android project');
+    print(
+        '[Android] Creating styles.xml file and adding it to your Android project');
     _createStylesFileWithImagePath(stylesFile);
   }
+  print('[Android] Updating styles.xml with full screen mode setting');
+  await _updateStylesFile(fullScreen, stylesFile);
 }
 
 /// Updates styles.xml adding full screen property
-Future _updateStylesFileWithImagePath(File stylesFile) async {
-  final lines = await stylesFile.readAsLines();
-  var foundExisting = false;
-  int endStyleLine;
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    if (line.contains('android:windowFullscreen')) {
-      foundExisting = true;
-    }
-
-    if (line.contains('</style>')) {
-      endStyleLine = x;
-    }
+Future<void> _updateStylesFile(bool fullScreen, File stylesFile) async {
+  final stylesDocument = XmlDocument.parse(await stylesFile.readAsString());
+  final styles = stylesDocument.findAllElements('style');
+  if (styles.length == 1) {
+    print('[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '
+        'styles by default.  Full screen mode not supported in Flutter V1 '
+        'embedding.  Skipping update of styles.xml with fullscreen mode');
+    return;
   }
-
-  // Add new line if we didn't find an existing value
-  if (!foundExisting) {
-    if (lines.isEmpty) {
-      throw _InvalidNativeFile("File 'styles.xml' contains 0 lines.");
+  final launchTheme = styles.firstWhere(
+      (element) => (element.attributes.any((attribute) =>
+          attribute.name.toString() == 'name' &&
+          attribute.value == 'LaunchTheme')),
+      orElse: () => null);
+  if (launchTheme != null) {
+    final fullScreenElement = launchTheme.children.firstWhere(
+        (element) => (element.attributes.any((attribute) {
+              return attribute.name.toString() == 'name' &&
+                  attribute.value == 'android:windowFullscreen';
+            })),
+        orElse: () => null);
+    if (fullScreenElement == null) {
+      launchTheme.children.add(XmlElement(
+          XmlName('item'),
+          [XmlAttribute(XmlName('name'), 'android:windowFullscreen')],
+          [XmlText(fullScreen.toString())]));
     } else {
-      lines.insert(endStyleLine, _androidStylesItemXml);
+      fullScreenElement.children.clear();
+      fullScreenElement.children.add(XmlText(fullScreen.toString()));
     }
+    stylesFile.writeAsStringSync(
+        stylesDocument.toXmlString(pretty: true, indent: '    '));
+    return;
   }
-
-  await stylesFile.writeAsString(lines.join('\n'));
+  print('[Android] Failed to update styles.xml with full screen mode setting');
 }
 
 /// Creates styles.xml with full screen property
 void _createStylesFileWithImagePath(File stylesFile) {
-  stylesFile.create(recursive: true).then((File colorsFile) {
-    colorsFile.writeAsString(_androidStylesXml);
-  });
-}
-
-/// Update MainActivity adding code to remove full screen mode after app load
-Future _applyMainActivityUpdate(String primaryColorDark) async {
-  final String language = await _javaOrKotlin();
-  String mainActivityPath;
-
-  if (language == 'java') {
-    mainActivityPath = await _getMainActivityJavaPath();
-  } else if (language == 'kotlin') {
-    mainActivityPath = await _getMainActivityKotlinPath();
-  }
-
-  final mainActivityFile = File(mainActivityPath);
-  final lines = await mainActivityFile.readAsLines();
-
-  if (_needToUpdateMainActivity(language, lines)) {
-    await _addMainActivitySplashLines(
-        language, mainActivityFile, lines, primaryColorDark);
-  }
-}
-
-Future _javaOrKotlin() async {
-  var mainActivityJavaPath = await _getMainActivityJavaPath();
-  var mainActivityKotlinPath = await _getMainActivityKotlinPath();
-
-  if (File(mainActivityJavaPath).existsSync()) {
-    return 'java';
-  } else if (File(mainActivityKotlinPath).existsSync()) {
-    return 'kotlin';
-  } else {
-    throw _CantFindMainActivityPath(
-        "Not able to determinate MainActivity path. Maybe the problem is your package path OR your AndroidManifest.xml 'package' attribute on manifest.");
-  }
-}
-
-/// Get MainActivity.java path based on package name on AndroidManifest.xml
-Future _getMainActivityJavaPath() async {
-  var androidManifest = File(_androidManifestFile);
-  final lines = await androidManifest.readAsLines();
-
-  var foundPath = false;
-  var mainActivityPath = 'android/app/src/main/java/';
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    if (line.contains('package="')) {
-      var regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
-
-      var matches = regExp.allMatches(line);
-      var match = matches.elementAt(0);
-
-      var package = match.group(1);
-      var path = package.replaceAll('.', '/');
-
-      mainActivityPath += '$path/MainActivity.java';
-      foundPath = true;
-      break;
-    }
-  }
-
-  if (!foundPath) {
-    return false;
-  }
-
-  return mainActivityPath;
-}
-
-/// Get MainActivity.kt path based on package name on AndroidManifest.xml
-Future _getMainActivityKotlinPath() async {
-  var androidManifest = File(_androidManifestFile);
-  final lines = await androidManifest.readAsLines();
-
-  var foundPath = false;
-  var mainActivityPath = 'android/app/src/main/kotlin/';
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    if (line.contains('package="')) {
-      var regExp = RegExp(r'package="([^"]*(\\"[^"]*)*)"');
-
-      var matches = regExp.allMatches(line);
-      var match = matches.elementAt(0);
-
-      var package = match.group(1);
-      var path = package.replaceAll('.', '/');
-
-      mainActivityPath += '$path/MainActivity.kt';
-      foundPath = true;
-      break;
-    }
-  }
-
-  if (!foundPath) {
-    return false;
-  }
-
-  return mainActivityPath;
-}
-
-/// Check if MainActivity needs to be updated with code required for splash screen
-bool _needToUpdateMainActivity(String language, List<String> lines) {
-  var foundExisting = false;
-
-  var javaLine = 'boolean flutter_native_splash = true;';
-  var kotlinLine = 'val flutter_native_splash = true';
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    // if file contains our variable we're assuming it contains all required code
-    if (line.contains((language == 'java') ? javaLine : kotlinLine)) {
-      foundExisting = true;
-      break;
-    }
-  }
-
-  return !foundExisting;
-}
-
-/// Add in MainActivity the code required for removing full screen mode of splash screen after app loaded
-Future _addMainActivitySplashLines(String language, File mainActivityFile,
-    List<String> lines, String primaryColorDark) async {
-  var newLines = <String>[];
-
-  var javaReferenceLines = <String>[
-    'public class MainActivity extends',
-    'super.onCreate(savedInstanceState);',
-    'GeneratedPluginRegistrant.registerWith(this);',
-  ];
-
-  var kotlinReferenceLines = <String>[
-    'class MainActivity:',
-    'super.onCreate(savedInstanceState)',
-    'GeneratedPluginRegistrant.registerWith(this)',
-  ];
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    if (language == 'java') {
-      // Before 'public class ...' add the following lines
-      if (line.contains(javaReferenceLines[0])) {
-        // If import not added already
-        if (!lines.contains(_androidMainActivityJavaImportLines1)) {
-          newLines.add(_androidMainActivityJavaImportLines1);
-        }
-
-        if (!lines.contains(_androidMainActivityJavaImportLines2)) {
-          newLines.add(_androidMainActivityJavaImportLines2);
-        }
-
-        if (!lines.contains(_androidMainActivityJavaImportLines3)) {
-          newLines.add(_androidMainActivityJavaImportLines3);
-        }
-      }
-
-      newLines.add(line);
-
-      // After 'super.onCreate ...' add the following lines
-      if (line.contains(javaReferenceLines[1])) {
-        newLines.add(_androidMainActivityJavaLines2WithStatusBar.replaceFirst(
-            '{{{primaryColorDark}}}', '0xff$primaryColorDark'));
-      }
-
-      // After 'GeneratedPluginRegistrant ...' add the following lines
-      if (line.contains(javaReferenceLines[2])) {
-        newLines.add(_androidMainActivityJavaLines3);
-      }
-    }
-
-    if (language == 'kotlin') {
-      // Before 'class MainActivity ...' add the following lines
-      if (line.contains(kotlinReferenceLines[0])) {
-        // If import not added already
-        if (!lines.contains(_androidMainActivityKotlinImportLines1)) {
-          newLines.add(_androidMainActivityKotlinImportLines1);
-        }
-
-        if (!lines.contains(_androidMainActivityKotlinImportLines2)) {
-          newLines.add(_androidMainActivityKotlinImportLines2);
-        }
-
-        if (!lines.contains(_androidMainActivityKotlinImportLines3)) {
-          newLines.add(_androidMainActivityKotlinImportLines3);
-        }
-      }
-
-      newLines.add(line);
-
-      // After 'super.onCreate ...' add the following lines
-      if (line.contains(kotlinReferenceLines[1])) {
-        newLines.add(_androidMainActivityKotlinLines2WithStatusBar.replaceFirst(
-            '{{{primaryColorDark}}}', '0xff$primaryColorDark'));
-      }
-
-      // After 'GeneratedPluginRegistrant ...' add the following lines
-      if (line.contains(kotlinReferenceLines[2])) {
-        newLines.add(_androidMainActivityKotlinLines3);
-      }
-    }
-  }
-
-  await mainActivityFile.writeAsString(newLines.join('\n'));
+  stylesFile.createSync(recursive: true);
+  stylesFile.writeAsStringSync(_androidStylesXml);
 }

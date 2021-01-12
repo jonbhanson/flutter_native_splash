@@ -10,8 +10,8 @@ library flutter_native_splash_supported_platform;
 
 import 'dart:io';
 
-import 'package:color/color.dart';
 import 'package:image/image.dart';
+import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 
 part 'android.dart';

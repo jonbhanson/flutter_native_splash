@@ -14,7 +14,7 @@ First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml fil
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.3
+  flutter_native_splash: ^0.2.4
 ```
 
 Don't forget to `flutter pub get`.
@@ -83,7 +83,7 @@ When the package finishes running your splash screen is ready.
 
 ## Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. (issue [#9](https://github.com/henriquearthur/flutter_native_splash/issues/9))
-* This package modifies `launch_background.xml`, `styles.xml` and `MainActivity` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com/henriquearthur/flutter_native_splash/issues/new) if you find any bugs.
+* This package modifies `launch_background.xml`, and `styles.xml` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com/henriquearthur/flutter_native_splash/issues/new) if you find any bugs.
 
 ## Recommendations
 * If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
@@ -94,7 +94,7 @@ When the package finishes running your splash screen is ready.
 * Your splash image will be resized to `mdpi`, `hdpi`, `xhdpi`, `xxhdpi` and `xxxhdpi` drawables.
 * An `<item>` tag containing a `<bitmap>` for your splash image drawable will be added in `launch_background.xml`
 * Background color will be added in `colors.xml` and referenced in `launch_background.xml`.
-* Code for full screen mode toggle will be added in `styles.xml` and `MainActivity`.
+* Code for full screen mode toggle will be added in `styles.xml`.
 * Dark mode variants are placed in `drawable-night`, `values-night`, etc. resource folders.
 
 ### iOS
@@ -105,6 +105,4 @@ When the package finishes running your splash screen is ready.
 
 ## Acknowledgments
 
-This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and it is currently maintained by [Jon Hanson](https://github.com/jonbhanson).
-
-This package is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
+This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and it is currently maintained by [Jon Hanson](https://github.com/jonbhanson).  It is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).

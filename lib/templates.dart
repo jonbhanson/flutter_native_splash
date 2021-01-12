@@ -38,77 +38,25 @@ const String _androidLaunchBackgroundXmlFill = '''
 </layer-list>
 ''';
 
-const String _androidStylesItemXml = '''
-        <item name="android:windowFullscreen">true</item>
-''';
-
 const String _androidStylesXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Theme applied to the Android Window while the process is starting -->
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <!-- Show a splash screen on the activity. Automatically removed when
+             Flutter draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
-    $_androidStylesItemXml
+    </style>
+    <!-- Theme applied to the Android Window as soon as the process has started.
+         This theme determines the color of the Android Window while your
+         Flutter UI initializes, as well as behind your Flutter UI while its
+         running.
+         
+         This Theme is only used starting with V2 of Flutter's Android embedding. -->
+    <style name="NormalTheme" parent="@android:style/Theme.Black.NoTitleBar">
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 </resources>
-''';
-
-const String _androidMainActivityJavaImportLines1 = 'import android.os.Build;';
-const String _androidMainActivityJavaImportLines2 =
-    'import android.view.ViewTreeObserver;';
-const String _androidMainActivityJavaImportLines3 =
-    'import android.view.WindowManager;';
-
-const String _androidMainActivityJavaLines2WithStatusBar = '''
-    boolean flutter_native_splash = true;
-    int originalStatusBarColor = 0;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        originalStatusBarColor = getWindow().getStatusBarColor();
-        getWindow().setStatusBarColor({{{primaryColorDark}}});
-    }
-    int originalStatusBarColorFinal = originalStatusBarColor;
-''';
-
-const String _androidMainActivityJavaLines3 = '''
-    ViewTreeObserver vto = getFlutterView().getViewTreeObserver();
-    vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-      @Override
-      public void onGlobalLayout() {
-        getFlutterView().getViewTreeObserver().removeOnGlobalLayoutListener(this);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          getWindow().setStatusBarColor(originalStatusBarColorFinal);
-        }
-      }
-    });
-''';
-
-const String _androidMainActivityKotlinImportLines1 = 'import android.os.Build';
-const String _androidMainActivityKotlinImportLines2 =
-    'import android.view.ViewTreeObserver';
-const String _androidMainActivityKotlinImportLines3 =
-    'import android.view.WindowManager';
-
-const String _androidMainActivityKotlinLines2WithStatusBar = '''
-    val flutter_native_splash = true
-    var originalStatusBarColor = 0
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        originalStatusBarColor = window.statusBarColor
-        window.statusBarColor = {{{primaryColorDark}}}.toInt()
-    }
-    val originalStatusBarColorFinal = originalStatusBarColor
-''';
-
-const String _androidMainActivityKotlinLines3 = '''
-    val vto = flutterView.viewTreeObserver
-    vto.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-      override fun onGlobalLayout() {
-        flutterView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-        window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-          window.statusBarColor = originalStatusBarColorFinal
-        }
-      }
-    })
 ''';
 
 // iOS-related templates
