@@ -176,10 +176,7 @@ Future _createLaunchBackgroundFileWithImagePath(
 void _applyColor(color, {bool dark = false}) {
   final colorsXml = File(dark ? _androidColorsDarkFile : _androidColorsFile);
 
-  if (!color.contains('#')) {
-    color = '#' + color;
-  }
-
+  color = '#' + color;
   if (colorsXml.existsSync()) {
     print('[Android] Updating ' +
         (dark ? 'dark mode ' : '') +

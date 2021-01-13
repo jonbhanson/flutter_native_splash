@@ -1,3 +1,7 @@
+## [0.2.5] - (2021-Jan-13)
+
+* Handle color parameter that are passed as integers.  Fixes [#103](https://github.com/henriquearthur/flutter_native_splash/issues/103)
+
 ## [0.2.4] - (2021-Jan-12)
 
 * Update code that adds fullscreen mode to Android so that it selects the right style (LaunchTheme) in styles.xml.  This should resolve [#39](https://github.com/henriquearthur/flutter_native_splash/issues/39), [#54](https://github.com/henriquearthur/flutter_native_splash/issues/54), [#67](https://github.com/henriquearthur/flutter_native_splash/issues/67), [#92](https://github.com/henriquearthur/flutter_native_splash/issues/92), [#112](https://github.com/henriquearthur/flutter_native_splash/issues/112), and [#117](https://github.com/henriquearthur/flutter_native_splash/issues/117).  Removed code that modifies MainActivity as it is not longer needed since Flutter embedding V2 uses two styles in styles.xml so full screen is set independently in the style.

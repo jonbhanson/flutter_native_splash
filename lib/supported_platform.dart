@@ -30,8 +30,8 @@ Future<void> tryCreateSplash() async {
 Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
   String darkImage = config['image_dark'] ?? '';
-  var color = config['color'].toString();
-  var darkColor = config['color_dark']?.toString() ?? '';
+  var color = parseColor(config['color']);
+  var darkColor = parseColor(config['color_dark']) ?? '';
   bool fill = config['fill'] ?? false;
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
 
@@ -43,6 +43,18 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   if (!config.containsKey('ios') || config['ios']) {
     await _createiOSSplash(image, darkImage, color, darkColor);
   }
+}
+
+String parseColor(var color) {
+  if (color is int) color = color.toString().padLeft(6, '0');
+
+  if (color is String) {
+    color = color.replaceAll('#', '').replaceAll(' ', '');
+    if (color.length == 6) return color;
+  }
+  if (color == null) return null;
+
+  throw Exception('Invalid color value');
 }
 
 /// Get config from `pubspec.yaml` or `flutter_native_splash.yaml`

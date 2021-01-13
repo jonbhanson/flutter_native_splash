@@ -34,7 +34,7 @@ void _createiOSSplash(String imagePath, String darkImagePath, String color,
     await _applyImageiOS(darkImagePath, dark: true);
   }
 
-  await _applyLaunchScreenStoryboard(imagePath, color);
+  await _applyLaunchScreenStoryboard(imagePath);
   await _createBackgroundColor(color, darkColor, darkColor.isNotEmpty);
   await _applyInfoPList();
   await _applyAppDelegate();
@@ -79,27 +79,22 @@ void _saveImageiOS(_IosLaunchImageTemplate template, Image image) {
 }
 
 /// Update LaunchScreen.storyboard adding width, height and color
-Future _applyLaunchScreenStoryboard(String imagePath, String color) {
-  if (!color.contains('#')) {
-    color = '#' + color;
-  }
-
+Future _applyLaunchScreenStoryboard(String imagePath) {
   final file = File(_iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
-    print(
-        '[iOS] Updating LaunchScreen.storyboard with width, height and color');
-    return _updateLaunchScreenStoryboard(imagePath, color);
+    print('[iOS] Updating LaunchScreen.storyboard with width, and height');
+    return _updateLaunchScreenStoryboard(imagePath);
   } else {
     print('[iOS] No LaunchScreen.storyboard file found in your iOS project');
     print(
         '[iOS] Creating LaunchScreen.storyboard file and adding it to your iOS project');
-    return _createLaunchScreenStoryboard(imagePath, color);
+    return _createLaunchScreenStoryboard(imagePath);
   }
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
-Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
+Future _updateLaunchScreenStoryboard(String imagePath) async {
   final file = File(_iOSLaunchScreenStoryboardFile);
   final lines = await file.readAsLines();
 
@@ -189,17 +184,16 @@ Future _updateLaunchScreenStoryboard(String imagePath, String color) async {
 }
 
 /// Creates LaunchScreen.storyboard with splash image path
-Future _createLaunchScreenStoryboard(String imagePath, String color) async {
+Future _createLaunchScreenStoryboard(String imagePath) async {
   var file = await File(_iOSLaunchScreenStoryboardFile).create(recursive: true);
   await file.writeAsString(_iOSLaunchScreenStoryboardContent);
 
-  return _updateLaunchScreenStoryboard(imagePath, color);
+  return _updateLaunchScreenStoryboard(imagePath);
 }
 
 Future<void> _createBackgroundColor(
     String colorString, String darkColorString, bool dark) async {
   var background = Image(1, 1);
-  colorString = colorString.replaceFirst('#', '');
   var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
   var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
   var blueChannel = int.parse(colorString.substring(4, 6), radix: 16);
@@ -210,7 +204,6 @@ Future<void> _createBackgroundColor(
       .then((File file) => file.writeAsBytesSync(encodePng(background)));
 
   if (darkColorString.isNotEmpty) {
-    darkColorString = darkColorString.replaceFirst('#', '');
     redChannel = int.parse(darkColorString.substring(0, 2), radix: 16);
     greenChannel = int.parse(darkColorString.substring(2, 4), radix: 16);
     blueChannel = int.parse(darkColorString.substring(4, 6), radix: 16);
