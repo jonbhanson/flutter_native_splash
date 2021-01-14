@@ -36,16 +36,31 @@ void _createAndroidSplash(String imagePath, String darkImagePath, String color,
     await _applyImageAndroid(darkImagePath, dark: true);
   }
 
-  await _applyLaunchBackgroundXml(imagePath, fill);
+  await _applyLaunchBackgroundXml(
+      imagePath, fill, _androidLaunchBackgroundFile);
+  await _applyColor(color, _androidColorsFile);
+  await _overwriteLaunchBackgroundWithNewSplashColor(
+      color, _androidLaunchBackgroundFile);
+
   if (darkColor.isNotEmpty) {
-    await _applyLaunchBackgroundXml(darkImagePath, fill, dark: true);
+    await _applyLaunchBackgroundXml(
+        darkImagePath, fill, _androidLaunchDarkBackgroundFile);
+    await _applyColor(darkColor, _androidColorsDarkFile);
+    await _overwriteLaunchBackgroundWithNewSplashColor(
+        color, _androidLaunchDarkBackgroundFile);
   }
 
-  // _applyColor will update launch_background.xml which may be created in _applyLaunchBackgroundXml
-  // that's why we need to await _applyLaunchBackgroundXml()
-  await _applyColor(color);
-  if (darkColor.isNotEmpty) {
-    await _applyColor(darkColor, dark: true);
+  if (await Directory(_androidV21DrawableFolder).exists()) {
+    await _applyLaunchBackgroundXml(
+        imagePath, fill, _androidV21LaunchBackgroundFile);
+    await _overwriteLaunchBackgroundWithNewSplashColor(
+        color, _androidV21LaunchBackgroundFile);
+    if (darkColor.isNotEmpty) {
+      await _applyLaunchBackgroundXml(
+          darkImagePath, fill, _androidV21LaunchDarkBackgroundFile);
+      await _overwriteLaunchBackgroundWithNewSplashColor(
+          color, _androidV21LaunchDarkBackgroundFile);
+    }
   }
 
   await _applyStylesXml(!androidDisableFullscreen);
@@ -87,73 +102,75 @@ void _saveImageAndroid(_AndroidDrawableTemplate template, Image image) {
 }
 
 /// Create or update launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml(String imagePath, bool fill,
-    {bool dark = false}) {
-  final launchBackgroundFile = File(
-      dark ? _androidLaunchDarkBackgroundFile : _androidLaunchBackgroundFile);
+Future _applyLaunchBackgroundXml(
+    String imagePath, bool fill, String launchBackgroundFilePath) {
+  final launchBackgroundFile = File(launchBackgroundFilePath);
 
   if (launchBackgroundFile.existsSync()) {
     if (imagePath.isNotEmpty) {
       print('[Android] Updating ' +
-          (dark ? 'dark mode ' : '') +
-          'launch_background.xml with splash image path');
-      return _updateLaunchBackgroundFileWithImagePath(fill, dark);
+          launchBackgroundFilePath +
+          ' with splash image path');
+      return _updateLaunchBackgroundFileWithImagePath(
+          fill, launchBackgroundFilePath);
     }
 
     return Future.value(false);
   } else {
     print('[Android] No ' +
-        (dark ? 'dark mode ' : '') +
-        'launch_background.xml file found in your Android project');
+        launchBackgroundFilePath +
+        ' file found in your Android project');
     print('[Android] Creating ' +
-        (dark ? 'dark mode ' : '') +
-        'launch_background.xml file and adding it to your Android project');
-    return _createLaunchBackgroundFileWithImagePath(imagePath, fill, dark);
+        launchBackgroundFilePath +
+        ' file and adding it to your Android project');
+    return _createLaunchBackgroundFileWithImagePath(
+        imagePath, fill, launchBackgroundFilePath);
   }
 }
 
 /// Updates launch_background.xml adding splash image path
-Future _updateLaunchBackgroundFileWithImagePath(bool fill, bool dark) async {
-  final launchBackgroundFile = dark
-      ? File(_androidLaunchDarkBackgroundFile)
-      : File(_androidLaunchBackgroundFile);
-  final lines = await launchBackgroundFile.readAsLines();
-  var foundExisting = false;
+Future _updateLaunchBackgroundFileWithImagePath(
+    bool fill, String launchBackgroundFilePath) async {
+  final launchBackgroundFile = File(launchBackgroundFilePath);
 
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
+  final launchBackgroundDocument =
+      XmlDocument.parse(await launchBackgroundFile.readAsString());
+  final layerList = launchBackgroundDocument.getElement('layer-list');
+  final items = layerList.children;
 
-    if (line.contains('android:src="@drawable/splash"') ||
-        line.contains('android:drawable="@color/splash_color"')) {
-      foundExisting = true;
-      break;
+  var removeNodes = <XmlNode>[];
+  items.forEach((item) {
+    // Remove file template comments:
+    if (item.nodeType == XmlNodeType.COMMENT) {
+      _androidLaunchBackgroundXmlExampleLines.forEach((element) {
+        if (item.toString().contains(element)) removeNodes.add(item);
+      });
     }
+    // Remove existing bitmaps:
+    if (item.children.isNotEmpty) {
+      var existingBitmap = item.findElements('bitmap');
+      if (existingBitmap != null) removeNodes.add(item);
+    }
+  });
+  removeNodes.forEach(items.remove);
+
+  if (fill == null || !fill) {
+    items.add(
+        XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy());
+  } else {
+    items.add(XmlDocument.parse(_androidLaunchBackgroundItemXmlFill)
+        .rootElement
+        .copy());
   }
 
-  // Add new line if we didn't find an existing value
-  if (!foundExisting) {
-    if (lines.isEmpty) {
-      throw _InvalidNativeFile(
-          "File 'launch_background.xml' contains 0 lines.");
-    } else {
-      if (fill == null || !fill) {
-        lines.insert(lines.length - 1, _androidLaunchBackgroundItemXml);
-      } else {
-        lines.insert(lines.length - 1, _androidLaunchBackgroundItemXmlFill);
-      }
-    }
-  }
-
-  await launchBackgroundFile.writeAsString(lines.join('\n'));
+  launchBackgroundFile.writeAsStringSync(
+      launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
 }
 
 /// Creates launch_background.xml with splash image path
 Future _createLaunchBackgroundFileWithImagePath(
-    String imagePath, bool fill, bool dark) async {
-  var file = await File(dark
-          ? _androidLaunchDarkBackgroundFile
-          : _androidLaunchBackgroundFile)
-      .create(recursive: true);
+    String imagePath, bool fill, String launchBackgroundFilePath) async {
+  var file = await File(launchBackgroundFilePath).create(recursive: true);
   String fileContent;
 
   if (fill == null || !fill) {
@@ -173,26 +190,22 @@ Future _createLaunchBackgroundFileWithImagePath(
 }
 
 /// Create or update colors.xml adding splash screen background color
-void _applyColor(color, {bool dark = false}) {
-  final colorsXml = File(dark ? _androidColorsDarkFile : _androidColorsFile);
+Future<void> _applyColor(color, String colorFile) async {
+  var colorsXml = File(colorFile);
 
   color = '#' + color;
   if (colorsXml.existsSync()) {
     print('[Android] Updating ' +
-        (dark ? 'dark mode ' : '') +
-        'colors.xml with color for splash screen background');
+        colorFile +
+        ' with color for splash screen background');
     _updateColorsFileWithColor(colorsXml, color);
   } else {
-    print('[Android] No ' +
-        (dark ? 'dark mode ' : '') +
-        'colors.xml file found in your Android project');
+    print('[Android] No ' + colorFile + ' file found in your Android project');
     print('[Android] Creating ' +
-        (dark ? 'dark mode ' : '') +
-        'colors.xml file and adding it to your Android project');
+        colorFile +
+        ' file and adding it to your Android project');
     _createColorsFile(color, colorsXml);
   }
-
-  _overwriteLaunchBackgroundWithNewSplashColor(color, dark);
 }
 
 /// Updates the colors.xml with the splash screen background color
@@ -240,9 +253,8 @@ void _createColorsFile(String color, File colorsXml) {
 ///
 /// Note: default color = "splash_color"
 Future _overwriteLaunchBackgroundWithNewSplashColor(
-    String color, bool dark) async {
-  final launchBackgroundFile = File(
-      dark ? _androidLaunchDarkBackgroundFile : _androidLaunchBackgroundFile);
+    String color, String launchBackgroundFilePath) async {
+  final launchBackgroundFile = File(launchBackgroundFilePath);
   final lines = await launchBackgroundFile.readAsLines();
 
   for (var x = 0; x < lines.length; x++) {

@@ -1,3 +1,8 @@
+## [0.2.6] - (2021-Jan-14)
+
+* Added support for Android -v21 resource folders, which appear in the Flutter beta channel.  Parse launch_background.xml with XML package for more reliability.  Fixes [#104](https://github.com/henriquearthur/flutter_native_splash/issues/104), [#118](https://github.com/henriquearthur/flutter_native_splash/issues/118).
+
+
 ## [0.2.5] - (2021-Jan-13)
 
 * Handle color parameter that are passed as integers.  Fixes [#103](https://github.com/henriquearthur/flutter_native_splash/issues/103)

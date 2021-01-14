@@ -10,6 +10,13 @@ const String _androidLaunchDarkBackgroundFile =
     'android/app/src/main/res/drawable-night/launch_background.xml';
 const String _androidStylesFile = 'android/app/src/main/res/values/styles.xml';
 const String _androidResFolder = 'android/app/src/main/res/';
+const String _androidV21DrawableFolder = _androidResFolder + 'drawable-v21/';
+const String _androidV21LaunchBackgroundFile =
+    _androidV21DrawableFolder + 'launch_background.xml';
+const String _androidNightV21DrawableFolder =
+    _androidResFolder + 'drawable-night-v21/';
+const String _androidV21LaunchDarkBackgroundFile =
+    _androidNightV21DrawableFolder + 'launch_background.xml';
 
 // iOS-related constants
 const String _iOSAssetsLaunchImageFolder =

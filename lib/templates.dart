@@ -59,6 +59,11 @@ const String _androidStylesXml = '''
 </resources>
 ''';
 
+const List<String> _androidLaunchBackgroundXmlExampleLines = [
+  '<!-- <item>',
+  '<!-- You can insert your own image assets here -->'
+];
+
 // iOS-related templates
 const String _iOSLaunchScreenStoryboardContent = '''
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
