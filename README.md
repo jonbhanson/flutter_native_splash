@@ -83,6 +83,7 @@ When the package finishes running your splash screen is ready.
 
 ## Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. (issue [#9](https://github.com/henriquearthur/flutter_native_splash/issues/9))
+* If the error: "".dart_tool/package_config.json" file is not recognized by "pub" version" occurs, comment out all locally imported dependencies (by path). Do not forget flutter pub get before the new attempt.
 * This package modifies `launch_background.xml`, and `styles.xml` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com/henriquearthur/flutter_native_splash/issues/new) if you find any bugs.
 
 ## Recommendations
