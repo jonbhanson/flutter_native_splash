@@ -71,3 +71,15 @@ class _LaunchScreenStoryboardModified implements Exception {
         '$message';
   }
 }
+
+class _CantFindInfoPlistFile implements Exception {
+  const _CantFindInfoPlistFile([this.message]);
+  final String message;
+
+  @override
+  String toString() {
+    return '*** ERROR [flutter_native_splash] ***\n'
+        'CantFindInfoPlistFile\n'
+        '$message';
+  }
+}

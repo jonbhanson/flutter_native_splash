@@ -32,6 +32,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String darkImage = config['image_dark'] ?? '';
   var color = parseColor(config['color']);
   var darkColor = parseColor(config['color_dark']) ?? '';
+  var pListFiles = config['info_plist_files'];
   bool fill = config['fill'] ?? false;
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
 
@@ -41,7 +42,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   }
 
   if (!config.containsKey('ios') || config['ios']) {
-    await _createiOSSplash(image, darkImage, color, darkColor);
+    await _createiOSSplash(image, darkImage, color, darkColor, pListFiles);
   }
 }
 
@@ -79,7 +80,13 @@ Map<String, dynamic> _getConfig() {
   final config = <String, dynamic>{};
   for (MapEntry<dynamic, dynamic> entry
       in yamlMap['flutter_native_splash'].entries) {
-    config[entry.key] = entry.value;
+    if (entry.value is YamlList) {
+      var list = <String>[];
+      (entry.value as YamlList).forEach(list.add);
+      config[entry.key] = list;
+    } else {
+      config[entry.key] = entry.value;
+    }
   }
 
   if (!config.containsKey('color')) {

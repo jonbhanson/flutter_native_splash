@@ -26,7 +26,7 @@ final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
 
 /// Create iOS splash screen
 void _createiOSSplash(String imagePath, String darkImagePath, String color,
-    String darkColor) async {
+    String darkColor, List<String> plistFiles) async {
   if (imagePath.isNotEmpty) {
     await _applyImageiOS(imagePath);
   }
@@ -36,7 +36,7 @@ void _createiOSSplash(String imagePath, String darkImagePath, String color,
 
   await _applyLaunchScreenStoryboard(imagePath);
   await _createBackgroundColor(color, darkColor, darkColor.isNotEmpty);
-  await _applyInfoPList();
+  await _applyInfoPList(plistFiles);
   await _applyAppDelegate();
 }
 
@@ -223,14 +223,29 @@ Future<void> _createBackgroundColor(
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)
-Future _applyInfoPList() async {
-  final infoPlistFile = File(_iOSInfoPlistFile);
-  final lines = await infoPlistFile.readAsLines();
-
-  if (_needToUpdateInfoPlist(lines)) {
-    print('[iOS] Updating Info.plist for status bar hidden/visible');
-    await _updateInfoPlistFile(infoPlistFile, lines);
+Future _applyInfoPList(List<String> plistFiles) async {
+  if (plistFiles == null) {
+    plistFiles = [];
+    plistFiles.add(_iOSInfoPlistFile);
   }
+
+  plistFiles.forEach((plistFile) async {
+    if (!await File(plistFile).exists()) {
+      throw _CantFindInfoPlistFile(
+          'File $plistFile not found.  If you renamed the file, make sure to '
+          'specify it in the info_plist_files section of your '
+          'flutter_native_splash configuration.');
+    }
+
+    final infoPlistFile = File(plistFile);
+
+    final lines = await infoPlistFile.readAsLines();
+
+    if (_needToUpdateInfoPlist(lines)) {
+      print('[iOS] Updating $infoPlistFile for status bar hidden/visible');
+      await _updateInfoPlistFile(infoPlistFile, lines);
+    }
+  });
 }
 
 /// Check if Info.plist needs to be updated with code required for status bar hidden

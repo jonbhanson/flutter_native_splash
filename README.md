@@ -10,11 +10,11 @@ Automatically generates native code for adding splash screens in Android and iOS
 </p>
 
 ## Usage
-First, add `flutter_native_splash` as a [dev dependency in your pubspec.yaml file](https://pub.dev/packages/flutter_native_splash#-installing-tab-). You should add the package to `dev_dependencies` because you don't need this plugin in your APK.
+First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file. You should add the package to `dev_dependencies` because you don't need this plugin in your APK.
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.6
+  flutter_native_splash: ^0.2.7
 ```
 
 Don't forget to `flutter pub get`.
@@ -24,52 +24,44 @@ Add your settings to your project's `pubspec.yaml` file or create a file in your
 
 ```yaml
 flutter_native_splash:
-  image: assets/images/splash.png
-  color: "42a5f5"
-  image_dark: assets/images/splash-invert.png
-  color_dark: "042a49"
+  color: "#42a5f5"  # required parameter
+  image: assets/images/splash.png  # optional parameter
+  color_dark: "#042a49"  # required if image_dark parameter is used
+  image_dark: assets/images/splash-invert.png  # optional parameter
 ```
 
 * Images must be `png` files.
-* You can use `#` in color parameters as well. `color: "#42a5f5"`
 
-You can omit `image_dark` and `color_dark` if you want a single splash screen regardless of dark mode:
+To avoid creating a splash screen for a specific platform, `android` or `ios` may be set to `false`.
 ```yaml
 flutter_native_splash:
-  image: assets/images/splash.png
-  color: "42a5f5"
-```
-
-You can omit `image` and/or the `image_dark` parameter if you just want a colored splash screens:
-```yaml
-flutter_native_splash:
-  color: "42a5f5"
-  color_dark: "042a49"
-```
-
-You can also set `android` or `ios` to `false` if you don't want to create a splash screen for a specific platform.
-```yaml
-flutter_native_splash:
-  image: assets/images/splash.png
-  color: "42a5f5"
+  color: "#42a5f5"
   android: false
 ```
 
-In case your image should use all available screen (width and height) you can use `fill` property.
+To stretch the image(s) to fill the screen, use `fill` parameter. ([`Gravity=fill`](https://developer.android.com/reference/android/view/Gravity#FILL) on Android, not yet implemented for iOS).
+
 ```yaml
 flutter_native_splash:
+  color: "#42a5f5"
   image: assets/images/splash.png
-  color: "42a5f5"
   fill: true
 ```
-*Note: `fill` property is not yet implemented for iOS splash screens.*
 
-If you want to disable full screen splash screen on Android you can use `android_disable_fullscreen` property.
+To display the notification bar on Android, use the `android_disable_fullscreen` parameter.
 ```yaml
 flutter_native_splash:
-  image: assets/images/splash.png
-  color: "42a5f5"
+  color: "#42a5f5"
   android_disable_fullscreen: true
+```
+
+If you have changed the name(s) of your info.plist file(s), you can specify the filename(s) with the `info_plist_files` parameter:
+```yaml
+flutter_native_splash:
+  color: "#42a5f5"
+  info_plist_files:
+    - 'ios/Runner/Info-Debug.plist'
+    - 'ios/Runner/Info-Release.plist'
 ```
 
 ### 2. Run the package
