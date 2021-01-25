@@ -32,17 +32,30 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String darkImage = config['image_dark'] ?? '';
   var color = parseColor(config['color']);
   var darkColor = parseColor(config['color_dark']) ?? '';
-  var pListFiles = config['info_plist_files'];
-  bool fill = config['fill'] ?? false;
+  var plistFiles = config['info_plist_files'];
+  var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
+  if (config['android_gravity'] != null) gravity = config['android_gravity'];
   bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
+  String iosContentMode = config['ios_content_mode'] ?? 'center';
 
   if (!config.containsKey('android') || config['android']) {
     await _createAndroidSplash(
-        image, darkImage, color, darkColor, fill, androidDisableFullscreen);
+        imagePath: image,
+        darkImagePath: darkImage,
+        color: color,
+        darkColor: darkColor,
+        gravity: gravity,
+        androidDisableFullscreen: androidDisableFullscreen);
   }
 
   if (!config.containsKey('ios') || config['ios']) {
-    await _createiOSSplash(image, darkImage, color, darkColor, pListFiles);
+    await _createiOSSplash(
+        imagePath: image,
+        darkImagePath: darkImage,
+        color: color,
+        darkColor: darkColor,
+        plistFiles: plistFiles,
+        iosContentMode: iosContentMode);
   }
 }
 

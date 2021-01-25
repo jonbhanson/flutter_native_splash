@@ -23,21 +23,6 @@ const String _androidLaunchBackgroundXml = '''
 </layer-list>
 ''';
 
-const String _androidLaunchBackgroundItemXmlFill = '''
-    <item>
-        <bitmap android:gravity="fill" android:src="@drawable/splash" />
-    </item>
-''';
-
-const String _androidLaunchBackgroundXmlFill = '''
-<?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/splash_color" />
-
-  $_androidLaunchBackgroundItemXmlFill
-</layer-list>
-''';
-
 const String _androidStylesXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -284,14 +269,18 @@ const String _iOSLaunchBackgroundDarkJson = '''
 }
 ''';
 
-const String _iOSLaunchBackgroundSubview = '''
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI">
-                                <rect key="frame" x="0.0" y="0.0" width="1" height="1"/>
-                            </imageView>''';
+const String _iOSLaunchBackgroundSubview =
+    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI" />';
 
 const String _iOSLaunchBackgroundConstraints = '''
-                            <constraint firstItem="tWc-Dq-wcI" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="SvB-DF-27J"/>
-                            <constraint firstItem="tWc-Dq-wcI" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="VdF-Am-v6m"/>
-                            <constraint firstItem="tWc-Dq-wcI" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="fVJ-Ko-pCh"/>
-                            <constraint firstItem="tWc-Dq-wcI" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="sow-8b-b2l"/>
+<constraints>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="3T2-ad-Qdv"/>
+  <constraint firstItem="tWc-Dq-wcI" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="RPx-PI-7Xg"/>
+  <constraint firstItem="tWc-Dq-wcI" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="SdS-ul-q2q"/>
+  <constraint firstAttribute="trailing" secondItem="tWc-Dq-wcI" secondAttribute="trailing" id="Swv-Gf-Rwn"/>
+  <constraint firstAttribute="trailing" secondItem="YRO-k0-Ey4" secondAttribute="trailing" id="TQA-XW-tRk"/>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="duK-uY-Gun"/>
+  <constraint firstItem="tWc-Dq-wcI" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="kV7-tw-vXt"/>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="xPn-NY-SIU"/>
+</constraints>
 ''';

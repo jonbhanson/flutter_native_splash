@@ -27,47 +27,63 @@ final List<_AndroidDrawableTemplate> _splashImagesDark =
 ];
 
 /// Create Android splash screen
-void _createAndroidSplash(String imagePath, String darkImagePath, String color,
-    String darkColor, bool fill, bool androidDisableFullscreen) async {
+void _createAndroidSplash(
+    {String imagePath,
+    String darkImagePath,
+    String color,
+    String darkColor,
+    String gravity,
+    bool androidDisableFullscreen}) async {
   if (imagePath.isNotEmpty) {
-    await _applyImageAndroid(imagePath);
+    await _applyImageAndroid(imagePath: imagePath);
   }
   if (darkImagePath.isNotEmpty) {
-    await _applyImageAndroid(darkImagePath, dark: true);
+    await _applyImageAndroid(imagePath: darkImagePath, dark: true);
   }
 
   await _applyLaunchBackgroundXml(
-      imagePath, fill, _androidLaunchBackgroundFile);
-  await _applyColor(color, _androidColorsFile);
+      imagePath: imagePath,
+      gravity: gravity,
+      launchBackgroundFilePath: _androidLaunchBackgroundFile);
+  await _applyColor(color: color, colorFile: _androidColorsFile);
   await _overwriteLaunchBackgroundWithNewSplashColor(
-      color, _androidLaunchBackgroundFile);
+      color: color, launchBackgroundFilePath: _androidLaunchBackgroundFile);
 
   if (darkColor.isNotEmpty) {
     await _applyLaunchBackgroundXml(
-        darkImagePath, fill, _androidLaunchDarkBackgroundFile);
-    await _applyColor(darkColor, _androidColorsDarkFile);
+        imagePath: darkImagePath,
+        gravity: gravity,
+        launchBackgroundFilePath: _androidLaunchDarkBackgroundFile);
+    await _applyColor(color: darkColor, colorFile: _androidColorsDarkFile);
     await _overwriteLaunchBackgroundWithNewSplashColor(
-        color, _androidLaunchDarkBackgroundFile);
+        color: color,
+        launchBackgroundFilePath: _androidLaunchDarkBackgroundFile);
   }
 
   if (await Directory(_androidV21DrawableFolder).exists()) {
     await _applyLaunchBackgroundXml(
-        imagePath, fill, _androidV21LaunchBackgroundFile);
+        imagePath: imagePath,
+        gravity: gravity,
+        launchBackgroundFilePath: _androidV21LaunchBackgroundFile);
     await _overwriteLaunchBackgroundWithNewSplashColor(
-        color, _androidV21LaunchBackgroundFile);
+        color: color,
+        launchBackgroundFilePath: _androidV21LaunchBackgroundFile);
     if (darkColor.isNotEmpty) {
       await _applyLaunchBackgroundXml(
-          darkImagePath, fill, _androidV21LaunchDarkBackgroundFile);
+          imagePath: darkImagePath,
+          gravity: gravity,
+          launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile);
       await _overwriteLaunchBackgroundWithNewSplashColor(
-          color, _androidV21LaunchDarkBackgroundFile);
+          color: color,
+          launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile);
     }
   }
 
-  await _applyStylesXml(!androidDisableFullscreen);
+  await _applyStylesXml(fullScreen: !androidDisableFullscreen);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImageAndroid(String imagePath, {bool dark = false}) {
+void _applyImageAndroid({String imagePath, bool dark = false}) {
   print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final file = File(imagePath);
@@ -79,14 +95,14 @@ void _applyImageAndroid(String imagePath, {bool dark = false}) {
   final image = decodeImage(File(imagePath).readAsBytesSync());
 
   for (var template in dark ? _splashImagesDark : _splashImages) {
-    _saveImageAndroid(template, image);
+    _saveImageAndroid(template: template, image: image);
   }
 }
 
 /// Saves splash screen image to the project
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
-void _saveImageAndroid(_AndroidDrawableTemplate template, Image image) {
+void _saveImageAndroid({_AndroidDrawableTemplate template, Image image}) {
   var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -103,7 +119,7 @@ void _saveImageAndroid(_AndroidDrawableTemplate template, Image image) {
 
 /// Create or update launch_background.xml adding splash image path
 Future _applyLaunchBackgroundXml(
-    String imagePath, bool fill, String launchBackgroundFilePath) {
+    {String imagePath, String gravity, String launchBackgroundFilePath}) {
   final launchBackgroundFile = File(launchBackgroundFilePath);
 
   if (launchBackgroundFile.existsSync()) {
@@ -112,7 +128,7 @@ Future _applyLaunchBackgroundXml(
           launchBackgroundFilePath +
           ' with splash image path');
       return _updateLaunchBackgroundFileWithImagePath(
-          fill, launchBackgroundFilePath);
+          launchBackgroundFilePath: launchBackgroundFilePath, gravity: gravity);
     }
 
     return Future.value(false);
@@ -124,22 +140,30 @@ Future _applyLaunchBackgroundXml(
         launchBackgroundFilePath +
         ' file and adding it to your Android project');
     return _createLaunchBackgroundFileWithImagePath(
-        imagePath, fill, launchBackgroundFilePath);
+        imagePath: imagePath,
+        gravity: gravity,
+        launchBackgroundFilePath: launchBackgroundFilePath);
   }
 }
 
 /// Updates launch_background.xml adding splash image path
 Future _updateLaunchBackgroundFileWithImagePath(
-    bool fill, String launchBackgroundFilePath) async {
+    {String launchBackgroundFilePath, String gravity}) async {
   final launchBackgroundFile = File(launchBackgroundFilePath);
+  var launchBackgroundDocument;
+  if (launchBackgroundFile.existsSync()) {
+    launchBackgroundDocument =
+        XmlDocument.parse(await launchBackgroundFile.readAsString());
+  } else {
+    await launchBackgroundFile.create(recursive: true);
+    launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
+  }
 
-  final launchBackgroundDocument =
-      XmlDocument.parse(await launchBackgroundFile.readAsString());
   final layerList = launchBackgroundDocument.getElement('layer-list');
   final items = layerList.children;
 
   var removeNodes = <XmlNode>[];
-  items.forEach((item) {
+  items.forEach((XmlNode item) {
     // Remove file template comments:
     if (item.nodeType == XmlNodeType.COMMENT) {
       _androidLaunchBackgroundXmlExampleLines.forEach((element) {
@@ -148,49 +172,45 @@ Future _updateLaunchBackgroundFileWithImagePath(
     }
     // Remove existing bitmaps:
     if (item.children.isNotEmpty) {
-      var existingBitmap = item.findElements('bitmap');
+      var existingBitmap = item.getElement('bitmap');
       if (existingBitmap != null) removeNodes.add(item);
     }
   });
   removeNodes.forEach(items.remove);
 
-  if (fill == null || !fill) {
-    items.add(
-        XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy());
-  } else {
-    items.add(XmlDocument.parse(_androidLaunchBackgroundItemXmlFill)
-        .rootElement
-        .copy());
-  }
-
+  var splashItem =
+      XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy();
+  splashItem.getElement('bitmap').setAttribute('android:gravity', gravity);
+  items.add(splashItem);
   launchBackgroundFile.writeAsStringSync(
       launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
 }
 
 /// Creates launch_background.xml with splash image path
 Future _createLaunchBackgroundFileWithImagePath(
-    String imagePath, bool fill, String launchBackgroundFilePath) async {
+    {String imagePath, String gravity, String launchBackgroundFilePath}) async {
   var file = await File(launchBackgroundFilePath).create(recursive: true);
-  String fileContent;
+  var fileContent = XmlDocument.parse(_androidLaunchBackgroundXml);
 
-  if (fill == null || !fill) {
-    fileContent = _androidLaunchBackgroundXml;
-
-    if (imagePath.isEmpty) {
-      fileContent = fileContent.replaceAll(_androidLaunchBackgroundItemXml, '');
-    }
+  if (imagePath.isEmpty) {
+    fileContent.getElement('layer-list').children.removeLast();
   } else {
-    fileContent = _androidLaunchBackgroundXmlFill;
+    var layerlist = fileContent.getElement('layer-list');
 
-    if (imagePath.isEmpty) {
-      fileContent = fileContent.replaceAll(_androidLaunchBackgroundXmlFill, '');
-    }
+    layerlist.children.whereType<XmlElement>().forEach((element) {
+      var bitmap = element.getElement('bitmap');
+      if (bitmap != null) {
+        bitmap.setAttribute('android:gravity', gravity);
+        return true;
+      }
+    });
   }
-  return await file.writeAsString(fileContent);
+  return await file
+      .writeAsString(fileContent.toXmlString(pretty: true, indent: '    '));
 }
 
 /// Create or update colors.xml adding splash screen background color
-Future<void> _applyColor(color, String colorFile) async {
+Future<void> _applyColor({color, String colorFile}) async {
   var colorsXml = File(colorFile);
 
   color = '#' + color;
@@ -198,18 +218,18 @@ Future<void> _applyColor(color, String colorFile) async {
     print('[Android] Updating ' +
         colorFile +
         ' with color for splash screen background');
-    _updateColorsFileWithColor(colorsXml, color);
+    _updateColorsFileWithColor(colorsFile: colorsXml, color: color);
   } else {
     print('[Android] No ' + colorFile + ' file found in your Android project');
     print('[Android] Creating ' +
         colorFile +
         ' file and adding it to your Android project');
-    _createColorsFile(color, colorsXml);
+    _createColorsFile(color: color, colorsXml: colorsXml);
   }
 }
 
 /// Updates the colors.xml with the splash screen background color
-void _updateColorsFileWithColor(File colorsFile, String color) {
+void _updateColorsFileWithColor({File colorsFile, String color}) {
   final lines = colorsFile.readAsLinesSync();
   var foundExisting = false;
 
@@ -240,10 +260,10 @@ void _updateColorsFileWithColor(File colorsFile, String color) {
 }
 
 /// Creates a colors.xml file if it was missing from android/app/src/main/res/values/colors.xml
-void _createColorsFile(String color, File colorsXml) {
+void _createColorsFile({String color, File colorsXml}) {
   colorsXml.create(recursive: true).then((File colorsFile) {
     colorsFile.writeAsString(_androidColorsXml).then((File file) {
-      _updateColorsFileWithColor(colorsFile, color);
+      _updateColorsFileWithColor(colorsFile: colorsFile, color: color);
     });
   });
 }
@@ -253,7 +273,7 @@ void _createColorsFile(String color, File colorsXml) {
 ///
 /// Note: default color = "splash_color"
 Future _overwriteLaunchBackgroundWithNewSplashColor(
-    String color, String launchBackgroundFilePath) async {
+    {String color, String launchBackgroundFilePath}) async {
   final launchBackgroundFile = File(launchBackgroundFilePath);
   final lines = await launchBackgroundFile.readAsLines();
 
@@ -278,21 +298,21 @@ Future _overwriteLaunchBackgroundWithNewSplashColor(
 }
 
 /// Create or update styles.xml full screen mode setting
-Future<void> _applyStylesXml(bool fullScreen) async {
+Future<void> _applyStylesXml({bool fullScreen}) async {
   final stylesFile = File(_androidStylesFile);
 
   if (!stylesFile.existsSync()) {
     print('[Android] No styles.xml file found in your Android project');
     print(
         '[Android] Creating styles.xml file and adding it to your Android project');
-    _createStylesFileWithImagePath(stylesFile);
+    _createStylesFileWithImagePath(stylesFile: stylesFile);
   }
   print('[Android] Updating styles.xml with full screen mode setting');
-  await _updateStylesFile(fullScreen, stylesFile);
+  await _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile);
 }
 
 /// Updates styles.xml adding full screen property
-Future<void> _updateStylesFile(bool fullScreen, File stylesFile) async {
+Future<void> _updateStylesFile({bool fullScreen, File stylesFile}) async {
   final stylesDocument = XmlDocument.parse(await stylesFile.readAsString());
   final styles = stylesDocument.findAllElements('style');
   if (styles.length == 1) {
@@ -330,7 +350,7 @@ Future<void> _updateStylesFile(bool fullScreen, File stylesFile) async {
 }
 
 /// Creates styles.xml with full screen property
-void _createStylesFileWithImagePath(File stylesFile) {
+void _createStylesFileWithImagePath({File stylesFile}) {
   stylesFile.createSync(recursive: true);
   stylesFile.writeAsStringSync(_androidStylesXml);
 }
