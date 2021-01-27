@@ -11,7 +11,7 @@ class _IosLaunchImageTemplate {
 final List<_IosLaunchImageTemplate> _iOSSplashImages =
     <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
-  _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 2),
+  _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 1.5),
   _IosLaunchImageTemplate(
       fileName: 'LaunchImage@3x.png', divider: 1), // original image must be @3x
 ];
@@ -19,7 +19,7 @@ final List<_IosLaunchImageTemplate> _iOSSplashImages =
 final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
     <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 2),
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 1.5),
   _IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
   // original image must be @3x
 ];

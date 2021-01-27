@@ -33,7 +33,7 @@ void _createAndroidSplash(
     String color,
     String darkColor,
     String gravity,
-    bool androidDisableFullscreen}) async {
+    bool fullscreen}) async {
   if (imagePath.isNotEmpty) {
     await _applyImageAndroid(imagePath: imagePath);
   }
@@ -79,7 +79,7 @@ void _createAndroidSplash(
     }
   }
 
-  await _applyStylesXml(fullScreen: !androidDisableFullscreen);
+  await _applyStylesXml(fullScreen: fullscreen);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)

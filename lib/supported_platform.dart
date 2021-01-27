@@ -35,7 +35,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
-  bool androidDisableFullscreen = config['android_disable_fullscreen'] ?? false;
+  bool androidFullscreen = config['android_fullscreen'] ?? false;
   String iosContentMode = config['ios_content_mode'] ?? 'center';
 
   if (!config.containsKey('android') || config['android']) {
@@ -45,7 +45,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
         color: color,
         darkColor: darkColor,
         gravity: gravity,
-        androidDisableFullscreen: androidDisableFullscreen);
+        fullscreen: androidFullscreen);
   }
 
   if (!config.containsKey('ios') || config['ios']) {

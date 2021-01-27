@@ -14,7 +14,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.8
+  flutter_native_splash: ^0.2.9
 ```
 
 Don't forget to `flutter pub get`.
@@ -60,8 +60,9 @@ flutter_native_splash:
   # bottomLeft, or bottomRight.
   #ios_content_mode: center
 
-  # To display the notification bar on Android, use the android_disable_fullscreen parameter.
-  #android_disable_fullscreen: true
+  # To hide the notification bar on Android, use the android_fullscreen parameter.  Defaults to 
+  # false.
+  #android_fullscreen: true
   
   # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s) 
   # with the info_plist_files parameter.  Remove only the # characters in the three lines below,

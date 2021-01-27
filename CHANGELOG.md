@@ -1,14 +1,26 @@
+## [0.2.9] - (2021-Jan-27)
+
+* Correct iOS 2x scaling. Closes [#27](https://github.com/jonbhanson/flutter_native_splash/issues/27).
+* Fullscreen defaults to false.  Closes [#122](https://github.com/jonbhanson/flutter_native_splash/issues/122).
+
 ## [0.2.8] - (2021-Jan-25)
 
-* Allow users to set Android gravity and iOS ContentMode directly. Parse LaunchScreen.storyboard with XML package for more reliability.  Updated install instructions.  Fixes [#18](https://github.com/jonbhanson/flutter_native_splash/issues/18). Closes [#63](https://github.com/jonbhanson/flutter_native_splash/pull/63).
+* Allow users to set Android gravity and iOS ContentMode directly. 
+* Parse LaunchScreen.storyboard with XML package for more reliability.  
+* Updated install instructions.  
+* Fixes [#18](https://github.com/jonbhanson/flutter_native_splash/issues/18). Closes [#63](https://github.com/jonbhanson/flutter_native_splash/pull/63).
 
 ## [0.2.7] - (2021-Jan-18)
 
-* Added configuration parameter to specify the info.plist location(s). Updated documentation.  Fixes [#120](https://github.com/jonbhanson/flutter_native_splash/issues/120), [#42](https://github.com/jonbhanson/flutter_native_splash/issues/42).
+* Added configuration parameter to specify the info.plist location(s). 
+* Updated documentation.  
+* Fixes [#120](https://github.com/jonbhanson/flutter_native_splash/issues/120), [#42](https://github.com/jonbhanson/flutter_native_splash/issues/42).
 
 ## [0.2.6] - (2021-Jan-14)
 
-* Added support for Android -v21 resource folders, which appear in the Flutter beta channel.  Parse launch_background.xml with XML package for more reliability.  Fixes [#104](https://github.com/jonbhanson/flutter_native_splash/issues/104), [#118](https://github.com/jonbhanson/flutter_native_splash/issues/118).
+* Added support for Android -v21 resource folders, which appear in the Flutter beta channel.  
+* Parse launch_background.xml with XML package for more reliability.  
+* Fixes [#104](https://github.com/jonbhanson/flutter_native_splash/issues/104), [#118](https://github.com/jonbhanson/flutter_native_splash/issues/118).
 
 
 ## [0.2.5] - (2021-Jan-13)
@@ -17,7 +29,8 @@
 
 ## [0.2.4] - (2021-Jan-12)
 
-* Update code that adds fullscreen mode to Android so that it selects the right style (LaunchTheme) in styles.xml.  This should resolve [#39](https://github.com/jonbhanson/flutter_native_splash/issues/39), [#54](https://github.com/jonbhanson/flutter_native_splash/issues/54), [#67](https://github.com/jonbhanson/flutter_native_splash/issues/67), [#92](https://github.com/jonbhanson/flutter_native_splash/issues/92), [#112](https://github.com/jonbhanson/flutter_native_splash/issues/112), and [#117](https://github.com/jonbhanson/flutter_native_splash/issues/117).  Removed code that modifies MainActivity as it is not longer needed since Flutter embedding V2 uses two styles in styles.xml so full screen is set independently in the style.
+* Update code that adds fullscreen mode to Android so that it selects the right style (LaunchTheme) in styles.xml.  This should resolve [#39](https://github.com/jonbhanson/flutter_native_splash/issues/39), [#54](https://github.com/jonbhanson/flutter_native_splash/issues/54), [#67](https://github.com/jonbhanson/flutter_native_splash/issues/67), [#92](https://github.com/jonbhanson/flutter_native_splash/issues/92), [#112](https://github.com/jonbhanson/flutter_native_splash/issues/112), and [#117](https://github.com/jonbhanson/flutter_native_splash/issues/117).  
+* Removed code that modifies MainActivity as it is not longer needed since Flutter embedding V2 uses two styles in styles.xml so full screen is set independently in the style.
 
 ## [0.2.3] - (2021-Jan-11)
 
