@@ -36,18 +36,6 @@ class _NoImageFileFoundException implements Exception {
   }
 }
 
-class _CantFindAppDelegatePath implements Exception {
-  const _CantFindAppDelegatePath([this.message]);
-  final String message;
-
-  @override
-  String toString() {
-    return '*** ERROR [flutter_native_splash] ***\n'
-        'CantFindAppDelegatePath\n'
-        '$message';
-  }
-}
-
 class _InvalidNativeFile implements Exception {
   const _InvalidNativeFile([this.message]);
   final String message;

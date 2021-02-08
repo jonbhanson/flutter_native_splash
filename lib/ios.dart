@@ -25,13 +25,15 @@ final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
 ];
 
 /// Create iOS splash screen
-void _createiOSSplash(
-    {String imagePath,
-    String darkImagePath,
-    String color,
-    String darkColor,
-    List<String> plistFiles,
-    String iosContentMode}) async {
+void _createiOSSplash({
+  String imagePath,
+  String darkImagePath,
+  String color,
+  String darkColor,
+  List<String> plistFiles,
+  String iosContentMode,
+  bool fullscreen,
+}) async {
   if (imagePath.isNotEmpty) {
     await _applyImageiOS(imagePath: imagePath);
   }
@@ -45,8 +47,7 @@ void _createiOSSplash(
       colorString: color,
       darkColorString: darkColor,
       dark: darkColor.isNotEmpty);
-  await _applyInfoPList(plistFiles: plistFiles);
-  await _applyAppDelegate();
+  await _applyInfoPList(plistFiles: plistFiles, fullscreen: fullscreen);
 }
 
 /// Create splash screen images for original size, @2x and @3x
@@ -225,7 +226,7 @@ Future<void> _createBackgroundColor(
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)
-Future _applyInfoPList({List<String> plistFiles}) async {
+Future _applyInfoPList({List<String> plistFiles, bool fullscreen}) async {
   if (plistFiles == null) {
     plistFiles = [];
     plistFiles.add(_iOSInfoPlistFile);
@@ -239,139 +240,63 @@ Future _applyInfoPList({List<String> plistFiles}) async {
           'flutter_native_splash configuration.');
     }
 
-    final infoPlistFile = File(plistFile);
-
-    final lines = await infoPlistFile.readAsLines();
-
-    if (_needToUpdateInfoPlist(lines: lines)) {
-      print('[iOS] Updating $infoPlistFile for status bar hidden/visible');
-      await _updateInfoPlistFile(infoPlistFile: infoPlistFile, lines: lines);
-    }
+    print('[iOS] Updating $plistFile for status bar hidden/visible');
+    await _updateInfoPlistFile(plistFile: plistFile, fullscreen: fullscreen);
   });
 }
 
-/// Check if Info.plist needs to be updated with code required for status bar hidden
-bool _needToUpdateInfoPlist({List<String> lines}) {
-  var foundExisting = false;
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    // if file contains our variable we're assuming it contains all required code
-    // it's okay to check only for the key because the key doesn't come on default create
-    if (line.contains('<key>UIStatusBarHidden</key>')) {
-      foundExisting = true;
-      break;
-    }
-  }
-
-  return !foundExisting;
-}
-
 /// Update Infop.list with status bar hidden directive
-Future _updateInfoPlistFile({File infoPlistFile, List<String> lines}) async {
-  var newLines = <String>[];
-  int lastDictLine;
+Future _updateInfoPlistFile({String plistFile, bool fullscreen}) async {
+  // Load the data
+  final file = File(plistFile);
+  final xmlDocument = XmlDocument.parse(file.readAsStringSync());
+  final dict = xmlDocument.getElement('plist').getElement('dict');
 
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
+  final uIStatusBarHidden =
+      dict.children.whereType<XmlElement>().firstWhere((element) {
+    return (element.text == 'UIStatusBarHidden');
+  }, orElse: () {
+    final builder = XmlBuilder();
+    builder.element('key', nest: () {
+      builder.text('UIStatusBarHidden');
+    });
+    dict.children.add(builder.buildFragment());
+    dict.children.add(XmlElement(XmlName(fullscreen.toString())));
+    return null;
+  });
 
-    // Find last `</dict>` on file
-    if (line.contains('</dict>')) {
-      lastDictLine = x;
-    }
-
-    newLines.add(line);
+  if (uIStatusBarHidden != null) {
+    var index = dict.children.indexOf(uIStatusBarHidden);
+    var uIStatusBarHiddenValue = dict.children[index + 1].following
+        .firstWhere((element) => element.nodeType == XmlNodeType.ELEMENT);
+    uIStatusBarHiddenValue.replace(XmlElement(XmlName(fullscreen.toString())));
   }
 
-  // Before last '</dict>' add the lines
-  newLines.insert(lastDictLine, _iOSInfoPlistLines);
+  if (fullscreen) {
+    final uIViewControllerBasedStatusBarAppearance =
+        dict.children.whereType<XmlElement>().firstWhere((element) {
+      return (element.text == 'UIViewControllerBasedStatusBarAppearance');
+    }, orElse: () {
+      final builder = XmlBuilder();
+      builder.element('key', nest: () {
+        builder.text('UIViewControllerBasedStatusBarAppearance');
+      });
+      dict.children.add(builder.buildFragment());
+      dict.children.add(XmlElement(XmlName((!fullscreen).toString())));
+      return null;
+    });
 
-  await infoPlistFile.writeAsString(newLines.join('\n'));
-}
+    if (uIViewControllerBasedStatusBarAppearance != null) {
+      var index =
+          dict.children.indexOf(uIViewControllerBasedStatusBarAppearance);
 
-/// Add the code required for removing full screen mode of splash screen after app loaded
-Future _applyAppDelegate() async {
-  String language = await _objectiveCOrSwift();
-  String appDelegatePath;
-
-  if (language == 'objective-c') {
-    appDelegatePath = _iOSAppDelegateObjCFile;
-  } else if (language == 'swift') {
-    appDelegatePath = _iOSAppDelegateSwiftFile;
-  }
-
-  final appDelegateFile = File(appDelegatePath);
-  final lines = await appDelegateFile.readAsLines();
-
-  if (_needToUpdateAppDelegate(language: language, lines: lines)) {
-    print('[iOS] Updating AppDelegate for status bar hidden/visible');
-    await _updateAppDelegate(
-        language: language, appDelegateFile: appDelegateFile, lines: lines);
-  }
-}
-
-Future _objectiveCOrSwift() async {
-  if (File(_iOSAppDelegateObjCFile).existsSync()) {
-    return 'objective-c';
-  } else if (File(_iOSAppDelegateSwiftFile).existsSync()) {
-    return 'swift';
-  } else {
-    throw _CantFindAppDelegatePath('Not able to determinate AppDelegate path.');
-  }
-}
-
-/// Check if AppDelegate needs to be updated with code required for splash screen
-bool _needToUpdateAppDelegate({String language, List<String> lines}) {
-  var foundExisting = false;
-
-  var objectiveCLine = 'int flutter_native_splash = 1;';
-  var swiftLine = 'var flutter_native_splash = 1';
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    // if file contains our variable we're assuming it contains all required code
-    if (line
-        .contains((language == 'objective-c') ? objectiveCLine : swiftLine)) {
-      foundExisting = true;
-      break;
+      var uIViewControllerBasedStatusBarAppearanceValue = dict
+          .children[index + 1].following
+          .firstWhere((element) => element.nodeType == XmlNodeType.ELEMENT);
+      uIViewControllerBasedStatusBarAppearanceValue
+          .replace(XmlElement(XmlName('false')));
     }
   }
 
-  return !foundExisting;
-}
-
-/// Update AppDelegate with code to remove status bar hidden property after app loaded
-Future _updateAppDelegate(
-    {String language, File appDelegateFile, List<String> lines}) async {
-  var newLines = <String>[];
-
-  var objectiveCReferenceLine =
-      '[GeneratedPluginRegistrant registerWithRegistry:self];';
-  var swiftReferenceLine = 'GeneratedPluginRegistrant.register(with: self)';
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    if (language == 'objective-c') {
-      // Before '[GeneratedPlugin ...' add the following lines
-      if (line.contains(objectiveCReferenceLine)) {
-        newLines.add(_iOSAppDelegateObjectiveCLines);
-      }
-
-      newLines.add(line);
-    }
-
-    if (language == 'swift') {
-      // Before 'GeneratedPlugin ...' add the following lines
-      if (line.contains(swiftReferenceLine)) {
-        newLines.add(_iOSAppDelegateSwiftLines);
-      }
-
-      newLines.add(line);
-    }
-  }
-
-  await appDelegateFile.writeAsString(newLines.join('\n'));
+  file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '	'));
 }

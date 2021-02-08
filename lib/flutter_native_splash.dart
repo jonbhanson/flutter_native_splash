@@ -21,3 +21,8 @@ Future<void> createSplash() async {
 Future<void> createSplashByConfig(Map<String, dynamic> config) async {
   tryCreateSplashByConfig(config);
 }
+
+/// Remove any splash screen by setting the default white splash
+Future<void> removeSplash() async {
+  await tryRemoveSplash();
+}

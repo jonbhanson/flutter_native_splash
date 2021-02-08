@@ -26,6 +26,12 @@ Future<void> tryCreateSplash() async {
   await tryCreateSplashByConfig(config);
 }
 
+/// Function that will be called on supported platforms to remove the splash screens.
+Future<void> tryRemoveSplash() async {
+  print('Restoring Flutter\'s default white native splash screen...');
+  await tryCreateSplashByConfig({'color': '#ffffff'});
+}
+
 /// Function that will be called on supported platforms to create the splash screen based on a config argument.
 Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
@@ -35,27 +41,30 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
-  bool androidFullscreen = config['android_fullscreen'] ?? false;
+  bool fullscreen = config['fullscreen'] ?? false;
   String iosContentMode = config['ios_content_mode'] ?? 'center';
 
   if (!config.containsKey('android') || config['android']) {
     await _createAndroidSplash(
-        imagePath: image,
-        darkImagePath: darkImage,
-        color: color,
-        darkColor: darkColor,
-        gravity: gravity,
-        fullscreen: androidFullscreen);
+      imagePath: image,
+      darkImagePath: darkImage,
+      color: color,
+      darkColor: darkColor,
+      gravity: gravity,
+      fullscreen: fullscreen,
+    );
   }
 
   if (!config.containsKey('ios') || config['ios']) {
     await _createiOSSplash(
-        imagePath: image,
-        darkImagePath: darkImage,
-        color: color,
-        darkColor: darkColor,
-        plistFiles: plistFiles,
-        iosContentMode: iosContentMode);
+      imagePath: image,
+      darkImagePath: darkImage,
+      color: color,
+      darkColor: darkColor,
+      plistFiles: plistFiles,
+      iosContentMode: iosContentMode,
+      fullscreen: fullscreen,
+    );
   }
 }
 

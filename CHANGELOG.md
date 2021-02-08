@@ -1,3 +1,10 @@
+## [0.2.10] - (2021-Feb-08)
+
+* Replaced `android_fullscreen` with `fullscreen` parameter, adding iOS support. closes [#75](https://github.com/jonbhanson/flutter_native_splash/issues/75), closes [#65](https://github.com/jonbhanson/flutter_native_splash/issues/65).
+* The package no longer modifies the AppDelegate.  Fixes [#125](https://github.com/jonbhanson/flutter_native_splash/issues/125), fixes [#66](https://github.com/jonbhanson/flutter_native_splash/issues/66).
+* Added `remove` command.  Closes [#97](https://github.com/jonbhanson/flutter_native_splash/issues/97), closes [#126](https://github.com/jonbhanson/flutter_native_splash/issues/126).
+* Updated docs.
+
 ## [0.2.9] - (2021-Jan-27)
 
 * Correct iOS 2x scaling. Closes [#27](https://github.com/jonbhanson/flutter_native_splash/issues/27).

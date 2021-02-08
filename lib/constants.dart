@@ -24,7 +24,5 @@ const String _iOSAssetsLaunchImageFolder =
 const String _iOSLaunchScreenStoryboardFile =
     'ios/Runner/Base.lproj/LaunchScreen.storyboard';
 const String _iOSInfoPlistFile = 'ios/Runner/Info.plist';
-const String _iOSAppDelegateObjCFile = 'ios/Runner/AppDelegate.m';
-const String _iOSAppDelegateSwiftFile = 'ios/Runner/AppDelegate.swift';
 const String _iOSAssetsLaunchImageBackgroundFolder =
     'ios/Runner/Assets.xcassets/LaunchBackground.imageset/';

@@ -90,21 +90,6 @@ const String _iOSLaunchScreenStoryboardContent = '''
 </document>
 ''';
 
-String _iOSInfoPlistLines = '''
-	<key>UIStatusBarHidden</key>
-	<true/>
-''';
-
-String _iOSAppDelegateObjectiveCLines = '''
-    int flutter_native_splash = 1;
-    UIApplication.sharedApplication.statusBarHidden = false;
-''';
-
-String _iOSAppDelegateSwiftLines = '''
-    var flutter_native_splash = 1
-    UIApplication.shared.isStatusBarHidden = false
-''';
-
 const String _iOSContentsJson = '''
 {
   "images" : [

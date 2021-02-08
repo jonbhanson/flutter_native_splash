@@ -19,3 +19,9 @@ void tryCreateSplash() async {
   throw UnsupportedError(
       'This package requires dart:io, which is unsupported by this platform.');
 }
+
+/// Function that will be called on unsupported platforms, triggering exception.
+Future<void> tryRemoveSplash() async {
+  throw UnsupportedError(
+      'This package requires dart:io, which is unsupported by this platform.');
+}

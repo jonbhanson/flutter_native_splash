@@ -1,29 +1,36 @@
-# flutter_native_splash
+
 [![pub package](https://img.shields.io/pub/v/flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
 [![Build Status](https://img.shields.io/travis/jonbhanson/flutter_native_splash)](https://travis-ci.org/jonbhanson/flutter_native_splash)
-[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](https://makeapullrequest.com)
 
-Automatically generates native code for adding splash screens in Android and iOS. Customize with specific platform, background color and splash image.
+When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time the native app displays a white splash screen.  This package automatically generates iOS and Android native code for customizing this native splash screen background color and splash image.  Supports dark mode, full screen, and platform-specific options.
 
-<p>
+<p align='center'>
   <img src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/splash_demo.gif" width="250" height="443"  />
 </p>
 
-## Usage
-First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file. You should add the package to `dev_dependencies` because you don't need this plugin in your APK.
+# Usage
+First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file. It belongs in `dev_dependencies` because it is a command line tool.
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.9
+  flutter_native_splash: ^0.2.10
 ```
 
 Don't forget to `flutter pub get`.
 
-### 1. Setting the splash screen
+## 1. Setting the splash screen
 Customized the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.
 
 ```yaml
 flutter_native_splash:
+
+  # This package generates native code to customize Flutter's default white native splash screen
+  # with background color and splash image.
+  # Customize the parameters below, and run the following command in the terminal:
+  # flutter pub run flutter_native_splash:create
+  # To restore Flutter's default white splash screen, run the following command in the terminal:
+  # flutter pub run flutter_native_splash:remove
+
   # color is the only required parameter.  It sets the background color of your splash screen.
   color: "#42a5f5"
   
@@ -60,9 +67,12 @@ flutter_native_splash:
   # bottomLeft, or bottomRight.
   #ios_content_mode: center
 
-  # To hide the notification bar on Android, use the android_fullscreen parameter.  Defaults to 
-  # false.
-  #android_fullscreen: true
+  # To hide the notification bar, use the fullscreen parameter.  Defaults to false.
+  # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.
+  #       To show the notification bar, add the following code to your Flutter app:
+  #       WidgetsFlutterBinding.ensureInitialized();
+  #       SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom, SystemUiOverlay.top]);
+  #fullscreen: true
   
   # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s) 
   # with the info_plist_files parameter.  Remove only the # characters in the three lines below,
@@ -72,8 +82,8 @@ flutter_native_splash:
   #  - 'ios/Runner/Info-Release.plist'
 ```
 
-### 2. Run the package
-After adding your settings, run the package with
+## 2. Run the package
+After adding your settings, run the following command in the terminal:
 
 ```
 flutter pub run flutter_native_splash:create
@@ -81,30 +91,94 @@ flutter pub run flutter_native_splash:create
 
 When the package finishes running your splash screen is ready.
 
-## Notes
+# Recommendations
+## Secondary splash screen:
+The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there may still be resources that need to be loaded before your app is ready.  For this reason, you should consider implimenting a Flutter splash screen that is displayed while these resources load.  Here is a code example of a secondary Flutter splash screen, or use a package from [pub.dev](https://pub.dev).
+
+```dart
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: Future.delayed(Duration(seconds: 3)),
+      builder: (context, AsyncSnapshot snapshot) {
+        // Show splash screen while waiting for app resources to load:
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return MaterialApp(home: Splash());
+        } else {
+          // Loading is done, return the app:
+          return MaterialApp(
+            home: Scaffold(body: Center(child: Text('App loaded'))),
+          );
+        }
+      },
+    );
+  }
+}
+
+class Splash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Icon(
+          Icons.apartment_outlined,
+          size: MediaQuery.of(context).size.width * 0.785,
+        ),
+      ),
+    );
+  }
+}
+```
+
+
+
+## Material resources:
+* If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
+  
+* Material Colors are available in [material.io/resources/color](https://material.io/resources/color/#!/)
+  
+# FAQs
+## Can I change the duration of the splash screen?
+The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  However, if you want a longer splash screen, see the [secondary splash screen](#secondary-splash-screen) recommendation.
+
+## Are animations/lottie/GIF images supported?
+Not at this time.  However, you may want to consider a secondary splash screen that supports animation.  See the [secondary splash screen](#secondary-splash-screen) recommendation.
+
+## Is there support for web?
+Not yet, but this is a planned improvement.
+
+# Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. If that does not solve the problem, delete your app from the device, power down the device, power up device, install and launch app as per [this stackoverflow thread](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update).
 
-* This package modifies `launch_background.xml`, and `styles.xml` files on Android and `LaunchScreen.storyboard`, `Info.plist` and `AppDelegate` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com/jonbhanson/flutter_native_splash/issues/new) if you find any bugs.
+* This package modifies `launch_background.xml`, and `styles.xml` files on Android and `LaunchScreen.storyboard`, and `Info.plist` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com//jonbhanson/flutter_native_splash/issues/new?template=bug_report.md) if you find any bugs.
 
-## Recommendations
-* If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
-
-* Material Colors are available in [material.io/resources/color](https://material.io/resources/color/#!/)
-
-## How it works
-### Android
+# How it works
+## Android
 * Your splash image will be resized to `mdpi`, `hdpi`, `xhdpi`, `xxhdpi` and `xxxhdpi` drawables.
 * An `<item>` tag containing a `<bitmap>` for your splash image drawable will be added in `launch_background.xml`
 * Background color will be added in `colors.xml` and referenced in `launch_background.xml`.
 * Code for full screen mode toggle will be added in `styles.xml`.
 * Dark mode variants are placed in `drawable-night`, `values-night`, etc. resource folders.
 
-### iOS
+## iOS
 * Your splash image will be resized to `@3x` and `@2x` images.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
 * The background color is implemented by using a single pixel png file and stretching it to fit the screen.
-* Code for hidden status bar toggle will be added in `Info.plist` and `AppDelegate`.
+* Code for hidden status bar toggle will be added in `Info.plist`.
 
-## Acknowledgments
+# Removing
 
-This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and it is currently maintained by [Jon Hanson](https://github.com/jonbhanson).  It is heavily inspired by [flutter_launcher_icons](https://pub.dev/packages/flutter_launcher_icons) created by [Mark O'Sullivan](https://github.com/MarkOSullivan94) and [Franz Silva](https://github.com/franzsilva).
+If you would like to restore Flutter's default white splash screen, run the following command in the terminal:
+
+```
+flutter pub run flutter_native_splash:remove
+```
+
+# Acknowledgments
+
+This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and it is currently maintained by [Jon Hanson](https://github.com/jonbhanson).
+
+# Bugs or Requests
+
+If you encounter any problems feel free to open an [issue](https://github.com//jonbhanson/flutter_native_splash/issues/new?template=bug_report.md). If you feel the library is missing a feature, please raise a [ticket](https://github.com//jonbhanson/flutter_native_splash/issues/new?template=feature_request.md). Pull request are also welcome.
