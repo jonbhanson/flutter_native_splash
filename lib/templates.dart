@@ -18,8 +18,6 @@ const String _androidLaunchBackgroundXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/splash_color" />
-
-  $_androidLaunchBackgroundItemXml
 </layer-list>
 ''';
 

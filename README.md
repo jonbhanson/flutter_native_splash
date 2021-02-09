@@ -13,7 +13,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.10
+  flutter_native_splash: ^0.2.11
 ```
 
 Don't forget to `flutter pub get`.
@@ -37,7 +37,7 @@ flutter_native_splash:
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing 
   # the leading # character.
 
-  # The image parameter allows you to specifiy an image used in the splash screen.  It must be a 
+  # The image parameter allows you to specify an image used in the splash screen.  It must be a 
   # png file.  
   #image: assets/splash.png
 
@@ -93,7 +93,7 @@ When the package finishes running your splash screen is ready.
 
 # Recommendations
 ## Secondary splash screen:
-The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there may still be resources that need to be loaded before your app is ready.  For this reason, you should consider implimenting a Flutter splash screen that is displayed while these resources load.  Here is a code example of a secondary Flutter splash screen, or use a package from [pub.dev](https://pub.dev).
+The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there may still be resources that need to be loaded before your app is ready.  For this reason, you should consider implementing a Flutter splash screen that is displayed while these resources load.  Here is a code example of a secondary Flutter splash screen, or use a package from [pub.dev](https://pub.dev).
 
 ```dart
 class MyApp extends StatelessWidget {

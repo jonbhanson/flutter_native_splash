@@ -42,18 +42,20 @@ void _createAndroidSplash(
   }
 
   await _applyLaunchBackgroundXml(
-      imagePath: imagePath,
-      gravity: gravity,
-      launchBackgroundFilePath: _androidLaunchBackgroundFile);
+    gravity: gravity,
+    launchBackgroundFilePath: _androidLaunchBackgroundFile,
+    showImage: imagePath.isNotEmpty,
+  );
   await _applyColor(color: color, colorFile: _androidColorsFile);
   await _overwriteLaunchBackgroundWithNewSplashColor(
       color: color, launchBackgroundFilePath: _androidLaunchBackgroundFile);
 
   if (darkColor.isNotEmpty) {
     await _applyLaunchBackgroundXml(
-        imagePath: darkImagePath,
-        gravity: gravity,
-        launchBackgroundFilePath: _androidLaunchDarkBackgroundFile);
+      gravity: gravity,
+      launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
+      showImage: imagePath.isNotEmpty,
+    );
     await _applyColor(color: darkColor, colorFile: _androidColorsDarkFile);
     await _overwriteLaunchBackgroundWithNewSplashColor(
         color: color,
@@ -62,17 +64,19 @@ void _createAndroidSplash(
 
   if (await Directory(_androidV21DrawableFolder).exists()) {
     await _applyLaunchBackgroundXml(
-        imagePath: imagePath,
-        gravity: gravity,
-        launchBackgroundFilePath: _androidV21LaunchBackgroundFile);
+      gravity: gravity,
+      launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
+      showImage: imagePath.isNotEmpty,
+    );
     await _overwriteLaunchBackgroundWithNewSplashColor(
         color: color,
         launchBackgroundFilePath: _androidV21LaunchBackgroundFile);
     if (darkColor.isNotEmpty) {
       await _applyLaunchBackgroundXml(
-          imagePath: darkImagePath,
-          gravity: gravity,
-          launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile);
+        gravity: gravity,
+        launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
+        showImage: imagePath.isNotEmpty,
+      );
       await _overwriteLaunchBackgroundWithNewSplashColor(
           color: color,
           launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile);
@@ -118,17 +122,22 @@ void _saveImageAndroid({_AndroidDrawableTemplate template, Image image}) {
 }
 
 /// Create or update launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml(
-    {String imagePath, String gravity, String launchBackgroundFilePath}) {
+Future _applyLaunchBackgroundXml({
+  String gravity,
+  String launchBackgroundFilePath,
+  bool showImage,
+}) {
   final launchBackgroundFile = File(launchBackgroundFilePath);
 
   if (launchBackgroundFile.existsSync()) {
-    if (imagePath.isNotEmpty) {
+    if (launchBackgroundFile.existsSync()) {
       print('[Android] Updating ' +
           launchBackgroundFilePath +
           ' with splash image path');
       return _updateLaunchBackgroundFileWithImagePath(
-          launchBackgroundFilePath: launchBackgroundFilePath, gravity: gravity);
+          launchBackgroundFilePath: launchBackgroundFilePath,
+          gravity: gravity,
+          showImage: showImage);
     }
 
     return Future.value(false);
@@ -140,15 +149,15 @@ Future _applyLaunchBackgroundXml(
         launchBackgroundFilePath +
         ' file and adding it to your Android project');
     return _createLaunchBackgroundFileWithImagePath(
-        imagePath: imagePath,
         gravity: gravity,
-        launchBackgroundFilePath: launchBackgroundFilePath);
+        launchBackgroundFilePath: launchBackgroundFilePath,
+        showImage: showImage);
   }
 }
 
 /// Updates launch_background.xml adding splash image path
 Future _updateLaunchBackgroundFileWithImagePath(
-    {String launchBackgroundFilePath, String gravity}) async {
+    {String launchBackgroundFilePath, String gravity, bool showImage}) async {
   final launchBackgroundFile = File(launchBackgroundFilePath);
   var launchBackgroundDocument;
   if (launchBackgroundFile.existsSync()) {
@@ -178,32 +187,27 @@ Future _updateLaunchBackgroundFileWithImagePath(
   });
   removeNodes.forEach(items.remove);
 
-  var splashItem =
-      XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy();
-  splashItem.getElement('bitmap').setAttribute('android:gravity', gravity);
-  items.add(splashItem);
+  if (showImage) {
+    var splashItem =
+        XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy();
+    splashItem.getElement('bitmap').setAttribute('android:gravity', gravity);
+    items.add(splashItem);
+  }
   launchBackgroundFile.writeAsStringSync(
       launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
 }
 
 /// Creates launch_background.xml with splash image path
 Future _createLaunchBackgroundFileWithImagePath(
-    {String imagePath, String gravity, String launchBackgroundFilePath}) async {
+    {String gravity, String launchBackgroundFilePath, bool showImage}) async {
   var file = await File(launchBackgroundFilePath).create(recursive: true);
   var fileContent = XmlDocument.parse(_androidLaunchBackgroundXml);
 
-  if (imagePath.isEmpty) {
-    fileContent.getElement('layer-list').children.removeLast();
-  } else {
-    var layerlist = fileContent.getElement('layer-list');
-
-    layerlist.children.whereType<XmlElement>().forEach((element) {
-      var bitmap = element.getElement('bitmap');
-      if (bitmap != null) {
-        bitmap.setAttribute('android:gravity', gravity);
-        return true;
-      }
-    });
+  if (showImage) {
+    var splashItem =
+        XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy();
+    splashItem.getElement('bitmap').setAttribute('android:gravity', gravity);
+    fileContent.getElement('layer-list').children.add(splashItem);
   }
   return await file
       .writeAsString(fileContent.toXmlString(pretty: true, indent: '    '));

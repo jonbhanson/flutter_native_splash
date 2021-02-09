@@ -36,40 +36,50 @@ void _createiOSSplash({
 }) async {
   if (imagePath.isNotEmpty) {
     await _applyImageiOS(imagePath: imagePath);
+  } else {
+    final splashImage = Image(1, 1);
+    _iOSSplashImages.forEach((template) async {
+      await File(_iOSAssetsLaunchImageFolder + template.fileName)
+          .create(recursive: true)
+          .then((File file) {
+        file.writeAsBytesSync(encodePng(splashImage));
+      });
+    });
   }
+
   if (darkImagePath.isNotEmpty) {
     await _applyImageiOS(imagePath: darkImagePath, dark: true);
+  } else {
+    _iOSSplashImagesDark.forEach((template) {
+      final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
+      if (file.existsSync()) file.deleteSync();
+    });
   }
+
+  await File(_iOSAssetsLaunchImageFolder + 'Contents.json')
+      .create(recursive: true)
+      .then((File file) {
+    file.writeAsStringSync(
+        darkImagePath.isNotEmpty ? _iOSContentsJsonDark : _iOSContentsJson);
+  });
 
   await _applyLaunchScreenStoryboard(
       imagePath: imagePath, iosContentMode: iosContentMode);
-  await _createBackgroundColor(
-      colorString: color,
-      darkColorString: darkColor,
-      dark: darkColor.isNotEmpty);
+  await _createBackgroundColor(colorString: color, darkColorString: darkColor);
   await _applyInfoPList(plistFiles: plistFiles, fullscreen: fullscreen);
 }
 
 /// Create splash screen images for original size, @2x and @3x
 void _applyImageiOS({String imagePath, bool dark = false}) {
   print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
-
-  final file = File(imagePath);
-
-  if (!file.existsSync()) {
+  if (!File(imagePath).existsSync()) {
     throw _NoImageFileFoundException('The file $imagePath was not found.');
   }
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
-
   for (var template in dark ? _iOSSplashImagesDark : _iOSSplashImages) {
     _saveImageiOS(template: template, image: image);
   }
-  File(_iOSAssetsLaunchImageFolder + 'Contents.json')
-      .create(recursive: true)
-      .then((File file) {
-    file.writeAsStringSync(dark ? _iOSContentsJsonDark : _iOSContentsJson);
-  });
 }
 
 /// Saves splash screen image to the project
@@ -195,7 +205,7 @@ Future _createLaunchScreenStoryboard(
 }
 
 Future<void> _createBackgroundColor(
-    {String colorString, String darkColorString, bool dark}) async {
+    {String colorString, String darkColorString}) async {
   var background = Image(1, 1);
   var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
   var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
@@ -215,13 +225,18 @@ Future<void> _createBackgroundColor(
     await File(_iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png')
         .create(recursive: true)
         .then((File file) => file.writeAsBytesSync(encodePng(background)));
+  } else {
+    final file =
+        File(_iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png');
+    if (file.existsSync()) file.deleteSync();
   }
 
   return File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
       .create(recursive: true)
       .then((File file) {
-    file.writeAsStringSync(
-        dark ? _iOSLaunchBackgroundDarkJson : _iOSLaunchBackgroundJson);
+    file.writeAsStringSync(darkColorString.isNotEmpty
+        ? _iOSLaunchBackgroundDarkJson
+        : _iOSLaunchBackgroundJson);
   });
 }
 

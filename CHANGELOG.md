@@ -1,3 +1,7 @@
+## [0.2.11] - (2021-Feb-09)
+
+* Fixed `remove` command which was leaving splash images in place.
+
 ## [0.2.10] - (2021-Feb-08)
 
 * Replaced `android_fullscreen` with `fullscreen` parameter, adding iOS support. closes [#75](https://github.com/jonbhanson/flutter_native_splash/issues/75), closes [#65](https://github.com/jonbhanson/flutter_native_splash/issues/65).
