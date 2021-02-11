@@ -1,3 +1,8 @@
+## [0.3.0] - (2021-Feb-10)
+
+* Added support for web.  Closes [#30](https://github.com/jonbhanson/flutter_native_splash/issues/30).
+* Updated the example app to include web.
+
 ## [0.2.11] - (2021-Feb-09)
 
 * Fixed `remove` command which was leaving splash images in place.

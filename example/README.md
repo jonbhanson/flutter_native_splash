@@ -1,37 +1,25 @@
 # Example for flutter_native_splash
 
-This is a brand new Flutter project created with `flutter create`.
+A new Flutter application for testing a splash screen.
 
-`pubspec.yaml`:
+## Getting Started
 
-```yaml
-name: example
-description: A new Flutter project.
-version: 1.0.0+1
+This is Flutter's example application.  Run it now and you will see that it has Flutter's default white splash screen.
 
-environment:
-  sdk: ">=2.1.0 <3.0.0"
+The pubspec.yaml file has been modified to add a color and icon to the splash screen.  To apply these modification, run the following command in the terminal:
 
-dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^0.1.2
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_native_splash: ^0.1.5
-
-flutter_native_splash:
-  image: assets/splash.png
-  color: "42a5f5"
-
-flutter:
-  uses-material-design: true
-```
-
-And then:
 ```
 flutter pub get
-flutter pub pub run flutter_native_splash:create
+flutter pub run flutter_native_splash:create
 ```
+
+The updated splash screen will now appear when you run the app.
+
+A few resources to get you started if this is your first Flutter project:
+
+- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
+- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+
+For help getting started with Flutter, view our
+[online documentation](https://flutter.dev/docs), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.

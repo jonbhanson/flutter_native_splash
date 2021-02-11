@@ -26,3 +26,10 @@ const String _iOSLaunchScreenStoryboardFile =
 const String _iOSInfoPlistFile = 'ios/Runner/Info.plist';
 const String _iOSAssetsLaunchImageBackgroundFolder =
     'ios/Runner/Assets.xcassets/LaunchBackground.imageset/';
+
+// Web-related constants
+const String _webFolder = 'web/';
+const String _webSplashFolder = _webFolder + 'splash/';
+const String _webSplashImagesFolder = _webSplashFolder + 'img/';
+const String _webIndex = _webFolder + 'index.html';
+const String _webRelativeStyleFile = 'splash/style.css';

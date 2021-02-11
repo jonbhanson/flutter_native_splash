@@ -267,3 +267,52 @@ const String _iOSLaunchBackgroundConstraints = '''
   <constraint firstItem="YRO-k0-Ey4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="xPn-NY-SIU"/>
 </constraints>
 ''';
+
+/// Web related templates
+const String _webCss = '''
+body, html {
+      margin:0;
+      height:100%;
+      background: [LIGHTBACKGROUNDCOLOR];
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.contain {
+  display:block;
+  width:100%; height:100%;
+  object-fit: contain;
+}
+
+.stretch {
+  display:block;
+  width:100%; height:100%;
+}
+
+.cover {
+  display:block;
+  width:100%; height:100%;
+  object-fit: cover;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: [DARKBACKGROUNDCOLOR];
+  }
+}
+''';
+
+const List<String> _indexHtmlPicture = [
+  '  <picture id="splash">',
+  '    <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x" media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)">',
+  '    <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x" media="(prefers-color-scheme: dark)">',
+  '    <img class="[IMAGEMODE]" src="splash/img/light-1x.png" />',
+  '  </picture>',
+];

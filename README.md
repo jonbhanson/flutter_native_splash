@@ -2,7 +2,7 @@
 [![pub package](https://img.shields.io/pub/v/flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
 [![Build Status](https://img.shields.io/travis/jonbhanson/flutter_native_splash)](https://travis-ci.org/jonbhanson/flutter_native_splash)
 
-When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time the native app displays a white splash screen.  This package automatically generates iOS and Android native code for customizing this native splash screen background color and splash image.  Supports dark mode, full screen, and platform-specific options.
+When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time the native app displays a white splash screen.  This package automatically generates iOS, Android, and Web native code for customizing this native splash screen background color and splash image.  Supports dark mode, full screen, and platform-specific options.
 
 <p align='center'>
   <img src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/splash_demo.gif" width="250" height="443"  />
@@ -13,7 +13,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.2.11
+  flutter_native_splash: ^0.3.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -51,9 +51,10 @@ flutter_native_splash:
   # platform.
   #android: false
   #ios: false
+  #web: false
 
-  # The position of the splash image can be set with android_gravity and ios_content_mode 
-  # parameters.  Both default to center.
+  # The position of the splash image can be set with android_gravity, ios_content_mode, and
+  # web_image_mode parameters.  All default to center.
   #
   # android_gravity can be one of the following Android Gravity (see 
   # https://developer.android.com/reference/android/view/Gravity): bottom, center, 
@@ -66,8 +67,12 @@ flutter_native_splash:
   # scaleAspectFit, scaleAspectFill, center, top, bottom, left, right, topLeft, topRight, 
   # bottomLeft, or bottomRight.
   #ios_content_mode: center
+  #
+  # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
+  #web_image_mode: center
 
-  # To hide the notification bar, use the fullscreen parameter.  Defaults to false.
+  # To hide the notification bar, use the fullscreen parameter.  Has no affect in web since web 
+  # has no notification bar.  Defaults to false.
   # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.
   #       To show the notification bar, add the following code to your Flutter app:
   #       WidgetsFlutterBinding.ensureInitialized();
@@ -145,9 +150,6 @@ The native splash screen is displayed while the native app loads the Flutter fra
 ## Are animations/lottie/GIF images supported?
 Not at this time.  However, you may want to consider a secondary splash screen that supports animation.  See the [secondary splash screen](#secondary-splash-screen) recommendation.
 
-## Is there support for web?
-Not yet, but this is a planned improvement.
-
 # Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. If that does not solve the problem, delete your app from the device, power down the device, power up device, install and launch app as per [this stackoverflow thread](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update).
 
@@ -166,6 +168,11 @@ Not yet, but this is a planned improvement.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
 * The background color is implemented by using a single pixel png file and stretching it to fit the screen.
 * Code for hidden status bar toggle will be added in `Info.plist`.
+
+## Web
+* A `web/splash` folder will be created for splash screen images and CSS files.
+* Your splash image will be resized to `1x`, `2x`, and `3x` sizes and placed in `web/splash/img`.
+* The splash style sheet will be added to the app's `web/index.html`, as well as the HTML for the splash pictures.
 
 # Removing
 

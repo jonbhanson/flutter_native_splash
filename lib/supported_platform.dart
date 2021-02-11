@@ -19,6 +19,7 @@ part 'constants.dart';
 part 'exceptions.dart';
 part 'ios.dart';
 part 'templates.dart';
+part 'web.dart';
 
 /// Function that will be called on supported platforms to create the splash screens.
 Future<void> tryCreateSplash() async {
@@ -36,13 +37,14 @@ Future<void> tryRemoveSplash() async {
 Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
   String darkImage = config['image_dark'] ?? '';
-  var color = parseColor(config['color']);
-  var darkColor = parseColor(config['color_dark']) ?? '';
+  var color = _parseColor(config['color']);
+  var darkColor = _parseColor(config['color_dark']) ?? '';
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
   bool fullscreen = config['fullscreen'] ?? false;
   String iosContentMode = config['ios_content_mode'] ?? 'center';
+  final webImageMode = (config['web_image_mode'] ?? 'center');
 
   if (!config.containsKey('android') || config['android']) {
     await _createAndroidSplash(
@@ -66,9 +68,18 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
       fullscreen: fullscreen,
     );
   }
+
+  if (!config.containsKey('web') || config['web']) {
+    await _createWebSplash(
+        imagePath: image,
+        darkImagePath: darkImage,
+        color: color,
+        darkColor: darkColor,
+        imageMode: webImageMode);
+  }
 }
 
-String parseColor(var color) {
+String _parseColor(var color) {
   if (color is int) color = color.toString().padLeft(6, '0');
 
   if (color is String) {
