@@ -5,7 +5,7 @@ class _IosLaunchImageTemplate {
   final String fileName;
   final double divider;
 
-  _IosLaunchImageTemplate({this.fileName, this.divider});
+  _IosLaunchImageTemplate({required this.fileName, required this.divider});
 }
 
 final List<_IosLaunchImageTemplate> _iOSSplashImages =
@@ -25,14 +25,14 @@ final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
 ];
 
 /// Create iOS splash screen
-void _createiOSSplash({
-  String imagePath,
-  String darkImagePath,
-  String color,
-  String darkColor,
-  List<String> plistFiles,
-  String iosContentMode,
-  bool fullscreen,
+Future<void> _createiOSSplash({
+  required String imagePath,
+  required String darkImagePath,
+  required String color,
+  required String darkColor,
+  List<String>? plistFiles,
+  required String iosContentMode,
+  required bool fullscreen,
 }) async {
   if (imagePath.isNotEmpty) {
     await _applyImageiOS(imagePath: imagePath);
@@ -70,20 +70,25 @@ void _createiOSSplash({
 }
 
 /// Create splash screen images for original size, @2x and @3x
-void _applyImageiOS({String imagePath, bool dark = false}) {
+Future<void> _applyImageiOS(
+    {required String imagePath, bool dark = false}) async {
   print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
   if (!File(imagePath).existsSync()) {
     throw _NoImageFileFoundException('The file $imagePath was not found.');
   }
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
+  if (image == null) {
+    throw _NoImageFileFoundException(imagePath + ' could not be loaded.');
+  }
   for (var template in dark ? _iOSSplashImagesDark : _iOSSplashImages) {
     _saveImageiOS(template: template, image: image);
   }
 }
 
 /// Saves splash screen image to the project
-void _saveImageiOS({_IosLaunchImageTemplate template, Image image}) {
+void _saveImageiOS(
+    {required _IosLaunchImageTemplate template, required Image image}) {
   var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -99,7 +104,8 @@ void _saveImageiOS({_IosLaunchImageTemplate template, Image image}) {
 }
 
 /// Update LaunchScreen.storyboard adding width, height and color
-Future _applyLaunchScreenStoryboard({String imagePath, String iosContentMode}) {
+Future _applyLaunchScreenStoryboard(
+    {required String imagePath, required String iosContentMode}) {
   final file = File(_iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
@@ -117,7 +123,7 @@ Future _applyLaunchScreenStoryboard({String imagePath, String iosContentMode}) {
 
 /// Updates LaunchScreen.storyboard adding splash image path
 Future _updateLaunchScreenStoryboard(
-    {String imagePath, String iosContentMode}) async {
+    {required String imagePath, required String iosContentMode}) async {
   // Load the data
   final file = File(_iOSLaunchScreenStoryboardFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
@@ -125,7 +131,7 @@ Future _updateLaunchScreenStoryboard(
 
   // Find the view that contains the splash image
   final view =
-      documentData.descendants.whereType<XmlElement>().firstWhere((element) {
+      documentData?.descendants.whereType<XmlElement>().firstWhere((element) {
     return (element.name.qualified == 'view' &&
         element.getAttribute('id') == 'Ze5-6b-2t3');
   });
@@ -136,47 +142,37 @@ Future _updateLaunchScreenStoryboard(
 
   // Find the splash imageView
   final subViews = view.getElement('subviews');
-  final imageView = subViews.children.whereType<XmlElement>().firstWhere(
+  final imageView = subViews?.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
           element.getAttribute('image') == 'LaunchImage'));
-  final backgroundView = subViews.children.whereType<XmlElement>().firstWhere(
+  subViews?.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
-          element.getAttribute('image') == 'LaunchBackground'),
-      orElse: () => null);
+          element.getAttribute('image') == 'LaunchBackground'), orElse: () {
+    subViews.children.insert(
+        0, XmlDocument.parse(_iOSLaunchBackgroundSubview).rootElement.copy());
+    return XmlElement(XmlName(''));
+  });
   // Update the fill property
-  imageView.setAttribute('contentMode', iosContentMode);
+  imageView?.setAttribute('contentMode', iosContentMode);
 
   // Find the resources
-  final resources = documentData.getElement('resources');
-  var launchImageResource = resources.children
-      .whereType<XmlElement>()
-      .firstWhere(
-          (element) => (element.name.qualified == 'image' &&
-              element.getAttribute('name') == 'LaunchImage'),
-          orElse: () => null);
-  if (launchImageResource == null) {
-    throw _LaunchScreenStoryboardModified(
-        "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
-  }
-  final launchBackgroundResource = resources.children
-      .whereType<XmlElement>()
-      .firstWhere(
-          (element) => (element.name.qualified == 'image' &&
-              element.getAttribute('name') == 'LaunchBackground'),
-          orElse: () => null);
+  final resources = documentData?.getElement('resources');
+  var launchImageResource = resources?.children.whereType<XmlElement>().firstWhere(
+      (element) => (element.name.qualified == 'image' &&
+          element.getAttribute('name') == 'LaunchImage'),
+      orElse: () => throw _LaunchScreenStoryboardModified(
+          "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?"));
 
-  // If the color has not been set via background image, set it here:
-  if (launchBackgroundResource == null) {
+  resources?.children.whereType<XmlElement>().firstWhere(
+      (element) => (element.name.qualified == 'image' &&
+          element.getAttribute('name') == 'LaunchBackground'), orElse: () {
+    // If the color has not been set via background image, set it here:
     resources.children.add(XmlDocument.parse(
             '<image name="LaunchBackground" width="1" height="1"/>')
         .rootElement
         .copy());
-  }
-
-  if (backgroundView == null) {
-    subViews.children.insert(
-        0, XmlDocument.parse(_iOSLaunchBackgroundSubview).rootElement.copy());
-  }
+    return XmlElement(XmlName(''));
+  });
 
   view.children.remove(view.getElement('constraints'));
   view.children.add(
@@ -188,8 +184,11 @@ Future _updateLaunchScreenStoryboard(
     }
 
     final image = decodeImage(File(imagePath).readAsBytesSync());
-    launchImageResource.setAttribute('width', image.width.toString());
-    launchImageResource.setAttribute('height', image.height.toString());
+    if (image == null) {
+      throw _NoImageFileFoundException(imagePath + ' could not be loaded.');
+    }
+    launchImageResource?.setAttribute('width', image.width.toString());
+    launchImageResource?.setAttribute('height', image.height.toString());
   }
 
   file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '    '));
@@ -197,7 +196,7 @@ Future _updateLaunchScreenStoryboard(
 
 /// Creates LaunchScreen.storyboard with splash image path
 Future _createLaunchScreenStoryboard(
-    {String imagePath, String iosContentMode}) async {
+    {required String imagePath, required String iosContentMode}) async {
   var file = await File(_iOSLaunchScreenStoryboardFile).create(recursive: true);
   await file.writeAsString(_iOSLaunchScreenStoryboardContent);
   return _updateLaunchScreenStoryboard(
@@ -205,7 +204,7 @@ Future _createLaunchScreenStoryboard(
 }
 
 Future<void> _createBackgroundColor(
-    {String colorString, String darkColorString}) async {
+    {required String colorString, required String darkColorString}) async {
   var background = Image(1, 1);
   var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
   var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
@@ -241,7 +240,8 @@ Future<void> _createBackgroundColor(
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)
-Future _applyInfoPList({List<String> plistFiles, bool fullscreen}) async {
+Future _applyInfoPList(
+    {List<String>? plistFiles, required bool fullscreen}) async {
   if (plistFiles == null) {
     plistFiles = [];
     plistFiles.add(_iOSInfoPlistFile);
@@ -261,12 +261,17 @@ Future _applyInfoPList({List<String> plistFiles, bool fullscreen}) async {
 }
 
 /// Update Infop.list with status bar hidden directive
-Future _updateInfoPlistFile({String plistFile, bool fullscreen}) async {
+Future _updateInfoPlistFile(
+    {required String plistFile, required bool fullscreen}) async {
   // Load the data
   final file = File(plistFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
-  final dict = xmlDocument.getElement('plist').getElement('dict');
+  final dict = xmlDocument.getElement('plist')?.getElement('dict');
+  if (dict == null) {
+    throw Exception(plistFile + ' plist dict element not found');
+  }
 
+  var elementFound = true;
   final uIStatusBarHidden =
       dict.children.whereType<XmlElement>().firstWhere((element) {
     return (element.text == 'UIStatusBarHidden');
@@ -277,16 +282,18 @@ Future _updateInfoPlistFile({String plistFile, bool fullscreen}) async {
     });
     dict.children.add(builder.buildFragment());
     dict.children.add(XmlElement(XmlName(fullscreen.toString())));
-    return null;
+    elementFound = false;
+    return XmlElement(XmlName(''));
   });
 
-  if (uIStatusBarHidden != null) {
+  if (elementFound) {
     var index = dict.children.indexOf(uIStatusBarHidden);
     var uIStatusBarHiddenValue = dict.children[index + 1].following
         .firstWhere((element) => element.nodeType == XmlNodeType.ELEMENT);
     uIStatusBarHiddenValue.replace(XmlElement(XmlName(fullscreen.toString())));
   }
 
+  elementFound = true;
   if (fullscreen) {
     final uIViewControllerBasedStatusBarAppearance =
         dict.children.whereType<XmlElement>().firstWhere((element) {
@@ -298,10 +305,11 @@ Future _updateInfoPlistFile({String plistFile, bool fullscreen}) async {
       });
       dict.children.add(builder.buildFragment());
       dict.children.add(XmlElement(XmlName((!fullscreen).toString())));
-      return null;
+      elementFound = false;
+      return XmlElement(XmlName(''));
     });
 
-    if (uIViewControllerBasedStatusBarAppearance != null) {
+    if (elementFound) {
       var index =
           dict.children.indexOf(uIViewControllerBasedStatusBarAppearance);
 

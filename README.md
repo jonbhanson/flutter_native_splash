@@ -13,7 +13,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^0.3.0
+  flutter_native_splash: ^1.0.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -105,6 +105,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
+      // Replace the 3 second delay with your initialization code:
       future: Future.delayed(Duration(seconds: 3)),
       builder: (context, AsyncSnapshot snapshot) {
         // Show splash screen while waiting for app resources to load:
@@ -153,7 +154,7 @@ Not at this time.  However, you may want to consider a secondary splash screen t
 # Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. If that does not solve the problem, delete your app from the device, power down the device, power up device, install and launch app as per [this stackoverflow thread](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update).
 
-* This package modifies `launch_background.xml`, and `styles.xml` files on Android and `LaunchScreen.storyboard`, and `Info.plist` on iOS. If you modified this files manually this plugin may not work properly, please [open an issue](https://github.com//jonbhanson/flutter_native_splash/issues/new?template=bug_report.md) if you find any bugs.
+* This package modifies `launch_background.xml` and `styles.xml` files on Android, `LaunchScreen.storyboard` and `Info.plist` on iOS, and `index.html` on Web. If you have modified these files manually, this plugin may not work properly. Please [open an issue](https://github.com//jonbhanson/flutter_native_splash/issues/new?template=bug_report.md) if you find any bugs.
 
 # How it works
 ## Android

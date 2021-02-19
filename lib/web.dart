@@ -4,16 +4,16 @@ part of flutter_native_splash_supported_platform;
 class _WebLaunchImageTemplate {
   final String fileName;
   final double divider;
-  _WebLaunchImageTemplate({this.fileName, this.divider});
+  _WebLaunchImageTemplate({required this.fileName, required this.divider});
 }
 
 /// Create Android splash screen
 Future<void> _createWebSplash({
-  String imagePath,
-  String darkImagePath,
-  String color,
-  String darkColor,
-  String imageMode,
+  required String imagePath,
+  required String darkImagePath,
+  required String color,
+  required String darkColor,
+  required String imageMode,
 }) async {
   if (!File(_webIndex).existsSync()) {
     print('[Web] ' + _webIndex + ' not found.  Skipping Web.');
@@ -35,8 +35,9 @@ Future<void> _createWebSplash({
   await updateIndex(imageMode: imageMode, showImages: imagePath.isNotEmpty);
 }
 
-void createWebImages(
-    {String imagePath, List<_WebLaunchImageTemplate> webSplashImages}) async {
+Future<void> createWebImages(
+    {required String imagePath,
+    required List<_WebLaunchImageTemplate> webSplashImages}) async {
   if (imagePath.isEmpty) {
     for (var template in webSplashImages) {
       final file = File(_webSplashImagesFolder + template.fileName);
@@ -44,6 +45,9 @@ void createWebImages(
     }
   } else {
     final image = decodeImage(File(imagePath).readAsBytesSync());
+    if (image == null) {
+      throw _NoImageFileFoundException(imagePath + ' could not be read');
+    }
     print('[Web] Creating images');
     for (var template in webSplashImages) {
       await _saveImageWeb(template: template, image: image);
@@ -51,7 +55,8 @@ void createWebImages(
   }
 }
 
-dynamic _saveImageWeb({_WebLaunchImageTemplate template, Image image}) async {
+dynamic _saveImageWeb(
+    {required _WebLaunchImageTemplate template, required Image image}) async {
   var newFile = await copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -64,7 +69,8 @@ dynamic _saveImageWeb({_WebLaunchImageTemplate template, Image image}) async {
   await file.writeAsBytes(encodePng(newFile));
 }
 
-void createSplashCss({String color, String darkColor}) {
+Future<void> createSplashCss(
+    {required String color, required String darkColor}) async {
   print('[Web] Creating CSS');
   if (darkColor.isEmpty) darkColor = color;
   var cssContent = _webCss
@@ -73,7 +79,8 @@ void createSplashCss({String color, String darkColor}) {
   File(_webFolder + _webRelativeStyleFile).writeAsStringSync(cssContent);
 }
 
-void updateIndex({String imageMode, bool showImages}) async {
+Future<void> updateIndex(
+    {required String imageMode, required bool showImages}) async {
   print('[Web] Updating index.html');
   final webIndex = File(_webIndex);
   var lines = webIndex.readAsLinesSync();

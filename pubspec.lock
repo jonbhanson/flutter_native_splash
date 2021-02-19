@@ -7,14 +7,7 @@ packages:
       name: archive
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.13"
-  args:
-    dependency: transitive
-    description:
-      name: args
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.0"
+    version: "3.0.0"
   charcode:
     dependency: transitive
     description:
@@ -29,27 +22,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
-  convert:
-    dependency: transitive
-    description:
-      name: convert
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.1"
   crypto:
     dependency: transitive
     description:
       name: crypto
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "3.0.0"
   image:
     dependency: "direct main"
     description:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.19"
+    version: "3.0.0-nullsafety.0"
   meta:
     dependency: transitive
     description:
@@ -77,7 +63,7 @@ packages:
       name: petitparser
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "4.0.2"
   source_span:
     dependency: transitive
     description:
@@ -112,13 +98,13 @@ packages:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.5.1"
+    version: "5.0.2"
   yaml:
     dependency: "direct main"
     description:
       name: yaml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.1"
+    version: "3.0.0"
 sdks:
   dart: ">=2.12.0-0.0 <3.0.0"

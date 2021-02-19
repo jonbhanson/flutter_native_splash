@@ -1,7 +1,7 @@
 part of flutter_native_splash_supported_platform;
 
 class _NoConfigFoundException implements Exception {
-  const _NoConfigFoundException([this.message]);
+  const _NoConfigFoundException(this.message);
   final String message;
 
   @override
@@ -13,7 +13,7 @@ class _NoConfigFoundException implements Exception {
 }
 
 class _InvalidConfigException implements Exception {
-  const _InvalidConfigException([this.message]);
+  const _InvalidConfigException(this.message);
   final String message;
 
   @override
@@ -25,7 +25,7 @@ class _InvalidConfigException implements Exception {
 }
 
 class _NoImageFileFoundException implements Exception {
-  const _NoImageFileFoundException([this.message]);
+  const _NoImageFileFoundException(this.message);
   final String message;
 
   @override
@@ -37,7 +37,7 @@ class _NoImageFileFoundException implements Exception {
 }
 
 class _InvalidNativeFile implements Exception {
-  const _InvalidNativeFile([this.message]);
+  const _InvalidNativeFile(this.message);
   final String message;
 
   @override
@@ -49,7 +49,7 @@ class _InvalidNativeFile implements Exception {
 }
 
 class _LaunchScreenStoryboardModified implements Exception {
-  const _LaunchScreenStoryboardModified([this.message]);
+  const _LaunchScreenStoryboardModified(this.message);
   final String message;
 
   @override
@@ -61,7 +61,7 @@ class _LaunchScreenStoryboardModified implements Exception {
 }
 
 class _CantFindInfoPlistFile implements Exception {
-  const _CantFindInfoPlistFile([this.message]);
+  const _CantFindInfoPlistFile(this.message);
   final String message;
 
   @override

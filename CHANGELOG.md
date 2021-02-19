@@ -1,3 +1,7 @@
+## [1.0.0] - (2021-Feb-19)
+
+* Adds null safety.  Closes [#127](https://github.com/jonbhanson/flutter_native_splash/issues/127).
+
 ## [0.3.0] - (2021-Feb-10)
 
 * Added support for web.  Closes [#30](https://github.com/jonbhanson/flutter_native_splash/issues/30).

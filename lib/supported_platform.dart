@@ -38,7 +38,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String image = config['image'] ?? '';
   String darkImage = config['image_dark'] ?? '';
   var color = _parseColor(config['color']);
-  var darkColor = _parseColor(config['color_dark']) ?? '';
+  var darkColor = _parseColor(config['color_dark']);
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
@@ -86,7 +86,7 @@ String _parseColor(var color) {
     color = color.replaceAll('#', '').replaceAll(' ', '');
     if (color.length == 6) return color;
   }
-  if (color == null) return null;
+  if (color == null) return '';
 
   throw Exception('Invalid color value');
 }
@@ -103,19 +103,23 @@ Map<String, dynamic> _getConfig() {
   final yamlString = file.readAsStringSync();
   final Map yamlMap = loadYaml(yamlString);
 
-  if (yamlMap == null || !(yamlMap['flutter_native_splash'] is Map)) {
+  if (!(yamlMap['flutter_native_splash'] is Map)) {
     stderr.writeln(_NoConfigFoundException(
         'Your `$filePath` file does not contain a `flutter_native_splash` section.'));
     exit(1);
   }
 
-  // yamlMap has the type YamlMap, which has several unwanted sideeffects
+  // yamlMap has the type YamlMap, which has several unwanted side effects
   final config = <String, dynamic>{};
   for (MapEntry<dynamic, dynamic> entry
       in yamlMap['flutter_native_splash'].entries) {
     if (entry.value is YamlList) {
       var list = <String>[];
-      (entry.value as YamlList).forEach(list.add);
+      (entry.value as YamlList).forEach((dynamic value) {
+        if (value is String) {
+          list.add(value);
+        }
+      });
       config[entry.key] = list;
     } else {
       config[entry.key] = entry.value;

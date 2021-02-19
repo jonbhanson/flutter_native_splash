@@ -15,7 +15,7 @@ void tryCreateSplashByConfig(Map<String, dynamic> config) async {
 }
 
 /// Function that will be called on unsupported platforms, triggering exception.
-void tryCreateSplash() async {
+Future<void> tryCreateSplash() async {
   throw UnsupportedError(
       'This package requires dart:io, which is unsupported by this platform.');
 }
