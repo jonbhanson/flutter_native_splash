@@ -1,3 +1,7 @@
+## [1.0.1] - (2021-Mar-02)
+
+ * Corrected location of `picture` tag in web to ensure that splash disappears.  Thanks [Dawid Dziurla](https://github.com/dawidd6).
+
 ## [1.0.0] - (2021-Feb-19)
 
 * Adds null safety.  Closes [#127](https://github.com/jonbhanson/flutter_native_splash/issues/127).

@@ -87,7 +87,7 @@ Future<void> updateIndex(
 
   var foundExistingStyleSheet = false;
   var headCloseTagLine = 0;
-  var bodyCloseTagLine = 0;
+  var dartScriptTagLine = 0;
   var existingPictureLine = 0;
 
   final styleSheetLink =
@@ -99,8 +99,8 @@ Future<void> updateIndex(
       foundExistingStyleSheet = true;
     } else if (line.contains('</head>')) {
       headCloseTagLine = x;
-    } else if (line.contains('</body>')) {
-      bodyCloseTagLine = x;
+    } else if (line.contains('src="main.dart.js"')) {
+      dartScriptTagLine = x;
     } else if (line.contains('<picture id="splash">')) {
       existingPictureLine = x;
     }
@@ -113,10 +113,10 @@ Future<void> updateIndex(
   if (existingPictureLine == 0) {
     if (showImages) {
       for (var x = _indexHtmlPicture.length - 1; x >= 0; x--) {
-        lines[bodyCloseTagLine] =
+        lines[dartScriptTagLine] =
             _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode) +
                 '\n' +
-                lines[bodyCloseTagLine];
+                lines[dartScriptTagLine];
       }
     }
   } else {
