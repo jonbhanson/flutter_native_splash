@@ -138,7 +138,10 @@ Future _updateLaunchScreenStoryboard(
   final subViews = view.getElement('subviews');
   final imageView = subViews.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
-          element.getAttribute('image') == 'LaunchImage'));
+          element.getAttribute('image') == 'LaunchImage'),
+      orElse: () => throw _LaunchScreenStoryboardModified(
+          "Not able to find 'LaunchImage' in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?"));
+
   final backgroundView = subViews.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
           element.getAttribute('image') == 'LaunchBackground'),
@@ -156,7 +159,7 @@ Future _updateLaunchScreenStoryboard(
           orElse: () => null);
   if (launchImageResource == null) {
     throw _LaunchScreenStoryboardModified(
-        "Not able to find 'LaunchImage' image tag in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
+        "Not able to find 'LaunchImage' in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?");
   }
   final launchBackgroundResource = resources.children
       .whereType<XmlElement>()

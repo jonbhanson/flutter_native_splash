@@ -1,3 +1,7 @@
+## [0.3.2] - (2021-Mar-04)
+
+* Added exception for missing/renamed splash image in LaunchScreen.storyboard.  Closes [136](https://github.com/jonbhanson/flutter_native_splash/issues/136).
+
 ## [0.3.1+1] - (2021-Mar-02)
 
 * Corrected location of `picture` tag in web to ensure that splash disappears.  Thanks [Dawid Dziurla](https://github.com/dawidd6).
