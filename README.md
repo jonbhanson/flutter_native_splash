@@ -13,7 +13,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.0.1
+  flutter_native_splash: ^1.0.1+1
 ```
 
 Don't forget to `flutter pub get`.
@@ -95,9 +95,6 @@ flutter pub run flutter_native_splash:create
 ```
 
 When the package finishes running, your splash screen is ready.
-
-## 3. Like the package
-Did you find this package useful?  Please hit the <img height="18" width="18" src="https://pub.dev/static/img/like-inactive.svg?hash=107p369br29frvj1k7giq3qfai6fni37" class="mdc-icon-button__icon"> <a href="#detail-like">above</a>!  
 
 # Recommendations
 ## Secondary splash screen:

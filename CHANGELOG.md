@@ -1,4 +1,4 @@
-## [1.0.1] - (2021-Mar-02)
+## [1.0.1+1] - (2021-Mar-02)
 
  * Corrected location of `picture` tag in web to ensure that splash disappears.  Thanks [Dawid Dziurla](https://github.com/dawidd6).
 
