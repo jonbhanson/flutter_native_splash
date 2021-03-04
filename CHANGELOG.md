@@ -1,6 +1,10 @@
+## [1.0.2] - (2021-Mar-04)
+
+* Added exception for missing/renamed splash image in LaunchScreen.storyboard.
+
 ## [1.0.1+1] - (2021-Mar-02)
 
- * Corrected location of `picture` tag in web to ensure that splash disappears.  Thanks [Dawid Dziurla](https://github.com/dawidd6).
+* Corrected location of `picture` tag in web to ensure that splash disappears.  Thanks [Dawid Dziurla](https://github.com/dawidd6).
 
 ## [1.0.0] - (2021-Feb-19)
 
