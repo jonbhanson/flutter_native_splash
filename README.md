@@ -9,14 +9,21 @@ When your app is opened, there is a brief time while the native app loads Flutte
 </p>
 
 # Usage
+
+Would you prefer a video tutorial instead?  Check out <a href="https://www.youtube.com/watch?v=8ME8Czqc-Oc">Johannes Milke's tutorial</a>.
+
 First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file. It belongs in `dev_dependencies` because it is a command line tool.
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: <latest-version>
+  flutter_native_splash: ^1.0.3
 ```
 
 Don't forget to `flutter pub get`.
+
+> #### NOTE:
+> 
+> If you are using Flutter 1.x, you must use the <a href="https://pub.dev/packages/flutter_native_splash/versions">0.x version</a> of this package.
 
 ## 1. Setting the splash screen
 Customized the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.

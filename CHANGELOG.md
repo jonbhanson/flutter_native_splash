@@ -1,3 +1,7 @@
+## [1.0.3] - (2021-Mar-05)
+
+* Updated readme.
+
 ## [1.0.2] - (2021-Mar-04)
 
 * Added exception for missing/renamed splash image in LaunchScreen.storyboard.
