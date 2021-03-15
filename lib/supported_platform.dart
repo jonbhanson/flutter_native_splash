@@ -39,6 +39,8 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   String darkImage = config['image_dark'] ?? '';
   var color = _parseColor(config['color']);
   var darkColor = _parseColor(config['color_dark']);
+  String backgroundImage = config['background_image'] ?? '';
+  String darkBackgroundImage = config['background_image_dark'] ?? '';
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
@@ -50,6 +52,8 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
     await _createAndroidSplash(
       imagePath: image,
       darkImagePath: darkImage,
+      backgroundImage: backgroundImage,
+      darkBackgroundImage: darkBackgroundImage,
       color: color,
       darkColor: darkColor,
       gravity: gravity,
@@ -61,6 +65,8 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
     await _createiOSSplash(
       imagePath: image,
       darkImagePath: darkImage,
+      backgroundImage: backgroundImage,
+      darkBackgroundImage: darkBackgroundImage,
       color: color,
       darkColor: darkColor,
       plistFiles: plistFiles,
@@ -73,6 +79,8 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
     await _createWebSplash(
         imagePath: image,
         darkImagePath: darkImage,
+        backgroundImage: backgroundImage,
+        darkBackgroundImage: darkBackgroundImage,
         color: color,
         darkColor: darkColor,
         imageMode: webImageMode);
@@ -126,15 +134,30 @@ Map<String, dynamic> _getConfig() {
     }
   }
 
-  if (!config.containsKey('color')) {
+  if (config.containsKey('color') && config.containsKey('background_image')) {
     stderr.writeln(_InvalidConfigException(
-        'Your `flutter_native_splash` section does not contain a `color`.'));
+        'Your `flutter_native_splash` section cannot not contain both a `color` and `background_image`.'));
     exit(1);
   }
 
-  if (config.containsKey('image_dark') && !config.containsKey('color_dark')) {
+  if (!config.containsKey('color') && !config.containsKey('background_image')) {
     stderr.writeln(_InvalidConfigException(
-        'Your `flutter_native_splash` section contains `image_dark` but does not contain a `color_dark`.'));
+        'Your `flutter_native_splash` section does not contain a `color` or `background_image`.'));
+    exit(1);
+  }
+
+  if (config.containsKey('color_dark') &&
+      config.containsKey('background_image_dark')) {
+    stderr.writeln(_InvalidConfigException(
+        'Your `flutter_native_splash` section cannot not contain both a `color_dark` and `background_image_dark`.'));
+    exit(1);
+  }
+
+  if (config.containsKey('image_dark') &&
+      !config.containsKey('color_dark') &&
+      !config.containsKey('background_image_dark')) {
+    stderr.writeln(_InvalidConfigException(
+        'Your `flutter_native_splash` section contains `image_dark` but does not contain a `color_dark` or a `background_image_dark`.'));
     exit(1);
   }
 

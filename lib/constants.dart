@@ -1,15 +1,15 @@
 part of flutter_native_splash_supported_platform;
 
 // Android-related constants
-const String _androidColorsFile = 'android/app/src/main/res/values/colors.xml';
-const String _androidColorsDarkFile =
-    'android/app/src/main/res/values-night/colors.xml';
-const String _androidLaunchBackgroundFile =
-    'android/app/src/main/res/drawable/launch_background.xml';
-const String _androidLaunchDarkBackgroundFile =
-    'android/app/src/main/res/drawable-night/launch_background.xml';
-const String _androidStylesFile = 'android/app/src/main/res/values/styles.xml';
 const String _androidResFolder = 'android/app/src/main/res/';
+const String _androidDrawableFolder = _androidResFolder + 'drawable/';
+const String _androidNightDrawableFolder =
+    _androidResFolder + 'drawable-night/';
+const String _androidLaunchBackgroundFile =
+    _androidDrawableFolder + 'launch_background.xml';
+const String _androidLaunchDarkBackgroundFile =
+    _androidNightDrawableFolder + 'launch_background.xml';
+const String _androidStylesFile = _androidResFolder + 'values/styles.xml';
 const String _androidV21DrawableFolder = _androidResFolder + 'drawable-v21/';
 const String _androidV21LaunchBackgroundFile =
     _androidV21DrawableFolder + 'launch_background.xml';

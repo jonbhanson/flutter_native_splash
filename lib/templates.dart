@@ -1,14 +1,8 @@
 part of flutter_native_splash_supported_platform;
 
 // Android-related templates
-const String _androidColorsXml = '''
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="splash_color">#2196F3</color>
-</resources>
-''';
 
-const String _androidLaunchBackgroundItemXml = '''
+const String _androidLaunchItemXml = '''
     <item>
         <bitmap android:gravity="center" android:src="@drawable/splash" />
     </item>
@@ -17,7 +11,9 @@ const String _androidLaunchBackgroundItemXml = '''
 const String _androidLaunchBackgroundXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@color/splash_color" />
+    <item>
+        <bitmap android:gravity="fill" android:src="@drawable/background" />
+    </item>
 </layer-list>
 ''';
 
@@ -41,11 +37,6 @@ const String _androidStylesXml = '''
     </style>
 </resources>
 ''';
-
-const List<String> _androidLaunchBackgroundXmlExampleLines = [
-  '<!-- <item>',
-  '<!-- You can insert your own image assets here -->'
-];
 
 // iOS-related templates
 const String _iOSLaunchScreenStoryboardContent = '''
@@ -271,9 +262,11 @@ const String _iOSLaunchBackgroundConstraints = '''
 /// Web related templates
 const String _webCss = '''
 body, html {
-      margin:0;
-      height:100%;
-      background: [LIGHTBACKGROUNDCOLOR];
+  margin:0;
+  height:100%;
+  background: [LIGHTBACKGROUNDCOLOR];
+  background-image: url("img/light-background.png");
+  background-size: 100% 100%;
 }
 
 .center {
@@ -304,7 +297,11 @@ body, html {
 
 @media (prefers-color-scheme: dark) {
   body {
+    margin:0;
+    height:100%;
     background: [DARKBACKGROUNDCOLOR];
+    background-image: url("img/dark-background.png");
+    background-size: 100% 100%;
   }
 }
 ''';

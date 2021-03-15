@@ -28,13 +28,16 @@ final List<_AndroidDrawableTemplate> _splashImagesDark =
 ];
 
 /// Create Android splash screen
-Future<void> _createAndroidSplash(
-    {required String imagePath,
-    required String darkImagePath,
-    required String color,
-    required String darkColor,
-    required String gravity,
-    required bool fullscreen}) async {
+Future<void> _createAndroidSplash({
+  required String imagePath,
+  required String darkImagePath,
+  required String color,
+  required String darkColor,
+  required String gravity,
+  required bool fullscreen,
+  required String backgroundImage,
+  required String darkBackgroundImage,
+}) async {
   if (imagePath.isNotEmpty) {
     await _applyImageAndroid(imagePath: imagePath);
   }
@@ -47,9 +50,26 @@ Future<void> _createAndroidSplash(
     launchBackgroundFilePath: _androidLaunchBackgroundFile,
     showImage: imagePath.isNotEmpty,
   );
-  await _applyColor(color: color, colorFile: _androidColorsFile);
-  await _overwriteLaunchBackgroundWithNewSplashColor(
-      color: color, launchBackgroundFilePath: _androidLaunchBackgroundFile);
+
+  await _createBackground(
+    colorString: color,
+    darkColorString: darkColor,
+    darkBackgroundImageSource: darkBackgroundImage,
+    backgroundImageSource: backgroundImage,
+    darkBackgroundImageDestination:
+        _androidNightDrawableFolder + 'background.png',
+    backgroundImageDestination: _androidDrawableFolder + 'background.png',
+  );
+
+  await _createBackground(
+    colorString: color,
+    darkColorString: darkColor,
+    darkBackgroundImageSource: darkBackgroundImage,
+    backgroundImageSource: backgroundImage,
+    darkBackgroundImageDestination:
+        _androidNightV21DrawableFolder + 'background.png',
+    backgroundImageDestination: _androidV21DrawableFolder + 'background.png',
+  );
 
   if (darkColor.isNotEmpty) {
     await _applyLaunchBackgroundXml(
@@ -57,10 +77,6 @@ Future<void> _createAndroidSplash(
       launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
       showImage: imagePath.isNotEmpty,
     );
-    await _applyColor(color: darkColor, colorFile: _androidColorsDarkFile);
-    await _overwriteLaunchBackgroundWithNewSplashColor(
-        color: color,
-        launchBackgroundFilePath: _androidLaunchDarkBackgroundFile);
   }
 
   if (await Directory(_androidV21DrawableFolder).exists()) {
@@ -69,18 +85,12 @@ Future<void> _createAndroidSplash(
       launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
       showImage: imagePath.isNotEmpty,
     );
-    await _overwriteLaunchBackgroundWithNewSplashColor(
-        color: color,
-        launchBackgroundFilePath: _androidV21LaunchBackgroundFile);
     if (darkColor.isNotEmpty) {
       await _applyLaunchBackgroundXml(
         gravity: gravity,
         launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
         showImage: imagePath.isNotEmpty,
       );
-      await _overwriteLaunchBackgroundWithNewSplashColor(
-          color: color,
-          launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile);
     }
   }
 
@@ -127,189 +137,28 @@ void _saveImageAndroid(
   });
 }
 
-/// Create or update launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml({
-  required String gravity,
-  required String launchBackgroundFilePath,
-  required bool showImage,
-}) {
-  final launchBackgroundFile = File(launchBackgroundFilePath);
-
-  if (launchBackgroundFile.existsSync()) {
-    if (launchBackgroundFile.existsSync()) {
-      print('[Android] Updating ' +
-          launchBackgroundFilePath +
-          ' with splash image path');
-      return _updateLaunchBackgroundFileWithImagePath(
-          launchBackgroundFilePath: launchBackgroundFilePath,
-          gravity: gravity,
-          showImage: showImage);
-    }
-
-    return Future.value(false);
-  } else {
-    print('[Android] No ' +
-        launchBackgroundFilePath +
-        ' file found in your Android project');
-    print('[Android] Creating ' +
-        launchBackgroundFilePath +
-        ' file and adding it to your Android project');
-    return _createLaunchBackgroundFileWithImagePath(
-        gravity: gravity,
-        launchBackgroundFilePath: launchBackgroundFilePath,
-        showImage: showImage);
-  }
-}
-
 /// Updates launch_background.xml adding splash image path
-Future _updateLaunchBackgroundFileWithImagePath(
+Future _applyLaunchBackgroundXml(
     {required String launchBackgroundFilePath,
     required String gravity,
     required bool showImage}) async {
+  print('[Android] Updating $launchBackgroundFilePath with splash image path');
   final launchBackgroundFile = File(launchBackgroundFilePath);
   var launchBackgroundDocument;
-  if (launchBackgroundFile.existsSync()) {
-    launchBackgroundDocument =
-        XmlDocument.parse(await launchBackgroundFile.readAsString());
-  } else {
-    await launchBackgroundFile.create(recursive: true);
-    launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
-  }
+  await launchBackgroundFile.create(recursive: true);
+  launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
 
   final layerList = launchBackgroundDocument.getElement('layer-list');
-  final items = layerList.children;
-
-  var removeNodes = <XmlNode>[];
-  items.forEach((XmlNode item) {
-    // Remove file template comments:
-    if (item.nodeType == XmlNodeType.COMMENT) {
-      _androidLaunchBackgroundXmlExampleLines.forEach((element) {
-        if (item.toString().contains(element)) removeNodes.add(item);
-      });
-    }
-    // Remove existing bitmaps:
-    if (item.children.isNotEmpty) {
-      var existingBitmap = item.getElement('bitmap');
-      if (existingBitmap != null) removeNodes.add(item);
-    }
-  });
-  removeNodes.forEach(items.remove);
+  final List<XmlNode> items = layerList.children;
 
   if (showImage) {
     var splashItem =
-        XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy();
+        XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
     splashItem.getElement('bitmap')?.setAttribute('android:gravity', gravity);
     items.add(splashItem);
   }
   launchBackgroundFile.writeAsStringSync(
       launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
-}
-
-/// Creates launch_background.xml with splash image path
-Future _createLaunchBackgroundFileWithImagePath(
-    {required String gravity,
-    required String launchBackgroundFilePath,
-    required bool showImage}) async {
-  var file = await File(launchBackgroundFilePath).create(recursive: true);
-  var fileContent = XmlDocument.parse(_androidLaunchBackgroundXml);
-
-  if (showImage) {
-    var splashItem =
-        XmlDocument.parse(_androidLaunchBackgroundItemXml).rootElement.copy();
-    splashItem.getElement('bitmap')?.setAttribute('android:gravity', gravity);
-    fileContent.getElement('layer-list')?.children.add(splashItem);
-  }
-  return await file
-      .writeAsString(fileContent.toXmlString(pretty: true, indent: '    '));
-}
-
-/// Create or update colors.xml adding splash screen background color
-Future<void> _applyColor({color, required String colorFile}) async {
-  var colorsXml = File(colorFile);
-
-  color = '#' + color;
-  if (colorsXml.existsSync()) {
-    print('[Android] Updating ' +
-        colorFile +
-        ' with color for splash screen background');
-    _updateColorsFileWithColor(colorsFile: colorsXml, color: color);
-  } else {
-    print('[Android] No ' + colorFile + ' file found in your Android project');
-    print('[Android] Creating ' +
-        colorFile +
-        ' file and adding it to your Android project');
-    _createColorsFile(color: color, colorsXml: colorsXml);
-  }
-}
-
-/// Updates the colors.xml with the splash screen background color
-void _updateColorsFileWithColor(
-    {required File colorsFile, required String color}) {
-  final lines = colorsFile.readAsLinesSync();
-  var foundExisting = false;
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-
-    // Update background color if tag exists
-    if (line.contains('name="splash_color"')) {
-      foundExisting = true;
-      // replace anything between tags which does not contain another tag
-      line = line.replaceAll(RegExp(r'>([^><]*)<'), '>$color<');
-      lines[x] = line;
-      break;
-    }
-  }
-
-  // Add new line if we didn't find an existing value
-  if (!foundExisting) {
-    if (lines.isEmpty) {
-      throw _InvalidNativeFile("File 'colors.xml' contains 0 lines.");
-    } else {
-      lines.insert(
-          lines.length - 1, '\t<color name="splash_color">$color</color>');
-    }
-  }
-
-  colorsFile.writeAsStringSync(lines.join('\n'));
-}
-
-/// Creates a colors.xml file if it was missing from android/app/src/main/res/values/colors.xml
-void _createColorsFile({required String color, required File colorsXml}) {
-  colorsXml.create(recursive: true).then((File colorsFile) {
-    colorsFile.writeAsString(_androidColorsXml).then((File file) {
-      _updateColorsFileWithColor(colorsFile: colorsFile, color: color);
-    });
-  });
-}
-
-/// Updates the line which specifies the splash screen background color within the AndroidManifest.xml
-/// with the new icon name (only if it has changed)
-///
-/// Note: default color = "splash_color"
-Future _overwriteLaunchBackgroundWithNewSplashColor(
-    {required String color, required String launchBackgroundFilePath}) async {
-  final launchBackgroundFile = File(launchBackgroundFilePath);
-  final lines = await launchBackgroundFile.readAsLines();
-
-  for (var x = 0; x < lines.length; x++) {
-    var line = lines[x];
-    if (line.contains('android:drawable')) {
-      // Using RegExp replace the value of android:drawable to point to the new image
-      // anything but a quote of any length: [^"]*
-      // an escaped quote: \\" (escape slash, because it exists regex)
-      // quote, no quote / quote with things behind : \"[^"]*
-      // repeat as often as wanted with no quote at start: [^"]*(\"[^"]*)*
-      // escaping the slash to place in string: [^"]*(\\"[^"]*)*"
-      // result: any string which does only include escaped quotes
-      line = line.replaceAll(RegExp(r'android:drawable="[^"]*(\\"[^"]*)*"'),
-          'android:drawable="@color/splash_color"');
-      lines[x] = line;
-      // used to stop git showing a diff if the icon name hasn't changed
-      lines.add('');
-    }
-  }
-  await launchBackgroundFile.writeAsString(lines.join('\n'));
 }
 
 /// Create or update styles.xml full screen mode setting

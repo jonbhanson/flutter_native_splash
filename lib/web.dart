@@ -14,6 +14,8 @@ Future<void> _createWebSplash({
   required String color,
   required String darkColor,
   required String imageMode,
+  required String backgroundImage,
+  required String darkBackgroundImage,
 }) async {
   if (!File(_webIndex).existsSync()) {
     print('[Web] ' + _webIndex + ' not found.  Skipping Web.');
@@ -31,8 +33,32 @@ Future<void> _createWebSplash({
     _WebLaunchImageTemplate(fileName: 'dark-2x.png', divider: 1.5),
     _WebLaunchImageTemplate(fileName: 'dark-3x.png', divider: 1.0),
   ]);
+  createBackgroundImages(
+      backgroundImage: backgroundImage,
+      darkBackgroundImage: darkBackgroundImage);
   await createSplashCss(color: color, darkColor: darkColor);
   await updateIndex(imageMode: imageMode, showImages: imagePath.isNotEmpty);
+}
+
+void createBackgroundImages({
+  required String backgroundImage,
+  required String darkBackgroundImage,
+}) {
+  if (backgroundImage.isEmpty) {
+    final file = File(_webSplashImagesFolder + 'light-background.png');
+    if (file.existsSync()) file.deleteSync();
+  } else {
+    File(backgroundImage)
+        .copySync(_webSplashImagesFolder + 'light-background.png');
+  }
+
+  if (darkBackgroundImage.isEmpty) {
+    final file = File(_webSplashImagesFolder + 'dark-background.png');
+    if (file.existsSync()) file.deleteSync();
+  } else {
+    File(darkBackgroundImage)
+        .copySync(_webSplashImagesFolder + 'dark-background.png');
+  }
 }
 
 Future<void> createWebImages(
@@ -57,7 +83,7 @@ Future<void> createWebImages(
 
 dynamic _saveImageWeb(
     {required _WebLaunchImageTemplate template, required Image image}) async {
-  var newFile = await copyResize(
+  var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
     height: image.height ~/ template.divider,

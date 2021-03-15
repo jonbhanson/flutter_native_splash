@@ -33,6 +33,8 @@ Future<void> _createiOSSplash({
   List<String>? plistFiles,
   required String iosContentMode,
   required bool fullscreen,
+  required String backgroundImage,
+  required String darkBackgroundImage,
 }) async {
   if (imagePath.isNotEmpty) {
     await _applyImageiOS(imagePath: imagePath);
@@ -65,7 +67,25 @@ Future<void> _createiOSSplash({
 
   await _applyLaunchScreenStoryboard(
       imagePath: imagePath, iosContentMode: iosContentMode);
-  await _createBackgroundColor(colorString: color, darkColorString: darkColor);
+  await _createBackground(
+    colorString: color,
+    darkColorString: darkColor,
+    darkBackgroundImageSource: darkBackgroundImage,
+    backgroundImageSource: backgroundImage,
+    darkBackgroundImageDestination:
+        _iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png',
+    backgroundImageDestination:
+        _iOSAssetsLaunchImageBackgroundFolder + 'background.png',
+  );
+
+  await File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
+      .create(recursive: true)
+      .then((File file) {
+    file.writeAsStringSync(darkColor.isNotEmpty
+        ? _iOSLaunchBackgroundDarkJson
+        : _iOSLaunchBackgroundJson);
+  });
+
   await _applyInfoPList(plistFiles: plistFiles, fullscreen: fullscreen);
 }
 
@@ -169,6 +189,7 @@ Future _updateLaunchScreenStoryboard(
       (element) => (element.name.qualified == 'image' &&
           element.getAttribute('name') == 'LaunchBackground'), orElse: () {
     // If the color has not been set via background image, set it here:
+
     resources.children.add(XmlDocument.parse(
             '<image name="LaunchBackground" width="1" height="1"/>')
         .rootElement
@@ -205,40 +226,46 @@ Future _createLaunchScreenStoryboard(
       imagePath: imagePath, iosContentMode: iosContentMode);
 }
 
-Future<void> _createBackgroundColor(
-    {required String colorString, required String darkColorString}) async {
-  var background = Image(1, 1);
-  var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
-  var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
-  var blueChannel = int.parse(colorString.substring(4, 6), radix: 16);
-  background.fill(
-      0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
-  await File(_iOSAssetsLaunchImageBackgroundFolder + 'background.png')
-      .create(recursive: true)
-      .then((File file) => file.writeAsBytesSync(encodePng(background)));
-
-  if (darkColorString.isNotEmpty) {
-    redChannel = int.parse(darkColorString.substring(0, 2), radix: 16);
-    greenChannel = int.parse(darkColorString.substring(2, 4), radix: 16);
-    blueChannel = int.parse(darkColorString.substring(4, 6), radix: 16);
+Future<void> _createBackground({
+  required String colorString,
+  required String darkColorString,
+  required String backgroundImageSource,
+  required String darkBackgroundImageSource,
+  required String backgroundImageDestination,
+  required String darkBackgroundImageDestination,
+}) async {
+  if (colorString.isNotEmpty) {
+    var background = Image(1, 1);
+    var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
+    var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
+    var blueChannel = int.parse(colorString.substring(4, 6), radix: 16);
     background.fill(
         0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
-    await File(_iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png')
+    await File(backgroundImageDestination)
         .create(recursive: true)
         .then((File file) => file.writeAsBytesSync(encodePng(background)));
+  } else if (backgroundImageSource.isNotEmpty) {
+    File(backgroundImageSource).copySync(backgroundImageDestination);
   } else {
-    final file =
-        File(_iOSAssetsLaunchImageBackgroundFolder + 'darkbackground.png');
-    if (file.existsSync()) file.deleteSync();
+    throw Exception('No color string or background image!');
   }
 
-  return File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
-      .create(recursive: true)
-      .then((File file) {
-    file.writeAsStringSync(darkColorString.isNotEmpty
-        ? _iOSLaunchBackgroundDarkJson
-        : _iOSLaunchBackgroundJson);
-  });
+  if (darkColorString.isNotEmpty) {
+    var background = Image(1, 1);
+    var redChannel = int.parse(darkColorString.substring(0, 2), radix: 16);
+    var greenChannel = int.parse(darkColorString.substring(2, 4), radix: 16);
+    var blueChannel = int.parse(darkColorString.substring(4, 6), radix: 16);
+    background.fill(
+        0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
+    await File(darkBackgroundImageDestination)
+        .create(recursive: true)
+        .then((File file) => file.writeAsBytesSync(encodePng(background)));
+  } else if (darkBackgroundImageSource.isNotEmpty) {
+    File(darkBackgroundImageSource).copySync(darkBackgroundImageDestination);
+  } else {
+    final file = File(darkBackgroundImageDestination);
+    if (file.existsSync()) file.deleteSync();
+  }
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)

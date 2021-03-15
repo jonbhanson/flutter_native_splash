@@ -16,14 +16,14 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.0.3
+  flutter_native_splash: ^1.1.0
 ```
 
 Don't forget to `flutter pub get`.
 
 > #### NOTE:
 > 
-> If you are using Flutter 1.x, you must use the <a href="https://pub.dev/packages/flutter_native_splash/versions">0.x version</a> of this package.
+> If you are using Flutter 1.x (no null safety), you must use the <a href="https://pub.dev/packages/flutter_native_splash/versions">0.x version</a> of this package.
 
 ## 1. Setting the splash screen
 Customized the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.
@@ -38,8 +38,12 @@ flutter_native_splash:
   # To restore Flutter's default white splash screen, run the following command in the terminal:
   # flutter pub run flutter_native_splash:remove
 
-  # color is the only required parameter.  It sets the background color of your splash screen.
+  # color or background_image is the only required parameter.  Use color to set the background
+  # of your splash screen to a solid color.  Use background_image to set the background of your
+  # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
+  # size of the app. Only one parameter can be used, color and background_image cannot both be set.
   color: "#42a5f5"
+  #background_image: "assets/background.png"
   
   # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing 
   # the leading # character.
@@ -48,10 +52,13 @@ flutter_native_splash:
   # png file.  
   #image: assets/splash.png
 
-  # The color_dark and image_dark are parameters that set the color and image when the device is 
-  # in dark mode.  If they are not specified, the app will use the color and image above.
-  # If the image_dark parameter is specified, color_dark must be specified.
+  # The color_dark, background_image_dark, and image_dark are parameters that set the background
+  # and image when the device is in dark mode. If they are not specified, the app will use the
+  # parameters from above. If the image_dark parameter is specified, color_dark or 
+  # background_image_dark must be specified.  color_dark and background_image_dark cannot both be
+  # set.
   #color_dark: "#042a49"
+  #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
 
   # The android and ios parameters can be used to disable generating a splash screen on a given 

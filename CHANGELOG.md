@@ -1,3 +1,7 @@
+## [1.1.0] - (2021-Mar-15)
+
+* Added option for background image.  Closes [#22](https://github.com/jonbhanson/flutter_native_splash/issues/22).
+
 ## [1.0.3] - (2021-Mar-05)
 
 * Updated readme.

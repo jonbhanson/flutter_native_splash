@@ -36,18 +36,6 @@ class _NoImageFileFoundException implements Exception {
   }
 }
 
-class _InvalidNativeFile implements Exception {
-  const _InvalidNativeFile(this.message);
-  final String message;
-
-  @override
-  String toString() {
-    return '*** ERROR [flutter_native_splash] ***\n'
-        'InvalidNativeFile\n'
-        '$message';
-  }
-}
-
 class _LaunchScreenStoryboardModified implements Exception {
   const _LaunchScreenStoryboardModified(this.message);
   final String message;
