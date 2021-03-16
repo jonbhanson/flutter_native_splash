@@ -57,7 +57,7 @@ void _createiOSSplash({
   }
 
   var launchImageFile = File(_iOSAssetsLaunchImageFolder + 'Contents.json');
-  launchImageFile.create(recursive: true);
+  launchImageFile.createSync(recursive: true);
   launchImageFile.writeAsStringSync(
       darkImagePath.isNotEmpty ? _iOSContentsJsonDark : _iOSContentsJson);
 
@@ -111,11 +111,9 @@ void _saveImageiOS(
     interpolation: Interpolation.linear,
   );
 
-  File(_iOSAssetsLaunchImageFolder + template.fileName)
-      .create(recursive: true)
-      .then((File file) {
-    file.writeAsBytesSync(encodePng(newFile));
-  });
+  var file = File(_iOSAssetsLaunchImageFolder + template.fileName);
+  file.createSync(recursive: true);
+  file.writeAsBytesSync(encodePng(newFile));
 }
 
 /// Update LaunchScreen.storyboard adding width, height and color
@@ -254,7 +252,7 @@ void _createBackground({
     background.fill(
         0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
     var file = File(darkBackgroundImageDestination);
-    file.create(recursive: true);
+    file.createSync(recursive: true);
     file.writeAsBytesSync(encodePng(background));
   } else if (darkBackgroundImageSource.isNotEmpty) {
     File(darkBackgroundImageSource).copySync(darkBackgroundImageDestination);

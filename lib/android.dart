@@ -129,11 +129,10 @@ void _saveImageAndroid(
     interpolation: Interpolation.linear,
   );
 
-  File(_androidResFolder + template.directoryName + '/' + 'splash.png')
-      .create(recursive: true)
-      .then((File file) {
-    file.writeAsBytesSync(encodePng(newFile));
-  });
+  var file =
+      File(_androidResFolder + template.directoryName + '/' + 'splash.png');
+  file.createSync(recursive: true);
+  file.writeAsBytesSync(encodePng(newFile));
 }
 
 /// Updates launch_background.xml adding splash image path
