@@ -8,7 +8,7 @@ class _WebLaunchImageTemplate {
 }
 
 /// Create Android splash screen
-Future<void> _createWebSplash({
+void _createWebSplash({
   required String imagePath,
   required String darkImagePath,
   required String color,
@@ -16,19 +16,19 @@ Future<void> _createWebSplash({
   required String imageMode,
   required String backgroundImage,
   required String darkBackgroundImage,
-}) async {
+}) {
   if (!File(_webIndex).existsSync()) {
     print('[Web] ' + _webIndex + ' not found.  Skipping Web.');
     return;
   }
 
   if (darkImagePath.isEmpty) darkImagePath = imagePath;
-  await createWebImages(imagePath: imagePath, webSplashImages: [
+  createWebImages(imagePath: imagePath, webSplashImages: [
     _WebLaunchImageTemplate(fileName: 'light-1x.png', divider: 3.0),
     _WebLaunchImageTemplate(fileName: 'light-2x.png', divider: 1.5),
     _WebLaunchImageTemplate(fileName: 'light-3x.png', divider: 1.0),
   ]);
-  await createWebImages(imagePath: darkImagePath, webSplashImages: [
+  createWebImages(imagePath: darkImagePath, webSplashImages: [
     _WebLaunchImageTemplate(fileName: 'dark-1x.png', divider: 3.0),
     _WebLaunchImageTemplate(fileName: 'dark-2x.png', divider: 1.5),
     _WebLaunchImageTemplate(fileName: 'dark-3x.png', divider: 1.0),
@@ -36,8 +36,8 @@ Future<void> _createWebSplash({
   createBackgroundImages(
       backgroundImage: backgroundImage,
       darkBackgroundImage: darkBackgroundImage);
-  await createSplashCss(color: color, darkColor: darkColor);
-  await updateIndex(imageMode: imageMode, showImages: imagePath.isNotEmpty);
+  createSplashCss(color: color, darkColor: darkColor);
+  updateIndex(imageMode: imageMode, showImages: imagePath.isNotEmpty);
 }
 
 void createBackgroundImages({
@@ -61,9 +61,9 @@ void createBackgroundImages({
   }
 }
 
-Future<void> createWebImages(
+void createWebImages(
     {required String imagePath,
-    required List<_WebLaunchImageTemplate> webSplashImages}) async {
+    required List<_WebLaunchImageTemplate> webSplashImages}) {
   if (imagePath.isEmpty) {
     for (var template in webSplashImages) {
       final file = File(_webSplashImagesFolder + template.fileName);
@@ -76,13 +76,13 @@ Future<void> createWebImages(
     }
     print('[Web] Creating images');
     for (var template in webSplashImages) {
-      await _saveImageWeb(template: template, image: image);
+      _saveImageWeb(template: template, image: image);
     }
   }
 }
 
-dynamic _saveImageWeb(
-    {required _WebLaunchImageTemplate template, required Image image}) async {
+void _saveImageWeb(
+    {required _WebLaunchImageTemplate template, required Image image}) {
   var newFile = copyResize(
     image,
     width: image.width ~/ template.divider,
@@ -90,23 +90,23 @@ dynamic _saveImageWeb(
     interpolation: Interpolation.linear,
   );
 
-  var file = await File(_webSplashImagesFolder + template.fileName)
-      .create(recursive: true);
-  await file.writeAsBytes(encodePng(newFile));
+  var file = File(_webSplashImagesFolder + template.fileName);
+  file.createSync(recursive: true);
+  file.writeAsBytesSync(encodePng(newFile));
 }
 
-Future<void> createSplashCss(
-    {required String color, required String darkColor}) async {
+void createSplashCss({required String color, required String darkColor}) {
   print('[Web] Creating CSS');
   if (darkColor.isEmpty) darkColor = color;
   var cssContent = _webCss
       .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color)
       .replaceFirst('[DARKBACKGROUNDCOLOR]', '#' + darkColor);
-  File(_webFolder + _webRelativeStyleFile).writeAsStringSync(cssContent);
+  var file = File(_webFolder + _webRelativeStyleFile);
+  file.createSync(recursive: true);
+  file.writeAsStringSync(cssContent);
 }
 
-Future<void> updateIndex(
-    {required String imageMode, required bool showImages}) async {
+void updateIndex({required String imageMode, required bool showImages}) {
   print('[Web] Updating index.html');
   final webIndex = File(_webIndex);
   var lines = webIndex.readAsLinesSync();

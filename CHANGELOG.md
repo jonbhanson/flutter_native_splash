@@ -1,3 +1,8 @@
+## [1.1.1] - (2021-Mar-16)
+
+* Create Styles.css before writing to it.  Closes [#141](https://github.com/jonbhanson/flutter_native_splash/issues/141)
+* Make all file calls synchronously to make code cleaner.
+
 ## [1.1.0] - (2021-Mar-15)
 
 * Added option for background image.  Closes [#22](https://github.com/jonbhanson/flutter_native_splash/issues/22).

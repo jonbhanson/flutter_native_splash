@@ -25,7 +25,7 @@ final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
 ];
 
 /// Create iOS splash screen
-Future<void> _createiOSSplash({
+void _createiOSSplash({
   required String imagePath,
   required String darkImagePath,
   required String color,
@@ -35,22 +35,20 @@ Future<void> _createiOSSplash({
   required bool fullscreen,
   required String backgroundImage,
   required String darkBackgroundImage,
-}) async {
+}) {
   if (imagePath.isNotEmpty) {
-    await _applyImageiOS(imagePath: imagePath);
+    _applyImageiOS(imagePath: imagePath);
   } else {
     final splashImage = Image(1, 1);
-    _iOSSplashImages.forEach((template) async {
-      await File(_iOSAssetsLaunchImageFolder + template.fileName)
-          .create(recursive: true)
-          .then((File file) {
-        file.writeAsBytesSync(encodePng(splashImage));
-      });
+    _iOSSplashImages.forEach((template) {
+      var file = File(_iOSAssetsLaunchImageFolder + template.fileName);
+      file.createSync(recursive: true);
+      file.writeAsBytesSync(encodePng(splashImage));
     });
   }
 
   if (darkImagePath.isNotEmpty) {
-    await _applyImageiOS(imagePath: darkImagePath, dark: true);
+    _applyImageiOS(imagePath: darkImagePath, dark: true);
   } else {
     _iOSSplashImagesDark.forEach((template) {
       final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
@@ -58,16 +56,14 @@ Future<void> _createiOSSplash({
     });
   }
 
-  await File(_iOSAssetsLaunchImageFolder + 'Contents.json')
-      .create(recursive: true)
-      .then((File file) {
-    file.writeAsStringSync(
-        darkImagePath.isNotEmpty ? _iOSContentsJsonDark : _iOSContentsJson);
-  });
+  var launchImageFile = File(_iOSAssetsLaunchImageFolder + 'Contents.json');
+  launchImageFile.create(recursive: true);
+  launchImageFile.writeAsStringSync(
+      darkImagePath.isNotEmpty ? _iOSContentsJsonDark : _iOSContentsJson);
 
-  await _applyLaunchScreenStoryboard(
+  _applyLaunchScreenStoryboard(
       imagePath: imagePath, iosContentMode: iosContentMode);
-  await _createBackground(
+  _createBackground(
     colorString: color,
     darkColorString: darkColor,
     darkBackgroundImageSource: darkBackgroundImage,
@@ -78,20 +74,19 @@ Future<void> _createiOSSplash({
         _iOSAssetsLaunchImageBackgroundFolder + 'background.png',
   );
 
-  await File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json')
-      .create(recursive: true)
-      .then((File file) {
-    file.writeAsStringSync(darkColor.isNotEmpty
-        ? _iOSLaunchBackgroundDarkJson
-        : _iOSLaunchBackgroundJson);
-  });
+  var backgroundImageFile =
+      File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json');
+  backgroundImageFile.createSync(recursive: true);
 
-  await _applyInfoPList(plistFiles: plistFiles, fullscreen: fullscreen);
+  backgroundImageFile.writeAsStringSync(darkColor.isNotEmpty
+      ? _iOSLaunchBackgroundDarkJson
+      : _iOSLaunchBackgroundJson);
+
+  _applyInfoPList(plistFiles: plistFiles, fullscreen: fullscreen);
 }
 
 /// Create splash screen images for original size, @2x and @3x
-Future<void> _applyImageiOS(
-    {required String imagePath, bool dark = false}) async {
+void _applyImageiOS({required String imagePath, bool dark = false}) {
   print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
   if (!File(imagePath).existsSync()) {
     throw _NoImageFileFoundException('The file $imagePath was not found.');
@@ -124,7 +119,7 @@ void _saveImageiOS(
 }
 
 /// Update LaunchScreen.storyboard adding width, height and color
-Future _applyLaunchScreenStoryboard(
+void _applyLaunchScreenStoryboard(
     {required String imagePath, required String iosContentMode}) {
   final file = File(_iOSLaunchScreenStoryboardFile);
 
@@ -142,8 +137,8 @@ Future _applyLaunchScreenStoryboard(
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
-Future _updateLaunchScreenStoryboard(
-    {required String imagePath, required String iosContentMode}) async {
+void _updateLaunchScreenStoryboard(
+    {required String imagePath, required String iosContentMode}) {
   // Load the data
   final file = File(_iOSLaunchScreenStoryboardFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
@@ -218,22 +213,23 @@ Future _updateLaunchScreenStoryboard(
 }
 
 /// Creates LaunchScreen.storyboard with splash image path
-Future _createLaunchScreenStoryboard(
-    {required String imagePath, required String iosContentMode}) async {
-  var file = await File(_iOSLaunchScreenStoryboardFile).create(recursive: true);
-  await file.writeAsString(_iOSLaunchScreenStoryboardContent);
+void _createLaunchScreenStoryboard(
+    {required String imagePath, required String iosContentMode}) {
+  var file = File(_iOSLaunchScreenStoryboardFile);
+  file.createSync(recursive: true);
+  file.writeAsStringSync(_iOSLaunchScreenStoryboardContent);
   return _updateLaunchScreenStoryboard(
       imagePath: imagePath, iosContentMode: iosContentMode);
 }
 
-Future<void> _createBackground({
+void _createBackground({
   required String colorString,
   required String darkColorString,
   required String backgroundImageSource,
   required String darkBackgroundImageSource,
   required String backgroundImageDestination,
   required String darkBackgroundImageDestination,
-}) async {
+}) {
   if (colorString.isNotEmpty) {
     var background = Image(1, 1);
     var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
@@ -241,9 +237,9 @@ Future<void> _createBackground({
     var blueChannel = int.parse(colorString.substring(4, 6), radix: 16);
     background.fill(
         0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
-    await File(backgroundImageDestination)
-        .create(recursive: true)
-        .then((File file) => file.writeAsBytesSync(encodePng(background)));
+    var file = File(backgroundImageDestination);
+    file.createSync(recursive: true);
+    file.writeAsBytesSync(encodePng(background));
   } else if (backgroundImageSource.isNotEmpty) {
     File(backgroundImageSource).copySync(backgroundImageDestination);
   } else {
@@ -257,9 +253,9 @@ Future<void> _createBackground({
     var blueChannel = int.parse(darkColorString.substring(4, 6), radix: 16);
     background.fill(
         0xFF000000 + (blueChannel << 16) + (greenChannel << 8) + redChannel);
-    await File(darkBackgroundImageDestination)
-        .create(recursive: true)
-        .then((File file) => file.writeAsBytesSync(encodePng(background)));
+    var file = File(darkBackgroundImageDestination);
+    file.create(recursive: true);
+    file.writeAsBytesSync(encodePng(background));
   } else if (darkBackgroundImageSource.isNotEmpty) {
     File(darkBackgroundImageSource).copySync(darkBackgroundImageDestination);
   } else {
@@ -269,15 +265,14 @@ Future<void> _createBackground({
 }
 
 /// Update Info.plist for status bar behaviour (hidden/visible)
-Future _applyInfoPList(
-    {List<String>? plistFiles, required bool fullscreen}) async {
+void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
   if (plistFiles == null) {
     plistFiles = [];
     plistFiles.add(_iOSInfoPlistFile);
   }
 
-  plistFiles.forEach((plistFile) async {
-    if (!await File(plistFile).exists()) {
+  plistFiles.forEach((plistFile) {
+    if (!File(plistFile).existsSync()) {
       throw _CantFindInfoPlistFile(
           'File $plistFile not found.  If you renamed the file, make sure to '
           'specify it in the info_plist_files section of your '
@@ -285,13 +280,13 @@ Future _applyInfoPList(
     }
 
     print('[iOS] Updating $plistFile for status bar hidden/visible');
-    await _updateInfoPlistFile(plistFile: plistFile, fullscreen: fullscreen);
+    _updateInfoPlistFile(plistFile: plistFile, fullscreen: fullscreen);
   });
 }
 
 /// Update Infop.list with status bar hidden directive
-Future _updateInfoPlistFile(
-    {required String plistFile, required bool fullscreen}) async {
+void _updateInfoPlistFile(
+    {required String plistFile, required bool fullscreen}) {
   // Load the data
   final file = File(plistFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());

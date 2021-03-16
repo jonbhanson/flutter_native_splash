@@ -28,7 +28,7 @@ final List<_AndroidDrawableTemplate> _splashImagesDark =
 ];
 
 /// Create Android splash screen
-Future<void> _createAndroidSplash({
+void _createAndroidSplash({
   required String imagePath,
   required String darkImagePath,
   required String color,
@@ -37,21 +37,21 @@ Future<void> _createAndroidSplash({
   required bool fullscreen,
   required String backgroundImage,
   required String darkBackgroundImage,
-}) async {
+}) {
   if (imagePath.isNotEmpty) {
-    await _applyImageAndroid(imagePath: imagePath);
+    _applyImageAndroid(imagePath: imagePath);
   }
   if (darkImagePath.isNotEmpty) {
-    await _applyImageAndroid(imagePath: darkImagePath, dark: true);
+    _applyImageAndroid(imagePath: darkImagePath, dark: true);
   }
 
-  await _applyLaunchBackgroundXml(
+  _applyLaunchBackgroundXml(
     gravity: gravity,
     launchBackgroundFilePath: _androidLaunchBackgroundFile,
     showImage: imagePath.isNotEmpty,
   );
 
-  await _createBackground(
+  _createBackground(
     colorString: color,
     darkColorString: darkColor,
     darkBackgroundImageSource: darkBackgroundImage,
@@ -61,7 +61,7 @@ Future<void> _createAndroidSplash({
     backgroundImageDestination: _androidDrawableFolder + 'background.png',
   );
 
-  await _createBackground(
+  _createBackground(
     colorString: color,
     darkColorString: darkColor,
     darkBackgroundImageSource: darkBackgroundImage,
@@ -72,21 +72,21 @@ Future<void> _createAndroidSplash({
   );
 
   if (darkColor.isNotEmpty) {
-    await _applyLaunchBackgroundXml(
+    _applyLaunchBackgroundXml(
       gravity: gravity,
       launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
       showImage: imagePath.isNotEmpty,
     );
   }
 
-  if (await Directory(_androidV21DrawableFolder).exists()) {
-    await _applyLaunchBackgroundXml(
+  if (Directory(_androidV21DrawableFolder).existsSync()) {
+    _applyLaunchBackgroundXml(
       gravity: gravity,
       launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
       showImage: imagePath.isNotEmpty,
     );
     if (darkColor.isNotEmpty) {
-      await _applyLaunchBackgroundXml(
+      _applyLaunchBackgroundXml(
         gravity: gravity,
         launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
         showImage: imagePath.isNotEmpty,
@@ -94,12 +94,11 @@ Future<void> _createAndroidSplash({
     }
   }
 
-  await _applyStylesXml(fullScreen: fullscreen);
+  _applyStylesXml(fullScreen: fullscreen);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-Future<void> _applyImageAndroid(
-    {required String imagePath, bool dark = false}) async {
+void _applyImageAndroid({required String imagePath, bool dark = false}) {
   print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
   final file = File(imagePath);
@@ -138,14 +137,14 @@ void _saveImageAndroid(
 }
 
 /// Updates launch_background.xml adding splash image path
-Future _applyLaunchBackgroundXml(
+void _applyLaunchBackgroundXml(
     {required String launchBackgroundFilePath,
     required String gravity,
-    required bool showImage}) async {
+    required bool showImage}) {
   print('[Android] Updating $launchBackgroundFilePath with splash image path');
   final launchBackgroundFile = File(launchBackgroundFilePath);
   var launchBackgroundDocument;
-  await launchBackgroundFile.create(recursive: true);
+  launchBackgroundFile.createSync(recursive: true);
   launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
 
   final layerList = launchBackgroundDocument.getElement('layer-list');
@@ -162,7 +161,7 @@ Future _applyLaunchBackgroundXml(
 }
 
 /// Create or update styles.xml full screen mode setting
-Future<void> _applyStylesXml({required bool fullScreen}) async {
+void _applyStylesXml({required bool fullScreen}) {
   final stylesFile = File(_androidStylesFile);
 
   if (!stylesFile.existsSync()) {
@@ -172,13 +171,12 @@ Future<void> _applyStylesXml({required bool fullScreen}) async {
     _createStylesFileWithImagePath(stylesFile: stylesFile);
   }
   print('[Android] Updating styles.xml with full screen mode setting');
-  await _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile);
+  _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile);
 }
 
 /// Updates styles.xml adding full screen property
-Future<void> _updateStylesFile(
-    {required bool fullScreen, required File stylesFile}) async {
-  final stylesDocument = XmlDocument.parse(await stylesFile.readAsString());
+void _updateStylesFile({required bool fullScreen, required File stylesFile}) {
+  final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final styles = stylesDocument.findAllElements('style');
   if (styles.length == 1) {
     print('[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '

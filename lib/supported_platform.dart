@@ -22,19 +22,19 @@ part 'templates.dart';
 part 'web.dart';
 
 /// Function that will be called on supported platforms to create the splash screens.
-Future<void> tryCreateSplash() async {
-  var config = await _getConfig();
-  await tryCreateSplashByConfig(config);
+void tryCreateSplash() {
+  var config = _getConfig();
+  tryCreateSplashByConfig(config);
 }
 
 /// Function that will be called on supported platforms to remove the splash screens.
-Future<void> tryRemoveSplash() async {
+void tryRemoveSplash() {
   print('Restoring Flutter\'s default white native splash screen...');
-  await tryCreateSplashByConfig({'color': '#ffffff'});
+  tryCreateSplashByConfig({'color': '#ffffff'});
 }
 
 /// Function that will be called on supported platforms to create the splash screen based on a config argument.
-Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
+void tryCreateSplashByConfig(Map<String, dynamic> config) {
   String image = config['image'] ?? '';
   String darkImage = config['image_dark'] ?? '';
   var color = _parseColor(config['color']);
@@ -49,7 +49,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   final webImageMode = (config['web_image_mode'] ?? 'center');
 
   if (!config.containsKey('android') || config['android']) {
-    await _createAndroidSplash(
+    _createAndroidSplash(
       imagePath: image,
       darkImagePath: darkImage,
       backgroundImage: backgroundImage,
@@ -62,7 +62,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   }
 
   if (!config.containsKey('ios') || config['ios']) {
-    await _createiOSSplash(
+    _createiOSSplash(
       imagePath: image,
       darkImagePath: darkImage,
       backgroundImage: backgroundImage,
@@ -76,7 +76,7 @@ Future<void> tryCreateSplashByConfig(Map<String, dynamic> config) async {
   }
 
   if (!config.containsKey('web') || config['web']) {
-    await _createWebSplash(
+    _createWebSplash(
         imagePath: image,
         darkImagePath: darkImage,
         backgroundImage: backgroundImage,
