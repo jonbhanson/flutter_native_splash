@@ -33,14 +33,26 @@ void tryRemoveSplash() {
   tryCreateSplashByConfig({'color': '#ffffff'});
 }
 
+String checkImageExists(
+    {required Map<String, dynamic> config, required String parameter}) {
+  String image = config[parameter] ?? '';
+  if (image.isNotEmpty && !File(image).existsSync()) {
+    throw _NoImageFileFoundException(
+        'The file "$image" set as the parameter "$parameter" was not found.');
+  }
+  return image;
+}
+
 /// Function that will be called on supported platforms to create the splash screen based on a config argument.
 void tryCreateSplashByConfig(Map<String, dynamic> config) {
-  String image = config['image'] ?? '';
-  String darkImage = config['image_dark'] ?? '';
+  var image = checkImageExists(config: config, parameter: 'image');
+  var darkImage = checkImageExists(config: config, parameter: 'image_dark');
   var color = _parseColor(config['color']);
   var darkColor = _parseColor(config['color_dark']);
-  String backgroundImage = config['background_image'] ?? '';
-  String darkBackgroundImage = config['background_image_dark'] ?? '';
+  var backgroundImage =
+      checkImageExists(config: config, parameter: 'background_image');
+  var darkBackgroundImage =
+      checkImageExists(config: config, parameter: 'background_image_dark');
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
@@ -85,6 +97,10 @@ void tryCreateSplashByConfig(Map<String, dynamic> config) {
         darkColor: darkColor,
         imageMode: webImageMode);
   }
+
+  print('');
+  print('Native splash complete. 👍');
+  print('Now go finish building something awesome! 💪 You rock! 🤘🤩');
 }
 
 String _parseColor(var color) {

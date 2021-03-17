@@ -1,3 +1,7 @@
+## [1.1.2] - (2021-Mar-17)
+
+* Check that image files exist before starting.  Throw an exception if image file not found.
+
 ## [1.1.1+1] - (2021-Mar-16)
 
 * Create Styles.css before writing to it.  Closes [#141](https://github.com/jonbhanson/flutter_native_splash/issues/141)
