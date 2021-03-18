@@ -16,7 +16,6 @@ import 'package:yaml/yaml.dart';
 
 part 'android.dart';
 part 'constants.dart';
-part 'exceptions.dart';
 part 'ios.dart';
 part 'templates.dart';
 part 'web.dart';
@@ -37,8 +36,8 @@ String checkImageExists(
     {required Map<String, dynamic> config, required String parameter}) {
   String image = config[parameter] ?? '';
   if (image.isNotEmpty && !File(image).existsSync()) {
-    throw _NoImageFileFoundException(
-        'The file "$image" set as the parameter "$parameter" was not found.');
+    print('The file "$image" set as the parameter "$parameter" was not found.');
+    exit(1);
   }
   return image;
 }
@@ -128,8 +127,8 @@ Map<String, dynamic> _getConfig() {
   final Map yamlMap = loadYaml(yamlString);
 
   if (!(yamlMap['flutter_native_splash'] is Map)) {
-    stderr.writeln(_NoConfigFoundException(
-        'Your `$filePath` file does not contain a `flutter_native_splash` section.'));
+    print('Your `$filePath` file does not contain a `flutter_native_splash`'
+        ' section.');
     exit(1);
   }
 
@@ -151,29 +150,29 @@ Map<String, dynamic> _getConfig() {
   }
 
   if (config.containsKey('color') && config.containsKey('background_image')) {
-    stderr.writeln(_InvalidConfigException(
-        'Your `flutter_native_splash` section cannot not contain both a `color` and `background_image`.'));
+    print('Your `flutter_native_splash` section cannot not contain both a '
+        '`color` and `background_image`.');
     exit(1);
   }
 
   if (!config.containsKey('color') && !config.containsKey('background_image')) {
-    stderr.writeln(_InvalidConfigException(
-        'Your `flutter_native_splash` section does not contain a `color` or `background_image`.'));
+    print('Your `flutter_native_splash` section does not contain a `color` or '
+        '`background_image`.');
     exit(1);
   }
 
   if (config.containsKey('color_dark') &&
       config.containsKey('background_image_dark')) {
-    stderr.writeln(_InvalidConfigException(
-        'Your `flutter_native_splash` section cannot not contain both a `color_dark` and `background_image_dark`.'));
+    print('Your `flutter_native_splash` section cannot not contain both a '
+        '`color_dark` and `background_image_dark`.');
     exit(1);
   }
 
   if (config.containsKey('image_dark') &&
       !config.containsKey('color_dark') &&
       !config.containsKey('background_image_dark')) {
-    stderr.writeln(_InvalidConfigException(
-        'Your `flutter_native_splash` section contains `image_dark` but does not contain a `color_dark` or a `background_image_dark`.'));
+    print('Your `flutter_native_splash` section contains `image_dark` but '
+        'does not contain a `color_dark` or a `background_image_dark`.');
     exit(1);
   }
 

@@ -88,13 +88,11 @@ void _createiOSSplash({
 /// Create splash screen images for original size, @2x and @3x
 void _applyImageiOS({required String imagePath, bool dark = false}) {
   print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
-  if (!File(imagePath).existsSync()) {
-    throw _NoImageFileFoundException('The file $imagePath was not found.');
-  }
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
-    throw _NoImageFileFoundException(imagePath + ' could not be loaded.');
+    print(imagePath + ' could not be loaded.');
+    exit(1);
   }
   for (var template in dark ? _iOSSplashImagesDark : _iOSSplashImages) {
     _saveImageiOS(template: template, image: image);
@@ -127,8 +125,8 @@ void _applyLaunchScreenStoryboard(
         imagePath: imagePath, iosContentMode: iosContentMode);
   } else {
     print('[iOS] No LaunchScreen.storyboard file found in your iOS project');
-    print(
-        '[iOS] Creating LaunchScreen.storyboard file and adding it to your iOS project');
+    print('[iOS] Creating LaunchScreen.storyboard file and adding it '
+        'to your iOS project');
     return _createLaunchScreenStoryboard(
         imagePath: imagePath, iosContentMode: iosContentMode);
   }
@@ -149,18 +147,28 @@ void _updateLaunchScreenStoryboard(
         element.getAttribute('id') == 'Ze5-6b-2t3');
   });
   if (view == null) {
-    throw _LaunchScreenStoryboardModified(
-        'Default Flutter view Ze5-6b-2t3 not found. Did you modify your default LaunchScreen.storyboard file?');
+    print('Default Flutter view Ze5-6b-2t3 not found. '
+        'Did you modify your default LaunchScreen.storyboard file?');
+    exit(1);
   }
 
   // Find the splash imageView
   final subViews = view.getElement('subviews');
-  final imageView = subViews?.children.whereType<XmlElement>().firstWhere(
+  if (subViews == null) {
+    print('Not able to find "subviews" in LaunchScreen.storyboard. Image for '
+        'splash screen not updated. Did you modify your default '
+        'LaunchScreen.storyboard file?');
+    exit(1);
+  }
+  final imageView = subViews.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
-          element.getAttribute('image') == 'LaunchImage'),
-      orElse: () => throw _LaunchScreenStoryboardModified(
-          "Not able to find 'LaunchImage' in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?"));
-  subViews?.children.whereType<XmlElement>().firstWhere(
+          element.getAttribute('image') == 'LaunchImage'), orElse: () {
+    print('Not able to find "LaunchImage" in LaunchScreen.storyboard. Image '
+        'for splash screen not updated. Did you modify your default '
+        'LaunchScreen.storyboard file?');
+    exit(1);
+  });
+  subViews.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'imageView' &&
           element.getAttribute('image') == 'LaunchBackground'), orElse: () {
     subViews.children.insert(
@@ -168,15 +176,20 @@ void _updateLaunchScreenStoryboard(
     return XmlElement(XmlName(''));
   });
   // Update the fill property
-  imageView?.setAttribute('contentMode', iosContentMode);
+  imageView.setAttribute('contentMode', iosContentMode);
 
   // Find the resources
   final resources = documentData?.getElement('resources');
-  var launchImageResource = resources?.children.whereType<XmlElement>().firstWhere(
-      (element) => (element.name.qualified == 'image' &&
-          element.getAttribute('name') == 'LaunchImage'),
-      orElse: () => throw _LaunchScreenStoryboardModified(
-          "Not able to find 'LaunchImage' in LaunchScreen.storyboard. Image for splash screen not updated. Did you modify your default LaunchScreen.storyboard file?"));
+  var launchImageResource = resources?.children
+      .whereType<XmlElement>()
+      .firstWhere(
+          (element) => (element.name.qualified == 'image' &&
+              element.getAttribute('name') == 'LaunchImage'), orElse: () {
+    print('Not able to find "LaunchImage" in LaunchScreen.storyboard. Image '
+        'for splash screen not updated. Did you modify your default '
+        'LaunchScreen.storyboard file?');
+    exit(1);
+  });
 
   resources?.children.whereType<XmlElement>().firstWhere(
       (element) => (element.name.qualified == 'image' &&
@@ -195,13 +208,10 @@ void _updateLaunchScreenStoryboard(
       XmlDocument.parse(_iOSLaunchBackgroundConstraints).rootElement.copy());
 
   if (imagePath.isNotEmpty) {
-    if (!File(imagePath).existsSync()) {
-      throw _NoImageFileFoundException('The file $imagePath was not found.');
-    }
-
     final image = decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
-      throw _NoImageFileFoundException(imagePath + ' could not be loaded.');
+      print(imagePath + ' could not be loaded.');
+      exit(1);
     }
     launchImageResource?.setAttribute('width', image.width.toString());
     launchImageResource?.setAttribute('height', image.height.toString());
@@ -277,10 +287,10 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
 
   plistFiles.forEach((plistFile) {
     if (!File(plistFile).existsSync()) {
-      throw _CantFindInfoPlistFile(
-          'File $plistFile not found.  If you renamed the file, make sure to '
-          'specify it in the info_plist_files section of your '
+      print('File $plistFile not found.  If you renamed the file, make sure to'
+          ' specify it in the info_plist_files section of your '
           'flutter_native_splash configuration.');
+      exit(1);
     }
 
     print('[iOS] Updating $plistFile for status bar hidden/visible');

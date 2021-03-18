@@ -94,22 +94,24 @@ void _createAndroidSplash({
     }
   }
 
-  _applyStylesXml(fullScreen: fullscreen);
+  _applyStylesXml(
+      fullScreen: fullscreen,
+      file: _androidStylesFile,
+      template: _androidStylesXml);
+  _applyStylesXml(
+      fullScreen: fullscreen,
+      file: _androidNightStylesFile,
+      template: _androidNightStylesFile);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
 void _applyImageAndroid({required String imagePath, bool dark = false}) {
   print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
 
-  final file = File(imagePath);
-
-  if (!file.existsSync()) {
-    throw _NoImageFileFoundException('The file $imagePath was not found.');
-  }
-
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
-    throw _NoImageFileFoundException('The file $imagePath could not be read.');
+    print('The file $imagePath could not be read.');
+    exit(1);
   }
 
   for (var template in dark ? _splashImagesDark : _splashImages) {
@@ -160,14 +162,18 @@ void _applyLaunchBackgroundXml(
 }
 
 /// Create or update styles.xml full screen mode setting
-void _applyStylesXml({required bool fullScreen}) {
-  final stylesFile = File(_androidStylesFile);
+void _applyStylesXml(
+    {required bool fullScreen,
+    required String file,
+    required String template}) {
+  final stylesFile = File(file);
 
   if (!stylesFile.existsSync()) {
     print('[Android] No styles.xml file found in your Android project');
-    print(
-        '[Android] Creating styles.xml file and adding it to your Android project');
-    _createStylesFileWithImagePath(stylesFile: stylesFile);
+    print('[Android] Creating styles.xml file and adding it to your Android '
+        'project');
+    stylesFile.createSync(recursive: true);
+    stylesFile.writeAsStringSync(template);
   }
   print('[Android] Updating styles.xml with full screen mode setting');
   _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile);
@@ -176,48 +182,38 @@ void _applyStylesXml({required bool fullScreen}) {
 /// Updates styles.xml adding full screen property
 void _updateStylesFile({required bool fullScreen, required File stylesFile}) {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
-  final styles = stylesDocument.findAllElements('style');
-  if (styles.length == 1) {
+  final resources = stylesDocument.getElement('resources');
+  final styles = resources?.findElements('style');
+  if (styles?.length == 1) {
     print('[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '
         'styles by default.  Full screen mode not supported in Flutter V1 '
         'embedding.  Skipping update of styles.xml with fullscreen mode');
     return;
   }
-  var found = true;
-  final launchTheme = styles.firstWhere(
-      (element) => (element.attributes.any((attribute) =>
-          attribute.name.toString() == 'name' &&
-          attribute.value == 'LaunchTheme')), orElse: () {
-    found = false;
-    return XmlElement(XmlName('dummy'));
-  });
-  if (found) {
-    final fullScreenElement = launchTheme.children.firstWhere(
-        (element) => (element.attributes.any((attribute) {
-              return attribute.name.toString() == 'name' &&
-                  attribute.value == 'android:windowFullscreen';
-            })), orElse: () {
-      found = false;
-      return XmlElement(XmlName('dummy'));
-    });
-    if (found) {
-      launchTheme.children.add(XmlElement(
-          XmlName('item'),
-          [XmlAttribute(XmlName('name'), 'android:windowFullscreen')],
-          [XmlText(fullScreen.toString())]));
-    } else {
-      fullScreenElement.children.clear();
-      fullScreenElement.children.add(XmlText(fullScreen.toString()));
-    }
-    stylesFile.writeAsStringSync(
-        stylesDocument.toXmlString(pretty: true, indent: '    '));
+
+  XmlElement launchTheme;
+  try {
+    launchTheme = styles!.singleWhere((element) => (element.attributes.any(
+        (attribute) =>
+            attribute.name.toString() == 'name' &&
+            attribute.value == 'LaunchTheme')));
+  } on StateError {
+    print('LaunchTheme was not found in styles.xml. Skipping fullscreen'
+        'mode');
     return;
   }
-  print('[Android] Failed to update styles.xml with full screen mode setting');
-}
 
-/// Creates styles.xml with full screen property
-void _createStylesFileWithImagePath({required File stylesFile}) {
-  stylesFile.createSync(recursive: true);
-  stylesFile.writeAsStringSync(_androidStylesXml);
+  launchTheme.children
+      .removeWhere((element) => (element.attributes.any((attribute) {
+            return attribute.name.toString() == 'name' &&
+                attribute.value == 'android:windowFullscreen';
+          })));
+
+  launchTheme.children.add(XmlElement(
+      XmlName('item'),
+      [XmlAttribute(XmlName('name'), 'android:windowFullscreen')],
+      [XmlText(fullScreen.toString())]));
+
+  stylesFile.writeAsStringSync(
+      stylesDocument.toXmlString(pretty: true, indent: '    '));
 }

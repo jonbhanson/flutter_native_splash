@@ -1,6 +1,6 @@
 name: flutter_native_splash
 description: Generates native code to customize Flutter's default white native splash screen with background color and splash image. Supports dark mode, full screen, and more.
-version: 1.1.3
+version: 1.1.4
 homepage: https://github.com/jonbhanson/flutter_native_splash
 
 environment:

@@ -1,3 +1,11 @@
+## [1.1.4] - (2021-Mar-18)
+
+* Fixed bug that created duplicate android:windowFullscreen tags in styles.xml. Closes [#147](https://github.com/jonbhanson/flutter_native_splash/issues/147).
+* Fixed fullscreen in Android dark mode.
+* Print errors instead of throwing exceptions for cleaner output.
+* Added message for missing subviews in iOS LaunchScreen.storyboard. Fixes [#146](https://github.com/jonbhanson/flutter_native_splash/issues/146).
+* Removed duplicate exceptions for missing image file since that is now checked at package start.
+
 ## [1.1.3] - (2021-Mar-18)
 
 * Fixed bug that was giving error on copying background image.  Closes [#144](https://github.com/jonbhanson/flutter_native_splash/issues/144).

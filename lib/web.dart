@@ -78,7 +78,8 @@ void createWebImages(
   } else {
     final image = decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
-      throw _NoImageFileFoundException(imagePath + ' could not be read');
+      print(imagePath + ' could not be read');
+      exit(1);
     }
     print('[Web] Creating images');
     for (var template in webSplashImages) {
