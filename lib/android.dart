@@ -101,7 +101,7 @@ void _createAndroidSplash({
   _applyStylesXml(
       fullScreen: fullscreen,
       file: _androidNightStylesFile,
-      template: _androidNightStylesFile);
+      template: _androidStylesNightXml);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
