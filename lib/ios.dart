@@ -239,6 +239,9 @@ void _createBackground({
     file.createSync(recursive: true);
     file.writeAsBytesSync(encodePng(background));
   } else if (backgroundImageSource.isNotEmpty) {
+    // Copy will not work if the directory does not exist, so createSync
+    // will ensure that the directory exists.
+    File(backgroundImageDestination).createSync(recursive: true);
     File(backgroundImageSource).copySync(backgroundImageDestination);
   } else {
     throw Exception('No color string or background image!');
@@ -255,6 +258,9 @@ void _createBackground({
     file.createSync(recursive: true);
     file.writeAsBytesSync(encodePng(background));
   } else if (darkBackgroundImageSource.isNotEmpty) {
+    // Copy will not work if the directory does not exist, so createSync
+    // will ensure that the directory exists.
+    File(darkBackgroundImageSource).createSync(recursive: true);
     File(darkBackgroundImageSource).copySync(darkBackgroundImageDestination);
   } else {
     final file = File(darkBackgroundImageDestination);

@@ -48,6 +48,9 @@ void createBackgroundImages({
     final file = File(_webSplashImagesFolder + 'light-background.png');
     if (file.existsSync()) file.deleteSync();
   } else {
+    // Copy will not work if the directory does not exist, so createSync
+    // will ensure that the directory exists.
+    File(backgroundImage).createSync(recursive: true);
     File(backgroundImage)
         .copySync(_webSplashImagesFolder + 'light-background.png');
   }
@@ -56,6 +59,9 @@ void createBackgroundImages({
     final file = File(_webSplashImagesFolder + 'dark-background.png');
     if (file.existsSync()) file.deleteSync();
   } else {
+    // Copy will not work if the directory does not exist, so createSync
+    // will ensure that the directory exists.
+    File(darkBackgroundImage).createSync(recursive: true);
     File(darkBackgroundImage)
         .copySync(_webSplashImagesFolder + 'dark-background.png');
   }

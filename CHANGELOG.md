@@ -1,3 +1,7 @@
+## [1.1.3] - (2021-Mar-18)
+
+* Fixed bug that was giving error on copying background image.  Closes [#144](https://github.com/jonbhanson/flutter_native_splash/issues/144).
+
 ## [1.1.2] - (2021-Mar-17)
 
 * Check that image files exist before starting.  Throw an exception if image file not found.
