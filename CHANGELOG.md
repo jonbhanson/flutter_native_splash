@@ -1,4 +1,4 @@
-## [1.1.5] - (2021-Mar-23)
+## [1.1.5+1] - (2021-Mar-23)
 
 * Added unit tests.
 * Updated dependency.
