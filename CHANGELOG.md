@@ -1,3 +1,8 @@
+## [1.1.5] - (2021-Mar-23)
+
+* Added unit tests.
+* Updated dependency.
+
 ## [1.1.4+1] - (2021-Mar-18)
 
 * Fixed bug that created duplicate android:windowFullscreen tags in styles.xml. Closes [#147](https://github.com/jonbhanson/flutter_native_splash/issues/147).

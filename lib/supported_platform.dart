@@ -11,6 +11,7 @@ library flutter_native_splash_supported_platform;
 import 'dart:io';
 
 import 'package:image/image.dart';
+import 'package:meta/meta.dart';
 import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 
@@ -22,7 +23,7 @@ part 'web.dart';
 
 /// Function that will be called on supported platforms to create the splash screens.
 void tryCreateSplash() {
-  var config = _getConfig();
+  var config = getConfig();
   tryCreateSplashByConfig(config);
 }
 
@@ -46,8 +47,8 @@ String checkImageExists(
 void tryCreateSplashByConfig(Map<String, dynamic> config) {
   var image = checkImageExists(config: config, parameter: 'image');
   var darkImage = checkImageExists(config: config, parameter: 'image_dark');
-  var color = _parseColor(config['color']);
-  var darkColor = _parseColor(config['color_dark']);
+  var color = parseColor(config['color']);
+  var darkColor = parseColor(config['color_dark']);
   var backgroundImage =
       checkImageExists(config: config, parameter: 'background_image');
   var darkBackgroundImage =
@@ -102,7 +103,8 @@ void tryCreateSplashByConfig(Map<String, dynamic> config) {
   print('Now go finish building something awesome! 💪 You rock! 🤘🤩');
 }
 
-String _parseColor(var color) {
+@visibleForTesting
+String parseColor(var color) {
   if (color is int) color = color.toString().padLeft(6, '0');
 
   if (color is String) {
@@ -115,21 +117,22 @@ String _parseColor(var color) {
 }
 
 /// Get config from `pubspec.yaml` or `flutter_native_splash.yaml`
-Map<String, dynamic> _getConfig() {
+Map<String, dynamic> getConfig({String? configFile}) {
   // if `flutter_native_splash.yaml` exists use it as config file, otherwise use `pubspec.yaml`
-  var filePath = (FileSystemEntity.typeSync('flutter_native_splash.yaml') !=
-          FileSystemEntityType.notFound)
-      ? 'flutter_native_splash.yaml'
-      : 'pubspec.yaml';
+  String filePath;
+  if (configFile != null && File(configFile).existsSync()) {
+    filePath = configFile;
+  } else if (File('flutter_native_splash.yaml').existsSync()) {
+    filePath = 'flutter_native_splash.yaml';
+  } else {
+    filePath = 'pubspec.yaml';
+  }
 
-  final file = File(filePath);
-  final yamlString = file.readAsStringSync();
-  final Map yamlMap = loadYaml(yamlString);
+  final Map yamlMap = loadYaml(File(filePath).readAsStringSync());
 
   if (!(yamlMap['flutter_native_splash'] is Map)) {
-    print('Your `$filePath` file does not contain a `flutter_native_splash`'
-        ' section.');
-    exit(1);
+    throw Exception('Your `$filePath` file does not contain a '
+        '`flutter_native_splash` section.');
   }
 
   // yamlMap has the type YamlMap, which has several unwanted side effects

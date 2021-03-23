@@ -8,7 +8,9 @@ class _AndroidDrawableTemplate {
       {required this.directoryName, required this.divider});
 }
 
-final List<_AndroidDrawableTemplate> _splashImages = <_AndroidDrawableTemplate>[
+@visibleForTesting
+final List<_AndroidDrawableTemplate> androidSplashImages =
+    <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 2.0),
   _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 1.8),
   _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 1.4),
@@ -16,7 +18,8 @@ final List<_AndroidDrawableTemplate> _splashImages = <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
 ];
 
-final List<_AndroidDrawableTemplate> _splashImagesDark =
+@visibleForTesting
+final List<_AndroidDrawableTemplate> androidSplashImagesDark =
     <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 2.0),
   _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 1.8),
@@ -114,7 +117,7 @@ void _applyImageAndroid({required String imagePath, bool dark = false}) {
     exit(1);
   }
 
-  for (var template in dark ? _splashImagesDark : _splashImages) {
+  for (var template in dark ? androidSplashImagesDark : androidSplashImages) {
     _saveImageAndroid(template: template, image: image);
   }
 }

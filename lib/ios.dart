@@ -8,15 +8,14 @@ class _IosLaunchImageTemplate {
   _IosLaunchImageTemplate({required this.fileName, required this.divider});
 }
 
-final List<_IosLaunchImageTemplate> _iOSSplashImages =
-    <_IosLaunchImageTemplate>[
+final List<_IosLaunchImageTemplate> iOSSplashImages = <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
   _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 1.5),
   _IosLaunchImageTemplate(
       fileName: 'LaunchImage@3x.png', divider: 1), // original image must be @3x
 ];
 
-final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
+final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
     <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
   _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 1.5),
@@ -40,7 +39,7 @@ void _createiOSSplash({
     _applyImageiOS(imagePath: imagePath);
   } else {
     final splashImage = Image(1, 1);
-    _iOSSplashImages.forEach((template) {
+    iOSSplashImages.forEach((template) {
       var file = File(_iOSAssetsLaunchImageFolder + template.fileName);
       file.createSync(recursive: true);
       file.writeAsBytesSync(encodePng(splashImage));
@@ -50,7 +49,7 @@ void _createiOSSplash({
   if (darkImagePath.isNotEmpty) {
     _applyImageiOS(imagePath: darkImagePath, dark: true);
   } else {
-    _iOSSplashImagesDark.forEach((template) {
+    iOSSplashImagesDark.forEach((template) {
       final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
     });
@@ -94,7 +93,7 @@ void _applyImageiOS({required String imagePath, bool dark = false}) {
     print(imagePath + ' could not be loaded.');
     exit(1);
   }
-  for (var template in dark ? _iOSSplashImagesDark : _iOSSplashImages) {
+  for (var template in dark ? iOSSplashImagesDark : iOSSplashImages) {
     _saveImageiOS(template: template, image: image);
   }
 }
