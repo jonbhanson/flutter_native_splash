@@ -1,4 +1,4 @@
-## [1.1.6] - (2021-Mar-29)
+## [1.1.6+1] - (2021-Mar-29)
 
 * Corrected Android scaling.  Thanks [@chris-efission](https://github.com/chris-efission).
 * Updated readme image.
