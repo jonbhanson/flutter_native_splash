@@ -8,6 +8,7 @@ When your app is opened, there is a brief time while the native app loads Flutte
 <video autoplay muted="true">
     <source src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/ios.webm" type="video/webm">
 </video>
+</p>
 
 # Usage
 
