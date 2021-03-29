@@ -11,21 +11,21 @@ class _AndroidDrawableTemplate {
 @visibleForTesting
 final List<_AndroidDrawableTemplate> androidSplashImages =
     <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 2.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 1.8),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 1.4),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.2),
+  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 4.0),
+  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 2.67),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 2.0),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.33),
   _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
 ];
 
 @visibleForTesting
 final List<_AndroidDrawableTemplate> androidSplashImagesDark =
     <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 2.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 1.8),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 1.4),
+  _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 4.0),
+  _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 2.67),
+  _AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 2.0),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-xxhdpi', divider: 1.2),
+      directoryName: 'drawable-night-xxhdpi', divider: 1.33),
   _AndroidDrawableTemplate(
       directoryName: 'drawable-night-xxxhdpi', divider: 1.0),
 ];
