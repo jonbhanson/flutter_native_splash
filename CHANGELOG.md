@@ -1,4 +1,4 @@
-## [1.1.7] - (2021-Apr-02)
+## [1.1.7+1] - (2021-Apr-02)
 
 * flutter_native_splash:remove adheres to android/ios/web setting.  Fixes [#159](https://github.com/jonbhanson/flutter_native_splash/issues/159).
 * Updated readme images.

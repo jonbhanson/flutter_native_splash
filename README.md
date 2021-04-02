@@ -5,8 +5,8 @@
 When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time the native app displays a white splash screen.  This package automatically generates iOS, Android, and Web native code for customizing this native splash screen background color and splash image.  Supports dark mode, full screen, and platform-specific options.
 
 <p align='center'>
-    <img src="splash_demo.gif" />
-    <img src="splash_demo_dark.gif" />
+    <img src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/splash_demo.gif" />
+    <img src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/splash_demo_dark.gif" />
 </p>
 
 # Usage
@@ -17,7 +17,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.1.7
+  flutter_native_splash: ^1.1.7+1
 ```
 
 Don't forget to `flutter pub get`.
