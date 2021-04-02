@@ -24,13 +24,26 @@ part 'web.dart';
 /// Function that will be called on supported platforms to create the splash screens.
 void tryCreateSplash() {
   var config = getConfig();
+  checkConfig(config);
   tryCreateSplashByConfig(config);
 }
 
 /// Function that will be called on supported platforms to remove the splash screens.
 void tryRemoveSplash() {
   print('Restoring Flutter\'s default white native splash screen...');
-  tryCreateSplashByConfig({'color': '#ffffff'});
+  var config = getConfig();
+
+  var removeConfig = <String, dynamic>{'color': '#ffffff'};
+  if (config.containsKey('android')) {
+    removeConfig['android'] = config['android'];
+  }
+  if (config.containsKey('ios')) {
+    removeConfig['ios'] = config['ios'];
+  }
+  if (config.containsKey('web')) {
+    removeConfig['web'] = config['web'];
+  }
+  tryCreateSplashByConfig(removeConfig);
 }
 
 String checkImageExists(
@@ -151,7 +164,10 @@ Map<String, dynamic> getConfig({String? configFile}) {
       config[entry.key] = entry.value;
     }
   }
+  return config;
+}
 
+void checkConfig(Map<String, dynamic> config) {
   if (config.containsKey('color') && config.containsKey('background_image')) {
     print('Your `flutter_native_splash` section cannot not contain both a '
         '`color` and `background_image`.');
@@ -178,6 +194,4 @@ Map<String, dynamic> getConfig({String? configFile}) {
         'does not contain a `color_dark` or a `background_image_dark`.');
     exit(1);
   }
-
-  return config;
 }
