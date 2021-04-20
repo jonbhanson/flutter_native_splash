@@ -1,4 +1,9 @@
 language: dart
 
+install:
+  - git clone https://github.com/flutter/flutter.git -b stable
+  - ./flutter/bin/flutter doctor
+  - ./flutter/bin/flutter pub get
+
 dart:
   - dev
