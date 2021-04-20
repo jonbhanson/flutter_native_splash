@@ -1,4 +1,4 @@
-part of flutter_native_splash_supported_platform;
+part of flutter_native_splash;
 
 // Android-related templates
 

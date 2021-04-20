@@ -1,4 +1,4 @@
-part of flutter_native_splash_supported_platform;
+part of flutter_native_splash;
 
 // Image template
 class _IosLaunchImageTemplate {
@@ -269,7 +269,7 @@ void _createBackground({
   } else if (darkBackgroundImageSource.isNotEmpty) {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
-    File(darkBackgroundImageSource).createSync(recursive: true);
+    File(darkBackgroundImageDestination).createSync(recursive: true);
     File(darkBackgroundImageSource).copySync(darkBackgroundImageDestination);
   } else {
     final file = File(darkBackgroundImageDestination);

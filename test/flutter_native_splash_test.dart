@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flutter_native_splash/supported_platform.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:path/path.dart';
 import 'package:test/test.dart';
 
