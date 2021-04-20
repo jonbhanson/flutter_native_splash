@@ -1,7 +1,6 @@
-## [1.1.8+3] - (2021-Apr-20)
+## [1.1.8+4] - (2021-Apr-20)
 
 * Fixed bug that was preventing copying of dark background.  Fixes [#163](https://github.com/jonbhanson/flutter_native_splash/issues/163).
-* Updated pubspec.yaml to show which platforms are supported.
 
 ## [1.1.7+1] - (2021-Apr-02)
 

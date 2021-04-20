@@ -3,10 +3,9 @@
 /// This is the main entry point for the Flutter Native Splash package.
 library flutter_native_splash;
 
-import 'dart:io';
-
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
+import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 
