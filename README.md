@@ -111,7 +111,7 @@ flutter pub run flutter_native_splash:create
 
 When the package finishes running, your splash screen is ready.
 
-For different flavors or to specify the yaml file location, just add the following path with the command 
+To specify the yaml file location just add --path with the command in the terminal:
 
 ```
 flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
