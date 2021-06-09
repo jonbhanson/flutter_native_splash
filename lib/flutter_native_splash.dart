@@ -16,7 +16,7 @@ part 'templates.dart';
 part 'web.dart';
 
 /// Create splash screens for Android and iOS
-void createSplash(String? path) {
+void createSplash({String? path}) {
   var config = getConfig(configFile: path);
   checkConfig(config);
   createSplashByConfig(config);
@@ -83,7 +83,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
 }
 
 /// Remove any splash screen by setting the default white splash
-void removeSplash(String? path) {
+void removeSplash({String? path}) {
   print('Restoring Flutter\'s default white native splash screen...');
   var config = getConfig(configFile: path);
 

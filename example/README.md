@@ -13,6 +13,13 @@ flutter pub get
 flutter pub run flutter_native_splash:create
 ```
 
+Or, to try specifying a config by setting the path, run the following command in the terminal:
+
+```
+flutter pub get
+flutter pub run flutter_native_splash:create --path=red.yaml
+```
+
 The updated splash screen will now appear when you run the app.
 
 A few resources to get you started if this is your first Flutter project:

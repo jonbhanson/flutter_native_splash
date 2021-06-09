@@ -1,3 +1,7 @@
+## [1.1.9] - (2021-Jun-09)
+
+* Added path argument to command line.  Thanks [@lyledean1](https://github.com/lyledean1) for PR [#180](https://github.com/jonbhanson/flutter_native_splash/pull/180).
+
 ## [1.1.8+4] - (2021-Apr-20)
 
 * Fixed bug that was preventing copying of dark background.  Fixes [#163](https://github.com/jonbhanson/flutter_native_splash/issues/163).

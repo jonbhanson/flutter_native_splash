@@ -5,6 +5,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart'
 void main(List<String> args) {
   var parser = ArgParser();
   parser.addOption('path',
-      callback: (path) => {flutter_native_splash.createSplash(path)});
+      callback: (path) => {flutter_native_splash.createSplash(path: path)});
   parser.parse(args);
 }
