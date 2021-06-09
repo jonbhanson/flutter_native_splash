@@ -1,3 +1,7 @@
+## [1.2.0] - (2021-Jun-09)
+
+* Added beta support for Android 12.  Closes [#175](https://github.com/jonbhanson/flutter_native_splash/issues/175).
+
 ## [1.1.9] - (2021-Jun-09)
 
 * Added path argument to command line.  Thanks [@lyledean1](https://github.com/lyledean1) for PR [#180](https://github.com/jonbhanson/flutter_native_splash/pull/180).

@@ -12,6 +12,10 @@ const String _androidLaunchDarkBackgroundFile =
 const String _androidStylesFile = _androidResFolder + 'values/styles.xml';
 const String _androidNightStylesFile =
     _androidResFolder + 'values-night/styles.xml';
+const String _androidV31StylesFile =
+    _androidResFolder + 'values-v31/styles.xml';
+const String _androidV31NightStylesFile =
+    _androidResFolder + 'values-night-v31/styles.xml';
 const String _androidV21DrawableFolder = _androidResFolder + 'drawable-v21/';
 const String _androidV21LaunchBackgroundFile =
     _androidV21DrawableFolder + 'launch_background.xml';

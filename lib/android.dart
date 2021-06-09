@@ -40,6 +40,7 @@ void _createAndroidSplash({
   required bool fullscreen,
   required String backgroundImage,
   required String darkBackgroundImage,
+  required bool android12,
 }) {
   if (imagePath.isNotEmpty) {
     _applyImageAndroid(imagePath: imagePath);
@@ -95,6 +96,22 @@ void _createAndroidSplash({
         showImage: imagePath.isNotEmpty,
       );
     }
+  }
+
+  if (android12) {
+    _applyStylesXml(
+        fullScreen: fullscreen,
+        file: _androidV31StylesFile,
+        template: _androidV31StylesXml);
+    _applyStylesXml(
+        fullScreen: fullscreen,
+        file: _androidV31NightStylesFile,
+        template: _androidV31StylesNightXml);
+  } else {
+    var file = File(_androidV31StylesFile);
+    if (file.existsSync()) file.deleteSync();
+    file = File(_androidV31StylesNightXml);
+    if (file.existsSync()) file.deleteSync();
   }
 
   _applyStylesXml(

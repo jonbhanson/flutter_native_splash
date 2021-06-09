@@ -17,7 +17,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.1.9
+  flutter_native_splash: ^1.2.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -100,6 +100,9 @@ flutter_native_splash:
   #info_plist_files:
   #  - 'ios/Runner/Info-Debug.plist'
   #  - 'ios/Runner/Info-Release.plist'
+
+  # To enable support for Android 12, set the following parameter to true.  Defaults to false.
+  #android12: true
 ```
 
 ## 2. Run the package
@@ -116,6 +119,19 @@ To specify the yaml file location just add --path with the command in the termin
 ```
 flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 ```
+
+# Android 12 beta support
+
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of specifying the window background, animated app icon, and the icon background.  Android 12 also supports legacy splash screens as they have been implemented in Flutter and this package.  At this time, this package will provide beta support for Android 12 with a legacy implementation.  
+
+To enable Android 12 support, [set up the Android 12 SDK](https://developer.android.com/about/versions/12/setup-sdk), add `android12: true` to your configuration, and run the package:
+
+```
+flutter pub run flutter_native_splash:create
+```
+The package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will allow Android 12 to maintain the legacy splash screen.
+
+This package will add support for the new Android 12 splash screens in the future.  However, I will wait to see how Flutter adapts to the new splash screen format so that this package can complement Flutter's implementation and avoid reinventing the wheel.
 
 # Recommendations
 ## Secondary splash screen:
