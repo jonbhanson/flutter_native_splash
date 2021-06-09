@@ -111,6 +111,12 @@ flutter pub run flutter_native_splash:create
 
 When the package finishes running, your splash screen is ready.
 
+To specify the yaml file location just add --path with the command in the terminal:
+
+```
+flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
+```
+
 # Recommendations
 ## Secondary splash screen:
 The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there may still be resources that need to be loaded before your app is ready.  For this reason, you should consider implementing a Flutter splash screen that is displayed while these resources load.  Here is a code example of a secondary Flutter splash screen, or use a package from [pub.dev](https://pub.dev).
