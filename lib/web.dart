@@ -3,8 +3,8 @@ part of flutter_native_splash;
 // Image template
 class _WebLaunchImageTemplate {
   final String fileName;
-  final double divider;
-  _WebLaunchImageTemplate({required this.fileName, required this.divider});
+  final double pixelDensity;
+  _WebLaunchImageTemplate({required this.fileName, required this.pixelDensity});
 }
 
 /// Create Android splash screen
@@ -24,14 +24,16 @@ void _createWebSplash({
 
   if (darkImagePath.isEmpty) darkImagePath = imagePath;
   createWebImages(imagePath: imagePath, webSplashImages: [
-    _WebLaunchImageTemplate(fileName: 'light-1x.png', divider: 3.0),
-    _WebLaunchImageTemplate(fileName: 'light-2x.png', divider: 1.5),
-    _WebLaunchImageTemplate(fileName: 'light-3x.png', divider: 1.0),
+    _WebLaunchImageTemplate(fileName: 'light-1x.png', pixelDensity: 1),
+    _WebLaunchImageTemplate(fileName: 'light-2x.png', pixelDensity: 2),
+    _WebLaunchImageTemplate(fileName: 'light-3x.png', pixelDensity: 3),
+    _WebLaunchImageTemplate(fileName: 'light-4x.png', pixelDensity: 4),
   ]);
   createWebImages(imagePath: darkImagePath, webSplashImages: [
-    _WebLaunchImageTemplate(fileName: 'dark-1x.png', divider: 3.0),
-    _WebLaunchImageTemplate(fileName: 'dark-2x.png', divider: 1.5),
-    _WebLaunchImageTemplate(fileName: 'dark-3x.png', divider: 1.0),
+    _WebLaunchImageTemplate(fileName: 'dark-1x.png', pixelDensity: 1),
+    _WebLaunchImageTemplate(fileName: 'dark-2x.png', pixelDensity: 2),
+    _WebLaunchImageTemplate(fileName: 'dark-3x.png', pixelDensity: 3),
+    _WebLaunchImageTemplate(fileName: 'dark-4x.png', pixelDensity: 4),
   ]);
   createBackgroundImages(
       backgroundImage: backgroundImage,
@@ -44,26 +46,27 @@ void createBackgroundImages({
   required String backgroundImage,
   required String darkBackgroundImage,
 }) {
+  final backgroundDestination = _webSplashImagesFolder + 'light-background.png';
   if (backgroundImage.isEmpty) {
-    final file = File(_webSplashImagesFolder + 'light-background.png');
+    final file = File(backgroundDestination);
     if (file.existsSync()) file.deleteSync();
   } else {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
-    File(backgroundImage).createSync(recursive: true);
-    File(backgroundImage)
-        .copySync(_webSplashImagesFolder + 'light-background.png');
+    File(backgroundDestination).createSync(recursive: true);
+    File(backgroundImage).copySync(backgroundDestination);
   }
 
+  final darkBackgroundDestination =
+      _webSplashImagesFolder + 'dark-background.png';
   if (darkBackgroundImage.isEmpty) {
-    final file = File(_webSplashImagesFolder + 'dark-background.png');
+    final file = File(darkBackgroundDestination);
     if (file.existsSync()) file.deleteSync();
   } else {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
-    File(darkBackgroundImage).createSync(recursive: true);
-    File(darkBackgroundImage)
-        .copySync(_webSplashImagesFolder + 'dark-background.png');
+    File(darkBackgroundDestination).createSync(recursive: true);
+    File(darkBackgroundImage).copySync(darkBackgroundDestination);
   }
 }
 
@@ -92,8 +95,8 @@ void _saveImageWeb(
     {required _WebLaunchImageTemplate template, required Image image}) {
   var newFile = copyResize(
     image,
-    width: image.width ~/ template.divider,
-    height: image.height ~/ template.divider,
+    width: image.width * template.pixelDensity ~/ 4,
+    height: image.height * template.pixelDensity ~/ 4,
     interpolation: Interpolation.linear,
   );
 

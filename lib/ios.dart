@@ -3,23 +3,24 @@ part of flutter_native_splash;
 // Image template
 class _IosLaunchImageTemplate {
   final String fileName;
-  final double divider;
+  final double pixelDensity;
 
-  _IosLaunchImageTemplate({required this.fileName, required this.divider});
+  _IosLaunchImageTemplate({required this.fileName, required this.pixelDensity});
 }
 
 final List<_IosLaunchImageTemplate> iOSSplashImages = <_IosLaunchImageTemplate>[
-  _IosLaunchImageTemplate(fileName: 'LaunchImage.png', divider: 3),
-  _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', divider: 1.5),
+  _IosLaunchImageTemplate(fileName: 'LaunchImage.png', pixelDensity: 1),
+  _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', pixelDensity: 2),
   _IosLaunchImageTemplate(
-      fileName: 'LaunchImage@3x.png', divider: 1), // original image must be @3x
+      fileName: 'LaunchImage@3x.png',
+      pixelDensity: 3), // original image must be @4x
 ];
 
 final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
     <_IosLaunchImageTemplate>[
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', divider: 3),
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', divider: 1.5),
-  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', divider: 1),
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', pixelDensity: 1),
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', pixelDensity: 2),
+  _IosLaunchImageTemplate(fileName: 'LaunchImageDark@3x.png', pixelDensity: 3),
   // original image must be @3x
 ];
 
@@ -103,8 +104,8 @@ void _saveImageiOS(
     {required _IosLaunchImageTemplate template, required Image image}) {
   var newFile = copyResize(
     image,
-    width: image.width ~/ template.divider,
-    height: image.height ~/ template.divider,
+    width: image.width * template.pixelDensity ~/ 4,
+    height: image.height * template.pixelDensity ~/ 4,
     interpolation: Interpolation.linear,
   );
 

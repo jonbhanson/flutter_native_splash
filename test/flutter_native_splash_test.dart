@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 import 'package:test/test.dart';
 
 void main() {
@@ -25,11 +25,11 @@ void main() {
 
   group('config file from args', () {
     final testDir =
-        join('.dart_tool', 'flutter_native_splash', 'test', 'config_file');
+        p.join('.dart_tool', 'flutter_native_splash', 'test', 'config_file');
 
     late String currentDirectory;
     void setCurrentDirectory(String path) {
-      path = join(testDir, path);
+      path = p.join(testDir, path);
       Directory(path).createSync(recursive: true);
       Directory.current = path;
     }

@@ -3,31 +3,34 @@ part of flutter_native_splash;
 /// Image template
 class _AndroidDrawableTemplate {
   final String directoryName;
-  final double divider;
+  final double pixelDensity;
   _AndroidDrawableTemplate(
-      {required this.directoryName, required this.divider});
+      {required this.directoryName, required this.pixelDensity});
 }
 
 @visibleForTesting
 final List<_AndroidDrawableTemplate> androidSplashImages =
     <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', divider: 4.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', divider: 2.67),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', divider: 2.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', divider: 1.33),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', divider: 1.0),
+  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', pixelDensity: 1),
+  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', pixelDensity: 1.5),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', pixelDensity: 2),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', pixelDensity: 3),
+  _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', pixelDensity: 4),
 ];
 
 @visibleForTesting
 final List<_AndroidDrawableTemplate> androidSplashImagesDark =
     <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', divider: 4.0),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', divider: 2.67),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', divider: 2.0),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-xxhdpi', divider: 1.33),
+      directoryName: 'drawable-night-mdpi', pixelDensity: 1),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-xxxhdpi', divider: 1.0),
+      directoryName: 'drawable-night-hdpi', pixelDensity: 1.5),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xhdpi', pixelDensity: 2),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xxhdpi', pixelDensity: 3),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xxxhdpi', pixelDensity: 4),
 ];
 
 /// Create Android splash screen
@@ -105,12 +108,12 @@ void _createAndroidSplash({
         template: _androidV31StylesXml);
     _applyStylesXml(
         fullScreen: fullscreen,
-        file: _androidV31NightStylesFile,
+        file: _androidV31StylesNightFile,
         template: _androidV31StylesNightXml);
   } else {
     var file = File(_androidV31StylesFile);
     if (file.existsSync()) file.deleteSync();
-    file = File(_androidV31StylesNightXml);
+    file = File(_androidV31StylesNightFile);
     if (file.existsSync()) file.deleteSync();
   }
 
@@ -146,8 +149,8 @@ void _saveImageAndroid(
     {required _AndroidDrawableTemplate template, required Image image}) {
   var newFile = copyResize(
     image,
-    width: image.width ~/ template.divider,
-    height: image.height ~/ template.divider,
+    width: image.width * template.pixelDensity ~/ 4,
+    height: image.height * template.pixelDensity ~/ 4,
     interpolation: Interpolation.linear,
   );
 

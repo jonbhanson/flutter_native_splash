@@ -17,7 +17,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.2.0
+  flutter_native_splash: ^1.2.1
 ```
 
 Don't forget to `flutter pub get`.
@@ -50,7 +50,7 @@ flutter_native_splash:
   # the leading # character.
 
   # The image parameter allows you to specify an image used in the splash screen.  It must be a 
-  # png file.  
+  # png file and should be sized for 4x pixel density.
   #image: assets/splash.png
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
@@ -120,7 +120,7 @@ To specify the yaml file location just add --path with the command in the termin
 flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 ```
 
-# Android 12 beta support
+# Beta support for Android 12
 
 Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of specifying the window background, animated app icon, and the icon background.  Android 12 also supports legacy splash screens as they have been implemented in Flutter and this package.  At this time, this package will provide beta support for Android 12 with a legacy implementation.  
 
@@ -133,60 +133,25 @@ The package will add a `styles.xml` in `values-v31` and `values-night-v31` resou
 
 This package will add support for the new Android 12 splash screens in the future.  However, I will wait to see how Flutter adapts to the new splash screen format so that this package can complement Flutter's implementation and avoid reinventing the wheel.
 
+At this time, the splash screen may jump when using `fullscreen` with Android 12.
+
 # Recommendations
 ## Secondary splash screen:
-The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there may still be resources that need to be loaded before your app is ready.  For this reason, you should consider implementing a Flutter splash screen that is displayed while these resources load.  Here is a code example of a secondary Flutter splash screen, or use a package from [pub.dev](https://pub.dev).
-
-```dart
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder(
-      // Replace the 3 second delay with your initialization code:
-      future: Future.delayed(Duration(seconds: 3)),
-      builder: (context, AsyncSnapshot snapshot) {
-        // Show splash screen while waiting for app resources to load:
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return MaterialApp(home: Splash());
-        } else {
-          // Loading is done, return the app:
-          return MaterialApp(
-            home: Scaffold(body: Center(child: Text('App loaded'))),
-          );
-        }
-      },
-    );
-  }
-}
-
-class Splash extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Icon(
-          Icons.apartment_outlined,
-          size: MediaQuery.of(context).size.width * 0.785,
-        ),
-      ),
-    );
-  }
-}
-```
-
-
-
-## Material resources:
-* If you want to use a Material Icon as your splash image, download an icon in [(material.io/resources/icons)](https://material.io/resources/icons/) as **PNG** for **Android**. I recommend using the biggest icon in `drawable-xxxhdpi` folder which was just downloaded for better results.
-  
-* Material Colors are available in [material.io/resources/color](https://material.io/resources/color/#!/)
+The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there are probably still resources that need to be loaded before your app is ready.  For this reason, you should consider implementing a secondary Flutter splash screen or placeholders that display while these resources load.  The [example](https://github.com/jonbhanson/flutter_native_splash/blob/master/example/lib/main.dart) show an implimentation of a secondary splash screen.
   
 # FAQs
 ## Can I change the duration of the splash screen?
-The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  However, if you want a longer splash screen, see the [secondary splash screen](#secondary-splash-screen) recommendation.
+The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  Note that delaying the user experience is a poor design decision.
 
 ## Are animations/lottie/GIF images supported?
 Not at this time.  However, you may want to consider a secondary splash screen that supports animation.  See the [secondary splash screen](#secondary-splash-screen) recommendation.
+
+## I got the error AAPT: error: style attribute 'android:attr/windowSplashScreenBackground' not found
+This attribute is only found in Android 12, so if you are getting this error, it means your project is not fully set up for Android 12.  Did you [update your app's build configuration](https://developer.android.com/about/versions/12/setup-sdk#config)?
+
+## I see a white screen between splash screen and app
+1. It may be caused by an [iOS splash caching bug](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update), which can be solved by uninstalling your app, powering off your device, power back on, and then try reinstalling.
+2. It may be caused by the delay due to initialization in your app.  To test this, make a test where your `main()` returns a `Container(color: Colors.black);`. If the white flash goes away, it will show that your content is not loading fast enough.  You could solve this by creating a [secondary splash screen](https://pub.dev/packages/flutter_native_splash#secondary-splash-screen) or loading a barebones version of your app with placeholders, and then populate the placeholders as content loads.
 
 # Notes
 * If splash screen was not updated properly on iOS or if you experience a white screen before splash screen, run `flutter clean` and recompile your app. If that does not solve the problem, delete your app from the device, power down the device, power up device, install and launch app as per [this stackoverflow thread](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update).
@@ -209,7 +174,7 @@ Not at this time.  However, you may want to consider a secondary splash screen t
 
 ## Web
 * A `web/splash` folder will be created for splash screen images and CSS files.
-* Your splash image will be resized to `1x`, `2x`, and `3x` sizes and placed in `web/splash/img`.
+* Your splash image will be resized to `1x`, `2x`, `3x`, and `4x` sizes and placed in `web/splash/img`.
 * The splash style sheet will be added to the app's `web/index.html`, as well as the HTML for the splash pictures.
 
 # Removing

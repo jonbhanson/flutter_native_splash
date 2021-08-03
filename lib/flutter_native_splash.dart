@@ -5,6 +5,7 @@ library flutter_native_splash;
 
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
+import 'package:path/path.dart' as p;
 import 'package:universal_io/io.dart';
 import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
@@ -41,42 +42,54 @@ void createSplashByConfig(Map<String, dynamic> config) {
   bool android12 = (config['android12'] ?? false);
 
   if (!config.containsKey('android') || config['android']) {
-    _createAndroidSplash(
-      imagePath: image,
-      darkImagePath: darkImage,
-      backgroundImage: backgroundImage,
-      darkBackgroundImage: darkBackgroundImage,
-      color: color,
-      darkColor: darkColor,
-      gravity: gravity,
-      fullscreen: fullscreen,
-      android12: android12,
-    );
-  }
-
-  if (!config.containsKey('ios') || config['ios']) {
-    _createiOSSplash(
-      imagePath: image,
-      darkImagePath: darkImage,
-      backgroundImage: backgroundImage,
-      darkBackgroundImage: darkBackgroundImage,
-      color: color,
-      darkColor: darkColor,
-      plistFiles: plistFiles,
-      iosContentMode: iosContentMode,
-      fullscreen: fullscreen,
-    );
-  }
-
-  if (!config.containsKey('web') || config['web']) {
-    _createWebSplash(
+    if (Directory('android').existsSync()) {
+      _createAndroidSplash(
         imagePath: image,
         darkImagePath: darkImage,
         backgroundImage: backgroundImage,
         darkBackgroundImage: darkBackgroundImage,
         color: color,
         darkColor: darkColor,
-        imageMode: webImageMode);
+        gravity: gravity,
+        fullscreen: fullscreen,
+        android12: android12,
+      );
+    } else {
+      print('Android folder not found, skipping Android splash update...');
+    }
+  }
+
+  if (!config.containsKey('ios') || config['ios']) {
+    if (Directory('ios').existsSync()) {
+      _createiOSSplash(
+        imagePath: image,
+        darkImagePath: darkImage,
+        backgroundImage: backgroundImage,
+        darkBackgroundImage: darkBackgroundImage,
+        color: color,
+        darkColor: darkColor,
+        plistFiles: plistFiles,
+        iosContentMode: iosContentMode,
+        fullscreen: fullscreen,
+      );
+    } else {
+      print('iOS folder not found, skipping iOS splash update...');
+    }
+  }
+
+  if (!config.containsKey('web') || config['web']) {
+    if (Directory('web').existsSync()) {
+      _createWebSplash(
+          imagePath: image,
+          darkImagePath: darkImage,
+          backgroundImage: backgroundImage,
+          darkBackgroundImage: darkBackgroundImage,
+          color: color,
+          darkColor: darkColor,
+          imageMode: webImageMode);
+    } else {
+      print('Web folder not found, skipping web splash update...');
+    }
   }
 
   print('');
@@ -109,6 +122,13 @@ String checkImageExists(
     print('The file "$image" set as the parameter "$parameter" was not found.');
     exit(1);
   }
+
+  if (image.isNotEmpty && p.extension(image).toLowerCase() != '.png') {
+    print('Unsupported file format: ' +
+        image +
+        '  Your image must be a PNG file.');
+    exit(1);
+  }
   return image;
 }
 
@@ -116,8 +136,13 @@ String checkImageExists(
 Map<String, dynamic> getConfig({String? configFile}) {
   // if `flutter_native_splash.yaml` exists use it as config file, otherwise use `pubspec.yaml`
   String filePath;
-  if (configFile != null && File(configFile).existsSync()) {
-    filePath = configFile;
+  if (configFile != null) {
+    if (File(configFile).existsSync()) {
+      filePath = configFile;
+    } else {
+      print('The config file `$configFile` was not found.');
+      exit(1);
+    }
   } else if (File('flutter_native_splash.yaml').existsSync()) {
     filePath = 'flutter_native_splash.yaml';
   } else {

@@ -47,9 +47,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -97,7 +96,7 @@ flutter_native_splash:
   # the leading # character.
 
   # The image parameter allows you to specify an image used in the splash screen.  It must be a
-  # png file.
+  # png file and should be sized for 4x pixel density.
   image: assets/logo_lockup_flutter_vertical.png
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
@@ -109,7 +108,7 @@ flutter_native_splash:
   #background_image_dark: "assets/dark-background.png"
   image_dark: assets/logo_lockup_flutter_vertical_wht.png
 
-  # The android and ios parameters can be used to disable generating a splash screen on a given
+  # The android, ios and web parameters can be used to disable generating a splash screen on a given
   # platform.
   #android: false
   #ios: false
@@ -147,3 +146,6 @@ flutter_native_splash:
   #info_plist_files:
   #  - 'ios/Runner/Info-Debug.plist'
   #  - 'ios/Runner/Info-Release.plist'
+
+  # To enable support for Android 12, set the following parameter to true.  Defaults to false.
+  #android12: true

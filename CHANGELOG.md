@@ -1,3 +1,10 @@
+## [1.2.1] - (2021-Jul-19)
+* Check the file type and exit with error if it is not a PNG.
+* Updated documentation with more FAQs.
+* Fixed bug that was preventing copying of images for web.  Fixes [#192](https://github.com/jonbhanson/flutter_native_splash/issues/192).
+* Changed the example to show a secondary splash screen.
+* Check that android, web, and ios folders exist before updating respective splash screen.
+
 ## [1.2.0] - (2021-Jun-09)
 
 * Added beta support for Android 12.  Closes [#175](https://github.com/jonbhanson/flutter_native_splash/issues/175).
