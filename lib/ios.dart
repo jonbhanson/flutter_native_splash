@@ -26,17 +26,17 @@ final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
 
 /// Create iOS splash screen
 void _createiOSSplash({
-  required String imagePath,
-  required String darkImagePath,
+  required String? imagePath,
+  required String? darkImagePath,
   required String color,
   required String darkColor,
   List<String>? plistFiles,
   required String iosContentMode,
   required bool fullscreen,
-  required String backgroundImage,
-  required String darkBackgroundImage,
+  required String? backgroundImage,
+  required String? darkBackgroundImage,
 }) {
-  if (imagePath.isNotEmpty) {
+  if (imagePath != null) {
     _applyImageiOS(imagePath: imagePath);
   } else {
     final splashImage = Image(1, 1);
@@ -47,7 +47,7 @@ void _createiOSSplash({
     });
   }
 
-  if (darkImagePath.isNotEmpty) {
+  if (darkImagePath != null) {
     _applyImageiOS(imagePath: darkImagePath, dark: true);
   } else {
     iOSSplashImagesDark.forEach((template) {
@@ -59,7 +59,7 @@ void _createiOSSplash({
   var launchImageFile = File(_iOSAssetsLaunchImageFolder + 'Contents.json');
   launchImageFile.createSync(recursive: true);
   launchImageFile.writeAsStringSync(
-      darkImagePath.isNotEmpty ? _iOSContentsJsonDark : _iOSContentsJson);
+      darkImagePath != null ? _iOSContentsJsonDark : _iOSContentsJson);
 
   _applyLaunchScreenStoryboard(
       imagePath: imagePath, iosContentMode: iosContentMode);
@@ -116,7 +116,7 @@ void _saveImageiOS(
 
 /// Update LaunchScreen.storyboard adding width, height and color
 void _applyLaunchScreenStoryboard(
-    {required String imagePath, required String iosContentMode}) {
+    {required String? imagePath, required String iosContentMode}) {
   final file = File(_iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
@@ -134,7 +134,7 @@ void _applyLaunchScreenStoryboard(
 
 /// Updates LaunchScreen.storyboard adding splash image path
 void _updateLaunchScreenStoryboard(
-    {required String imagePath, required String iosContentMode}) {
+    {required String? imagePath, required String iosContentMode}) {
   // Load the data
   final file = File(_iOSLaunchScreenStoryboardFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
@@ -207,7 +207,7 @@ void _updateLaunchScreenStoryboard(
   view.children.add(
       XmlDocument.parse(_iOSLaunchBackgroundConstraints).rootElement.copy());
 
-  if (imagePath.isNotEmpty) {
+  if (imagePath != null) {
     final image = decodeImage(File(imagePath).readAsBytesSync());
     if (image == null) {
       print(imagePath + ' could not be loaded.');
@@ -222,7 +222,7 @@ void _updateLaunchScreenStoryboard(
 
 /// Creates LaunchScreen.storyboard with splash image path
 void _createLaunchScreenStoryboard(
-    {required String imagePath, required String iosContentMode}) {
+    {required String? imagePath, required String iosContentMode}) {
   var file = File(_iOSLaunchScreenStoryboardFile);
   file.createSync(recursive: true);
   file.writeAsStringSync(_iOSLaunchScreenStoryboardContent);
@@ -233,8 +233,8 @@ void _createLaunchScreenStoryboard(
 void _createBackground({
   required String colorString,
   required String darkColorString,
-  required String backgroundImageSource,
-  required String darkBackgroundImageSource,
+  required String? backgroundImageSource,
+  required String? darkBackgroundImageSource,
   required String backgroundImageDestination,
   required String darkBackgroundImageDestination,
 }) {
@@ -248,7 +248,7 @@ void _createBackground({
     var file = File(backgroundImageDestination);
     file.createSync(recursive: true);
     file.writeAsBytesSync(encodePng(background));
-  } else if (backgroundImageSource.isNotEmpty) {
+  } else if (backgroundImageSource != null) {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
     File(backgroundImageDestination).createSync(recursive: true);
@@ -267,7 +267,7 @@ void _createBackground({
     var file = File(darkBackgroundImageDestination);
     file.createSync(recursive: true);
     file.writeAsBytesSync(encodePng(background));
-  } else if (darkBackgroundImageSource.isNotEmpty) {
+  } else if (darkBackgroundImageSource != null) {
     // Copy will not work if the directory does not exist, so createSync
     // will ensure that the directory exists.
     File(darkBackgroundImageDestination).createSync(recursive: true);

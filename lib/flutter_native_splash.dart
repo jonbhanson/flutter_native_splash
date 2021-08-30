@@ -115,7 +115,7 @@ void removeSplash({String? path}) {
   createSplashByConfig(removeConfig);
 }
 
-String checkImageExists(
+String? checkImageExists(
     {required Map<String, dynamic> config, required String parameter}) {
   String image = config[parameter] ?? '';
   if (image.isNotEmpty && !File(image).existsSync()) {
@@ -129,7 +129,7 @@ String checkImageExists(
         '  Your image must be a PNG file.');
     exit(1);
   }
-  return image;
+  return image == '' ? null : image;
 }
 
 /// Get config from `pubspec.yaml` or `flutter_native_splash.yaml`

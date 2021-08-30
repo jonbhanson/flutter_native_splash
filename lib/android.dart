@@ -35,27 +35,27 @@ final List<_AndroidDrawableTemplate> androidSplashImagesDark =
 
 /// Create Android splash screen
 void _createAndroidSplash({
-  required String imagePath,
-  required String darkImagePath,
+  required String? imagePath,
+  required String? darkImagePath,
   required String color,
   required String darkColor,
   required String gravity,
   required bool fullscreen,
-  required String backgroundImage,
-  required String darkBackgroundImage,
+  required String? backgroundImage,
+  required String? darkBackgroundImage,
   required bool android12,
 }) {
-  if (imagePath.isNotEmpty) {
+  if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
   }
-  if (darkImagePath.isNotEmpty) {
+  if (darkImagePath != null) {
     _applyImageAndroid(imagePath: darkImagePath, dark: true);
   }
 
   _applyLaunchBackgroundXml(
     gravity: gravity,
     launchBackgroundFilePath: _androidLaunchBackgroundFile,
-    showImage: imagePath.isNotEmpty,
+    showImage: imagePath != null,
   );
 
   _createBackground(
@@ -82,7 +82,7 @@ void _createAndroidSplash({
     _applyLaunchBackgroundXml(
       gravity: gravity,
       launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
-      showImage: imagePath.isNotEmpty,
+      showImage: imagePath != null,
     );
   }
 
@@ -90,13 +90,13 @@ void _createAndroidSplash({
     _applyLaunchBackgroundXml(
       gravity: gravity,
       launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
-      showImage: imagePath.isNotEmpty,
+      showImage: imagePath != null,
     );
     if (darkColor.isNotEmpty) {
       _applyLaunchBackgroundXml(
         gravity: gravity,
         launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
-        showImage: imagePath.isNotEmpty,
+        showImage: imagePath != null,
       );
     }
   }

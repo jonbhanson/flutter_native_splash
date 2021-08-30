@@ -7,22 +7,22 @@ class _WebLaunchImageTemplate {
   _WebLaunchImageTemplate({required this.fileName, required this.pixelDensity});
 }
 
-/// Create Android splash screen
+/// Create Web splash screen
 void _createWebSplash({
-  required String imagePath,
-  required String darkImagePath,
+  required String? imagePath,
+  required String? darkImagePath,
   required String color,
   required String darkColor,
   required String imageMode,
-  required String backgroundImage,
-  required String darkBackgroundImage,
+  required String? backgroundImage,
+  required String? darkBackgroundImage,
 }) {
   if (!File(_webIndex).existsSync()) {
     print('[Web] ' + _webIndex + ' not found.  Skipping Web.');
     return;
   }
 
-  if (darkImagePath.isEmpty) darkImagePath = imagePath;
+  darkImagePath ??= imagePath;
   createWebImages(imagePath: imagePath, webSplashImages: [
     _WebLaunchImageTemplate(fileName: 'light-1x.png', pixelDensity: 1),
     _WebLaunchImageTemplate(fileName: 'light-2x.png', pixelDensity: 2),
@@ -39,15 +39,15 @@ void _createWebSplash({
       backgroundImage: backgroundImage,
       darkBackgroundImage: darkBackgroundImage);
   createSplashCss(color: color, darkColor: darkColor);
-  updateIndex(imageMode: imageMode, showImages: imagePath.isNotEmpty);
+  updateIndex(imageMode: imageMode, imagePath: imagePath);
 }
 
 void createBackgroundImages({
-  required String backgroundImage,
-  required String darkBackgroundImage,
+  required String? backgroundImage,
+  required String? darkBackgroundImage,
 }) {
   final backgroundDestination = _webSplashImagesFolder + 'light-background.png';
-  if (backgroundImage.isEmpty) {
+  if (backgroundImage == null) {
     final file = File(backgroundDestination);
     if (file.existsSync()) file.deleteSync();
   } else {
@@ -59,7 +59,7 @@ void createBackgroundImages({
 
   final darkBackgroundDestination =
       _webSplashImagesFolder + 'dark-background.png';
-  if (darkBackgroundImage.isEmpty) {
+  if (darkBackgroundImage == null) {
     final file = File(darkBackgroundDestination);
     if (file.existsSync()) file.deleteSync();
   } else {
@@ -71,9 +71,9 @@ void createBackgroundImages({
 }
 
 void createWebImages(
-    {required String imagePath,
+    {required String? imagePath,
     required List<_WebLaunchImageTemplate> webSplashImages}) {
-  if (imagePath.isEmpty) {
+  if (imagePath == null) {
     for (var template in webSplashImages) {
       final file = File(_webSplashImagesFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
@@ -116,15 +116,16 @@ void createSplashCss({required String color, required String darkColor}) {
   file.writeAsStringSync(cssContent);
 }
 
-void updateIndex({required String imageMode, required bool showImages}) {
+void updateIndex({required String imageMode, required String? imagePath}) {
   print('[Web] Updating index.html');
   final webIndex = File(_webIndex);
   var lines = webIndex.readAsLinesSync();
 
   var foundExistingStyleSheet = false;
   var headCloseTagLine = 0;
-  var dartScriptTagLine = 0;
+  var bodyCloseTagLine = 0;
   var existingPictureLine = 0;
+  var existingBodyLine = 0;
 
   final styleSheetLink =
       '<link rel="stylesheet" type="text/css" href="splash/style.css">';
@@ -135,10 +136,12 @@ void updateIndex({required String imageMode, required bool showImages}) {
       foundExistingStyleSheet = true;
     } else if (line.contains('</head>')) {
       headCloseTagLine = x;
-    } else if (line.contains('src="main.dart.js"')) {
-      dartScriptTagLine = x;
+    } else if (line.contains('</body>')) {
+      bodyCloseTagLine = x;
     } else if (line.contains('<picture id="splash">')) {
       existingPictureLine = x;
+    } else if (line.contains('<body>')) {
+      existingBodyLine = x;
     }
   }
 
@@ -147,16 +150,16 @@ void updateIndex({required String imageMode, required bool showImages}) {
   }
 
   if (existingPictureLine == 0) {
-    if (showImages) {
+    if (imagePath != null) {
       for (var x = _indexHtmlPicture.length - 1; x >= 0; x--) {
-        lines[dartScriptTagLine] =
+        lines[bodyCloseTagLine] =
             _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode) +
                 '\n' +
-                lines[dartScriptTagLine];
+                lines[bodyCloseTagLine];
       }
     }
   } else {
-    if (showImages) {
+    if (imagePath != null) {
       for (var x = 0; x < _indexHtmlPicture.length; x++) {
         lines[existingPictureLine + x] =
             _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode);
@@ -165,6 +168,10 @@ void updateIndex({required String imageMode, required bool showImages}) {
       lines.removeRange(
           existingPictureLine, existingPictureLine + _indexHtmlPicture.length);
     }
+  }
+  if (existingBodyLine != 0) {
+    lines[existingBodyLine] =
+        '<body style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">';
   }
   webIndex.writeAsStringSync(lines.join('\n'));
 }

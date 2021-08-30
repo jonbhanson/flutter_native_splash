@@ -1,6 +1,6 @@
 # Example for flutter_native_splash
 
-A new Flutter application for testing a splash screen.
+A new Flutter project for testing a splash screen.
 
 ## Getting Started
 

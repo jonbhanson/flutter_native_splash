@@ -1,3 +1,9 @@
+## [1.2.2] - (2021-Sep-06)
+
+* Added a FAQ to address the deprecation of `SplashScreenDrawable`.  Closes [#199](https://github.com/jonbhanson/flutter_native_splash/issues/199).
+* Added `<picture>` tag to `index.html` by finding the `</body>` tag instead of `src="main.dart.js`, which was removed in Flutter 2.5.  Fixes [#202](https://github.com/jonbhanson/flutter_native_splash/issues/202).
+* Added `<item name="android:forceDarkAllowed">false</item>` tag to dark mode `styles.xml` to improve Xiaomi support.  Closes [#184](https://github.com/jonbhanson/flutter_native_splash/issues/184).
+
 ## [1.2.1] - (2021-Jul-19)
 * Check the file type and exit with error if it is not a PNG.
 * Updated documentation with more FAQs.

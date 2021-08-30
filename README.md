@@ -17,14 +17,10 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.2.1
+  flutter_native_splash: ^1.2.2
 ```
 
 Don't forget to `flutter pub get`.
-
-> #### NOTE:
-> 
-> If you are using Flutter 1.x (no null safety), you must use the <a href="https://pub.dev/packages/flutter_native_splash/versions">0.x version</a> of this package.
 
 ## 1. Setting the splash screen
 Customized the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.
@@ -140,6 +136,18 @@ At this time, the splash screen may jump when using `fullscreen` with Android 12
 The native splash screen is displayed while the native app loads the Flutter framework. Once Flutter loads, there are probably still resources that need to be loaded before your app is ready.  For this reason, you should consider implementing a secondary Flutter splash screen or placeholders that display while these resources load.  The [example](https://github.com/jonbhanson/flutter_native_splash/blob/master/example/lib/main.dart) show an implimentation of a secondary splash screen.
   
 # FAQs
+## I got the error "A splash screen was provided to Flutter, but this is deprecated."
+
+This message is not related to this package, but is related to a [change](https://flutter.dev/docs/development/ui/advanced/splash-screen#migrating-from-manifest--activity-defined-custom-splash-screens) in how Flutter handles splash screens in Flutter 2.5.  It is caused by having the following code in your `AndroidManifest.xml`, which was included by default in previous versions of Flutter:
+
+```xml
+<meta-data
+ android:name="io.flutter.embedding.android.SplashScreenDrawable"
+ android:resource="@drawable/launch_background"
+ />
+```
+The solution is to remove the above code.
+
 ## Can I change the duration of the splash screen?
 The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  Note that delaying the user experience is a poor design decision.
 
