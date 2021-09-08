@@ -1,3 +1,6 @@
+## [1.2.3] - (2021-Sep-08)
+* Reverted XML dependency to be compatible with stable Flutter branch. Closes [#206](https://github.com/jonbhanson/flutter_native_splash/issues/206).
+
 ## [1.2.2] - (2021-Sep-06)
 
 * Added a FAQ to address the deprecation of `SplashScreenDrawable`.  Closes [#199](https://github.com/jonbhanson/flutter_native_splash/issues/199).
