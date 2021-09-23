@@ -38,7 +38,11 @@ void _createWebSplash({
   createBackgroundImages(
       backgroundImage: backgroundImage,
       darkBackgroundImage: darkBackgroundImage);
-  createSplashCss(color: color, darkColor: darkColor);
+  createSplashCss(
+      color: color,
+      darkColor: darkColor,
+      darkBackgroundImage: darkBackgroundImage,
+      backgroundImage: backgroundImage);
   updateIndex(imageMode: imageMode, imagePath: imagePath);
 }
 
@@ -105,12 +109,31 @@ void _saveImageWeb(
   file.writeAsBytesSync(encodePng(newFile));
 }
 
-void createSplashCss({required String color, required String darkColor}) {
+void createSplashCss(
+    {required String color,
+    required String darkColor,
+    required String? backgroundImage,
+    required String? darkBackgroundImage}) {
   print('[Web] Creating CSS');
   if (darkColor.isEmpty) darkColor = color;
   var cssContent = _webCss
       .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color)
       .replaceFirst('[DARKBACKGROUNDCOLOR]', '#' + darkColor);
+
+  if (backgroundImage == null) {
+    cssContent = cssContent.replaceFirst('[LIGHTBACKGROUNDIMAGE]', '');
+  } else {
+    cssContent = cssContent.replaceFirst('[LIGHTBACKGROUNDIMAGE]',
+        'background-image: url("img/light-background.png");');
+  }
+
+  if (backgroundImage == null) {
+    cssContent = cssContent.replaceFirst('[DARKBACKGROUNDIMAGE]', '');
+  } else {
+    cssContent = cssContent.replaceFirst('[DARKBACKGROUNDIMAGE]',
+        'background-image: url("img/dark-background.png");');
+  }
+
   var file = File(_webFolder + _webRelativeStyleFile);
   file.createSync(recursive: true);
   file.writeAsStringSync(cssContent);

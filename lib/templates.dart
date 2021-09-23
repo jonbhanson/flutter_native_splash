@@ -325,7 +325,7 @@ body, html {
   margin:0;
   height:100%;
   background: [LIGHTBACKGROUNDCOLOR];
-  background-image: url("img/light-background.png");
+  [LIGHTBACKGROUNDIMAGE]
   background-size: 100% 100%;
 }
 
@@ -360,7 +360,7 @@ body, html {
     margin:0;
     height:100%;
     background: [DARKBACKGROUNDCOLOR];
-    background-image: url("img/dark-background.png");
+    [DARKBACKGROUNDIMAGE]
     background-size: 100% 100%;
   }
 }

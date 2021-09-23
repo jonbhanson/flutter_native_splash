@@ -2,7 +2,7 @@
 [![pub package](https://img.shields.io/pub/v/flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
 [![Build Status](https://img.shields.io/travis/jonbhanson/flutter_native_splash)](https://travis-ci.org/jonbhanson/flutter_native_splash)
 
-When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time, the native app displays a white splash screen.  This package automatically generates iOS, Android, and Web-native code for customizing this native splash screen background colour and splash image.  Supports dark mode, full screen, and platform-specific options.
+When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time, the native app displays a white splash screen.  This package automatically generates iOS, Android, and Web-native code for customizing this native splash screen background color and splash image.  Supports dark mode, full screen, and platform-specific options.
 
 <p align='center'>
     <img src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/splash_demo.gif" />
@@ -17,7 +17,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.2.3
+  flutter_native_splash: ^1.2.4
 ```
 
 Don't forget to `flutter pub get`.
@@ -177,7 +177,7 @@ This attribute is only found in Android 12, so if you are getting this error, it
 ## iOS
 * Your splash image will be resized to `@3x` and `@2x` images.
 * Color and image properties will be inserted in `LaunchScreen.storyboard`.
-* The background colour is implemented by using a single-pixel png file and stretching it to fit the screen.
+* The background color is implemented by using a single-pixel png file and stretching it to fit the screen.
 * Code for hidden status bar toggle will be added in `Info.plist`.
 
 ## Web

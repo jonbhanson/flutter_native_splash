@@ -1,3 +1,8 @@
+## [1.2.4] - (2021-Sep-23)
+* Updated readme.  Thanks [@j-j-gajjar](https://github.com/j-j-gajjar) for PR [#216](https://github.com/jonbhanson/flutter_native_splash/pull/216).
+* Remove references to background images in web when images are missing.  Fixes [#196](https://github.com/jonbhanson/flutter_native_splash/issues/196).
+* Updated dependencies.
+
 ## [1.2.3] - (2021-Sep-08)
 * Reverted XML dependency to be compatible with stable Flutter branch. Closes [#206](https://github.com/jonbhanson/flutter_native_splash/issues/206).
 
