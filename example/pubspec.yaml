@@ -159,6 +159,3 @@ flutter_native_splash:
   #info_plist_files:
   #  - 'ios/Runner/Info-Debug.plist'
   #  - 'ios/Runner/Info-Release.plist'
-
-  # To enable support for Android 12, set the following parameter to true.  Defaults to false.
-  #android12: true

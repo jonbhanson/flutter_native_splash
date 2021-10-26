@@ -43,7 +43,6 @@ void _createAndroidSplash({
   required bool fullscreen,
   required String? backgroundImage,
   required String? darkBackgroundImage,
-  required bool android12,
 }) {
   if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
@@ -51,12 +50,6 @@ void _createAndroidSplash({
   if (darkImagePath != null) {
     _applyImageAndroid(imagePath: darkImagePath, dark: true);
   }
-
-  _applyLaunchBackgroundXml(
-    gravity: gravity,
-    launchBackgroundFilePath: _androidLaunchBackgroundFile,
-    showImage: imagePath != null,
-  );
 
   _createBackground(
     colorString: color,
@@ -76,6 +69,14 @@ void _createAndroidSplash({
     darkBackgroundImageDestination:
         _androidNightV21DrawableFolder + 'background.png',
     backgroundImageDestination: _androidV21DrawableFolder + 'background.png',
+  );
+
+  print('[Android] Updating launch background(s) with splash image path...');
+
+  _applyLaunchBackgroundXml(
+    gravity: gravity,
+    launchBackgroundFilePath: _androidLaunchBackgroundFile,
+    showImage: imagePath != null,
   );
 
   if (darkColor.isNotEmpty) {
@@ -101,15 +102,19 @@ void _createAndroidSplash({
     }
   }
 
-  if (android12) {
+  print('[Android] Updating styles...');
+  var sdkVersion = getSdkVersion();
+  if (sdkVersion != null && sdkVersion > 30) {
     _applyStylesXml(
         fullScreen: fullscreen,
         file: _androidV31StylesFile,
-        template: _androidV31StylesXml);
+        template: _androidV31StylesXml,
+        android12BackgroundColor: color);
     _applyStylesXml(
         fullScreen: fullscreen,
         file: _androidV31StylesNightFile,
-        template: _androidV31StylesNightXml);
+        template: _androidV31StylesNightXml,
+        android12BackgroundColor: darkColor);
   } else {
     var file = File(_androidV31StylesFile);
     if (file.existsSync()) file.deleteSync();
@@ -120,11 +125,13 @@ void _createAndroidSplash({
   _applyStylesXml(
       fullScreen: fullscreen,
       file: _androidStylesFile,
-      template: _androidStylesXml);
+      template: _androidStylesXml,
+      android12BackgroundColor: null);
   _applyStylesXml(
       fullScreen: fullscreen,
       file: _androidNightStylesFile,
-      template: _androidStylesNightXml);
+      template: _androidStylesNightXml,
+      android12BackgroundColor: null);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
@@ -165,7 +172,7 @@ void _applyLaunchBackgroundXml(
     {required String launchBackgroundFilePath,
     required String gravity,
     required bool showImage}) {
-  print('[Android] Updating $launchBackgroundFilePath with splash image path');
+  print('[Android]    - ' + launchBackgroundFilePath);
   final launchBackgroundFile = File(launchBackgroundFilePath);
   var launchBackgroundDocument;
   launchBackgroundFile.createSync(recursive: true);
@@ -188,22 +195,28 @@ void _applyLaunchBackgroundXml(
 void _applyStylesXml(
     {required bool fullScreen,
     required String file,
-    required String template}) {
+    required String template,
+    required String? android12BackgroundColor}) {
   final stylesFile = File(file);
-
+  print('[Android]    - ' + file);
   if (!stylesFile.existsSync()) {
-    print('[Android] No styles.xml file found in your Android project');
-    print('[Android] Creating styles.xml file and adding it to your Android '
-        'project');
+    print('[Android] No $file found in your Android project');
+    print('[Android] Creating $file and adding it to your Android project');
     stylesFile.createSync(recursive: true);
     stylesFile.writeAsStringSync(template);
   }
-  print('[Android] Updating styles.xml with full screen mode setting');
-  _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile);
+
+  _updateStylesFile(
+      fullScreen: fullScreen,
+      stylesFile: stylesFile,
+      android12BackgroundColor: android12BackgroundColor);
 }
 
 /// Updates styles.xml adding full screen property
-void _updateStylesFile({required bool fullScreen, required File stylesFile}) {
+Future<void> _updateStylesFile(
+    {required bool fullScreen,
+    required File stylesFile,
+    required String? android12BackgroundColor}) async {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final resources = stylesDocument.getElement('resources');
   final styles = resources?.findElements('style');
@@ -226,17 +239,50 @@ void _updateStylesFile({required bool fullScreen, required File stylesFile}) {
     return;
   }
 
-  launchTheme.children
-      .removeWhere((element) => (element.attributes.any((attribute) {
-            return attribute.name.toString() == 'name' &&
-                attribute.value == 'android:windowFullscreen';
-          })));
+  replaceElement(
+      launchTheme: launchTheme,
+      name: 'android:windowFullscreen',
+      value: fullScreen.toString());
 
-  launchTheme.children.add(XmlElement(
-      XmlName('item'),
-      [XmlAttribute(XmlName('name'), 'android:windowFullscreen')],
-      [XmlText(fullScreen.toString())]));
+  // In Android 12, the color must be set directly in the styles.xml
+  if (android12BackgroundColor != null) {
+    replaceElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenBackground',
+        value: '#' + android12BackgroundColor);
+  }
 
   stylesFile.writeAsStringSync(
       stylesDocument.toXmlString(pretty: true, indent: '    '));
+}
+
+void replaceElement(
+    {required XmlElement launchTheme,
+    required String name,
+    required String value}) {
+  launchTheme.children.removeWhere((element) => element.attributes.any(
+      (attribute) =>
+          attribute.name.toString() == 'name' && attribute.value == name));
+
+  launchTheme.children.add(XmlElement(XmlName('item'),
+      [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
+}
+
+int? getSdkVersion() {
+  int? sdk;
+  try {
+    const title = 'compileSdkVersion';
+    File('android/app/build.gradle')
+        .readAsStringSync()
+        .split('\n')
+        .forEach((line) {
+      if (line.contains(title)) {
+        var sdkVersion = line.substring(line.indexOf(title) + title.length);
+        sdk = int.tryParse(sdkVersion.trim());
+      }
+    });
+  } catch (e) {
+    return null;
+  }
+  return sdk;
 }

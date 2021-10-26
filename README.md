@@ -17,7 +17,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.2.4
+  flutter_native_splash: ^1.3.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -96,9 +96,6 @@ flutter_native_splash:
   #info_plist_files:
   #  - 'ios/Runner/Info-Debug.plist'
   #  - 'ios/Runner/Info-Release.plist'
-
-  # To enable support for Android 12, set the following parameter to true.  Defaults to false.
-  #android12: true
 ```
 
 ## 2. Run the package
@@ -116,20 +113,13 @@ To specify the YAML file location just add --path with the command in the termin
 flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 ```
 
-# Beta support for Android 12
+# Android 12 Support
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of specifying the window background, animated app icon, and the icon background.  Android 12 also supports legacy splash screens as they have been implemented in Flutter and this package.  At this time, this package will provide beta support for Android 12 with a legacy implementation.  
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  Currently, this package supports setting the background color and the icon is taken from the launcher icon.
 
-To enable Android 12 support, [set up the Android 12 SDK](https://developer.android.com/about/versions/12/setup-sdk), add `android12: true` to your configuration, and run the package:
+If you [enable Android 12 support](https://developer.android.com/about/versions/12/setup-sdk), the package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will provide Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
-```
-flutter pub run flutter_native_splash:create
-```
-The package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will allow Android 12 to maintain the legacy splash screen.
-
-This package will add support for the new Android 12 splash screens in the future.  However, I will wait to see how Flutter adapts to the new splash screen format so that this package can complement Flutter's implementation and avoid reinventing the wheel.
-
-At this time, the splash screen may jump when using `fullscreen` with Android 12.
+NOTE: The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
 
 # Recommendations
 ## Secondary splash screen:
@@ -156,6 +146,9 @@ Not at this time.  However, you may want to consider a secondary splash screen t
 
 ## I got the error AAPT: error: style attribute 'android:attr/windowSplashScreenBackground' not found
 This attribute is only found in Android 12, so if you are getting this error, it means your project is not fully set up for Android 12.  Did you [update your app's build configuration](https://developer.android.com/about/versions/12/setup-sdk#config)?
+
+## I see a flash of the wrong splash screen on iOS
+This is caused by an [iOS splash caching bug](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update), which can be solved by uninstalling your app, powering off your device, power back on, and then try reinstalling.
 
 ## I see a white screen between splash screen and app
 1. It may be caused by an [iOS splash caching bug](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update), which can be solved by uninstalling your app, powering off your device, power back on, and then try reinstalling.

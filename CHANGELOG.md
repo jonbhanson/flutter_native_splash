@@ -1,3 +1,6 @@
+## [1.3.0] - (2021-Oct-26)
+* Added Android 12 support.  Closes [#204](https://github.com/jonbhanson/flutter_native_splash/issues/204), closes [#226](https://github.com/jonbhanson/flutter_native_splash/issues/226).
+
 ## [1.2.4] - (2021-Sep-23)
 * Updated readme.  Thanks [@j-j-gajjar](https://github.com/j-j-gajjar) for PR [#216](https://github.com/jonbhanson/flutter_native_splash/pull/216).
 * Remove references to background images in web when images are missing.  Fixes [#196](https://github.com/jonbhanson/flutter_native_splash/issues/196).
