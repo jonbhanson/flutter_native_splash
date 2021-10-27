@@ -97,10 +97,13 @@ void createSplashByConfig(Map<String, dynamic> config) {
 
 /// Remove any splash screen by setting the default white splash
 void removeSplash({String? path}) {
-  print('Restoring Flutter\'s default white native splash screen...');
+  print('Restoring Flutter\'s default native splash screen...');
   var config = getConfig(configFile: path);
 
-  var removeConfig = <String, dynamic>{'color': '#ffffff'};
+  var removeConfig = <String, dynamic>{
+    'color': '#ffffff',
+    'color_dark': '#000000'
+  };
   if (config.containsKey('android')) {
     removeConfig['android'] = config['android'];
   }
@@ -203,14 +206,14 @@ void checkConfig(Map<String, dynamic> config) {
 }
 
 @visibleForTesting
-String parseColor(var color) {
+String? parseColor(var color) {
   if (color is int) color = color.toString().padLeft(6, '0');
 
   if (color is String) {
     color = color.replaceAll('#', '').replaceAll(' ', '');
     if (color.length == 6) return color;
   }
-  if (color == null) return '';
+  if (color == null) return null;
 
   throw Exception('Invalid color value');
 }

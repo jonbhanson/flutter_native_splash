@@ -11,8 +11,8 @@ class _WebLaunchImageTemplate {
 void _createWebSplash({
   required String? imagePath,
   required String? darkImagePath,
-  required String color,
-  required String darkColor,
+  required String? color,
+  required String? darkColor,
   required String imageMode,
   required String? backgroundImage,
   required String? darkBackgroundImage,
@@ -110,12 +110,13 @@ void _saveImageWeb(
 }
 
 void createSplashCss(
-    {required String color,
-    required String darkColor,
+    {required String? color,
+    required String? darkColor,
     required String? backgroundImage,
     required String? darkBackgroundImage}) {
   print('[Web] Creating CSS');
-  if (darkColor.isEmpty) darkColor = color;
+  color ??= '000000';
+  darkColor ??= color;
   var cssContent = _webCss
       .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color)
       .replaceFirst('[DARKBACKGROUNDCOLOR]', '#' + darkColor);

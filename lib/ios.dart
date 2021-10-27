@@ -28,8 +28,8 @@ final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
 void _createiOSSplash({
   required String? imagePath,
   required String? darkImagePath,
-  required String color,
-  required String darkColor,
+  required String? color,
+  required String? darkColor,
   List<String>? plistFiles,
   required String iosContentMode,
   required bool fullscreen,
@@ -78,7 +78,7 @@ void _createiOSSplash({
       File(_iOSAssetsLaunchImageBackgroundFolder + 'Contents.json');
   backgroundImageFile.createSync(recursive: true);
 
-  backgroundImageFile.writeAsStringSync(darkColor.isNotEmpty
+  backgroundImageFile.writeAsStringSync(darkColor != null
       ? _iOSLaunchBackgroundDarkJson
       : _iOSLaunchBackgroundJson);
 
@@ -231,14 +231,14 @@ void _createLaunchScreenStoryboard(
 }
 
 void _createBackground({
-  required String colorString,
-  required String darkColorString,
+  required String? colorString,
+  required String? darkColorString,
   required String? backgroundImageSource,
   required String? darkBackgroundImageSource,
   required String backgroundImageDestination,
   required String darkBackgroundImageDestination,
 }) {
-  if (colorString.isNotEmpty) {
+  if (colorString != null) {
     var background = Image(1, 1);
     var redChannel = int.parse(colorString.substring(0, 2), radix: 16);
     var greenChannel = int.parse(colorString.substring(2, 4), radix: 16);
@@ -257,7 +257,7 @@ void _createBackground({
     throw Exception('No color string or background image!');
   }
 
-  if (darkColorString.isNotEmpty) {
+  if (darkColorString != null) {
     var background = Image(1, 1);
     var redChannel = int.parse(darkColorString.substring(0, 2), radix: 16);
     var greenChannel = int.parse(darkColorString.substring(2, 4), radix: 16);

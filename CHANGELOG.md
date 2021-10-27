@@ -1,3 +1,6 @@
+## [1.3.1] - (2021-Oct-27)
+* Don't create Android 12 night res files if dark mode is not configured.  Fixes [#227](https://github.com/jonbhanson/flutter_native_splash/issues/227).  `Remove` command takes dark mode into account.
+
 ## [1.3.0] - (2021-Oct-26)
 * Added Android 12 support.  Closes [#204](https://github.com/jonbhanson/flutter_native_splash/issues/204), closes [#226](https://github.com/jonbhanson/flutter_native_splash/issues/226).
 

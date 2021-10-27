@@ -37,8 +37,8 @@ final List<_AndroidDrawableTemplate> androidSplashImagesDark =
 void _createAndroidSplash({
   required String? imagePath,
   required String? darkImagePath,
-  required String color,
-  required String darkColor,
+  required String? color,
+  required String? darkColor,
   required String gravity,
   required bool fullscreen,
   required String? backgroundImage,
@@ -79,7 +79,7 @@ void _createAndroidSplash({
     showImage: imagePath != null,
   );
 
-  if (darkColor.isNotEmpty) {
+  if (darkColor != null || darkBackgroundImage != null) {
     _applyLaunchBackgroundXml(
       gravity: gravity,
       launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
@@ -93,7 +93,7 @@ void _createAndroidSplash({
       launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
       showImage: imagePath != null,
     );
-    if (darkColor.isNotEmpty) {
+    if (darkColor != null || darkBackgroundImage != null) {
       _applyLaunchBackgroundXml(
         gravity: gravity,
         launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
@@ -110,11 +110,13 @@ void _createAndroidSplash({
         file: _androidV31StylesFile,
         template: _androidV31StylesXml,
         android12BackgroundColor: color);
-    _applyStylesXml(
-        fullScreen: fullscreen,
-        file: _androidV31StylesNightFile,
-        template: _androidV31StylesNightXml,
-        android12BackgroundColor: darkColor);
+    if (darkColor != null) {
+      _applyStylesXml(
+          fullScreen: fullscreen,
+          file: _androidV31StylesNightFile,
+          template: _androidV31StylesNightXml,
+          android12BackgroundColor: darkColor);
+    }
   } else {
     var file = File(_androidV31StylesFile);
     if (file.existsSync()) file.deleteSync();
@@ -127,11 +129,14 @@ void _createAndroidSplash({
       file: _androidStylesFile,
       template: _androidStylesXml,
       android12BackgroundColor: null);
-  _applyStylesXml(
-      fullScreen: fullscreen,
-      file: _androidNightStylesFile,
-      template: _androidStylesNightXml,
-      android12BackgroundColor: null);
+
+  if (darkColor != null || darkBackgroundImage != null) {
+    _applyStylesXml(
+        fullScreen: fullscreen,
+        file: _androidNightStylesFile,
+        template: _androidStylesNightXml,
+        android12BackgroundColor: null);
+  }
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
