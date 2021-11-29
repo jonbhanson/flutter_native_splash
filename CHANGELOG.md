@@ -1,3 +1,6 @@
+## [1.3.2] - (2021-Nov-28)
+* Updated readme.  Hide splash image in web from screen readers.  Closes [#231](https://github.com/jonbhanson/flutter_native_splash/issues/231).
+
 ## [1.3.1] - (2021-Oct-27)
 * Don't create Android 12 night res files if dark mode is not configured.  Fixes [#227](https://github.com/jonbhanson/flutter_native_splash/issues/227).  `Remove` command takes dark mode into account.
 

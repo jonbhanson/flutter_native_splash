@@ -13,11 +13,11 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 Would you prefer a video tutorial instead?  Check out <a href="https://www.youtube.com/watch?v=8ME8Czqc-Oc">Johannes Milke's tutorial</a>.
 
-First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file. It belongs in `dev_dependencies` because it is a command line tool.
+First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file. It belongs in `dev_dependencies` because it is a command line tool.  Please disregard the instructions in the *Installing* tab that gives different instructions.
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.3.1
+  flutter_native_splash: ^1.3.2
 ```
 
 Don't forget to `flutter pub get`.
@@ -139,7 +139,7 @@ This message is not related to this package but is related to a [change](https:/
 The solution is to remove the above code.
 
 ## Can I change the duration of the splash screen?
-The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  Note that delaying the user experience is a poor design decision.
+No, it is not possible to change the duration of the splash screen.  The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  Note that delaying the user experience is a poor design decision.
 
 ## Are animations/lottie/GIF images supported?
 Not at this time.  However, you may want to consider a secondary splash screen that supports animation.  See the [secondary splash screen](#secondary-splash-screen) recommendation.
