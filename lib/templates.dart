@@ -8,6 +8,12 @@ const String _androidLaunchItemXml = '''
     </item>
 ''';
 
+const String _androidBrandingItemXml = '''
+    <item>
+        <bitmap android:gravity="center" android:src="@drawable/branding" />
+    </item>
+''';
+
 const String _androidLaunchBackgroundXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -305,6 +311,9 @@ const String _iOSLaunchBackgroundDarkJson = '''
 
 const String _iOSLaunchBackgroundSubview =
     '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI" />';
+
+const String _iOSBrandingSubview =
+    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="BrandingImage" translatesAutoresizingMaskIntoConstraints="NO" id="Uyq-Kz-ftE" />';
 
 const String _iOSLaunchBackgroundConstraints = '''
 <constraints>

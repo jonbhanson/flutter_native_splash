@@ -37,9 +37,12 @@ final List<_AndroidDrawableTemplate> androidSplashImagesDark =
 void _createAndroidSplash({
   required String? imagePath,
   required String? darkImagePath,
+  String? brandingImagePath,
+  String? brandingDarkImagePath,
   required String? color,
   required String? darkColor,
   required String gravity,
+  String brandingGravity = 'bottom',
   required bool fullscreen,
   required String? backgroundImage,
   required String? darkBackgroundImage,
@@ -49,6 +52,14 @@ void _createAndroidSplash({
   }
   if (darkImagePath != null) {
     _applyImageAndroid(imagePath: darkImagePath, dark: true);
+  }
+
+  //create resources for branding image if provided
+  if(brandingImagePath != null){
+    _applyImageAndroid(imagePath: brandingImagePath,fileName: 'branding.png');
+  }
+  if(brandingDarkImagePath != null){
+    _applyImageAndroid(imagePath: brandingDarkImagePath,dark: true,fileName: 'branding.png');
   }
 
   _createBackground(
@@ -77,6 +88,8 @@ void _createAndroidSplash({
     gravity: gravity,
     launchBackgroundFilePath: _androidLaunchBackgroundFile,
     showImage: imagePath != null,
+    showBranding: brandingImagePath != null,
+    brandingGravity: brandingGravity
   );
 
   if (darkColor != null || darkBackgroundImage != null) {
@@ -84,6 +97,8 @@ void _createAndroidSplash({
       gravity: gravity,
       launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
       showImage: imagePath != null,
+      showBranding: brandingImagePath != null,
+      brandingGravity: brandingGravity
     );
   }
 
@@ -92,12 +107,16 @@ void _createAndroidSplash({
       gravity: gravity,
       launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
       showImage: imagePath != null,
+      showBranding: brandingImagePath != null,
+      brandingGravity: brandingGravity
     );
     if (darkColor != null || darkBackgroundImage != null) {
       _applyLaunchBackgroundXml(
         gravity: gravity,
         launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
         showImage: imagePath != null,
+        showBranding: brandingImagePath != null,
+        brandingGravity: brandingGravity
       );
     }
   }
@@ -140,8 +159,8 @@ void _createAndroidSplash({
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImageAndroid({required String imagePath, bool dark = false}) {
-  print('[Android] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
+void _applyImageAndroid({required String imagePath, bool dark = false, String fileName = 'splash.png'}) {
+  print('[Android] Creating ' + (dark ? 'dark mode ' : '') + '${fileName.split('.')[0]} images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
@@ -150,7 +169,7 @@ void _applyImageAndroid({required String imagePath, bool dark = false}) {
   }
 
   for (var template in dark ? androidSplashImagesDark : androidSplashImages) {
-    _saveImageAndroid(template: template, image: image);
+    _saveImageAndroid(template: template, image: image,fileName: fileName);
   }
 }
 
@@ -158,7 +177,8 @@ void _applyImageAndroid({required String imagePath, bool dark = false}) {
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
 void _saveImageAndroid(
-    {required _AndroidDrawableTemplate template, required Image image}) {
+    {required _AndroidDrawableTemplate template, required Image image, required fileName}) {
+  //added file name attribute to make this method generic for splash image and branding image.
   var newFile = copyResize(
     image,
     width: image.width * template.pixelDensity ~/ 4,
@@ -166,8 +186,8 @@ void _saveImageAndroid(
     interpolation: Interpolation.linear,
   );
 
-  var file =
-      File(_androidResFolder + template.directoryName + '/' + 'splash.png');
+  var file = File('$_androidResFolder${template.directoryName}/$fileName');
+      // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));
 }
@@ -176,7 +196,9 @@ void _saveImageAndroid(
 void _applyLaunchBackgroundXml(
     {required String launchBackgroundFilePath,
     required String gravity,
-    required bool showImage}) {
+    required bool showImage,
+    bool showBranding = false,
+    String brandingGravity = 'bottom'}) {
   print('[Android]    - ' + launchBackgroundFilePath);
   final launchBackgroundFile = File(launchBackgroundFilePath);
   var launchBackgroundDocument;
@@ -187,11 +209,26 @@ void _applyLaunchBackgroundXml(
   final List<XmlNode> items = layerList.children;
 
   if (showImage) {
-    var splashItem =
-        XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
+    var splashItem = XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
     splashItem.getElement('bitmap')?.setAttribute('android:gravity', gravity);
     items.add(splashItem);
   }
+
+  if(showBranding && gravity != brandingGravity){
+    //add branding when splash image and branding image are not at the same position
+    var brandingItem = XmlDocument.parse(_androidBrandingItemXml).rootElement.copy();
+    if(brandingGravity == 'bottomRight'){
+      brandingGravity = 'bottom|right';
+    }else if(brandingGravity == 'bottomLeft'){
+      brandingGravity = 'bottom|left';
+    }else if(brandingGravity != 'bottom'){
+      print('$brandingGravity illegal property defined for the branding mode. Setting back to default.');
+      brandingGravity = 'bottom';
+    }
+    brandingItem.getElement('bitmap')?.setAttribute('android:gravity', brandingGravity);
+    items.add(brandingItem);
+  }
+
   launchBackgroundFile.writeAsStringSync(
       launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
 }
