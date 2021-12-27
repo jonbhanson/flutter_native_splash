@@ -413,6 +413,21 @@ const String _iOSLaunchBackgroundConstraints = '''
 </constraints>
 ''';
 
+const String _iOSBrandingCenterBottomConstraints ='''
+<constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+''';
+
+const String _iOSBrandingLeftBottomConstraints ='''
+<constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+''';
+
+const String _iOSBrandingRightBottomConstraints ='''
+<constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+''';
+
 /// Web related templates
 const String _webCss = '''
 body, html {
