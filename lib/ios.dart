@@ -321,8 +321,10 @@ void _updateLaunchScreenStoryboard(
 
     var doc = XmlDocument.parse(toParse).rootElement.copy();
     if(doc.firstChild != null){
-      print('updating constraints with splash branding');
-      element?.children.insertAll(0,doc.firstChild!.children);
+      print('[iOS] updating constraints with splash branding');
+      doc.children.forEach((v){
+        element?.children.insert(0,v.copy());
+      });
     }
   }
 
