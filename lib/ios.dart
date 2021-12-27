@@ -311,16 +311,21 @@ void _updateLaunchScreenStoryboard(
     brandingImageResource?.setAttribute('width', branding.width.toString());
     brandingImageResource?.setAttribute('height', branding.height.toString());
 
-    var element = view.getElement('constraints');
+    var toParse = _iOSBrandingCenterBottomConstraints;
     if(iosBrandingContentMode == 'bottomLeft'){
-      element?.children.addAll(XmlDocument.parse(_iOSBrandingLeftBottomConstraints).children);
+      toParse = _iOSBrandingLeftBottomConstraints;
     }else if(iosBrandingContentMode == 'bottomRight'){
-      element?.children.addAll(XmlDocument.parse(_iOSBrandingRightBottomConstraints).children);
-    }else{
-      //for bottom only
-      element?.children.addAll(XmlDocument.parse(_iOSBrandingCenterBottomConstraints).children);
+      toParse = _iOSBrandingRightBottomConstraints;
     }
+    var element = view.getElement('constraints');
+    print('constraints ${element?.children} this is end');
 
+    var doc = XmlDocument.parse(toParse).rootElement.copy();
+    print('parse children ${doc.children} this is end');
+    if(doc.firstChild != null){
+      element?.children.insertAll(0,doc.firstChild!.children);
+    }
+    print('constraints ${element?.children} this is end');
   }
 
   file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '    '));
