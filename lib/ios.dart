@@ -311,7 +311,7 @@ void _updateLaunchScreenStoryboard(
     brandingImageResource?.setAttribute('width', branding.width.toString());
     brandingImageResource?.setAttribute('height', branding.height.toString());
 
-    XmlElement? element = view.getElement('constraints');
+    var element = view.getElement('constraints');
     if(iosBrandingContentMode == 'bottomLeft'){
       element?.children.addAll(XmlDocument.parse(_iOSBrandingLeftBottomConstraints).children);
     }else if(iosBrandingContentMode == 'bottomRight'){

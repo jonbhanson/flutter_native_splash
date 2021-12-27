@@ -414,18 +414,24 @@ const String _iOSLaunchBackgroundConstraints = '''
 ''';
 
 const String _iOSBrandingCenterBottomConstraints ='''
-<constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
-<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+<constraints>
+  <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+  <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+</constraints>
 ''';
 
 const String _iOSBrandingLeftBottomConstraints ='''
-<constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
-<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+<constraints>
+  <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+  <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+</constraints>
 ''';
 
 const String _iOSBrandingRightBottomConstraints ='''
-<constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
-<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+<constraints>
+  <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+  <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+</constraints>
 ''';
 
 /// Web related templates
