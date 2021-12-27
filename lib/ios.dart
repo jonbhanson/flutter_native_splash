@@ -72,18 +72,18 @@ void _createiOSSplash({
   }
 
   if(brandingImagePath != null){
-    _applyImageiOS(imagePath: brandingImagePath,list:iOSBrandingImages);
+    _applyImageiOS(imagePath: brandingImagePath,list:iOSBrandingImages,targetPath: _iOSAssetsBrandingImageFolder);
   } else {
     iOSBrandingImages.forEach((template) {
-      final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
+      final file = File(_iOSAssetsBrandingImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
     });
   }
   if(brandingDarkImagePath != null){
-    _applyImageiOS(imagePath: brandingDarkImagePath, dark: true,list:iOSBrandingImagesDark);
+    _applyImageiOS(imagePath: brandingDarkImagePath, dark: true,list:iOSBrandingImagesDark,targetPath: _iOSAssetsBrandingImageFolder);
   } else {
     iOSBrandingImagesDark.forEach((template) {
-      final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
+      final file = File(_iOSAssetsBrandingImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
     });
   }
@@ -92,6 +92,11 @@ void _createiOSSplash({
   launchImageFile.createSync(recursive: true);
   launchImageFile.writeAsStringSync(
       darkImagePath != null ? _iOSContentsJsonDark : _iOSContentsJson);
+
+  var brandingImageFile = File(_iOSAssetsBrandingImageFolder + 'Contents.json');
+  brandingImageFile.createSync(recursive: true);
+  brandingImageFile.writeAsStringSync(
+      brandingDarkImagePath != null ? _iOSBrandingContentsJsonDark : _iOSBrandingContentsJson);
 
   _applyLaunchScreenStoryboard(
       imagePath: imagePath,brandingImagePath:brandingImagePath, iosContentMode: iosContentMode,iosBrandingContentMode: iosBrandingContentMode);
@@ -118,8 +123,13 @@ void _createiOSSplash({
 }
 
 /// Create splash screen images for original size, @2x and @3x
-void _applyImageiOS({required String imagePath, bool dark = false, required List<_IosLaunchImageTemplate> list}) {
-  print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'splash images');
+void _applyImageiOS({
+  required String imagePath,
+  bool dark = false,
+  required List<_IosLaunchImageTemplate> list,
+  String targetPath = _iOSAssetsLaunchImageFolder,
+}) {
+  print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + ' images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
@@ -127,13 +137,16 @@ void _applyImageiOS({required String imagePath, bool dark = false, required List
     exit(1);
   }
   for (var template in list) {
-    _saveImageiOS(template: template, image: image);
+    _saveImageiOS(template: template, image: image,targetPath:targetPath);
   }
 }
 
 /// Saves splash screen image to the project
-void _saveImageiOS(
-    {required _IosLaunchImageTemplate template, required Image image}) {
+void _saveImageiOS({
+  required _IosLaunchImageTemplate template,
+  required Image image,
+  required String targetPath,
+}) {
   var newFile = copyResize(
     image,
     width: image.width * template.pixelDensity ~/ 4,
@@ -141,7 +154,7 @@ void _saveImageiOS(
     interpolation: Interpolation.linear,
   );
 
-  var file = File(_iOSAssetsLaunchImageFolder + template.fileName);
+  var file = File(targetPath + template.fileName);
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));
 }
@@ -220,15 +233,14 @@ void _updateLaunchScreenStoryboard(
     iosBrandingContentMode = 'bottom';
   }
   if(brandingImagePath != null && iosBrandingContentMode != iosContentMode) {
-    //find or insert the branding image
     final brandingImageView = subViews.children.whereType<XmlElement>()
         .firstWhere(
             (element) {
           return (element.name.qualified == 'imageView' &&
-              element.getAttribute('image') == 'Branding');
+              element.getAttribute('image') == 'BrandingImage');
         }, orElse: () {
       subViews.children.insert(
-          subViews.children.length - 1,
+          subViews.children.length-1,
           XmlDocument
               .parse(_iOSBrandingSubview)
               .rootElement
@@ -276,6 +288,28 @@ void _updateLaunchScreenStoryboard(
     }
     launchImageResource?.setAttribute('width', image.width.toString());
     launchImageResource?.setAttribute('height', image.height.toString());
+  }
+
+  if(brandingImagePath != null){
+    var brandingImageResource = resources?.children
+        .whereType<XmlElement>()
+        .firstWhere(
+            (element) => (element.name.qualified == 'image' &&
+            element.getAttribute('name') == 'BrandingImage'), orElse: () {
+      resources.children.add(XmlDocument.parse(
+          '<image name="BrandingImage" width="1" height="1"/>')
+          .rootElement
+          .copy());
+      return XmlElement(XmlName(''));
+    });
+
+    final branding = decodeImage(File(brandingImagePath).readAsBytesSync());
+    if (branding == null) {
+      print(brandingImagePath + ' could not be loaded.');
+      exit(1);
+    }
+    brandingImageResource?.setAttribute('width', branding.width.toString());
+    brandingImageResource?.setAttribute('height', branding.height.toString());
   }
 
   file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '    '));

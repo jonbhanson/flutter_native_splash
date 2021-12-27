@@ -70,6 +70,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkImagePath: darkImage,
         backgroundImage: backgroundImage,
         darkBackgroundImage: darkBackgroundImage,
+        brandingImagePath: brandingImage,
+        brandingDarkImagePath: brandingDarkImage,
         color: color,
         darkColor: darkColor,
         plistFiles: plistFiles,
