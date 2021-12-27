@@ -318,14 +318,12 @@ void _updateLaunchScreenStoryboard(
       toParse = _iOSBrandingRightBottomConstraints;
     }
     var element = view.getElement('constraints');
-    print('constraints ${element?.children} this is end');
 
     var doc = XmlDocument.parse(toParse).rootElement.copy();
-    print('parse children ${doc.children} this is end');
     if(doc.firstChild != null){
+      print('updating constraints with splash branding');
       element?.children.insertAll(0,doc.firstChild!.children);
     }
-    print('constraints ${element?.children} this is end');
   }
 
   file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '    '));

@@ -422,15 +422,15 @@ const String _iOSBrandingCenterBottomConstraints ='''
 
 const String _iOSBrandingLeftBottomConstraints ='''
 <constraints>
-  <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
-  <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+<constraint firstItem="Uyq-Kz-ftE" firstAttribute="leading" secondItem="YRO-k0-Ey4" secondAttribute="leading" id="3kg-TC-cPP"/>
+<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>                            
 </constraints>
 ''';
 
 const String _iOSBrandingRightBottomConstraints ='''
 <constraints>
-  <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
-  <constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+<constraint firstItem="Uyq-Kz-ftE" firstAttribute="trailing" secondItem="YRO-k0-Ey4" secondAttribute="trailing" constant="-16" id="3kg-TC-cPP"/>
+<constraint firstItem="xbc-2k-c8Z" firstAttribute="top" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>                            
 </constraints>
 ''';
 
