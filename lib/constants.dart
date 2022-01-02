@@ -25,8 +25,8 @@ const String _androidV21LaunchDarkBackgroundFile =
     _androidNightV21DrawableFolder + 'launch_background.xml';
 
 // iOS-related constants
-const String _iOSAssetsLaunchImageFolder =
-    'ios/Runner/Assets.xcassets/LaunchImage.imageset/';
+const String _iOSAssetsLaunchImageFolder = 'ios/Runner/Assets.xcassets/LaunchImage.imageset/';
+const String _iOSAssetsBrandingImageFolder = 'ios/Runner/Assets.xcassets/BrandingImage.imageset/';
 const String _iOSLaunchScreenStoryboardFile =
     'ios/Runner/Base.lproj/LaunchScreen.storyboard';
 const String _iOSInfoPlistFile = 'ios/Runner/Info.plist';

@@ -8,6 +8,12 @@ const String _androidLaunchItemXml = '''
     </item>
 ''';
 
+const String _androidBrandingItemXml = '''
+    <item>
+        <bitmap android:gravity="center" android:src="@drawable/branding" />
+    </item>
+''';
+
 const String _androidLaunchBackgroundXml = '''
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
@@ -224,6 +230,91 @@ const String _iOSContentsJsonDark = '''
 }
 ''';
 
+const String _iOSBrandingContentsJson = '''
+{
+  "images" : [
+    {
+      "filename" : "BrandingImage.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "BrandingImage@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "BrandingImage@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
+''';
+
+const String _iOSBrandingContentsJsonDark = '''
+{
+  "images" : [
+    {
+      "filename" : "BrandingImage.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "BrandingImageDark.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "BrandingImage@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "BrandingImageDark@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "BrandingImage@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "BrandingImageDark@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
+''';
+
 const String _iOSLaunchBackgroundJson = '''
 {
   "images" : [
@@ -306,6 +397,9 @@ const String _iOSLaunchBackgroundDarkJson = '''
 const String _iOSLaunchBackgroundSubview =
     '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI" />';
 
+const String _iOSBrandingSubview =
+    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="BrandingImage" translatesAutoresizingMaskIntoConstraints="NO" id="Uyq-Kz-ftE" />';
+
 const String _iOSLaunchBackgroundConstraints = '''
 <constraints>
   <constraint firstItem="YRO-k0-Ey4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="3T2-ad-Qdv"/>
@@ -316,6 +410,27 @@ const String _iOSLaunchBackgroundConstraints = '''
   <constraint firstItem="YRO-k0-Ey4" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="duK-uY-Gun"/>
   <constraint firstItem="tWc-Dq-wcI" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="kV7-tw-vXt"/>
   <constraint firstItem="YRO-k0-Ey4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="xPn-NY-SIU"/>
+</constraints>
+''';
+
+const String _iOSBrandingCenterBottomConstraints ='''
+<constraints>
+  <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
+  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom"  id="8Yb-q4-8bl"/>
+</constraints>
+''';
+
+const String _iOSBrandingLeftBottomConstraints ='''
+<constraints>
+  <constraint firstAttribute="leading" secondItem="Uyq-Kz-ftE" secondAttribute="leading" id="3kg-TC-cPP"/>
+  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8bl"/>
+</constraints>
+''';
+
+const String _iOSBrandingRightBottomConstraints ='''
+<constraints>
+  <constraint firstAttribute="trailing" secondItem="Uyq-Kz-ftE" secondAttribute="trailing" id="3kg-TC-cPP"/>                            
+  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" id="8Yb-q4-8lb"/>                            
 </constraints>
 ''';
 

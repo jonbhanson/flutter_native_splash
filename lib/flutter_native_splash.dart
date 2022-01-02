@@ -27,15 +27,18 @@ void createSplash({String? path}) {
 void createSplashByConfig(Map<String, dynamic> config) {
   var image = checkImageExists(config: config, parameter: 'image');
   var darkImage = checkImageExists(config: config, parameter: 'image_dark');
+  var brandingImage = checkImageExists(config: config, parameter: 'branding');
+  var brandingDarkImage = checkImageExists(config: config, parameter: 'branding_dark');
   var color = parseColor(config['color']);
   var darkColor = parseColor(config['color_dark']);
-  var backgroundImage =
-      checkImageExists(config: config, parameter: 'background_image');
-  var darkBackgroundImage =
-      checkImageExists(config: config, parameter: 'background_image_dark');
+  var backgroundImage = checkImageExists(config: config, parameter: 'background_image');
+  var darkBackgroundImage = checkImageExists(config: config, parameter: 'background_image_dark');
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
+
+  var brandingGravity = config['branding_mode'] ?? 'bottom';
+
   bool fullscreen = config['fullscreen'] ?? false;
   String iosContentMode = config['ios_content_mode'] ?? 'center';
   final webImageMode = (config['web_image_mode'] ?? 'center');
@@ -45,11 +48,14 @@ void createSplashByConfig(Map<String, dynamic> config) {
       _createAndroidSplash(
         imagePath: image,
         darkImagePath: darkImage,
+        brandingImagePath: brandingImage,
+        brandingDarkImagePath: brandingDarkImage,
         backgroundImage: backgroundImage,
         darkBackgroundImage: darkBackgroundImage,
         color: color,
         darkColor: darkColor,
         gravity: gravity,
+        brandingGravity: brandingGravity,
         fullscreen: fullscreen,
       );
     } else {
@@ -64,10 +70,13 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkImagePath: darkImage,
         backgroundImage: backgroundImage,
         darkBackgroundImage: darkBackgroundImage,
+        brandingImagePath: brandingImage,
+        brandingDarkImagePath: brandingDarkImage,
         color: color,
         darkColor: darkColor,
         plistFiles: plistFiles,
         iosContentMode: iosContentMode,
+        iosBrandingContentMode: brandingGravity,
         fullscreen: fullscreen,
       );
     } else {
