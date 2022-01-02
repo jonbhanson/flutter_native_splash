@@ -28,11 +28,14 @@ void createSplashByConfig(Map<String, dynamic> config) {
   var image = checkImageExists(config: config, parameter: 'image');
   var darkImage = checkImageExists(config: config, parameter: 'image_dark');
   var brandingImage = checkImageExists(config: config, parameter: 'branding');
-  var brandingDarkImage = checkImageExists(config: config, parameter: 'branding_dark');
+  var brandingDarkImage =
+      checkImageExists(config: config, parameter: 'branding_dark');
   var color = parseColor(config['color']);
   var darkColor = parseColor(config['color_dark']);
-  var backgroundImage = checkImageExists(config: config, parameter: 'background_image');
-  var darkBackgroundImage = checkImageExists(config: config, parameter: 'background_image_dark');
+  var backgroundImage =
+      checkImageExists(config: config, parameter: 'background_image');
+  var darkBackgroundImage =
+      checkImageExists(config: config, parameter: 'background_image_dark');
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
@@ -161,7 +164,7 @@ Map<String, dynamic> getConfig({String? configFile}) {
 
   final Map yamlMap = loadYaml(File(filePath).readAsStringSync());
 
-  if (!(yamlMap['flutter_native_splash'] is Map)) {
+  if (yamlMap['flutter_native_splash'] is! Map) {
     throw Exception('Your `$filePath` file does not contain a '
         '`flutter_native_splash` section.');
   }
@@ -172,11 +175,11 @@ Map<String, dynamic> getConfig({String? configFile}) {
       in yamlMap['flutter_native_splash'].entries) {
     if (entry.value is YamlList) {
       var list = <String>[];
-      (entry.value as YamlList).forEach((dynamic value) {
+      for (var value in (entry.value as YamlList)) {
         if (value is String) {
           list.add(value);
         }
-      });
+      }
       config[entry.key] = list;
     } else {
       config[entry.key] = entry.value;

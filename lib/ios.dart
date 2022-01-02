@@ -11,7 +11,9 @@ class _IosLaunchImageTemplate {
 final List<_IosLaunchImageTemplate> iOSSplashImages = <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImage.png', pixelDensity: 1),
   _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', pixelDensity: 2),
-  _IosLaunchImageTemplate(fileName: 'LaunchImage@3x.png', pixelDensity: 3), // original image must be @4x
+  _IosLaunchImageTemplate(
+      fileName: 'LaunchImage@3x.png',
+      pixelDensity: 3), // original image must be @4x
 ];
 
 final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
@@ -23,16 +25,21 @@ final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
 ];
 
 //Resource files for branding assets
-final List<_IosLaunchImageTemplate> iOSBrandingImages = <_IosLaunchImageTemplate>[
+final List<_IosLaunchImageTemplate> iOSBrandingImages =
+    <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'BrandingImage.png', pixelDensity: 1),
   _IosLaunchImageTemplate(fileName: 'BrandingImage@2x.png', pixelDensity: 2),
-  _IosLaunchImageTemplate(fileName: 'BrandingImage@3x.png', pixelDensity: 3), // original image must be @4x
+  _IosLaunchImageTemplate(
+      fileName: 'BrandingImage@3x.png',
+      pixelDensity: 3), // original image must be @4x
 ];
 final List<_IosLaunchImageTemplate> iOSBrandingImagesDark =
-<_IosLaunchImageTemplate>[
+    <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'BrandingImageDark.png', pixelDensity: 1),
-  _IosLaunchImageTemplate(fileName: 'BrandingImageDark@2x.png', pixelDensity: 2),
-  _IosLaunchImageTemplate(fileName: 'BrandingImageDark@3x.png', pixelDensity: 3),
+  _IosLaunchImageTemplate(
+      fileName: 'BrandingImageDark@2x.png', pixelDensity: 2),
+  _IosLaunchImageTemplate(
+      fileName: 'BrandingImageDark@3x.png', pixelDensity: 3),
   // original image must be @3x
 ];
 
@@ -52,40 +59,48 @@ void _createiOSSplash({
   required String? darkBackgroundImage,
 }) {
   if (imagePath != null) {
-    _applyImageiOS(imagePath: imagePath,list:iOSSplashImages);
+    _applyImageiOS(imagePath: imagePath, list: iOSSplashImages);
   } else {
     final splashImage = Image(1, 1);
-    iOSSplashImages.forEach((template) {
+    for (var template in iOSSplashImages) {
       var file = File(_iOSAssetsLaunchImageFolder + template.fileName);
       file.createSync(recursive: true);
       file.writeAsBytesSync(encodePng(splashImage));
-    });
+    }
   }
 
   if (darkImagePath != null) {
-    _applyImageiOS(imagePath: darkImagePath, dark: true,list:iOSSplashImagesDark);
+    _applyImageiOS(
+        imagePath: darkImagePath, dark: true, list: iOSSplashImagesDark);
   } else {
-    iOSSplashImagesDark.forEach((template) {
+    for (var template in iOSSplashImagesDark) {
       final file = File(_iOSAssetsLaunchImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
-    });
+    }
   }
 
-  if(brandingImagePath != null){
-    _applyImageiOS(imagePath: brandingImagePath,list:iOSBrandingImages,targetPath: _iOSAssetsBrandingImageFolder);
+  if (brandingImagePath != null) {
+    _applyImageiOS(
+        imagePath: brandingImagePath,
+        list: iOSBrandingImages,
+        targetPath: _iOSAssetsBrandingImageFolder);
   } else {
-    iOSBrandingImages.forEach((template) {
+    for (var template in iOSBrandingImages) {
       final file = File(_iOSAssetsBrandingImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
-    });
+    }
   }
-  if(brandingDarkImagePath != null){
-    _applyImageiOS(imagePath: brandingDarkImagePath, dark: true,list:iOSBrandingImagesDark,targetPath: _iOSAssetsBrandingImageFolder);
+  if (brandingDarkImagePath != null) {
+    _applyImageiOS(
+        imagePath: brandingDarkImagePath,
+        dark: true,
+        list: iOSBrandingImagesDark,
+        targetPath: _iOSAssetsBrandingImageFolder);
   } else {
-    iOSBrandingImagesDark.forEach((template) {
+    for (var template in iOSBrandingImagesDark) {
       final file = File(_iOSAssetsBrandingImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
-    });
+    }
   }
 
   var launchImageFile = File(_iOSAssetsLaunchImageFolder + 'Contents.json');
@@ -95,11 +110,15 @@ void _createiOSSplash({
 
   var brandingImageFile = File(_iOSAssetsBrandingImageFolder + 'Contents.json');
   brandingImageFile.createSync(recursive: true);
-  brandingImageFile.writeAsStringSync(
-      brandingDarkImagePath != null ? _iOSBrandingContentsJsonDark : _iOSBrandingContentsJson);
+  brandingImageFile.writeAsStringSync(brandingDarkImagePath != null
+      ? _iOSBrandingContentsJsonDark
+      : _iOSBrandingContentsJson);
 
   _applyLaunchScreenStoryboard(
-      imagePath: imagePath,brandingImagePath:brandingImagePath, iosContentMode: iosContentMode,iosBrandingContentMode: iosBrandingContentMode);
+      imagePath: imagePath,
+      brandingImagePath: brandingImagePath,
+      iosContentMode: iosContentMode,
+      iosBrandingContentMode: iosBrandingContentMode);
   _createBackground(
     colorString: color,
     darkColorString: darkColor,
@@ -137,7 +156,7 @@ void _applyImageiOS({
     exit(1);
   }
   for (var template in list) {
-    _saveImageiOS(template: template, image: image,targetPath:targetPath);
+    _saveImageiOS(template: template, image: image, targetPath: targetPath);
   }
 }
 
@@ -160,32 +179,38 @@ void _saveImageiOS({
 }
 
 /// Update LaunchScreen.storyboard adding width, height and color
-void _applyLaunchScreenStoryboard({
-  required String? imagePath,
-  required String iosContentMode,
-  String? iosBrandingContentMode, String? brandingImagePath
-}) {
+void _applyLaunchScreenStoryboard(
+    {required String? imagePath,
+    required String iosContentMode,
+    String? iosBrandingContentMode,
+    String? brandingImagePath}) {
   final file = File(_iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
     print('[iOS] Updating LaunchScreen.storyboard with width, and height');
     return _updateLaunchScreenStoryboard(
-        imagePath: imagePath, brandingImagePath:brandingImagePath, iosContentMode: iosContentMode,iosBrandingContentMode: iosBrandingContentMode);
+        imagePath: imagePath,
+        brandingImagePath: brandingImagePath,
+        iosContentMode: iosContentMode,
+        iosBrandingContentMode: iosBrandingContentMode);
   } else {
     print('[iOS] No LaunchScreen.storyboard file found in your iOS project');
     print('[iOS] Creating LaunchScreen.storyboard file and adding it '
         'to your iOS project');
     return _createLaunchScreenStoryboard(
-        imagePath: imagePath,brandingImagePath:brandingImagePath, iosContentMode: iosContentMode,iosBrandingContentMode: iosBrandingContentMode);
+        imagePath: imagePath,
+        brandingImagePath: brandingImagePath,
+        iosContentMode: iosContentMode,
+        iosBrandingContentMode: iosBrandingContentMode);
   }
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
 void _updateLaunchScreenStoryboard(
     {required String? imagePath,
-      required String iosContentMode,
-      String? brandingImagePath,
-      String? iosBrandingContentMode}) {
+    required String iosContentMode,
+    String? brandingImagePath,
+    String? iosBrandingContentMode}) {
   // Load the data
   final file = File(_iOSLaunchScreenStoryboardFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
@@ -229,23 +254,18 @@ void _updateLaunchScreenStoryboard(
   // Update the fill property
   imageView.setAttribute('contentMode', iosContentMode);
 
-  if(!['bottom', 'bottomRight', 'bottomLeft'].contains(iosBrandingContentMode)){
+  if (!['bottom', 'bottomRight', 'bottomLeft']
+      .contains(iosBrandingContentMode)) {
     iosBrandingContentMode = 'bottom';
   }
-  if(brandingImagePath != null && iosBrandingContentMode != iosContentMode) {
-    final brandingImageView = subViews.children.whereType<XmlElement>()
-        .firstWhere(
-            (element) {
-          return (element.name.qualified == 'imageView' &&
-              element.getAttribute('image') == 'BrandingImage');
-        }, orElse: () {
-      subViews.children.insert(
-          subViews.children.length-1,
-          XmlDocument
-              .parse(_iOSBrandingSubview)
-              .rootElement
-              .copy()
-      );
+  if (brandingImagePath != null && iosBrandingContentMode != iosContentMode) {
+    final brandingImageView =
+        subViews.children.whereType<XmlElement>().firstWhere((element) {
+      return (element.name.qualified == 'imageView' &&
+          element.getAttribute('image') == 'BrandingImage');
+    }, orElse: () {
+      subViews.children.insert(subViews.children.length - 1,
+          XmlDocument.parse(_iOSBrandingSubview).rootElement.copy());
       return XmlElement(XmlName(''));
     });
 
@@ -290,14 +310,14 @@ void _updateLaunchScreenStoryboard(
     launchImageResource?.setAttribute('height', image.height.toString());
   }
 
-  if(brandingImagePath != null){
+  if (brandingImagePath != null) {
     var brandingImageResource = resources?.children
         .whereType<XmlElement>()
         .firstWhere(
             (element) => (element.name.qualified == 'image' &&
-            element.getAttribute('name') == 'BrandingImage'), orElse: () {
+                element.getAttribute('name') == 'BrandingImage'), orElse: () {
       resources.children.add(XmlDocument.parse(
-          '<image name="BrandingImage" width="1" height="1"/>')
+              '<image name="BrandingImage" width="1" height="1"/>')
           .rootElement
           .copy());
       return XmlElement(XmlName(''));
@@ -312,19 +332,19 @@ void _updateLaunchScreenStoryboard(
     brandingImageResource?.setAttribute('height', branding.height.toString());
 
     var toParse = _iOSBrandingCenterBottomConstraints;
-    if(iosBrandingContentMode == 'bottomLeft'){
+    if (iosBrandingContentMode == 'bottomLeft') {
       toParse = _iOSBrandingLeftBottomConstraints;
-    }else if(iosBrandingContentMode == 'bottomRight'){
+    } else if (iosBrandingContentMode == 'bottomRight') {
       toParse = _iOSBrandingRightBottomConstraints;
     }
     var element = view.getElement('constraints');
 
     var doc = XmlDocument.parse(toParse).rootElement.copy();
-    if(doc.firstChild != null){
+    if (doc.firstChild != null) {
       print('[iOS] updating constraints with splash branding');
-      doc.children.forEach((v){
-        element?.children.insert(0,v.copy());
-      });
+      for (var v in doc.children) {
+        element?.children.insert(0, v.copy());
+      }
     }
   }
 
@@ -332,17 +352,19 @@ void _updateLaunchScreenStoryboard(
 }
 
 /// Creates LaunchScreen.storyboard with splash image path
-void _createLaunchScreenStoryboard({
-  required String? imagePath,
-  required String iosContentMode,
-  String? iosBrandingContentMode,
-  String? brandingImagePath
-}) {
+void _createLaunchScreenStoryboard(
+    {required String? imagePath,
+    required String iosContentMode,
+    String? iosBrandingContentMode,
+    String? brandingImagePath}) {
   var file = File(_iOSLaunchScreenStoryboardFile);
   file.createSync(recursive: true);
   file.writeAsStringSync(_iOSLaunchScreenStoryboardContent);
   return _updateLaunchScreenStoryboard(
-      imagePath: imagePath, brandingImagePath: brandingImagePath, iosContentMode: iosContentMode,iosBrandingContentMode: iosBrandingContentMode);
+      imagePath: imagePath,
+      brandingImagePath: brandingImagePath,
+      iosContentMode: iosContentMode,
+      iosBrandingContentMode: iosBrandingContentMode);
 }
 
 void _createBackground({
@@ -400,7 +422,7 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
     plistFiles.add(_iOSInfoPlistFile);
   }
 
-  plistFiles.forEach((plistFile) {
+  for (var plistFile in plistFiles) {
     if (!File(plistFile).existsSync()) {
       print('File $plistFile not found.  If you renamed the file, make sure to'
           ' specify it in the info_plist_files section of your '
@@ -410,7 +432,7 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
 
     print('[iOS] Updating $plistFile for status bar hidden/visible');
     _updateInfoPlistFile(plistFile: plistFile, fullscreen: fullscreen);
-  });
+  }
 }
 
 /// Update Infop.list with status bar hidden directive

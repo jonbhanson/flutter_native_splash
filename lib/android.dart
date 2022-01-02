@@ -55,11 +55,15 @@ void _createAndroidSplash({
   }
 
   //create resources for branding image if provided
-  if(brandingImagePath != null){
-    _applyImageAndroid(imagePath: brandingImagePath,fileName: 'branding.png');
+  if (brandingImagePath != null) {
+    _applyImageAndroid(imagePath: brandingImagePath, fileName: 'branding.png');
   }
-  if(brandingDarkImagePath != null){
-    _applyImageAndroid(imagePath: brandingDarkImagePath,dark: true,fileName: 'branding.png');
+  if (brandingDarkImagePath != null) {
+    _applyImageAndroid(
+      imagePath: brandingDarkImagePath,
+      dark: true,
+      fileName: 'branding.png',
+    );
   }
 
   _createBackground(
@@ -89,7 +93,7 @@ void _createAndroidSplash({
     launchBackgroundFilePath: _androidLaunchBackgroundFile,
     showImage: imagePath != null,
     showBranding: brandingImagePath != null,
-    brandingGravity: brandingGravity
+    brandingGravity: brandingGravity,
   );
 
   if (darkColor != null || darkBackgroundImage != null) {
@@ -98,7 +102,7 @@ void _createAndroidSplash({
       launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
       showImage: imagePath != null,
       showBranding: brandingImagePath != null,
-      brandingGravity: brandingGravity
+      brandingGravity: brandingGravity,
     );
   }
 
@@ -108,7 +112,7 @@ void _createAndroidSplash({
       launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
       showImage: imagePath != null,
       showBranding: brandingImagePath != null,
-      brandingGravity: brandingGravity
+      brandingGravity: brandingGravity,
     );
     if (darkColor != null || darkBackgroundImage != null) {
       _applyLaunchBackgroundXml(
@@ -116,7 +120,7 @@ void _createAndroidSplash({
         launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
         showImage: imagePath != null,
         showBranding: brandingImagePath != null,
-        brandingGravity: brandingGravity
+        brandingGravity: brandingGravity,
       );
     }
   }
@@ -159,8 +163,13 @@ void _createAndroidSplash({
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImageAndroid({required String imagePath, bool dark = false, String fileName = 'splash.png'}) {
-  print('[Android] Creating ' + (dark ? 'dark mode ' : '') + '${fileName.split('.')[0]} images');
+void _applyImageAndroid(
+    {required String imagePath,
+    bool dark = false,
+    String fileName = 'splash.png'}) {
+  print('[Android] Creating ' +
+      (dark ? 'dark mode ' : '') +
+      '${fileName.split('.')[0]} images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
@@ -169,7 +178,7 @@ void _applyImageAndroid({required String imagePath, bool dark = false, String fi
   }
 
   for (var template in dark ? androidSplashImagesDark : androidSplashImages) {
-    _saveImageAndroid(template: template, image: image,fileName: fileName);
+    _saveImageAndroid(template: template, image: image, fileName: fileName);
   }
 }
 
@@ -177,7 +186,9 @@ void _applyImageAndroid({required String imagePath, bool dark = false, String fi
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
 void _saveImageAndroid(
-    {required _AndroidDrawableTemplate template, required Image image, required fileName}) {
+    {required _AndroidDrawableTemplate template,
+    required Image image,
+    required fileName}) {
   //added file name attribute to make this method generic for splash image and branding image.
   var newFile = copyResize(
     image,
@@ -187,7 +198,7 @@ void _saveImageAndroid(
   );
 
   var file = File('$_androidResFolder${template.directoryName}/$fileName');
-      // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
+  // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));
 }
@@ -201,31 +212,35 @@ void _applyLaunchBackgroundXml(
     String brandingGravity = 'bottom'}) {
   print('[Android]    - ' + launchBackgroundFilePath);
   final launchBackgroundFile = File(launchBackgroundFilePath);
-  var launchBackgroundDocument;
   launchBackgroundFile.createSync(recursive: true);
-  launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
+  var launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
 
   final layerList = launchBackgroundDocument.getElement('layer-list');
-  final List<XmlNode> items = layerList.children;
+  final List<XmlNode> items = layerList!.children;
 
   if (showImage) {
-    var splashItem = XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
+    var splashItem =
+        XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
     splashItem.getElement('bitmap')?.setAttribute('android:gravity', gravity);
     items.add(splashItem);
   }
 
-  if(showBranding && gravity != brandingGravity){
+  if (showBranding && gravity != brandingGravity) {
     //add branding when splash image and branding image are not at the same position
-    var brandingItem = XmlDocument.parse(_androidBrandingItemXml).rootElement.copy();
-    if(brandingGravity == 'bottomRight'){
+    var brandingItem =
+        XmlDocument.parse(_androidBrandingItemXml).rootElement.copy();
+    if (brandingGravity == 'bottomRight') {
       brandingGravity = 'bottom|right';
-    }else if(brandingGravity == 'bottomLeft'){
+    } else if (brandingGravity == 'bottomLeft') {
       brandingGravity = 'bottom|left';
-    }else if(brandingGravity != 'bottom'){
-      print('$brandingGravity illegal property defined for the branding mode. Setting back to default.');
+    } else if (brandingGravity != 'bottom') {
+      print(
+          '$brandingGravity illegal property defined for the branding mode. Setting back to default.');
       brandingGravity = 'bottom';
     }
-    brandingItem.getElement('bitmap')?.setAttribute('android:gravity', brandingGravity);
+    brandingItem
+        .getElement('bitmap')
+        ?.setAttribute('android:gravity', brandingGravity);
     items.add(brandingItem);
   }
 

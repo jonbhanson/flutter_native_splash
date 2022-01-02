@@ -17,7 +17,7 @@ First, add `flutter_native_splash` as a dev dependency in your pubspec.yaml file
 
 ```yaml
 dev_dependencies:
-  flutter_native_splash: ^1.3.2
+  flutter_native_splash: ^1.3.3
 ```
 
 Don't forget to `flutter pub get`.
@@ -41,24 +41,38 @@ flutter_native_splash:
   # size of the app. Only one parameter can be used, color and background_image cannot both be set.
   color: "#42a5f5"
   #background_image: "assets/background.png"
-  
-  # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing 
+
+  # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
   # the leading # character.
 
-  # The image parameter allows you to specify an image used in the splash screen.  It must be a 
+  # The image parameter allows you to specify an image used in the splash screen.  It must be a
   # png file and should be sized for 4x pixel density.
   #image: assets/splash.png
 
+  # This property allows you to specify an image used as branding in the splash screen. It must be
+  # a png file. Currently, it is only supported for Android and iOS.
+  branding: assets/dart.png
+
+  # Specify your branding image for dark mode.
+  #branding_dark: assets/dart_dark.png
+
+  # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
+  # and bottomLeft. The default values is bottom if not specified or specified something else.
+  #
+  # Make sure this content mode value should not be similar to android_gravity value and ios_content_mode
+  # value.
+  branding_mode: bottom
+
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
-  # parameters from above. If the image_dark parameter is specified, color_dark or 
+  # parameters from above. If the image_dark parameter is specified, color_dark or
   # background_image_dark must be specified.  color_dark and background_image_dark cannot both be
   # set.
   #color_dark: "#042a49"
   #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
 
-  # The android, ios and web parameters can be used to disable generating a splash screen on a given 
+  # The android, ios and web parameters can be used to disable generating a splash screen on a given
   # platform.
   #android: false
   #ios: false
@@ -67,22 +81,22 @@ flutter_native_splash:
   # The position of the splash image can be set with android_gravity, ios_content_mode, and
   # web_image_mode parameters.  All default to center.
   #
-  # android_gravity can be one of the following Android Gravity (see 
-  # https://developer.android.com/reference/android/view/Gravity): bottom, center, 
+  # android_gravity can be one of the following Android Gravity (see
+  # https://developer.android.com/reference/android/view/Gravity): bottom, center,
   # center_horizontal, center_vertical, clip_horizontal, clip_vertical, end, fill, fill_horizontal,
   # fill_vertical, left, right, start, or top.
   #android_gravity: center
   #
-  # ios_content_mode can be one of the following iOS UIView.ContentMode (see 
-  # https://developer.apple.com/documentation/uikit/uiview/contentmode): scaleToFill, 
-  # scaleAspectFit, scaleAspectFill, center, top, bottom, left, right, topLeft, topRight, 
+  # ios_content_mode can be one of the following iOS UIView.ContentMode (see
+  # https://developer.apple.com/documentation/uikit/uiview/contentmode): scaleToFill,
+  # scaleAspectFit, scaleAspectFill, center, top, bottom, left, right, topLeft, topRight,
   # bottomLeft, or bottomRight.
   #ios_content_mode: center
   #
   # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
   #web_image_mode: center
 
-  # To hide the notification bar, use the fullscreen parameter.  Has no affect in web since web 
+  # To hide the notification bar, use the fullscreen parameter.  Has no affect in web since web
   # has no notification bar.  Defaults to false.
   # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.
   #       To show the notification bar, add the following code to your Flutter app:
@@ -136,7 +150,7 @@ This message is not related to this package but is related to a [change](https:/
  android:resource="@drawable/launch_background"
  />
 ```
-The solution is to remove the above code.
+The solution is to remove the above code.  Note that this will also remove the fade effect between the native splash screen and your app.
 
 ## Can I change the duration of the splash screen?
 No, it is not possible to change the duration of the splash screen.  The native splash screen is displayed while the native app loads the Flutter framework. Because the resources in your app cannot load while the native splash screen is displayed, the native splash screen must be as fast as possible.  Note that delaying the user experience is a poor design decision.

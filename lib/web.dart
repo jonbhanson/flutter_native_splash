@@ -50,7 +50,7 @@ void createBackgroundImages({
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
-  final backgroundDestination = _webSplashImagesFolder + 'light-background.png';
+  const backgroundDestination = _webSplashImagesFolder + 'light-background.png';
   if (backgroundImage == null) {
     final file = File(backgroundDestination);
     if (file.existsSync()) file.deleteSync();
@@ -61,7 +61,7 @@ void createBackgroundImages({
     File(backgroundImage).copySync(backgroundDestination);
   }
 
-  final darkBackgroundDestination =
+  const darkBackgroundDestination =
       _webSplashImagesFolder + 'dark-background.png';
   if (darkBackgroundImage == null) {
     final file = File(darkBackgroundDestination);
@@ -147,11 +147,11 @@ void updateIndex({required String imageMode, required String? imagePath}) {
 
   var foundExistingStyleSheet = false;
   var headCloseTagLine = 0;
-  var bodyCloseTagLine = 0;
+  var bodyOpenTagLine = 0;
   var existingPictureLine = 0;
   var existingBodyLine = 0;
 
-  final styleSheetLink =
+  const styleSheetLink =
       '<link rel="stylesheet" type="text/css" href="splash/style.css">';
   for (var x = 0; x < lines.length; x++) {
     var line = lines[x];
@@ -160,8 +160,8 @@ void updateIndex({required String imageMode, required String? imagePath}) {
       foundExistingStyleSheet = true;
     } else if (line.contains('</head>')) {
       headCloseTagLine = x;
-    } else if (line.contains('</body>')) {
-      bodyCloseTagLine = x;
+    } else if (line.contains('<body')) {
+      bodyOpenTagLine = x;
     } else if (line.contains('<picture id="splash">')) {
       existingPictureLine = x;
     } else if (line.contains('<body>')) {
@@ -176,10 +176,10 @@ void updateIndex({required String imageMode, required String? imagePath}) {
   if (existingPictureLine == 0) {
     if (imagePath != null) {
       for (var x = _indexHtmlPicture.length - 1; x >= 0; x--) {
-        lines[bodyCloseTagLine] =
+        lines[bodyOpenTagLine + 1] =
             _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode) +
                 '\n' +
-                lines[bodyCloseTagLine];
+                lines[bodyOpenTagLine + 1];
       }
     }
   } else {

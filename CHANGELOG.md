@@ -1,3 +1,9 @@
+## [1.3.3] - (2022-Jan-01)
+* Merged PR that adds branding.  Thanks [Faiizii](https://github.com/Faiizii) for PR.  Closes [#256](https://github.com/jonbhanson/flutter_native_splash/issues/256).
+* Updated readme.  Closes [#258](https://github.com/jonbhanson/flutter_native_splash/issues/258).
+* Fix so that the splash screen does not cover the app in web.  Fixes [253](https://github.com/jonbhanson/flutter_native_splash/issues/253).
+* Updates per linter rules.
+
 ## [1.3.2] - (2021-Nov-28)
 * Updated readme.  Hide splash image in web from screen readers.  Closes [#231](https://github.com/jonbhanson/flutter_native_splash/issues/231).
 
