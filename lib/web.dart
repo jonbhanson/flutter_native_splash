@@ -35,14 +35,8 @@ void _createWebSplash({
     _WebLaunchImageTemplate(fileName: 'dark-3x.png', pixelDensity: 3),
     _WebLaunchImageTemplate(fileName: 'dark-4x.png', pixelDensity: 4),
   ]);
-  createBackgroundImages(
-      backgroundImage: backgroundImage,
-      darkBackgroundImage: darkBackgroundImage);
-  createSplashCss(
-      color: color,
-      darkColor: darkColor,
-      darkBackgroundImage: darkBackgroundImage,
-      backgroundImage: backgroundImage);
+  createBackgroundImages(backgroundImage: backgroundImage, darkBackgroundImage: darkBackgroundImage);
+  createSplashCss(color: color, darkColor: darkColor, darkBackgroundImage: darkBackgroundImage, backgroundImage: backgroundImage);
   updateIndex(imageMode: imageMode, imagePath: imagePath);
 }
 
@@ -61,8 +55,7 @@ void createBackgroundImages({
     File(backgroundImage).copySync(backgroundDestination);
   }
 
-  const darkBackgroundDestination =
-      _webSplashImagesFolder + 'dark-background.png';
+  const darkBackgroundDestination = _webSplashImagesFolder + 'dark-background.png';
   if (darkBackgroundImage == null) {
     final file = File(darkBackgroundDestination);
     if (file.existsSync()) file.deleteSync();
@@ -74,9 +67,7 @@ void createBackgroundImages({
   }
 }
 
-void createWebImages(
-    {required String? imagePath,
-    required List<_WebLaunchImageTemplate> webSplashImages}) {
+void createWebImages({required String? imagePath, required List<_WebLaunchImageTemplate> webSplashImages}) {
   if (imagePath == null) {
     for (var template in webSplashImages) {
       final file = File(_webSplashImagesFolder + template.fileName);
@@ -95,8 +86,7 @@ void createWebImages(
   }
 }
 
-void _saveImageWeb(
-    {required _WebLaunchImageTemplate template, required Image image}) {
+void _saveImageWeb({required _WebLaunchImageTemplate template, required Image image}) {
   var newFile = copyResize(
     image,
     width: image.width * template.pixelDensity ~/ 4,
@@ -109,30 +99,22 @@ void _saveImageWeb(
   file.writeAsBytesSync(encodePng(newFile));
 }
 
-void createSplashCss(
-    {required String? color,
-    required String? darkColor,
-    required String? backgroundImage,
-    required String? darkBackgroundImage}) {
+void createSplashCss({required String? color, required String? darkColor, required String? backgroundImage, required String? darkBackgroundImage}) {
   print('[Web] Creating CSS');
   color ??= '000000';
   darkColor ??= color;
-  var cssContent = _webCss
-      .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color)
-      .replaceFirst('[DARKBACKGROUNDCOLOR]', '#' + darkColor);
+  var cssContent = _webCss.replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#' + color).replaceFirst('[DARKBACKGROUNDCOLOR]', '#' + darkColor);
 
   if (backgroundImage == null) {
     cssContent = cssContent.replaceFirst('[LIGHTBACKGROUNDIMAGE]', '');
   } else {
-    cssContent = cssContent.replaceFirst('[LIGHTBACKGROUNDIMAGE]',
-        'background-image: url("img/light-background.png");');
+    cssContent = cssContent.replaceFirst('[LIGHTBACKGROUNDIMAGE]', 'background-image: url("img/light-background.png");');
   }
 
   if (backgroundImage == null) {
     cssContent = cssContent.replaceFirst('[DARKBACKGROUNDIMAGE]', '');
   } else {
-    cssContent = cssContent.replaceFirst('[DARKBACKGROUNDIMAGE]',
-        'background-image: url("img/dark-background.png");');
+    cssContent = cssContent.replaceFirst('[DARKBACKGROUNDIMAGE]', 'background-image: url("img/dark-background.png");');
   }
 
   var file = File(_webFolder + _webRelativeStyleFile);
@@ -151,8 +133,7 @@ void updateIndex({required String imageMode, required String? imagePath}) {
   var existingPictureLine = 0;
   var existingBodyLine = 0;
 
-  const styleSheetLink =
-      '<link rel="stylesheet" type="text/css" href="splash/style.css">';
+  const styleSheetLink = '<link rel="stylesheet" type="text/css" href="splash/style.css">';
   for (var x = 0; x < lines.length; x++) {
     var line = lines[x];
 
@@ -176,21 +157,16 @@ void updateIndex({required String imageMode, required String? imagePath}) {
   if (existingPictureLine == 0) {
     if (imagePath != null) {
       for (var x = _indexHtmlPicture.length - 1; x >= 0; x--) {
-        lines[bodyOpenTagLine + 1] =
-            _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode) +
-                '\n' +
-                lines[bodyOpenTagLine + 1];
+        lines[bodyOpenTagLine + 1] = _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode) + '\n' + lines[bodyOpenTagLine + 1];
       }
     }
   } else {
     if (imagePath != null) {
       for (var x = 0; x < _indexHtmlPicture.length; x++) {
-        lines[existingPictureLine + x] =
-            _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode);
+        lines[existingPictureLine + x] = _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode);
       }
     } else {
-      lines.removeRange(
-          existingPictureLine, existingPictureLine + _indexHtmlPicture.length);
+      lines.removeRange(existingPictureLine, existingPictureLine + _indexHtmlPicture.length);
     }
   }
   if (existingBodyLine != 0) {

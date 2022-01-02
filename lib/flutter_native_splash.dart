@@ -28,14 +28,11 @@ void createSplashByConfig(Map<String, dynamic> config) {
   var image = checkImageExists(config: config, parameter: 'image');
   var darkImage = checkImageExists(config: config, parameter: 'image_dark');
   var brandingImage = checkImageExists(config: config, parameter: 'branding');
-  var brandingDarkImage =
-      checkImageExists(config: config, parameter: 'branding_dark');
+  var brandingDarkImage = checkImageExists(config: config, parameter: 'branding_dark');
   var color = parseColor(config['color']);
   var darkColor = parseColor(config['color_dark']);
-  var backgroundImage =
-      checkImageExists(config: config, parameter: 'background_image');
-  var darkBackgroundImage =
-      checkImageExists(config: config, parameter: 'background_image_dark');
+  var backgroundImage = checkImageExists(config: config, parameter: 'background_image');
+  var darkBackgroundImage = checkImageExists(config: config, parameter: 'background_image_dark');
   var plistFiles = config['info_plist_files'];
   var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
@@ -112,10 +109,7 @@ void removeSplash({String? path}) {
   print('Restoring Flutter\'s default native splash screen...');
   var config = getConfig(configFile: path);
 
-  var removeConfig = <String, dynamic>{
-    'color': '#ffffff',
-    'color_dark': '#000000'
-  };
+  var removeConfig = <String, dynamic>{'color': '#ffffff', 'color_dark': '#000000'};
   if (config.containsKey('android')) {
     removeConfig['android'] = config['android'];
   }
@@ -128,8 +122,7 @@ void removeSplash({String? path}) {
   createSplashByConfig(removeConfig);
 }
 
-String? checkImageExists(
-    {required Map<String, dynamic> config, required String parameter}) {
+String? checkImageExists({required Map<String, dynamic> config, required String parameter}) {
   String image = config[parameter] ?? '';
   if (image.isNotEmpty && !File(image).existsSync()) {
     print('The file "$image" set as the parameter "$parameter" was not found.');
@@ -137,9 +130,7 @@ String? checkImageExists(
   }
 
   if (image.isNotEmpty && p.extension(image).toLowerCase() != '.png') {
-    print('Unsupported file format: ' +
-        image +
-        '  Your image must be a PNG file.');
+    print('Unsupported file format: ' + image + '  Your image must be a PNG file.');
     exit(1);
   }
   return image == '' ? null : image;
@@ -171,8 +162,7 @@ Map<String, dynamic> getConfig({String? configFile}) {
 
   // yamlMap has the type YamlMap, which has several unwanted side effects
   final config = <String, dynamic>{};
-  for (MapEntry<dynamic, dynamic> entry
-      in yamlMap['flutter_native_splash'].entries) {
+  for (MapEntry<dynamic, dynamic> entry in yamlMap['flutter_native_splash'].entries) {
     if (entry.value is YamlList) {
       var list = <String>[];
       for (var value in (entry.value as YamlList)) {
@@ -201,16 +191,13 @@ void checkConfig(Map<String, dynamic> config) {
     exit(1);
   }
 
-  if (config.containsKey('color_dark') &&
-      config.containsKey('background_image_dark')) {
+  if (config.containsKey('color_dark') && config.containsKey('background_image_dark')) {
     print('Your `flutter_native_splash` section cannot not contain both a '
         '`color_dark` and `background_image_dark`.');
     exit(1);
   }
 
-  if (config.containsKey('image_dark') &&
-      !config.containsKey('color_dark') &&
-      !config.containsKey('background_image_dark')) {
+  if (config.containsKey('image_dark') && !config.containsKey('color_dark') && !config.containsKey('background_image_dark')) {
     print('Your `flutter_native_splash` section contains `image_dark` but '
         'does not contain a `color_dark` or a `background_image_dark`.');
     exit(1);
