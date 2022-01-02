@@ -4,11 +4,13 @@ part of flutter_native_splash;
 class _AndroidDrawableTemplate {
   final String directoryName;
   final double pixelDensity;
-  _AndroidDrawableTemplate({required this.directoryName, required this.pixelDensity});
+  _AndroidDrawableTemplate(
+      {required this.directoryName, required this.pixelDensity});
 }
 
 @visibleForTesting
-final List<_AndroidDrawableTemplate> androidSplashImages = <_AndroidDrawableTemplate>[
+final List<_AndroidDrawableTemplate> androidSplashImages =
+    <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', pixelDensity: 1),
   _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', pixelDensity: 1.5),
   _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', pixelDensity: 2),
@@ -17,12 +19,18 @@ final List<_AndroidDrawableTemplate> androidSplashImages = <_AndroidDrawableTemp
 ];
 
 @visibleForTesting
-final List<_AndroidDrawableTemplate> androidSplashImagesDark = <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-mdpi', pixelDensity: 1),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-hdpi', pixelDensity: 1.5),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-xhdpi', pixelDensity: 2),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-xxhdpi', pixelDensity: 3),
-  _AndroidDrawableTemplate(directoryName: 'drawable-night-xxxhdpi', pixelDensity: 4),
+final List<_AndroidDrawableTemplate> androidSplashImagesDark =
+    <_AndroidDrawableTemplate>[
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-mdpi', pixelDensity: 1),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-hdpi', pixelDensity: 1.5),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xhdpi', pixelDensity: 2),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xxhdpi', pixelDensity: 3),
+  _AndroidDrawableTemplate(
+      directoryName: 'drawable-night-xxxhdpi', pixelDensity: 4),
 ];
 
 /// Create Android splash screen
@@ -63,7 +71,8 @@ void _createAndroidSplash({
     darkColorString: darkColor,
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
-    darkBackgroundImageDestination: _androidNightDrawableFolder + 'background.png',
+    darkBackgroundImageDestination:
+        _androidNightDrawableFolder + 'background.png',
     backgroundImageDestination: _androidDrawableFolder + 'background.png',
   );
 
@@ -72,7 +81,8 @@ void _createAndroidSplash({
     darkColorString: darkColor,
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
-    darkBackgroundImageDestination: _androidNightV21DrawableFolder + 'background.png',
+    darkBackgroundImageDestination:
+        _androidNightV21DrawableFolder + 'background.png',
     backgroundImageDestination: _androidV21DrawableFolder + 'background.png',
   );
 
@@ -118,10 +128,17 @@ void _createAndroidSplash({
   print('[Android] Updating styles...');
   var sdkVersion = getSdkVersion();
   if (sdkVersion != null && sdkVersion > 30) {
-    _applyStylesXml(fullScreen: fullscreen, file: _androidV31StylesFile, template: _androidV31StylesXml, android12BackgroundColor: color);
+    _applyStylesXml(
+        fullScreen: fullscreen,
+        file: _androidV31StylesFile,
+        template: _androidV31StylesXml,
+        android12BackgroundColor: color);
     if (darkColor != null) {
       _applyStylesXml(
-          fullScreen: fullscreen, file: _androidV31StylesNightFile, template: _androidV31StylesNightXml, android12BackgroundColor: darkColor);
+          fullScreen: fullscreen,
+          file: _androidV31StylesNightFile,
+          template: _androidV31StylesNightXml,
+          android12BackgroundColor: darkColor);
     }
   } else {
     var file = File(_androidV31StylesFile);
@@ -130,16 +147,29 @@ void _createAndroidSplash({
     if (file.existsSync()) file.deleteSync();
   }
 
-  _applyStylesXml(fullScreen: fullscreen, file: _androidStylesFile, template: _androidStylesXml, android12BackgroundColor: null);
+  _applyStylesXml(
+      fullScreen: fullscreen,
+      file: _androidStylesFile,
+      template: _androidStylesXml,
+      android12BackgroundColor: null);
 
   if (darkColor != null || darkBackgroundImage != null) {
-    _applyStylesXml(fullScreen: fullscreen, file: _androidNightStylesFile, template: _androidStylesNightXml, android12BackgroundColor: null);
+    _applyStylesXml(
+        fullScreen: fullscreen,
+        file: _androidNightStylesFile,
+        template: _androidStylesNightXml,
+        android12BackgroundColor: null);
   }
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImageAndroid({required String imagePath, bool dark = false, String fileName = 'splash.png'}) {
-  print('[Android] Creating ' + (dark ? 'dark mode ' : '') + '${fileName.split('.')[0]} images');
+void _applyImageAndroid(
+    {required String imagePath,
+    bool dark = false,
+    String fileName = 'splash.png'}) {
+  print('[Android] Creating ' +
+      (dark ? 'dark mode ' : '') +
+      '${fileName.split('.')[0]} images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
@@ -155,7 +185,10 @@ void _applyImageAndroid({required String imagePath, bool dark = false, String fi
 /// Saves splash screen image to the project
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
-void _saveImageAndroid({required _AndroidDrawableTemplate template, required Image image, required fileName}) {
+void _saveImageAndroid(
+    {required _AndroidDrawableTemplate template,
+    required Image image,
+    required fileName}) {
   //added file name attribute to make this method generic for splash image and branding image.
   var newFile = copyResize(
     image,
@@ -186,31 +219,41 @@ void _applyLaunchBackgroundXml(
   final List<XmlNode> items = layerList!.children;
 
   if (showImage) {
-    var splashItem = XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
+    var splashItem =
+        XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
     splashItem.getElement('bitmap')?.setAttribute('android:gravity', gravity);
     items.add(splashItem);
   }
 
   if (showBranding && gravity != brandingGravity) {
     //add branding when splash image and branding image are not at the same position
-    var brandingItem = XmlDocument.parse(_androidBrandingItemXml).rootElement.copy();
+    var brandingItem =
+        XmlDocument.parse(_androidBrandingItemXml).rootElement.copy();
     if (brandingGravity == 'bottomRight') {
       brandingGravity = 'bottom|right';
     } else if (brandingGravity == 'bottomLeft') {
       brandingGravity = 'bottom|left';
     } else if (brandingGravity != 'bottom') {
-      print('$brandingGravity illegal property defined for the branding mode. Setting back to default.');
+      print(
+          '$brandingGravity illegal property defined for the branding mode. Setting back to default.');
       brandingGravity = 'bottom';
     }
-    brandingItem.getElement('bitmap')?.setAttribute('android:gravity', brandingGravity);
+    brandingItem
+        .getElement('bitmap')
+        ?.setAttribute('android:gravity', brandingGravity);
     items.add(brandingItem);
   }
 
-  launchBackgroundFile.writeAsStringSync(launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
+  launchBackgroundFile.writeAsStringSync(
+      launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
 }
 
 /// Create or update styles.xml full screen mode setting
-void _applyStylesXml({required bool fullScreen, required String file, required String template, required String? android12BackgroundColor}) {
+void _applyStylesXml(
+    {required bool fullScreen,
+    required String file,
+    required String template,
+    required String? android12BackgroundColor}) {
   final stylesFile = File(file);
   print('[Android]    - ' + file);
   if (!stylesFile.existsSync()) {
@@ -220,11 +263,17 @@ void _applyStylesXml({required bool fullScreen, required String file, required S
     stylesFile.writeAsStringSync(template);
   }
 
-  _updateStylesFile(fullScreen: fullScreen, stylesFile: stylesFile, android12BackgroundColor: android12BackgroundColor);
+  _updateStylesFile(
+      fullScreen: fullScreen,
+      stylesFile: stylesFile,
+      android12BackgroundColor: android12BackgroundColor);
 }
 
 /// Updates styles.xml adding full screen property
-Future<void> _updateStylesFile({required bool fullScreen, required File stylesFile, required String? android12BackgroundColor}) async {
+Future<void> _updateStylesFile(
+    {required bool fullScreen,
+    required File stylesFile,
+    required String? android12BackgroundColor}) async {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final resources = stylesDocument.getElement('resources');
   final styles = resources?.findElements('style');
@@ -237,36 +286,53 @@ Future<void> _updateStylesFile({required bool fullScreen, required File stylesFi
 
   XmlElement launchTheme;
   try {
-    launchTheme = styles!
-        .singleWhere((element) => (element.attributes.any((attribute) => attribute.name.toString() == 'name' && attribute.value == 'LaunchTheme')));
+    launchTheme = styles!.singleWhere((element) => (element.attributes.any(
+        (attribute) =>
+            attribute.name.toString() == 'name' &&
+            attribute.value == 'LaunchTheme')));
   } on StateError {
     print('LaunchTheme was not found in styles.xml. Skipping fullscreen'
         'mode');
     return;
   }
 
-  replaceElement(launchTheme: launchTheme, name: 'android:windowFullscreen', value: fullScreen.toString());
+  replaceElement(
+      launchTheme: launchTheme,
+      name: 'android:windowFullscreen',
+      value: fullScreen.toString());
 
   // In Android 12, the color must be set directly in the styles.xml
   if (android12BackgroundColor != null) {
-    replaceElement(launchTheme: launchTheme, name: 'android:windowSplashScreenBackground', value: '#' + android12BackgroundColor);
+    replaceElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenBackground',
+        value: '#' + android12BackgroundColor);
   }
 
-  stylesFile.writeAsStringSync(stylesDocument.toXmlString(pretty: true, indent: '    '));
+  stylesFile.writeAsStringSync(
+      stylesDocument.toXmlString(pretty: true, indent: '    '));
 }
 
-void replaceElement({required XmlElement launchTheme, required String name, required String value}) {
-  launchTheme.children
-      .removeWhere((element) => element.attributes.any((attribute) => attribute.name.toString() == 'name' && attribute.value == name));
+void replaceElement(
+    {required XmlElement launchTheme,
+    required String name,
+    required String value}) {
+  launchTheme.children.removeWhere((element) => element.attributes.any(
+      (attribute) =>
+          attribute.name.toString() == 'name' && attribute.value == name));
 
-  launchTheme.children.add(XmlElement(XmlName('item'), [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
+  launchTheme.children.add(XmlElement(XmlName('item'),
+      [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
 }
 
 int? getSdkVersion() {
   int? sdk;
   try {
     const title = 'compileSdkVersion';
-    File('android/app/build.gradle').readAsStringSync().split('\n').forEach((line) {
+    File('android/app/build.gradle')
+        .readAsStringSync()
+        .split('\n')
+        .forEach((line) {
       if (line.contains(title)) {
         var sdkVersion = line.substring(line.indexOf(title) + title.length);
         sdk = int.tryParse(sdkVersion.trim());
