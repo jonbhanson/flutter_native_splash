@@ -96,7 +96,7 @@ flutter_native_splash:
   # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
   #web_image_mode: center
 
-  # To hide the notification bar, use the fullscreen parameter.  Has no affect in web since web
+  # To hide the notification bar, use the fullscreen parameter.  Has no effect in web since web
   # has no notification bar.  Defaults to false.
   # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.
   #       To show the notification bar, add the following code to your Flutter app:
