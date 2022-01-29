@@ -30,16 +30,15 @@ dependencies:
   flutter:
     sdk: flutter
 
-
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.3
+  flutter_native_splash:
+    path: ..
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_native_splash:
-    path: ..
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -122,8 +121,8 @@ flutter_native_splash:
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
   # and bottomLeft. The default values is bottom if not specified or specified something else.
   #
-  # Make sure this content mode value should not be similar to android_gravity value and ios_content_mode
-  # value.
+  # Make sure this content mode value should not be similar to android_gravity value and
+  # ios_content_mode value.
   branding_mode: bottom
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background

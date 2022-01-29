@@ -1,3 +1,6 @@
+## [2.0.0] - (2022-Jan-29)
+* BREAKING CHANGE: Added `removeAfter` method which allows the native splash to remain until an initialization routine is complete.  In order to use this method, the `flutter_native_splash` dependency must be moved from `dev_dependencies` to `dependencies`.  Thanks [Ahmed](https://github.com/Ahmed-gubara) for the tip.  Closes [#271](https://github.com/jonbhanson/flutter_native_splash/issues/271).
+
 ## [1.3.3] - (2022-Jan-01)
 * Merged PR that adds branding.  Thanks [Faiizii](https://github.com/Faiizii) for PR.  Closes [#256](https://github.com/jonbhanson/flutter_native_splash/issues/256).
 * Updated readme.  Closes [#258](https://github.com/jonbhanson/flutter_native_splash/issues/258).

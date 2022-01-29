@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
-import 'package:test/test.dart';
 
 void main() {
   test('Android splash images list is correct size', () {
