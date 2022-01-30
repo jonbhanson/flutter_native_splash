@@ -1,7 +1,7 @@
 /// ## Flutter Native Splash
 ///
 /// This is the main entry point for the Flutter Native Splash package.
-library flutter_native_splash;
+library flutter_native_splash_cli;
 
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
@@ -105,6 +105,14 @@ void createSplashByConfig(Map<String, dynamic> config) {
   print('');
   print('Native splash complete. 👍');
   print('Now go finish building something awesome! 💪 You rock! 🤘🤩');
+  print('');
+  print('===================================================================');
+  print('**                         WHAT\'S NEW:                           **');
+  print('===================================================================');
+  print('You can now keep the splash screen up while your app initializes!');
+  print('No need for a secondary splash screen anymore. Just use the ');
+  print('removeAfter method to remove the splash screen after your');
+  print('initialization is complete.  Check the docs for more info.');
 }
 
 /// Remove any splash screen by setting the default white splash

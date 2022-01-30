@@ -1,4 +1,4 @@
-part of flutter_native_splash;
+part of flutter_native_splash_cli;
 
 // Android-related templates
 

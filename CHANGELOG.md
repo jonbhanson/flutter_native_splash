@@ -1,4 +1,4 @@
-## [2.0.1] - (2022-Jan-29)
+## [2.0.1+1] - (2022-Jan-29)
 * Provide BuildContext argument to the initialization function.
 
 ## [2.0.0] - (2022-Jan-29)

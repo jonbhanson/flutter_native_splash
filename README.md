@@ -11,7 +11,7 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 # What's New
 
-You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `removeAfter` method to remove the splash screen after your initialization is complete.  See [example below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
+You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `removeAfter` method to remove the splash screen after your initialization is complete.  See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
 
 # Usage
 
@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.1
+  flutter_native_splash: ^2.0.1+1
 ```
 
 Don't forget to `flutter pub get`.
@@ -142,18 +142,18 @@ void main() {
   runApp(const MyApp());
 }
 
-void initialization() async {
+void initialization(BuildContext context) async {
   // This is where you can initialize the resources needed by your app while
   // the splash screen is displayed.  After this function completes, the
   // splash screen will be removed.
 }
 ```
 
-NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions.
+NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions of this package.
 
 ## 4. Support the package (optional)
 If you find this package useful, you can support it for free by giving it a thumbs up at the top of this page.  Here's another option to support the package:
-<center><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></center>
+<p align='center'><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></p>
 
 # Android 12 Support
 

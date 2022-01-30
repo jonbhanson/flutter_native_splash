@@ -1,4 +1,4 @@
-part of flutter_native_splash;
+part of flutter_native_splash_cli;
 
 // Android-related constants
 const String _androidResFolder = 'android/app/src/main/res/';
