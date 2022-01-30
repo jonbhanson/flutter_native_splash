@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.0
+  flutter_native_splash: ^2.0.1
 ```
 
 Don't forget to `flutter pub get`.
@@ -133,7 +133,7 @@ flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 
 ## 3. Set up app initialization (optional)
 
-By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your initializes, you can use the `removeAfter` method in the following manner:
+By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your app initializes, you can use the `removeAfter` method in the following manner:
 
 ```dart
 void main() {
@@ -148,6 +148,12 @@ void initialization() async {
   // splash screen will be removed.
 }
 ```
+
+NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions.
+
+## 4. Support the package (optional)
+If you find this package useful, you can support it for free by giving it a thumbs up at the top of this page.  Here's another option to support the package:
+<center><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></center>
 
 # Android 12 Support
 

@@ -1,3 +1,6 @@
+## [2.0.1] - (2022-Jan-29)
+* Provide BuildContext argument to the initialization function.
+
 ## [2.0.0] - (2022-Jan-29)
 * BREAKING CHANGE: Added `removeAfter` method which allows the native splash to remain until an initialization routine is complete.  In order to use this method, the `flutter_native_splash` dependency must be moved from `dev_dependencies` to `dependencies`.  Thanks [Ahmed](https://github.com/Ahmed-gubara) for the tip.  Closes [#271](https://github.com/jonbhanson/flutter_native_splash/issues/271).
 

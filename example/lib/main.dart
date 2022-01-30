@@ -6,7 +6,7 @@ void main() {
   runApp(const MyApp());
 }
 
-void initialization() async {
+void initialization(BuildContext context) async {
   // This is where you can initialize the resources needed by your app while
   // the splash screen is displayed.  Remove the following example because
   // delaying the user experience is a bad design practice!
