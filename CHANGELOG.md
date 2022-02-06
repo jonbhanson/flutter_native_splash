@@ -1,3 +1,7 @@
+## [2.0.2] - (2022-Feb-07)
+* Update existing styles xml to support Xiaomi/Redmi devices.  Fixes [#285](https://github.com/jonbhanson/flutter_native_splash/issues/285), fixes [#281](https://github.com/jonbhanson/flutter_native_splash/issues/281).
+* Avoid changing logo size on mobile browsers.  Fixes [#276](https://github.com/jonbhanson/flutter_native_splash/issues/276).
+
 ## [2.0.1+1] - (2022-Jan-29)
 * Provide BuildContext argument to the initialization function.
 

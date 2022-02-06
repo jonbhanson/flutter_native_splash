@@ -298,6 +298,11 @@ Future<void> _updateStylesFile(
 
   replaceElement(
       launchTheme: launchTheme,
+      name: 'android:forceDarkAllowed',
+      value: "false");
+
+  replaceElement(
+      launchTheme: launchTheme,
       name: 'android:windowFullscreen',
       value: fullScreen.toString());
 

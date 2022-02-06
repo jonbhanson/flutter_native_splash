@@ -146,31 +146,41 @@ void updateIndex({required String imageMode, required String? imagePath}) {
   var lines = webIndex.readAsLinesSync();
 
   var foundExistingStyleSheet = false;
+  bool foundExistingMetaViewport = false;
   var headCloseTagLine = 0;
   var bodyOpenTagLine = 0;
   var existingPictureLine = 0;
-  var existingBodyLine = 0;
 
   const styleSheetLink =
       '<link rel="stylesheet" type="text/css" href="splash/style.css">';
+  const metaViewport =
+      '<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>';
   for (var x = 0; x < lines.length; x++) {
     var line = lines[x];
 
     if (line.contains(styleSheetLink)) {
       foundExistingStyleSheet = true;
-    } else if (line.contains('</head>')) {
+    }
+    if (line.contains(metaViewport)) {
+      foundExistingMetaViewport = true;
+    }
+
+    if (line.contains('</head>')) {
       headCloseTagLine = x;
     } else if (line.contains('<body')) {
       bodyOpenTagLine = x;
     } else if (line.contains('<picture id="splash">')) {
       existingPictureLine = x;
-    } else if (line.contains('<body>')) {
-      existingBodyLine = x;
     }
   }
 
   if (!foundExistingStyleSheet) {
-    lines[headCloseTagLine] = '  ' + styleSheetLink + '\n</head>';
+    lines[headCloseTagLine] =
+        '  ' + styleSheetLink + '\n' + lines[headCloseTagLine];
+  }
+  if (!foundExistingMetaViewport) {
+    lines[headCloseTagLine] =
+        '  ' + metaViewport + '\n' + lines[headCloseTagLine];
   }
 
   if (existingPictureLine == 0) {
@@ -192,10 +202,6 @@ void updateIndex({required String imageMode, required String? imagePath}) {
       lines.removeRange(
           existingPictureLine, existingPictureLine + _indexHtmlPicture.length);
     }
-  }
-  if (existingBodyLine != 0) {
-    lines[existingBodyLine] =
-        '<body style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">';
   }
   webIndex.writeAsStringSync(lines.join('\n'));
 }

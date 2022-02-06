@@ -15,13 +15,13 @@ You can now keep the splash screen up while your app initializes!  No need for a
 
 # Usage
 
-Would you prefer a video tutorial instead?  Check out <a href="https://www.youtube.com/watch?v=8ME8Czqc-Oc">Johannes Milke's tutorial</a>.
+Would you prefer a video tutorial instead?  Check out <a href="https://www.youtube.com/watch?v=dB0dOnc2k10">Johannes Milke's tutorial</a>.
 
 First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.1+1
+  flutter_native_splash: ^2.0.2
 ```
 
 Don't forget to `flutter pub get`.
@@ -55,7 +55,7 @@ flutter_native_splash:
 
   # This property allows you to specify an image used as branding in the splash screen. It must be
   # a png file. Currently, it is only supported for Android and iOS.
-  branding: assets/dart.png
+  #branding: assets/dart.png
 
   # Specify your branding image for dark mode.
   #branding_dark: assets/dart_dark.png
@@ -65,7 +65,7 @@ flutter_native_splash:
   #
   # Make sure this content mode value should not be similar to android_gravity value and
   # ios_content_mode value.
-  branding_mode: bottom
+  #branding_mode: bottom
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
@@ -136,6 +136,8 @@ flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your app initializes, you can use the `removeAfter` method in the following manner:
 
 ```dart
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 void main() {
   FlutterNativeSplash.removeAfter(initialization);
   // runApp will run, but not be shown until initialization completes:

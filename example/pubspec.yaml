@@ -113,7 +113,7 @@ flutter_native_splash:
 
   # This property allows you to specify an image used as branding in the splash screen. It must be
   # a png file. Currently, it is only supported for Android and iOS.
-  branding: assets/dart.png
+  #branding: assets/dart.png
 
   # Specify your branding image for dark mode.
   #branding_dark: assets/dart_dark.png
@@ -123,7 +123,7 @@ flutter_native_splash:
   #
   # Make sure this content mode value should not be similar to android_gravity value and
   # ios_content_mode value.
-  branding_mode: bottom
+  #branding_mode: bottom
 
   # The color_dark, background_image_dark, and image_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
@@ -147,7 +147,7 @@ flutter_native_splash:
   # https://developer.android.com/reference/android/view/Gravity): bottom, center,
   # center_horizontal, center_vertical, clip_horizontal, clip_vertical, end, fill, fill_horizontal,
   # fill_vertical, left, right, start, or top.
-  android_gravity: center
+  #android_gravity: center
   #
   # ios_content_mode can be one of the following iOS UIView.ContentMode (see
   # https://developer.apple.com/documentation/uikit/uiview/contentmode): scaleToFill,
