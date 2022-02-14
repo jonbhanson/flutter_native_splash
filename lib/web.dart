@@ -38,11 +38,12 @@ void _createWebSplash({
   createBackgroundImages(
       backgroundImage: backgroundImage,
       darkBackgroundImage: darkBackgroundImage);
-  createSplashCss(
+  _createSplashCss(
       color: color,
       darkColor: darkColor,
       darkBackgroundImage: darkBackgroundImage,
       backgroundImage: backgroundImage);
+  _createSplashJs();
   updateIndex(imageMode: imageMode, imagePath: imagePath);
 }
 
@@ -109,7 +110,7 @@ void _saveImageWeb(
   file.writeAsBytesSync(encodePng(newFile));
 }
 
-void createSplashCss(
+void _createSplashCss(
     {required String? color,
     required String? darkColor,
     required String? backgroundImage,
@@ -140,6 +141,12 @@ void createSplashCss(
   file.writeAsStringSync(cssContent);
 }
 
+void _createSplashJs() {
+  var file = File(_webFolder + _webRelativeJSFile);
+  file.createSync(recursive: true);
+  file.writeAsStringSync(_webJS);
+}
+
 void updateIndex({required String imageMode, required String? imagePath}) {
   print('[Web] Updating index.html');
   final webIndex = File(_webIndex);
@@ -147,6 +154,7 @@ void updateIndex({required String imageMode, required String? imagePath}) {
 
   var foundExistingStyleSheet = false;
   bool foundExistingMetaViewport = false;
+  bool foundExistingJs = false;
   var headCloseTagLine = 0;
   var bodyOpenTagLine = 0;
   var existingPictureLine = 0;
@@ -155,6 +163,7 @@ void updateIndex({required String imageMode, required String? imagePath}) {
       '<link rel="stylesheet" type="text/css" href="splash/style.css">';
   const metaViewport =
       '<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>';
+  const jsLink = '<script src="splash/splash.js"></script>';
   for (var x = 0; x < lines.length; x++) {
     var line = lines[x];
 
@@ -163,6 +172,9 @@ void updateIndex({required String imageMode, required String? imagePath}) {
     }
     if (line.contains(metaViewport)) {
       foundExistingMetaViewport = true;
+    }
+    if (line.contains(jsLink)) {
+      foundExistingJs = true;
     }
 
     if (line.contains('</head>')) {
@@ -181,6 +193,10 @@ void updateIndex({required String imageMode, required String? imagePath}) {
   if (!foundExistingMetaViewport) {
     lines[headCloseTagLine] =
         '  ' + metaViewport + '\n' + lines[headCloseTagLine];
+  }
+
+  if (!foundExistingJs) {
+    lines[headCloseTagLine] = '  ' + jsLink + '\n' + lines[headCloseTagLine];
   }
 
   if (existingPictureLine == 0) {

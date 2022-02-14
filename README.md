@@ -11,7 +11,7 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 # What's New
 
-You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `removeAfter` method to remove the splash screen after your initialization is complete.  See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
+You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `preserve` and `remove` methods together to remove the splash screen after your initialization is complete.  See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
 
 # Usage
 
@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.2
+  flutter_native_splash: ^2.0.3
 ```
 
 Don't forget to `flutter pub get`.
@@ -133,23 +133,29 @@ flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 
 ## 3. Set up app initialization (optional)
 
-By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your app initializes, you can use the `removeAfter` method in the following manner:
+By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your app initializes, you can use the `preserve` and `remove` methods together.  The `preserve` makes a call to `WidgetsFlutterBinding.ensureInitialized()` to keep the splash on screen.  Later, when your app in initialized, make a call to `remove` to remove the splash screen.
 
 ```dart
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void main() {
-  FlutterNativeSplash.removeAfter(initialization);
-  // runApp will run, but not be shown until initialization completes:
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
 
-void initialization(BuildContext context) async {
-  // This is where you can initialize the resources needed by your app while
-  // the splash screen is displayed.  After this function completes, the
-  // splash screen will be removed.
+//.....
+
+class _MyHomePageState extends State<MyHomePage> {
+  void _initStuff() async {
+    // This is where you can initialize the resources needed by your app while
+    // the splash screen is displayed.
+    FlutterNativeSplash.remove();
+  }
 }
+
 ```
+
 
 NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions of this package.
 

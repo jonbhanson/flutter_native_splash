@@ -102,17 +102,23 @@ void createSplashByConfig(Map<String, dynamic> config) {
     }
   }
 
-  print('');
-  print('Native splash complete. 👍');
-  print('Now go finish building something awesome! 💪 You rock! 🤘🤩');
-  print('');
-  print('===================================================================');
-  print('**                         WHAT\'S NEW:                           **');
-  print('===================================================================');
-  print('You can now keep the splash screen up while your app initializes!');
-  print('No need for a secondary splash screen anymore. Just use the ');
-  print('removeAfter method to remove the splash screen after your');
-  print('initialization is complete.  Check the docs for more info.');
+  const String _greet = '''
+
+Native splash complete. 👍
+Now go finish building something awesome! 💪 You rock! 🤘🤩
+''';
+
+  const String _whatsNew = '''
+╔════════════════════════════════════════════════════════════════════════════╗
+║                                 WHAT IS NEW:                               ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ You can now keep the splash screen up while your app initializes!          ║
+║ No need for a secondary splash screen anymore. Just use the remove()       ║
+║ method to remove the splash screen after your initialization is complete.  ║
+║ Check the docs for more info.                                              ║
+╚════════════════════════════════════════════════════════════════════════════╝
+''';
+  print(_whatsNew + _greet);
 }
 
 /// Remove any splash screen by setting the default white splash

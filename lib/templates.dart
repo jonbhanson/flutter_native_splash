@@ -436,7 +436,7 @@ const String _iOSBrandingRightBottomConstraints = '''
 
 /// Web related templates
 const String _webCss = '''
-body, html {
+body {
   margin:0;
   height:100%;
   background: [LIGHTBACKGROUNDCOLOR];
@@ -488,3 +488,13 @@ const List<String> _indexHtmlPicture = [
   '    <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.png" />',
   '  </picture>',
 ];
+
+const String _webJS = '''
+function removeSplashFromWeb() {
+  const elem = document.getElementById("splash");
+  if (elem) {
+    elem.remove();
+  }
+  document.body.style.background = "transparent";
+}
+''';

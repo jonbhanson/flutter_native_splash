@@ -41,3 +41,4 @@ const String _webSplashFolder = _webFolder + 'splash/';
 const String _webSplashImagesFolder = _webSplashFolder + 'img/';
 const String _webIndex = _webFolder + 'index.html';
 const String _webRelativeStyleFile = 'splash/style.css';
+const String _webRelativeJSFile = 'splash/splash.js';

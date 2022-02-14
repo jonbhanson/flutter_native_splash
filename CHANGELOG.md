@@ -1,3 +1,7 @@
+## [2.0.3] - (2022-Feb-14)
+* Added preserve() and remove() methods.
+* Remove splash from DOM in web.
+
 ## [2.0.2] - (2022-Feb-07)
 * Update existing styles xml to support Xiaomi/Redmi devices.  Fixes [#285](https://github.com/jonbhanson/flutter_native_splash/issues/285), fixes [#281](https://github.com/jonbhanson/flutter_native_splash/issues/281).
 * Avoid changing logo size on mobile browsers.  Fixes [#276](https://github.com/jonbhanson/flutter_native_splash/issues/276).
