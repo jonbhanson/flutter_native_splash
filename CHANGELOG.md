@@ -1,4 +1,4 @@
-## [2.0.3] - (2022-Feb-14)
+## [2.0.3+1] - (2022-Feb-14)
 * Added preserve() and remove() methods.
 * Remove splash from DOM in web.
 

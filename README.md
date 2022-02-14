@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.3
+  flutter_native_splash: ^2.0.3+1
 ```
 
 Don't forget to `flutter pub get`.
@@ -133,7 +133,7 @@ flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
 
 ## 3. Set up app initialization (optional)
 
-By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your app initializes, you can use the `preserve` and `remove` methods together.  The `preserve` makes a call to `WidgetsFlutterBinding.ensureInitialized()` to keep the splash on screen.  Later, when your app in initialized, make a call to `remove` to remove the splash screen.
+By default, the splash screen will be removed when Flutter has drawn the first frame.  If you would like the splash screen to remain while your app initializes, you can use the `preserve()` and `remove()` methods together.  Pass the `preserve()` method the value returned from `WidgetsFlutterBinding.ensureInitialized()` to keep the splash on screen.  Later, when your app has initialized, make a call to `remove()` to remove the splash screen.
 
 ```dart
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -144,15 +144,8 @@ void main() {
   runApp(const MyApp());
 }
 
-//.....
-
-class _MyHomePageState extends State<MyHomePage> {
-  void _initStuff() async {
-    // This is where you can initialize the resources needed by your app while
-    // the splash screen is displayed.
+// whenever your initialization is completed, remove the splash screen:
     FlutterNativeSplash.remove();
-  }
-}
 
 ```
 
