@@ -8,7 +8,7 @@ library flutter_native_splash;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_native_splash/remove_splash_from_web.dart';
+import 'package:flutter_native_splash/remove_splash.dart';
 
 class FlutterNativeSplash {
   static void removeAfter(Function initializeFunction) {

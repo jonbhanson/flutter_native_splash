@@ -1,3 +1,6 @@
+## [2.0.4] - (2022-Feb-15)
+* Fix Error: Not found: 'dart:js' error.  Fixes [#292](https://github.com/jonbhanson/flutter_native_splash/issues/292).
+
 ## [2.0.3+1] - (2022-Feb-14)
 * Added preserve() and remove() methods.
 * Remove splash from DOM in web.
