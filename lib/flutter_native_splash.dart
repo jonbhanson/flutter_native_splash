@@ -7,10 +7,12 @@
 library flutter_native_splash;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_native_splash/remove_splash.dart';
 
 class FlutterNativeSplash {
+  static const MethodChannel _channel = MethodChannel('flutter_native_splash');
+
   static void removeAfter(Function initializeFunction) {
     final binding = WidgetsFlutterBinding.ensureInitialized();
 
@@ -26,7 +28,7 @@ class FlutterNativeSplash {
       // Closes splash screen, and show the app layout.
       binding.allowFirstFrame();
       if (kIsWeb) {
-        removeSplashFromWeb();
+        remove();
       }
     });
   }
@@ -44,7 +46,7 @@ class FlutterNativeSplash {
     _widgetsBinding = null;
     if (kIsWeb) {
       try {
-        removeSplashFromWeb();
+        _channel.invokeMethod('remove');
       } catch (e) {
         throw Exception(e.toString() +
             '\nDid you forget to run '

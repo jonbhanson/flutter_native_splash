@@ -1,4 +1,4 @@
-package com.example.example;
+package net.jonhanson.flutter_native_splash_example;
 
 import io.flutter.embedding.android.FlutterActivity;
 

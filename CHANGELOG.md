@@ -1,3 +1,5 @@
+## [2.0.5] - (2022-Feb-20)
+* Converted to a plugin since there is now platform specific code.
 ## [2.0.4] - (2022-Feb-15)
 * Fix Error: Not found: 'dart:js' error.  Fixes [#292](https://github.com/jonbhanson/flutter_native_splash/issues/292).
 

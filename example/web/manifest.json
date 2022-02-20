@@ -1,6 +1,6 @@
 {
-    "name": "example",
-    "short_name": "example",
+    "name": "flutter_native_splash_example",
+    "short_name": "flutter_native_splash_example",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

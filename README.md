@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.4
+  flutter_native_splash: ^2.0.5
 ```
 
 Don't forget to `flutter pub get`.
@@ -158,11 +158,11 @@ If you find this package useful, you can support it for free by giving it a thum
 
 # Android 12 Support
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  Currently, this package supports setting the background color and the icon is taken from the launcher icon.
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  This package supports setting the background color and the icon is taken from the launcher icon.
 
-If you [enable Android 12 support](https://developer.android.com/about/versions/12/setup-sdk), the package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will provide Android 12 support while maintaining the legacy splash screen for previous versions of Android.
+The package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will provide Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
-NOTE: The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
+***PLEASE NOTE:*** The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
   
 # FAQs
 ## I got the error "A splash screen was provided to Flutter, but this is deprecated."

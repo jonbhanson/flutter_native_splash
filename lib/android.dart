@@ -126,25 +126,17 @@ void _createAndroidSplash({
   }
 
   print('[Android] Updating styles...');
-  var sdkVersion = getSdkVersion();
-  if (sdkVersion != null && sdkVersion > 30) {
+  _applyStylesXml(
+      fullScreen: fullscreen,
+      file: _androidV31StylesFile,
+      template: _androidV31StylesXml,
+      android12BackgroundColor: color);
+  if (darkColor != null) {
     _applyStylesXml(
         fullScreen: fullscreen,
-        file: _androidV31StylesFile,
-        template: _androidV31StylesXml,
-        android12BackgroundColor: color);
-    if (darkColor != null) {
-      _applyStylesXml(
-          fullScreen: fullscreen,
-          file: _androidV31StylesNightFile,
-          template: _androidV31StylesNightXml,
-          android12BackgroundColor: darkColor);
-    }
-  } else {
-    var file = File(_androidV31StylesFile);
-    if (file.existsSync()) file.deleteSync();
-    file = File(_androidV31StylesNightFile);
-    if (file.existsSync()) file.deleteSync();
+        file: _androidV31StylesNightFile,
+        template: _androidV31StylesNightXml,
+        android12BackgroundColor: darkColor);
   }
 
   _applyStylesXml(
@@ -328,23 +320,4 @@ void replaceElement(
 
   launchTheme.children.add(XmlElement(XmlName('item'),
       [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
-}
-
-int? getSdkVersion() {
-  int? sdk;
-  try {
-    const title = 'compileSdkVersion';
-    File('android/app/build.gradle')
-        .readAsStringSync()
-        .split('\n')
-        .forEach((line) {
-      if (line.contains(title)) {
-        var sdkVersion = line.substring(line.indexOf(title) + title.length);
-        sdk = int.tryParse(sdkVersion.trim());
-      }
-    });
-  } catch (e) {
-    return null;
-  }
-  return sdk;
 }

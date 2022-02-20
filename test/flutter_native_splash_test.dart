@@ -34,7 +34,7 @@ void main() {
       Directory.current = path;
     }
 
-    setUp(() {
+  setUp(() {
       currentDirectory = Directory.current.path;
     });
     tearDown(() {
@@ -51,7 +51,7 @@ flutter_native_splash:
       File('flutter_native_splash.yaml').deleteSync();
       expect(config, isNotNull);
       expect(config!['color'], '#00ff00');
-    });
+  });
     test('default_use_pubspec', () {
       setCurrentDirectory('pubspec_only');
       File('pubspec.yaml').writeAsStringSync('''
@@ -65,6 +65,6 @@ flutter_native_splash:
 
       // fails if config file is missing
       expect(() => getConfig(), throwsException);
-    });
+  });
   });
 }
