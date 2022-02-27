@@ -46,6 +46,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
   String iosContentMode = config['ios_content_mode'] ?? 'center';
   final webImageMode = (config['web_image_mode'] ?? 'center');
 
+  final android12Mode = (config['android_12_mode'] ?? 'use_app_icon');
+
   if (!config.containsKey('android') || config['android']) {
     if (Directory('android').existsSync()) {
       _createAndroidSplash(
@@ -60,6 +62,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
         gravity: gravity,
         brandingGravity: brandingGravity,
         fullscreen: fullscreen,
+        android12Mode: android12Mode,
       );
     } else {
       print('Android folder not found, skipping Android splash update...');
