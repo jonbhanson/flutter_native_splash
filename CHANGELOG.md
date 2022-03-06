@@ -1,3 +1,5 @@
+## [2.1.0] - (2022-Mar-06)
+* Expanded options for Android 12.  Thanks [Jose](https://github.com/JCQuintas) for the [PR](https://github.com/jonbhanson/flutter_native_splash/pull/300) that served as a good starting point.
 ## [2.0.5] - (2022-Feb-20)
 * Converted to a plugin since there is now platform specific code.
 ## [2.0.4] - (2022-Feb-15)

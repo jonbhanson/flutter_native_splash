@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.0.5
+  flutter_native_splash: ^2.1.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -53,21 +53,15 @@ flutter_native_splash:
   # png file and should be sized for 4x pixel density.
   #image: assets/splash.png
 
-  # This property allows you to specify an image used as branding in the splash screen. It must be
-  # a png file. Currently, it is only supported for Android and iOS.
+  # The branding property allows you to specify an image used as branding in the splash screen.
+  # It must be a png file. Currently, it is only supported for Android < v12 and iOS.
   #branding: assets/dart.png
-
-  # Specify your branding image for dark mode.
-  #branding_dark: assets/dart_dark.png
 
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
   # and bottomLeft. The default values is bottom if not specified or specified something else.
-  #
-  # Make sure this content mode value should not be similar to android_gravity value and
-  # ios_content_mode value.
   #branding_mode: bottom
 
-  # The color_dark, background_image_dark, and image_dark are parameters that set the background
+  # The color_dark, background_image_dark, image_dark, branding_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
   # parameters from above. If the image_dark parameter is specified, color_dark or
   # background_image_dark must be specified.  color_dark and background_image_dark cannot both be
@@ -75,19 +69,35 @@ flutter_native_splash:
   #color_dark: "#042a49"
   #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
+  #branding_dark: assets/dart_dark.png
+
+  # Android 12 handles the splash screen differently than previous versions.  Please visit
+  # https://developer.android.com/guide/topics/ui/splash-screen
+  # Following are Android 12 specific parameter.
+  android_12:
+    # The image parameter sets the splash screen icon image.  If this parameter is not specified,
+    # the app's launcher icon will be used instead.
+    # Please note that the splash screen will be clipped to a circle on the center of the screen.
+    # App icon with an icon background: This should be 960×960 pixels, and fit within a circle
+    # 640 pixels in diameter.
+    # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
+    # 768 pixels in diameter.
+    #image: assets/android12splash.png
+
+    # App icon background color.
+    #icon_background_color: "#111111"
+
+    # The image_dark parameter and icon_background_color_dark set the image and icon background
+    # color when the device is in dark mode. If they are not specified, the app will use the
+    # parameters from above.
+    #image_dark: assets/android12splash-invert.png
+    #icon_background_color_dark: "#eeeeee"
 
   # The android, ios and web parameters can be used to disable generating a splash screen on a given
   # platform.
   #android: false
   #ios: false
   #web: false
-
-  # The mode to use for android 12 splash screen. The default behavior is to use the app's icon as
-  # the splash image, but we can customize that so we use the same asset that was provided to the
-  # image/image_dark parameter.
-  # Please note that the splash screen will be clipped to a circle on the center of the screen.
-  # More info https://developer.android.com/guide/topics/ui/splash-screen#splash_screen_dimensions
-  #android_12_mode: 'use_image'
 
   # The position of the splash image can be set with android_gravity, ios_content_mode, and
   # web_image_mode parameters.  All default to center.
@@ -165,9 +175,9 @@ If you find this package useful, you can support it for free by giving it a thum
 
 # Android 12 Support
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  This package supports setting the background color and gives you the options to use the launcher icon or use the provided splash image with the `android_12_mode` configuration option.
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.
 
-The package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will provide Android 12 support while maintaining the legacy splash screen for previous versions of Android.
+The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
 ***PLEASE NOTE:*** The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
   

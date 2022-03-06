@@ -25,28 +25,41 @@ void createSplash({String? path}) {
 
 /// Create splash screens for Android and iOS based on a config argument
 void createSplashByConfig(Map<String, dynamic> config) {
-  var image = _checkImageExists(config: config, parameter: 'image');
-  var darkImage = _checkImageExists(config: config, parameter: 'image_dark');
-  var brandingImage = _checkImageExists(config: config, parameter: 'branding');
-  var brandingDarkImage =
+  final String? image = _checkImageExists(config: config, parameter: 'image');
+  final String? darkImage =
+      _checkImageExists(config: config, parameter: 'image_dark');
+  final String? brandingImage =
+      _checkImageExists(config: config, parameter: 'branding');
+  final String? brandingDarkImage =
       _checkImageExists(config: config, parameter: 'branding_dark');
-  var color = parseColor(config['color']);
-  var darkColor = parseColor(config['color_dark']);
-  var backgroundImage =
+  final String? color = parseColor(config['color']);
+  final String? darkColor = parseColor(config['color_dark']);
+  final String? backgroundImage =
       _checkImageExists(config: config, parameter: 'background_image');
-  var darkBackgroundImage =
+  final String? darkBackgroundImage =
       _checkImageExists(config: config, parameter: 'background_image_dark');
-  var plistFiles = config['info_plist_files'];
-  var gravity = (config['fill'] ?? false) ? 'fill' : 'center';
+  final plistFiles = config['info_plist_files'];
+  String gravity = (config['fill'] ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) gravity = config['android_gravity'];
-
-  var brandingGravity = config['branding_mode'] ?? 'bottom';
-
-  bool fullscreen = config['fullscreen'] ?? false;
-  String iosContentMode = config['ios_content_mode'] ?? 'center';
+  final brandingGravity = config['branding_mode'] ?? 'bottom';
+  final bool fullscreen = config['fullscreen'] ?? false;
+  final String iosContentMode = config['ios_content_mode'] ?? 'center';
   final webImageMode = (config['web_image_mode'] ?? 'center');
-
-  final android12Mode = (config['android_12_mode'] ?? 'use_app_icon');
+  String? android12Image;
+  String? android12DarkImage;
+  String? android12IconBackgroundColor;
+  String? darkAndroid12IconBackgroundColor;
+  if (config['android_12'] != null) {
+    var android12Config = config['android_12'];
+    android12Image =
+        _checkImageExists(config: android12Config, parameter: 'image');
+    android12DarkImage =
+        _checkImageExists(config: android12Config, parameter: 'image_dark');
+    android12IconBackgroundColor =
+        parseColor(android12Config['icon_background_color']);
+    darkAndroid12IconBackgroundColor =
+        parseColor(android12Config['icon_background_color_dark']);
+  }
 
   if (!config.containsKey('android') || config['android']) {
     if (Directory('android').existsSync()) {
@@ -55,6 +68,10 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkImagePath: darkImage,
         brandingImagePath: brandingImage,
         brandingDarkImagePath: brandingDarkImage,
+        android12ImagePath: android12Image,
+        android12DarkImagePath: android12DarkImage,
+        android12IconBackgroundColor: android12IconBackgroundColor,
+        darkAndroid12IconBackgroundColor: darkAndroid12IconBackgroundColor,
         backgroundImage: backgroundImage,
         darkBackgroundImage: darkBackgroundImage,
         color: color,
@@ -62,7 +79,6 @@ void createSplashByConfig(Map<String, dynamic> config) {
         gravity: gravity,
         brandingGravity: brandingGravity,
         fullscreen: fullscreen,
-        android12Mode: android12Mode,
       );
     } else {
       print('Android folder not found, skipping Android splash update...');
@@ -187,9 +203,12 @@ Map<String, dynamic> getConfig({String? configFile}) {
   }
 
   // yamlMap has the type YamlMap, which has several unwanted side effects
-  final config = <String, dynamic>{};
-  for (MapEntry<dynamic, dynamic> entry
-      in yamlMap['flutter_native_splash'].entries) {
+  return _yamlToMap(yamlMap['flutter_native_splash']);
+}
+
+Map<String, dynamic> _yamlToMap(YamlMap yamlMap) {
+  Map<String, dynamic> map = <String, dynamic>{};
+  for (MapEntry<dynamic, dynamic> entry in yamlMap.entries) {
     if (entry.value is YamlList) {
       var list = <String>[];
       for (var value in (entry.value as YamlList)) {
@@ -197,12 +216,14 @@ Map<String, dynamic> getConfig({String? configFile}) {
           list.add(value);
         }
       }
-      config[entry.key] = list;
+      map[entry.key] = list;
+    } else if (entry.value is YamlMap) {
+      map[entry.key] = _yamlToMap(entry.value);
     } else {
-      config[entry.key] = entry.value;
+      map[entry.key] = entry.value;
     }
   }
-  return config;
+  return map;
 }
 
 void _checkConfig(Map<String, dynamic> config) {
@@ -231,6 +252,26 @@ void _checkConfig(Map<String, dynamic> config) {
     print('Your `flutter_native_splash` section contains `image_dark` but '
         'does not contain a `color_dark` or a `background_image_dark`.');
     exit(1);
+  }
+
+  if (config.containsKey('android_12') && config['android_12'] is Map) {
+    Map android12Config = config['android_12'];
+    if (android12Config.containsKey('image_dark') &&
+        !config.containsKey('color_dark') &&
+        !config.containsKey('background_image_dark')) {
+      print('Your `flutter_native_splash` section contains '
+          '`android_12:image_dark` but does not contain a `color_dark` or a '
+          '`background_image_dark`.');
+      exit(1);
+    }
+    if (android12Config.containsKey('image_dark') &&
+        !config.containsKey('color_dark') &&
+        !config.containsKey('icon_background_color_dark')) {
+      print('Your `flutter_native_splash` section contains '
+          '`android_12:icon_background_color_dark` but does not contain a '
+          '`color_dark` or a `background_image_dark`.');
+      exit(1);
+    }
   }
 }
 

@@ -37,16 +37,19 @@ final List<_AndroidDrawableTemplate> androidSplashImagesDark =
 void _createAndroidSplash({
   required String? imagePath,
   required String? darkImagePath,
-  String? brandingImagePath,
-  String? brandingDarkImagePath,
+  required String? android12ImagePath,
+  required String? android12DarkImagePath,
+  required String? brandingImagePath,
+  required String? brandingDarkImagePath,
   required String? color,
   required String? darkColor,
   required String gravity,
-  String brandingGravity = 'bottom',
+  required String brandingGravity,
   required bool fullscreen,
   required String? backgroundImage,
   required String? darkBackgroundImage,
-  required String? android12Mode,
+  required String? android12IconBackgroundColor,
+  required String? darkAndroid12IconBackgroundColor,
 }) {
   if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
@@ -65,6 +68,19 @@ void _createAndroidSplash({
       dark: true,
       fileName: 'branding.png',
     );
+  }
+
+  //create android 12 image if provided.  (otherwise uses launch icon)
+  if (android12ImagePath != null) {
+    _applyImageAndroid(
+        imagePath: android12ImagePath, fileName: 'android12splash.png');
+  }
+
+  if (android12DarkImagePath != null) {
+    _applyImageAndroid(
+        imagePath: android12DarkImagePath,
+        dark: true,
+        fileName: 'android12splash.png');
   }
 
   _createBackground(
@@ -128,30 +144,36 @@ void _createAndroidSplash({
 
   print('[Android] Updating styles...');
   _applyStylesXml(
-      fullScreen: fullscreen,
-      file: _androidV31StylesFile,
-      template: _androidV31StylesXml,
-      android12BackgroundColor: color,
-      android12Mode: android12Mode);
+    fullScreen: fullscreen,
+    file: _androidV31StylesFile,
+    template: _androidV31StylesXml,
+    android12BackgroundColor: color,
+    android12ImagePath: android12ImagePath,
+    android12IconBackgroundColor: android12IconBackgroundColor,
+  );
   if (darkColor != null) {
     _applyStylesXml(
-        fullScreen: fullscreen,
-        file: _androidV31StylesNightFile,
-        template: _androidV31StylesNightXml,
-        android12BackgroundColor: darkColor,
-        android12Mode: android12Mode);
+      fullScreen: fullscreen,
+      file: _androidV31StylesNightFile,
+      template: _androidV31StylesNightXml,
+      android12BackgroundColor: darkColor,
+      android12ImagePath: android12DarkImagePath,
+      android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
+    );
   }
 
   _applyStylesXml(
-      fullScreen: fullscreen,
-      file: _androidStylesFile,
-      template: _androidStylesXml);
+    fullScreen: fullscreen,
+    file: _androidStylesFile,
+    template: _androidStylesXml,
+  );
 
   if (darkColor != null || darkBackgroundImage != null) {
     _applyStylesXml(
-        fullScreen: fullscreen,
-        file: _androidNightStylesFile,
-        template: _androidStylesNightXml);
+      fullScreen: fullscreen,
+      file: _androidNightStylesFile,
+      template: _androidStylesNightXml,
+    );
   }
 }
 
@@ -242,12 +264,14 @@ void _applyLaunchBackgroundXml(
 }
 
 /// Create or update styles.xml full screen mode setting
-void _applyStylesXml(
-    {required bool fullScreen,
-    required String file,
-    required String template,
-    String? android12BackgroundColor,
-    String? android12Mode}) {
+void _applyStylesXml({
+  required bool fullScreen,
+  required String file,
+  required String template,
+  String? android12BackgroundColor,
+  String? android12ImagePath,
+  String? android12IconBackgroundColor,
+}) {
   final stylesFile = File(file);
   print('[Android]    - ' + file);
   if (!stylesFile.existsSync()) {
@@ -258,18 +282,22 @@ void _applyStylesXml(
   }
 
   _updateStylesFile(
-      fullScreen: fullScreen,
-      stylesFile: stylesFile,
-      android12BackgroundColor: android12BackgroundColor,
-      android12Mode: android12Mode);
+    fullScreen: fullScreen,
+    stylesFile: stylesFile,
+    android12BackgroundColor: android12BackgroundColor,
+    android12ImagePath: android12ImagePath,
+    android12IconBackgroundColor: android12IconBackgroundColor,
+  );
 }
 
 /// Updates styles.xml adding full screen property
-Future<void> _updateStylesFile(
-    {required bool fullScreen,
-    required File stylesFile,
-    required String? android12BackgroundColor,
-    required String? android12Mode}) async {
+Future<void> _updateStylesFile({
+  required bool fullScreen,
+  required File stylesFile,
+  required String? android12BackgroundColor,
+  required String? android12ImagePath,
+  required String? android12IconBackgroundColor,
+}) async {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final resources = stylesDocument.getElement('resources');
   final styles = resources?.findElements('style');
@@ -310,11 +338,18 @@ Future<void> _updateStylesFile(
         value: '#' + android12BackgroundColor);
   }
 
-  if (android12Mode == 'use_image') {
+  if (android12ImagePath != null) {
     replaceElement(
         launchTheme: launchTheme,
         name: 'android:windowSplashScreenAnimatedIcon',
-        value: '@drawable/splash');
+        value: '@drawable/android12splash');
+  }
+
+  if (android12IconBackgroundColor != null) {
+    replaceElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenIconBackgroundColor',
+        value: '#' + android12IconBackgroundColor);
   }
 
   stylesFile.writeAsStringSync(
