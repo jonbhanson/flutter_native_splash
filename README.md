@@ -82,6 +82,13 @@ flutter_native_splash:
   #ios: false
   #web: false
 
+  # The mode to use for android 12 splash screen. The default behavior is to use the app's icon as
+  # the splash image, but we can customize that so we use the same asset that was provided to the
+  # image/image_dark parameter.
+  # Please note that the splash screen will be clipped to a circle on the center of the screen.
+  # More info https://developer.android.com/guide/topics/ui/splash-screen#splash_screen_dimensions
+  #android_12_mode: 'use_image'
+
   # The position of the splash image can be set with android_gravity, ios_content_mode, and
   # web_image_mode parameters.  All default to center.
   #
@@ -158,7 +165,7 @@ If you find this package useful, you can support it for free by giving it a thum
 
 # Android 12 Support
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  This package supports setting the background color and the icon is taken from the launcher icon.
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  This package supports setting the background color and gives you the options to use the launcher icon or use the provided splash image with the `android_12_mode` configuration option.
 
 The package will add a `styles.xml` in `values-v31` and `values-night-v31` resource folders, which will provide Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 

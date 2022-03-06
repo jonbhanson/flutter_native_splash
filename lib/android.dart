@@ -46,6 +46,7 @@ void _createAndroidSplash({
   required bool fullscreen,
   required String? backgroundImage,
   required String? darkBackgroundImage,
+  required String? android12Mode,
 }) {
   if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
@@ -130,27 +131,27 @@ void _createAndroidSplash({
       fullScreen: fullscreen,
       file: _androidV31StylesFile,
       template: _androidV31StylesXml,
-      android12BackgroundColor: color);
+      android12BackgroundColor: color,
+      android12Mode: android12Mode);
   if (darkColor != null) {
     _applyStylesXml(
         fullScreen: fullscreen,
         file: _androidV31StylesNightFile,
         template: _androidV31StylesNightXml,
-        android12BackgroundColor: darkColor);
+        android12BackgroundColor: darkColor,
+        android12Mode: android12Mode);
   }
 
   _applyStylesXml(
       fullScreen: fullscreen,
       file: _androidStylesFile,
-      template: _androidStylesXml,
-      android12BackgroundColor: null);
+      template: _androidStylesXml);
 
   if (darkColor != null || darkBackgroundImage != null) {
     _applyStylesXml(
         fullScreen: fullscreen,
         file: _androidNightStylesFile,
-        template: _androidStylesNightXml,
-        android12BackgroundColor: null);
+        template: _androidStylesNightXml);
   }
 }
 
@@ -245,7 +246,8 @@ void _applyStylesXml(
     {required bool fullScreen,
     required String file,
     required String template,
-    required String? android12BackgroundColor}) {
+    String? android12BackgroundColor,
+    String? android12Mode}) {
   final stylesFile = File(file);
   print('[Android]    - ' + file);
   if (!stylesFile.existsSync()) {
@@ -258,14 +260,16 @@ void _applyStylesXml(
   _updateStylesFile(
       fullScreen: fullScreen,
       stylesFile: stylesFile,
-      android12BackgroundColor: android12BackgroundColor);
+      android12BackgroundColor: android12BackgroundColor,
+      android12Mode: android12Mode);
 }
 
 /// Updates styles.xml adding full screen property
 Future<void> _updateStylesFile(
     {required bool fullScreen,
     required File stylesFile,
-    required String? android12BackgroundColor}) async {
+    required String? android12BackgroundColor,
+    required String? android12Mode}) async {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final resources = stylesDocument.getElement('resources');
   final styles = resources?.findElements('style');
@@ -304,6 +308,13 @@ Future<void> _updateStylesFile(
         launchTheme: launchTheme,
         name: 'android:windowSplashScreenBackground',
         value: '#' + android12BackgroundColor);
+  }
+
+  if (android12Mode == 'use_image') {
+    replaceElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenAnimatedIcon',
+        value: '@drawable/splash');
   }
 
   stylesFile.writeAsStringSync(
