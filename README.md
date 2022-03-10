@@ -27,7 +27,7 @@ dependencies:
 Don't forget to `flutter pub get`.
 
 ## 1. Setting the splash screen
-Customized the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.
+Customize the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.
 
 ```yaml
 flutter_native_splash:
