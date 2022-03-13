@@ -483,7 +483,7 @@ body {
 
 const List<String> _indexHtmlPicture = [
   '  <picture id="splash">',
-  '    <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light) or (prefers-color-scheme: no-preference)">',
+  '    <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light)">',
   '    <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">',
   '    <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.png" />',
   '  </picture>',
