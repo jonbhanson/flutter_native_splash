@@ -359,10 +359,6 @@ Future<void> _updateStylesFile({
         launchTheme: launchTheme,
         name: 'android:windowSplashScreenBrandingImage',
         value: '@drawable/branding');
-  } else {
-    removeElement(
-        launchTheme: launchTheme,
-        name: 'android:windowSplashScreenBrandingImage');
   }
 
   if (android12ImagePath != null) {
