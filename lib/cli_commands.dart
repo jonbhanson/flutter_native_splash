@@ -224,6 +224,11 @@ Map<String, dynamic> getConfig({String? configFile}) {
     filePath = 'pubspec.yaml';
   }
 
+  if (!File(filePath).existsSync()) {
+    print('The config file `$filePath` was not found.');
+    exit(1);
+  }
+
   final Map yamlMap = loadYaml(File(filePath).readAsStringSync());
 
   if (yamlMap['flutter_native_splash'] is! Map) {
