@@ -35,6 +35,7 @@ final List<_AndroidDrawableTemplate> androidSplashImagesDark =
 
 /// Create Android splash screen
 void _createAndroidSplash({
+  required String? flavor,
   required String? imagePath,
   required String? darkImagePath,
   required String? android12ImagePath,
@@ -54,6 +55,7 @@ void _createAndroidSplash({
   if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
   }
+
   if (darkImagePath != null) {
     _applyImageAndroid(imagePath: darkImagePath, dark: true);
   }
@@ -89,8 +91,9 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _androidNightDrawableFolder + 'background.png',
-    backgroundImageDestination: _androidDrawableFolder + 'background.png',
+        flavorHelper.androidNightDrawableFolder + 'background.png',
+    backgroundImageDestination:
+        flavorHelper.androidDrawableFolder + 'background.png',
   );
 
   _createBackground(
@@ -99,15 +102,16 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _androidNightV21DrawableFolder + 'background.png',
-    backgroundImageDestination: _androidV21DrawableFolder + 'background.png',
+        flavorHelper.androidNightV21DrawableFolder + 'background.png',
+    backgroundImageDestination:
+        flavorHelper.androidV21DrawableFolder + 'background.png',
   );
 
   print('[Android] Updating launch background(s) with splash image path...');
 
   _applyLaunchBackgroundXml(
     gravity: gravity,
-    launchBackgroundFilePath: _androidLaunchBackgroundFile,
+    launchBackgroundFilePath: flavorHelper.androidLaunchBackgroundFile,
     showImage: imagePath != null,
     showBranding: brandingImagePath != null,
     brandingGravity: brandingGravity,
@@ -116,17 +120,17 @@ void _createAndroidSplash({
   if (darkColor != null || darkBackgroundImage != null) {
     _applyLaunchBackgroundXml(
       gravity: gravity,
-      launchBackgroundFilePath: _androidLaunchDarkBackgroundFile,
+      launchBackgroundFilePath: flavorHelper.androidLaunchDarkBackgroundFile,
       showImage: imagePath != null,
       showBranding: brandingImagePath != null,
       brandingGravity: brandingGravity,
     );
   }
 
-  if (Directory(_androidV21DrawableFolder).existsSync()) {
+  if (Directory(flavorHelper.androidV21DrawableFolder).existsSync()) {
     _applyLaunchBackgroundXml(
       gravity: gravity,
-      launchBackgroundFilePath: _androidV21LaunchBackgroundFile,
+      launchBackgroundFilePath: flavorHelper.androidV21LaunchBackgroundFile,
       showImage: imagePath != null,
       showBranding: brandingImagePath != null,
       brandingGravity: brandingGravity,
@@ -134,7 +138,8 @@ void _createAndroidSplash({
     if (darkColor != null || darkBackgroundImage != null) {
       _applyLaunchBackgroundXml(
         gravity: gravity,
-        launchBackgroundFilePath: _androidV21LaunchDarkBackgroundFile,
+        launchBackgroundFilePath:
+            flavorHelper.androidV21LaunchDarkBackgroundFile,
         showImage: imagePath != null,
         showBranding: brandingImagePath != null,
         brandingGravity: brandingGravity,
@@ -145,7 +150,7 @@ void _createAndroidSplash({
   print('[Android] Updating styles...');
   _applyStylesXml(
     fullScreen: fullscreen,
-    file: _androidV31StylesFile,
+    file: flavorHelper.androidV31StylesFile,
     template: _androidV31StylesXml,
     android12BackgroundColor: color,
     android12ImagePath: android12ImagePath,
@@ -156,7 +161,7 @@ void _createAndroidSplash({
   if (darkColor != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
-      file: _androidV31StylesNightFile,
+      file: flavorHelper.androidV31StylesNightFile,
       template: _androidV31StylesNightXml,
       android12BackgroundColor: darkColor,
       android12ImagePath: android12DarkImagePath,
@@ -167,26 +172,26 @@ void _createAndroidSplash({
 
   _applyStylesXml(
     fullScreen: fullscreen,
-    file: _androidStylesFile,
+    file: flavorHelper.androidStylesFile,
     template: _androidStylesXml,
   );
 
   if (darkColor != null || darkBackgroundImage != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
-      file: _androidNightStylesFile,
+      file: flavorHelper.androidNightStylesFile,
       template: _androidStylesNightXml,
     );
   }
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImageAndroid(
-    {required String imagePath,
-    bool dark = false,
-    String fileName = 'splash.png'}) {
-  print('[Android] Creating ' +
-      (dark ? 'dark mode ' : '') +
+void _applyImageAndroid({
+  required String imagePath,
+  bool dark = false,
+  String fileName = 'splash.png',
+}) {
+  print('[Android] Creating ${dark ? 'dark mode ' : ''}'
       '${fileName.split('.')[0]} images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
@@ -203,10 +208,11 @@ void _applyImageAndroid(
 /// Saves splash screen image to the project
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
-void _saveImageAndroid(
-    {required _AndroidDrawableTemplate template,
-    required Image image,
-    required fileName}) {
+void _saveImageAndroid({
+  required _AndroidDrawableTemplate template,
+  required Image image,
+  required fileName,
+}) {
   //added file name attribute to make this method generic for splash image and branding image.
   var newFile = copyResize(
     image,
@@ -215,7 +221,12 @@ void _saveImageAndroid(
     interpolation: Interpolation.linear,
   );
 
-  var file = File('$_androidResFolder${template.directoryName}/$fileName');
+  // Whne the flavor value is not specified we will place all the data inside the main directory.
+  // However if the flavor value is specified, we need to place the data in the correct directory.
+  // Default: android/app/src/main/res/
+  // With a flavor: android/app/src/[flavor name]/res/
+  var file = File(
+      '${flavorHelper.androidResFolder}${template.directoryName}/$fileName');
   // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));

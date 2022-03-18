@@ -1,28 +1,28 @@
 part of flutter_native_splash_cli;
 
 // Android-related constants
-const String _androidResFolder = 'android/app/src/main/res/';
-const String _androidDrawableFolder = _androidResFolder + 'drawable/';
-const String _androidNightDrawableFolder =
-    _androidResFolder + 'drawable-night/';
-const String _androidLaunchBackgroundFile =
-    _androidDrawableFolder + 'launch_background.xml';
-const String _androidLaunchDarkBackgroundFile =
-    _androidNightDrawableFolder + 'launch_background.xml';
-const String _androidStylesFile = _androidResFolder + 'values/styles.xml';
-const String _androidNightStylesFile =
-    _androidResFolder + 'values-night/styles.xml';
-const String _androidV31StylesFile =
-    _androidResFolder + 'values-v31/styles.xml';
-const String _androidV31StylesNightFile =
-    _androidResFolder + 'values-night-v31/styles.xml';
-const String _androidV21DrawableFolder = _androidResFolder + 'drawable-v21/';
-const String _androidV21LaunchBackgroundFile =
-    _androidV21DrawableFolder + 'launch_background.xml';
-const String _androidNightV21DrawableFolder =
-    _androidResFolder + 'drawable-night-v21/';
-const String _androidV21LaunchDarkBackgroundFile =
-    _androidNightV21DrawableFolder + 'launch_background.xml';
+// const String _androidResFolder = 'android/app/src/main/res/';
+// const String _androidDrawableFolder = _androidResFolder + 'drawable/';
+// const String _androidNightDrawableFolder =
+//     _androidResFolder + 'drawable-night/';
+// const String _androidLaunchBackgroundFile =
+//     _androidDrawableFolder + 'launch_background.xml';
+// const String _androidLaunchDarkBackgroundFile =
+//     _androidNightDrawableFolder + 'launch_background.xml';
+// const String _androidStylesFile = _androidResFolder + 'values/styles.xml';
+// const String _androidNightStylesFile =
+//     _androidResFolder + 'values-night/styles.xml';
+// const String _androidV31StylesFile =
+//     _androidResFolder + 'values-v31/styles.xml';
+// const String _androidV31StylesNightFile =
+//     _androidResFolder + 'values-night-v31/styles.xml';
+// const String _androidV21DrawableFolder = _androidResFolder + 'drawable-v21/';
+// const String _androidV21LaunchBackgroundFile =
+//     _androidV21DrawableFolder + 'launch_background.xml';
+// const String _androidNightV21DrawableFolder =
+//     _androidResFolder + 'drawable-night-v21/';
+// const String _androidV21LaunchDarkBackgroundFile =
+//     _androidNightV21DrawableFolder + 'launch_background.xml';
 
 // iOS-related constants
 const String _iOSAssetsLaunchImageFolder =

@@ -3,6 +3,7 @@
 /// This is the main entry point for the Flutter Native Splash package.
 library flutter_native_splash_cli;
 
+import 'package:flutter_native_splash/flavor_helper.dart';
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
@@ -16,15 +17,32 @@ part 'ios.dart';
 part 'templates.dart';
 part 'web.dart';
 
+late FlavorHelper flavorHelper;
+
 /// Create splash screens for Android and iOS
-void createSplash({String? path}) {
+void createSplash({String? path, String? flavor}) {
+  if (flavor != null) {
+    print('''
+╔════════════════════════════════════════════════════════════════════════════╗
+║                              Flavor detected!                              ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Setting up the $flavor flavor.
+╚════════════════════════════════════════════════════════════════════════════╝
+''');
+  }
+
+  // It is important that the flavor setup occurs as soon as possible.
+  // So before we generate anything, we need to setup the flavor (even if it's the default one).
+  flavorHelper = FlavorHelper(flavor);
+
   var config = getConfig(configFile: path);
   _checkConfig(config);
-  createSplashByConfig(config);
+  createSplashByConfig(config, flavor: flavor);
 }
 
 /// Create splash screens for Android and iOS based on a config argument
-void createSplashByConfig(Map<String, dynamic> config) {
+void createSplashByConfig(Map<String, dynamic> config, {String? flavor}) {
+  // Preparing all the data for later usage
   final String? image = _checkImageExists(config: config, parameter: 'image');
   final String? darkImage =
       _checkImageExists(config: config, parameter: 'image_dark');
@@ -49,6 +67,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
   String? android12DarkImage;
   String? android12IconBackgroundColor;
   String? darkAndroid12IconBackgroundColor;
+
   if (config['android_12'] != null) {
     var android12Config = config['android_12'];
     android12Image =
@@ -64,6 +83,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
   if (!config.containsKey('android') || config['android']) {
     if (Directory('android').existsSync()) {
       _createAndroidSplash(
+        flavor: flavor,
         imagePath: image,
         darkImagePath: darkImage,
         brandingImagePath: brandingImage,
@@ -149,20 +169,28 @@ void removeSplash({String? path}) {
     'color': '#ffffff',
     'color_dark': '#000000'
   };
+
   if (config.containsKey('android')) {
     removeConfig['android'] = config['android'];
   }
+
   if (config.containsKey('ios')) {
     removeConfig['ios'] = config['ios'];
   }
+
   if (config.containsKey('web')) {
     removeConfig['web'] = config['web'];
   }
+
   createSplashByConfig(removeConfig);
 }
 
-String? _checkImageExists(
-    {required Map<String, dynamic> config, required String parameter}) {
+/// Checks if the image that was specified in the config file does exist.
+/// If not the developer will receive an error message and the process will exit.
+String? _checkImageExists({
+  required Map<String, dynamic> config,
+  required String parameter,
+}) {
   String image = config[parameter] ?? '';
   if (image.isNotEmpty && !File(image).existsSync()) {
     print('The file "$image" set as the parameter "$parameter" was not found.');
@@ -170,8 +198,7 @@ String? _checkImageExists(
   }
 
   if (image.isNotEmpty && p.extension(image).toLowerCase() != '.png') {
-    print('Unsupported file format: ' +
-        image +
+    print('Unsupported file format: $image'
         '  Your image must be a PNG file.');
     exit(1);
   }
@@ -189,6 +216,8 @@ Map<String, dynamic> getConfig({String? configFile}) {
       print('The config file `$configFile` was not found.');
       exit(1);
     }
+  } else if (flavorHelper.flavor != null) {
+    filePath = 'flutter_native_splash-${flavorHelper.flavor}.yaml';
   } else if (File('flutter_native_splash.yaml').existsSync()) {
     filePath = 'flutter_native_splash.yaml';
   } else {
@@ -226,6 +255,8 @@ Map<String, dynamic> _yamlToMap(YamlMap yamlMap) {
   return map;
 }
 
+/// Validates if the mix and match of different setup values are not conflicting with each other.
+/// If they do, the developer will get a message where the issue is.
 void _checkConfig(Map<String, dynamic> config) {
   if (config.containsKey('color') && config.containsKey('background_image')) {
     print('Your `flutter_native_splash` section cannot not contain both a '
