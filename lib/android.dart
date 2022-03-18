@@ -150,7 +150,9 @@ void _createAndroidSplash({
     android12BackgroundColor: color,
     android12ImagePath: android12ImagePath,
     android12IconBackgroundColor: android12IconBackgroundColor,
+    android12BrandingImagePath: brandingImagePath,
   );
+
   if (darkColor != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
@@ -159,6 +161,7 @@ void _createAndroidSplash({
       android12BackgroundColor: darkColor,
       android12ImagePath: android12DarkImagePath,
       android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
+      android12BrandingImageDarkPath: brandingDarkImagePath,
     );
   }
 
@@ -271,6 +274,8 @@ void _applyStylesXml({
   String? android12BackgroundColor,
   String? android12ImagePath,
   String? android12IconBackgroundColor,
+  String? android12BrandingImagePath,
+  String? android12BrandingImageDarkPath,
 }) {
   final stylesFile = File(file);
   print('[Android]    - ' + file);
@@ -287,6 +292,8 @@ void _applyStylesXml({
     android12BackgroundColor: android12BackgroundColor,
     android12ImagePath: android12ImagePath,
     android12IconBackgroundColor: android12IconBackgroundColor,
+    android12BrandingImagePath: android12BrandingImagePath,
+    android12BrandingImageDarkPath: android12BrandingImageDarkPath,
   );
 }
 
@@ -297,6 +304,8 @@ Future<void> _updateStylesFile({
   required String? android12BackgroundColor,
   required String? android12ImagePath,
   required String? android12IconBackgroundColor,
+  required String? android12BrandingImagePath,
+  required String? android12BrandingImageDarkPath,
 }) async {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final resources = stylesDocument.getElement('resources');
@@ -338,6 +347,24 @@ Future<void> _updateStylesFile({
         value: '#' + android12BackgroundColor);
   }
 
+  if (android12BrandingImagePath != null) {
+    replaceElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenBrandingImage',
+        value: '@drawable/branding');
+  }
+
+  if (android12BrandingImageDarkPath != null) {
+    replaceElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenBrandingImage',
+        value: '@drawable/branding');
+  } else {
+    removeElement(
+        launchTheme: launchTheme,
+        name: 'android:windowSplashScreenBrandingImage');
+  }
+
   if (android12ImagePath != null) {
     replaceElement(
         launchTheme: launchTheme,
@@ -356,14 +383,24 @@ Future<void> _updateStylesFile({
       stylesDocument.toXmlString(pretty: true, indent: '    '));
 }
 
-void replaceElement(
-    {required XmlElement launchTheme,
-    required String name,
-    required String value}) {
+void replaceElement({
+  required XmlElement launchTheme,
+  required String name,
+  required String value,
+}) {
   launchTheme.children.removeWhere((element) => element.attributes.any(
       (attribute) =>
           attribute.name.toString() == 'name' && attribute.value == name));
 
   launchTheme.children.add(XmlElement(XmlName('item'),
       [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
+}
+
+void removeElement({required XmlElement launchTheme, required String name}) {
+  launchTheme.children.removeWhere(
+    (element) => element.attributes.any(
+      (attribute) =>
+          attribute.name.toString() == 'name' && attribute.value == name,
+    ),
+  );
 }
