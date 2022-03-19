@@ -3,7 +3,6 @@
 /// This is the main entry point for the Flutter Native Splash package.
 library flutter_native_splash_cli;
 
-import 'package:flutter_native_splash/flavor_helper.dart';
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
@@ -16,6 +15,7 @@ part 'constants.dart';
 part 'ios.dart';
 part 'templates.dart';
 part 'web.dart';
+part 'flavor_helper.dart';
 
 late FlavorHelper flavorHelper;
 
@@ -37,11 +37,11 @@ void createSplash({String? path, String? flavor}) {
 
   var config = getConfig(configFile: path);
   _checkConfig(config);
-  createSplashByConfig(config, flavor: flavor);
+  createSplashByConfig(config);
 }
 
 /// Create splash screens for Android and iOS based on a config argument
-void createSplashByConfig(Map<String, dynamic> config, {String? flavor}) {
+void createSplashByConfig(Map<String, dynamic> config) {
   // Preparing all the data for later usage
   final String? image = _checkImageExists(config: config, parameter: 'image');
   final String? darkImage =
@@ -83,7 +83,6 @@ void createSplashByConfig(Map<String, dynamic> config, {String? flavor}) {
   if (!config.containsKey('android') || config['android']) {
     if (Directory('android').existsSync()) {
       _createAndroidSplash(
-        flavor: flavor,
         imagePath: image,
         darkImagePath: darkImage,
         brandingImagePath: brandingImage,

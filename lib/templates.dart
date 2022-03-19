@@ -124,7 +124,7 @@ const String _iOSLaunchScreenStoryboardContent = '''
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="LaunchImage" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="[LAUNCH_IMAGE_PLACEHOLDER]" translatesAutoresizingMaskIntoConstraints="NO" id="YRO-k0-Ey4">
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -140,7 +140,7 @@ const String _iOSLaunchScreenStoryboardContent = '''
         </scene>
     </scenes>
     <resources>
-        <image name="LaunchImage" width="168" height="185"/>
+        <image name="[LAUNCH_IMAGE_PLACEHOLDER]" width="168" height="185"/>
     </resources>
 </document>
 ''';
@@ -395,10 +395,10 @@ const String _iOSLaunchBackgroundDarkJson = '''
 ''';
 
 const String _iOSLaunchBackgroundSubview =
-    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="LaunchBackground" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI" />';
+    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="[LAUNCH_BACKGROUND_PLACEHOLDER]" translatesAutoresizingMaskIntoConstraints="NO" id="tWc-Dq-wcI" />';
 
 const String _iOSBrandingSubview =
-    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="BrandingImage" translatesAutoresizingMaskIntoConstraints="NO" id="Uyq-Kz-ftE" />';
+    '<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" image="[BRANDING_IMAGE_PLACEHOLDER]" translatesAutoresizingMaskIntoConstraints="NO" id="Uyq-Kz-ftE" />';
 
 const String _iOSLaunchBackgroundConstraints = '''
 <constraints>

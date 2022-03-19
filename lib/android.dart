@@ -35,7 +35,6 @@ final List<_AndroidDrawableTemplate> androidSplashImagesDark =
 
 /// Create Android splash screen
 void _createAndroidSplash({
-  required String? flavor,
   required String? imagePath,
   required String? darkImagePath,
   required String? android12ImagePath,
