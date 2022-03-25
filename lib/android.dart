@@ -161,7 +161,7 @@ void _createAndroidSplash({
       android12BackgroundColor: darkColor,
       android12ImagePath: android12DarkImagePath,
       android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
-      android12BrandingImageDarkPath: brandingDarkImagePath,
+      android12BrandingImagePath: brandingDarkImagePath,
     );
   }
 
@@ -275,7 +275,6 @@ void _applyStylesXml({
   String? android12ImagePath,
   String? android12IconBackgroundColor,
   String? android12BrandingImagePath,
-  String? android12BrandingImageDarkPath,
 }) {
   final stylesFile = File(file);
   print('[Android]    - ' + file);
@@ -293,7 +292,6 @@ void _applyStylesXml({
     android12ImagePath: android12ImagePath,
     android12IconBackgroundColor: android12IconBackgroundColor,
     android12BrandingImagePath: android12BrandingImagePath,
-    android12BrandingImageDarkPath: android12BrandingImageDarkPath,
   );
 }
 
@@ -305,7 +303,6 @@ Future<void> _updateStylesFile({
   required String? android12ImagePath,
   required String? android12IconBackgroundColor,
   required String? android12BrandingImagePath,
-  required String? android12BrandingImageDarkPath,
 }) async {
   final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
   final resources = stylesDocument.getElement('resources');
@@ -348,13 +345,6 @@ Future<void> _updateStylesFile({
   }
 
   if (android12BrandingImagePath != null) {
-    replaceElement(
-        launchTheme: launchTheme,
-        name: 'android:windowSplashScreenBrandingImage',
-        value: '@drawable/branding');
-  }
-
-  if (android12BrandingImageDarkPath != null) {
     replaceElement(
         launchTheme: launchTheme,
         name: 'android:windowSplashScreenBrandingImage',
