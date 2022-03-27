@@ -85,7 +85,9 @@ void _createiOSSplash({
         list: iOSBrandingImages,
         targetPath: _iOSAssetsBrandingImageFolder);
   } else {
-    Directory(_iOSAssetsBrandingImageFolder).delete(recursive: true);
+    if (Directory(_iOSAssetsBrandingImageFolder).existsSync()) {
+      Directory(_iOSAssetsBrandingImageFolder).delete(recursive: true);
+    }
   }
   if (brandingDarkImagePath != null) {
     _applyImageiOS(
