@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.1.1
+  flutter_native_splash: ^2.1.2
 ```
 
 Don't forget to `flutter pub get`.
@@ -175,7 +175,7 @@ If you find this package useful, you can support it for free by giving it a thum
 
 # Android 12 Support
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  Note that a background image is not supported.
 
 The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
@@ -184,7 +184,7 @@ The package provides Android 12 support while maintaining the legacy splash scre
 # FAQs
 ## I got the error "A splash screen was provided to Flutter, but this is deprecated."
 
-This message is not related to this package but is related to a [change](https://flutter.dev/docs/development/ui/advanced/splash-screen#migrating-from-manifest--activity-defined-custom-splash-screens) in how Flutter handles splash screens in Flutter 2.5.  It is caused by having the following code in your `AndroidManifest.xml`, which was included by default in previous versions of Flutter:
+This message is not related to this package but is related to a [change](https://flutter.dev/docs/development/ui/advanced/splash-screen#migrating-from-manifest--activity-defined-custom-splash-screens) in how Flutter handles splash screens in Flutter 2.5.  It is caused by having the following code in your `android/app/src/main/AndroidManifest.xml`, which was included by default in previous versions of Flutter:
 
 ```xml
 <meta-data

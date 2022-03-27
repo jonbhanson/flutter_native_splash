@@ -381,12 +381,3 @@ void replaceElement({
   launchTheme.children.add(XmlElement(XmlName('item'),
       [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
 }
-
-void removeElement({required XmlElement launchTheme, required String name}) {
-  launchTheme.children.removeWhere(
-    (element) => element.attributes.any(
-      (attribute) =>
-          attribute.name.toString() == 'name' && attribute.value == name,
-    ),
-  );
-}

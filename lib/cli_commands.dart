@@ -254,6 +254,12 @@ void _checkConfig(Map<String, dynamic> config) {
     exit(1);
   }
 
+  if (config.containsKey('branding_dark') && !config.containsKey('branding')) {
+    print('Your `flutter_native_splash` section contains `branding_dark` but '
+        'does not contain a `branding`.');
+    exit(1);
+  }
+
   if (config.containsKey('android_12') && config['android_12'] is Map) {
     Map android12Config = config['android_12'];
     if (android12Config.containsKey('image_dark') &&

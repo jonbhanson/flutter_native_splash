@@ -85,10 +85,7 @@ void _createiOSSplash({
         list: iOSBrandingImages,
         targetPath: _iOSAssetsBrandingImageFolder);
   } else {
-    for (var template in iOSBrandingImages) {
-      final file = File(_iOSAssetsBrandingImageFolder + template.fileName);
-      if (file.existsSync()) file.deleteSync();
-    }
+    Directory(_iOSAssetsBrandingImageFolder).delete(recursive: true);
   }
   if (brandingDarkImagePath != null) {
     _applyImageiOS(
@@ -108,11 +105,14 @@ void _createiOSSplash({
   launchImageFile.writeAsStringSync(
       darkImagePath != null ? _iOSContentsJsonDark : _iOSContentsJson);
 
-  var brandingImageFile = File(_iOSAssetsBrandingImageFolder + 'Contents.json');
-  brandingImageFile.createSync(recursive: true);
-  brandingImageFile.writeAsStringSync(brandingDarkImagePath != null
-      ? _iOSBrandingContentsJsonDark
-      : _iOSBrandingContentsJson);
+  if (brandingImagePath != null) {
+    var brandingImageFile =
+        File(_iOSAssetsBrandingImageFolder + 'Contents.json');
+    brandingImageFile.createSync(recursive: true);
+    brandingImageFile.writeAsStringSync(brandingDarkImagePath != null
+        ? _iOSBrandingContentsJsonDark
+        : _iOSBrandingContentsJson);
+  }
 
   _applyLaunchScreenStoryboard(
       imagePath: imagePath,

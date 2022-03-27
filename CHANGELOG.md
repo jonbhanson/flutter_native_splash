@@ -1,3 +1,5 @@
+## [2.1.2] - (2022-Mar-27)
+* Add branding support in Android 12.  Thanks [Vladimir](https://github.com/vlazdra) for the [PR](https://github.com/jonbhanson/flutter_native_splash/pull/316).  Updated readme.  Closes [#317](https://github.com/jonbhanson/flutter_native_splash/issues/317).  Closes [#318](https://github.com/jonbhanson/flutter_native_splash/issues/318).  Don't create a blank branding imageset.  Fixes [#264](https://github.com/jonbhanson/flutter_native_splash/issues/264).
 ## [2.1.1] - (2022-Mar-13)
 * Fix for pixelated splash image on web.  Fixes [#263](https://github.com/jonbhanson/flutter_native_splash/issues/263).
 ## [2.1.0] - (2022-Mar-06)
