@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.1.2+1
+  flutter_native_splash: ^2.1.3
 ```
 
 Don't forget to `flutter pub get`.
@@ -206,6 +206,9 @@ This is caused by an [iOS splash caching bug](https://stackoverflow.com/question
 ## I see a white screen between splash screen and app
 1. It may be caused by an [iOS splash caching bug](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update), which can be solved by uninstalling your app, powering off your device, power back on, and then try reinstalling.
 2. It may be caused by the delay due to initialization in your app.  To solve this, put any initialization code in the `removeAfter` method.
+
+## Can I base light/dark mode on app settings?
+No. This package creates a splash screen that is displayed before Flutter is loaded. Because of this, when the splash screen loads, internal app settings are not available to the splash screen. Unfortunately, this means that it is impossible to control light/dark settings of the splash from app settings.
 
 # Notes
 * If the splash screen was not updated correctly on iOS or if you experience a white screen before the splash screen, run `flutter clean` and recompile your app. If that does not solve the problem, delete your app, power down the device, power up the device, install and launch the app as per [this StackOverflow thread](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update).

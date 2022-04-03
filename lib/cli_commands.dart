@@ -158,6 +158,9 @@ void removeSplash({String? path}) {
   if (config.containsKey('web')) {
     removeConfig['web'] = config['web'];
   }
+  if (config.containsKey('info_plist_files')) {
+    removeConfig['info_plist_files'] = config['info_plist_files'];
+  }
   createSplashByConfig(removeConfig);
 }
 
