@@ -123,8 +123,9 @@ void createSplashByConfig(Map<String, dynamic> config) {
 
   const String _greet = '''
 
-Native splash complete. 👍
+✅ Native splash complete.
 Now go finish building something awesome! 💪 You rock! 🤘🤩
+Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_native_splash
 ''';
 
   const String _whatsNew = '''

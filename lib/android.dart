@@ -228,7 +228,7 @@ void _applyLaunchBackgroundXml(
     required bool showImage,
     bool showBranding = false,
     String brandingGravity = 'bottom'}) {
-  print('[Android]    - ' + launchBackgroundFilePath);
+  print('[Android]  - ' + launchBackgroundFilePath);
   final launchBackgroundFile = File(launchBackgroundFilePath);
   launchBackgroundFile.createSync(recursive: true);
   var launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
@@ -277,7 +277,7 @@ void _applyStylesXml({
   String? android12BrandingImagePath,
 }) {
   final stylesFile = File(file);
-  print('[Android]    - ' + file);
+  print('[Android]  - ' + file);
   if (!stylesFile.existsSync()) {
     print('[Android] No $file found in your Android project');
     print('[Android] Creating $file and adding it to your Android project');

@@ -150,7 +150,7 @@ void _applyImageiOS({
   required List<_IosLaunchImageTemplate> list,
   String targetPath = _iOSAssetsLaunchImageFolder,
 }) {
-  print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + ' images');
+  print('[iOS] Creating ' + (dark ? 'dark mode ' : '') + 'images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
