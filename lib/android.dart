@@ -4,8 +4,10 @@ part of flutter_native_splash_cli;
 class _AndroidDrawableTemplate {
   final String directoryName;
   final double pixelDensity;
-  _AndroidDrawableTemplate(
-      {required this.directoryName, required this.pixelDensity});
+  _AndroidDrawableTemplate({
+    required this.directoryName,
+    required this.pixelDensity,
+  });
 }
 
 @visibleForTesting
@@ -22,15 +24,25 @@ final List<_AndroidDrawableTemplate> androidSplashImages =
 final List<_AndroidDrawableTemplate> androidSplashImagesDark =
     <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-mdpi', pixelDensity: 1),
+    directoryName: 'drawable-night-mdpi',
+    pixelDensity: 1,
+  ),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-hdpi', pixelDensity: 1.5),
+    directoryName: 'drawable-night-hdpi',
+    pixelDensity: 1.5,
+  ),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-xhdpi', pixelDensity: 2),
+    directoryName: 'drawable-night-xhdpi',
+    pixelDensity: 2,
+  ),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-xxhdpi', pixelDensity: 3),
+    directoryName: 'drawable-night-xxhdpi',
+    pixelDensity: 3,
+  ),
   _AndroidDrawableTemplate(
-      directoryName: 'drawable-night-xxxhdpi', pixelDensity: 4),
+    directoryName: 'drawable-night-xxxhdpi',
+    pixelDensity: 4,
+  ),
 ];
 
 /// Create Android splash screen
@@ -73,14 +85,17 @@ void _createAndroidSplash({
   //create android 12 image if provided.  (otherwise uses launch icon)
   if (android12ImagePath != null) {
     _applyImageAndroid(
-        imagePath: android12ImagePath, fileName: 'android12splash.png');
+      imagePath: android12ImagePath,
+      fileName: 'android12splash.png',
+    );
   }
 
   if (android12DarkImagePath != null) {
     _applyImageAndroid(
-        imagePath: android12DarkImagePath,
-        dark: true,
-        fileName: 'android12splash.png');
+      imagePath: android12DarkImagePath,
+      dark: true,
+      fileName: 'android12splash.png',
+    );
   }
 
   _createBackground(
@@ -89,8 +104,8 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _androidNightDrawableFolder + 'background.png',
-    backgroundImageDestination: _androidDrawableFolder + 'background.png',
+        '${_androidNightDrawableFolder}background.png',
+    backgroundImageDestination: '${_androidDrawableFolder}background.png',
   );
 
   _createBackground(
@@ -99,8 +114,8 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        _androidNightV21DrawableFolder + 'background.png',
-    backgroundImageDestination: _androidV21DrawableFolder + 'background.png',
+        '${_androidNightV21DrawableFolder}background.png',
+    backgroundImageDestination: '${_androidV21DrawableFolder}background.png',
   );
 
   print('[Android] Updating launch background(s) with splash image path...');
@@ -181,13 +196,14 @@ void _createAndroidSplash({
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
-void _applyImageAndroid(
-    {required String imagePath,
-    bool dark = false,
-    String fileName = 'splash.png'}) {
-  print('[Android] Creating ' +
-      (dark ? 'dark mode ' : '') +
-      '${fileName.split('.')[0]} images');
+void _applyImageAndroid({
+  required String imagePath,
+  bool dark = false,
+  String fileName = 'splash.png',
+}) {
+  print(
+    '[Android] Creating ${dark ? 'dark mode ' : ''}${fileName.split('.')[0]} images',
+  );
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
   if (image == null) {
@@ -195,7 +211,7 @@ void _applyImageAndroid(
     exit(1);
   }
 
-  for (var template in dark ? androidSplashImagesDark : androidSplashImages) {
+  for (final template in dark ? androidSplashImagesDark : androidSplashImages) {
     _saveImageAndroid(template: template, image: image, fileName: fileName);
   }
 }
@@ -203,67 +219,73 @@ void _applyImageAndroid(
 /// Saves splash screen image to the project
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
-void _saveImageAndroid(
-    {required _AndroidDrawableTemplate template,
-    required Image image,
-    required fileName}) {
+void _saveImageAndroid({
+  required _AndroidDrawableTemplate template,
+  required Image image,
+  required fileName,
+}) {
   //added file name attribute to make this method generic for splash image and branding image.
-  var newFile = copyResize(
+  final newFile = copyResize(
     image,
     width: image.width * template.pixelDensity ~/ 4,
     height: image.height * template.pixelDensity ~/ 4,
     interpolation: Interpolation.linear,
   );
 
-  var file = File('$_androidResFolder${template.directoryName}/$fileName');
+  final file = File('$_androidResFolder${template.directoryName}/$fileName');
   // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));
 }
 
 /// Updates launch_background.xml adding splash image path
-void _applyLaunchBackgroundXml(
-    {required String launchBackgroundFilePath,
-    required String gravity,
-    required bool showImage,
-    bool showBranding = false,
-    String brandingGravity = 'bottom'}) {
-  print('[Android]  - ' + launchBackgroundFilePath);
+void _applyLaunchBackgroundXml({
+  required String launchBackgroundFilePath,
+  required String gravity,
+  required bool showImage,
+  bool showBranding = false,
+  String brandingGravity = 'bottom',
+}) {
+  String brandingGravityValue = brandingGravity;
+  print('[Android]  - $launchBackgroundFilePath');
   final launchBackgroundFile = File(launchBackgroundFilePath);
   launchBackgroundFile.createSync(recursive: true);
-  var launchBackgroundDocument = XmlDocument.parse(_androidLaunchBackgroundXml);
+  final launchBackgroundDocument =
+      XmlDocument.parse(_androidLaunchBackgroundXml);
 
   final layerList = launchBackgroundDocument.getElement('layer-list');
   final List<XmlNode> items = layerList!.children;
 
   if (showImage) {
-    var splashItem =
+    final splashItem =
         XmlDocument.parse(_androidLaunchItemXml).rootElement.copy();
     splashItem.getElement('bitmap')?.setAttribute('android:gravity', gravity);
     items.add(splashItem);
   }
 
-  if (showBranding && gravity != brandingGravity) {
+  if (showBranding && gravity != brandingGravityValue) {
     //add branding when splash image and branding image are not at the same position
-    var brandingItem =
+    final brandingItem =
         XmlDocument.parse(_androidBrandingItemXml).rootElement.copy();
-    if (brandingGravity == 'bottomRight') {
-      brandingGravity = 'bottom|right';
-    } else if (brandingGravity == 'bottomLeft') {
-      brandingGravity = 'bottom|left';
-    } else if (brandingGravity != 'bottom') {
+    if (brandingGravityValue == 'bottomRight') {
+      brandingGravityValue = 'bottom|right';
+    } else if (brandingGravityValue == 'bottomLeft') {
+      brandingGravityValue = 'bottom|left';
+    } else if (brandingGravityValue != 'bottom') {
       print(
-          '$brandingGravity illegal property defined for the branding mode. Setting back to default.');
-      brandingGravity = 'bottom';
+        '$brandingGravityValue illegal property defined for the branding mode. Setting back to default.',
+      );
+      brandingGravityValue = 'bottom';
     }
     brandingItem
         .getElement('bitmap')
-        ?.setAttribute('android:gravity', brandingGravity);
+        ?.setAttribute('android:gravity', brandingGravityValue);
     items.add(brandingItem);
   }
 
   launchBackgroundFile.writeAsStringSync(
-      launchBackgroundDocument.toXmlString(pretty: true, indent: '    '));
+    launchBackgroundDocument.toXmlString(pretty: true, indent: '    '),
+  );
 }
 
 /// Create or update styles.xml full screen mode setting
@@ -277,7 +299,7 @@ void _applyStylesXml({
   String? android12BrandingImagePath,
 }) {
   final stylesFile = File(file);
-  print('[Android]  - ' + file);
+  print('[Android]  - $file');
   if (!stylesFile.existsSync()) {
     print('[Android] No $file found in your Android project');
     print('[Android] Creating $file and adding it to your Android project');
@@ -308,65 +330,79 @@ Future<void> _updateStylesFile({
   final resources = stylesDocument.getElement('resources');
   final styles = resources?.findElements('style');
   if (styles?.length == 1) {
-    print('[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '
-        'styles by default.  Full screen mode not supported in Flutter V1 '
-        'embedding.  Skipping update of styles.xml with fullscreen mode');
+    print(
+      '[Android] Only 1 style in styles.xml. Flutter V2 embedding has 2 '
+      'styles by default.  Full screen mode not supported in Flutter V1 '
+      'embedding.  Skipping update of styles.xml with fullscreen mode',
+    );
     return;
   }
 
   XmlElement launchTheme;
   try {
-    launchTheme = styles!.singleWhere((element) => (element.attributes.any(
+    launchTheme = styles!.singleWhere(
+      (element) => element.attributes.any(
         (attribute) =>
             attribute.name.toString() == 'name' &&
-            attribute.value == 'LaunchTheme')));
+            attribute.value == 'LaunchTheme',
+      ),
+    );
   } on StateError {
-    print('LaunchTheme was not found in styles.xml. Skipping fullscreen'
-        'mode');
+    print(
+      'LaunchTheme was not found in styles.xml. Skipping fullscreen '
+      'mode',
+    );
     return;
   }
 
   replaceElement(
-      launchTheme: launchTheme,
-      name: 'android:forceDarkAllowed',
-      value: "false");
+    launchTheme: launchTheme,
+    name: 'android:forceDarkAllowed',
+    value: "false",
+  );
 
   replaceElement(
-      launchTheme: launchTheme,
-      name: 'android:windowFullscreen',
-      value: fullScreen.toString());
+    launchTheme: launchTheme,
+    name: 'android:windowFullscreen',
+    value: fullScreen.toString(),
+  );
 
   // In Android 12, the color must be set directly in the styles.xml
   if (android12BackgroundColor != null) {
     replaceElement(
-        launchTheme: launchTheme,
-        name: 'android:windowSplashScreenBackground',
-        value: '#' + android12BackgroundColor);
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenBackground',
+      value: '#$android12BackgroundColor',
+    );
   }
 
   if (android12BrandingImagePath != null) {
     replaceElement(
-        launchTheme: launchTheme,
-        name: 'android:windowSplashScreenBrandingImage',
-        value: '@drawable/branding');
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenBrandingImage',
+      value: '@drawable/branding',
+    );
   }
 
   if (android12ImagePath != null) {
     replaceElement(
-        launchTheme: launchTheme,
-        name: 'android:windowSplashScreenAnimatedIcon',
-        value: '@drawable/android12splash');
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenAnimatedIcon',
+      value: '@drawable/android12splash',
+    );
   }
 
   if (android12IconBackgroundColor != null) {
     replaceElement(
-        launchTheme: launchTheme,
-        name: 'android:windowSplashScreenIconBackgroundColor',
-        value: '#' + android12IconBackgroundColor);
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenIconBackgroundColor',
+      value: '#$android12IconBackgroundColor',
+    );
   }
 
   stylesFile.writeAsStringSync(
-      stylesDocument.toXmlString(pretty: true, indent: '    '));
+    stylesDocument.toXmlString(pretty: true, indent: '    '),
+  );
 }
 
 void replaceElement({
@@ -374,10 +410,18 @@ void replaceElement({
   required String name,
   required String value,
 }) {
-  launchTheme.children.removeWhere((element) => element.attributes.any(
+  launchTheme.children.removeWhere(
+    (element) => element.attributes.any(
       (attribute) =>
-          attribute.name.toString() == 'name' && attribute.value == name));
+          attribute.name.toString() == 'name' && attribute.value == name,
+    ),
+  );
 
-  launchTheme.children.add(XmlElement(XmlName('item'),
-      [XmlAttribute(XmlName('name'), name)], [XmlText(value)]));
+  launchTheme.children.add(
+    XmlElement(
+      XmlName('item'),
+      [XmlAttribute(XmlName('name'), name)],
+      [XmlText(value)],
+    ),
+  );
 }
