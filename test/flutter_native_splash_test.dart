@@ -29,12 +29,12 @@ void main() {
 
     late String currentDirectory;
     void setCurrentDirectory(String path) {
-      path = p.join(testDir, path);
+      final pathValue = p.join(testDir, path);
       Directory(path).createSync(recursive: true);
-      Directory.current = path;
+      Directory.current = pathValue;
     }
 
-  setUp(() {
+    setUp(() {
       currentDirectory = Directory.current.path;
     });
     tearDown(() {
@@ -42,29 +42,34 @@ void main() {
     });
     test('default', () {
       setCurrentDirectory('default');
-      File('flutter_native_splash.yaml').writeAsStringSync('''
+      File('flutter_native_splash.yaml').writeAsStringSync(
+        '''
 flutter_native_splash:
   color: "#00ff00"
-''');
-      final Map<String, dynamic>? config =
-          getConfig(configFile: 'flutter_native_splash.yaml');
+''',
+      );
+      final Map<String, dynamic> config = getConfig(
+        configFile: 'flutter_native_splash.yaml',
+      );
       File('flutter_native_splash.yaml').deleteSync();
       expect(config, isNotNull);
-      expect(config!['color'], '#00ff00');
-  });
+      expect(config['color'], '#00ff00');
+    });
     test('default_use_pubspec', () {
       setCurrentDirectory('pubspec_only');
-      File('pubspec.yaml').writeAsStringSync('''
+      File('pubspec.yaml').writeAsStringSync(
+        '''
 flutter_native_splash:
   color: "#00ff00"
-''');
-      final Map<String, dynamic>? config = getConfig();
+''',
+      );
+      final Map<String, dynamic> config = getConfig();
       File('pubspec.yaml').deleteSync();
       expect(config, isNotNull);
-      expect(config!['color'], '#00ff00');
+      expect(config['color'], '#00ff00');
 
       // fails if config file is missing
       expect(() => getConfig(), throwsException);
-  });
+    });
   });
 }
