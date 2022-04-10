@@ -1,3 +1,5 @@
+## [2.1.5] - (2022-Apr-10)
+* Thanks [Yousef](https://github.com/YDA93) for [PR #332](https://github.com/jonbhanson/flutter_native_splash/pull/332) adding stricter lint rules and [zuboje](https://github.com/zuboje) for [PR #334](https://github.com/jonbhanson/flutter_native_splash/pull/334) adding deprecated message.
 ## [2.1.3+1] - (2022-Apr-03)
 * Updated documentation. Closes [#327](https://github.com/jonbhanson/flutter_native_splash/issues/327). 
 * `remove` correctly handles multiple plist files.  Fixes [#247](https://github.com/jonbhanson/flutter_native_splash/issues/247).
