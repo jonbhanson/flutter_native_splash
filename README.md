@@ -9,6 +9,9 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `preserve` and `remove` methods together to remove the splash screen after your initialization is complete.  See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
 
+
+Method `removeAfter` has been deprecated, `remove` method should be used insead.
+
 # Usage
 
 Would you prefer a video tutorial instead?  Check out <a href="https://www.youtube.com/watch?v=dB0dOnc2k10">Johannes Milke's tutorial</a>.

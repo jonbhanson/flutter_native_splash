@@ -13,6 +13,7 @@ import 'package:flutter/widgets.dart';
 class FlutterNativeSplash {
   static const MethodChannel _channel = MethodChannel('flutter_native_splash');
 
+  @Deprecated('This class is deprecated use [remove]')
   static void removeAfter(
     Future<void> Function(BuildContext) initializeFunction,
   ) {
