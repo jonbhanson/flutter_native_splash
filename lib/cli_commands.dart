@@ -26,18 +26,28 @@ void createSplash({String? path}) {
 /// Create splash screens for Android and iOS based on a config argument
 void createSplashByConfig(Map<String, dynamic> config) {
   final String? image = _checkImageExists(config: config, parameter: 'image');
-  final String? darkImage =
+  String? darkImage =
       _checkImageExists(config: config, parameter: 'image_dark');
   final String? brandingImage =
       _checkImageExists(config: config, parameter: 'branding');
-  final String? brandingDarkImage =
+  String? brandingDarkImage =
       _checkImageExists(config: config, parameter: 'branding_dark');
   final String? color = parseColor(config['color']);
-  final String? darkColor = parseColor(config['color_dark']);
+  String? darkColor = parseColor(config['color_dark']);
   final String? backgroundImage =
       _checkImageExists(config: config, parameter: 'background_image');
-  final String? darkBackgroundImage =
+  String? darkBackgroundImage =
       _checkImageExists(config: config, parameter: 'background_image_dark');
+  if (darkImage == null && darkColor == null) {
+    if (image != null) {
+      darkImage = image;
+    } else {
+      darkColor = color;
+    }
+    brandingDarkImage = brandingImage;
+    darkBackgroundImage = backgroundImage;
+  }
+
   final plistFiles = config['info_plist_files'] as List<String>?;
   String gravity = (config['fill'] as bool? ?? false) ? 'fill' : 'center';
   if (config['android_gravity'] != null) {
@@ -57,11 +67,13 @@ void createSplashByConfig(Map<String, dynamic> config) {
     android12Image =
         _checkImageExists(config: android12Config, parameter: 'image');
     android12DarkImage =
-        _checkImageExists(config: android12Config, parameter: 'image_dark');
+        _checkImageExists(config: android12Config, parameter: 'image_dark') ??
+            android12Image;
     android12IconBackgroundColor =
         parseColor(android12Config['icon_background_color']);
     darkAndroid12IconBackgroundColor =
-        parseColor(android12Config['icon_background_color_dark']);
+        parseColor(android12Config['icon_background_color_dark']) ??
+            android12IconBackgroundColor;
   }
 
   if (!config.containsKey('android') || config['android'] as bool) {
