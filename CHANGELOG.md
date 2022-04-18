@@ -1,3 +1,15 @@
+## [2.1.6] - (2022-Apr-17)
+* Use light settings for dark mode if dark mode settings are omitted.
+* Add ALT tag for web.  Fixes [#339](https://github.com/jonbhanson/flutter_native_splash/issues/339).
+## [2.1.5] - (2022-Apr-10)
+* Thanks [Yousef](https://github.com/YDA93) for [PR #332](https://github.com/jonbhanson/flutter_native_splash/pull/332) adding stricter lint rules and [zuboje](https://github.com/zuboje) for [PR #334](https://github.com/jonbhanson/flutter_native_splash/pull/334) adding deprecated message.
+## [2.1.3+1] - (2022-Apr-03)
+* Updated documentation. Closes [#327](https://github.com/jonbhanson/flutter_native_splash/issues/327). 
+* `remove` correctly handles multiple plist files.  Fixes [#247](https://github.com/jonbhanson/flutter_native_splash/issues/247).
+## [2.1.2+1] - (2022-Mar-27)
+* Add branding support in Android 12.  Thanks [Vladimir](https://github.com/vlazdra) for the [PR](https://github.com/jonbhanson/flutter_native_splash/pull/316).
+* Updated readme.  Closes [#317](https://github.com/jonbhanson/flutter_native_splash/issues/317).  Closes [#318](https://github.com/jonbhanson/flutter_native_splash/issues/318).
+* Don't create a blank branding imageset.  Fixes [#264](https://github.com/jonbhanson/flutter_native_splash/issues/264).
 ## [2.1.1] - (2022-Mar-13)
 * Fix for pixelated splash image on web.  Fixes [#263](https://github.com/jonbhanson/flutter_native_splash/issues/263).
 ## [2.1.0] - (2022-Mar-06)

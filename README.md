@@ -1,7 +1,3 @@
-
-[![pub package](https://img.shields.io/pub/v/flutter_native_splash)](https://pub.dev/packages/flutter_native_splash)
-[![Build Status](https://img.shields.io/travis/jonbhanson/flutter_native_splash)](https://travis-ci.org/jonbhanson/flutter_native_splash)
-
 When your app is opened, there is a brief time while the native app loads Flutter.  By default, during this time, the native app displays a white splash screen.  This package automatically generates iOS, Android, and Web-native code for customizing this native splash screen background color and splash image.  Supports dark mode, full screen, and platform-specific options.
 
 <p align='center'>
@@ -21,7 +17,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.1.1
+  flutter_native_splash: ^2.1.6
 ```
 
 Don't forget to `flutter pub get`.
@@ -175,7 +171,7 @@ If you find this package useful, you can support it for free by giving it a thum
 
 # Android 12 Support
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  Note that a background image is not supported.
 
 The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
@@ -184,7 +180,7 @@ The package provides Android 12 support while maintaining the legacy splash scre
 # FAQs
 ## I got the error "A splash screen was provided to Flutter, but this is deprecated."
 
-This message is not related to this package but is related to a [change](https://flutter.dev/docs/development/ui/advanced/splash-screen#migrating-from-manifest--activity-defined-custom-splash-screens) in how Flutter handles splash screens in Flutter 2.5.  It is caused by having the following code in your `AndroidManifest.xml`, which was included by default in previous versions of Flutter:
+This message is not related to this package but is related to a [change](https://flutter.dev/docs/development/ui/advanced/splash-screen#migrating-from-manifest--activity-defined-custom-splash-screens) in how Flutter handles splash screens in Flutter 2.5.  It is caused by having the following code in your `android/app/src/main/AndroidManifest.xml`, which was included by default in previous versions of Flutter:
 
 ```xml
 <meta-data
@@ -206,6 +202,9 @@ This is caused by an [iOS splash caching bug](https://stackoverflow.com/question
 ## I see a white screen between splash screen and app
 1. It may be caused by an [iOS splash caching bug](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update), which can be solved by uninstalling your app, powering off your device, power back on, and then try reinstalling.
 2. It may be caused by the delay due to initialization in your app.  To solve this, put any initialization code in the `removeAfter` method.
+
+## Can I base light/dark mode on app settings?
+No. This package creates a splash screen that is displayed before Flutter is loaded. Because of this, when the splash screen loads, internal app settings are not available to the splash screen. Unfortunately, this means that it is impossible to control light/dark settings of the splash from app settings.
 
 # Notes
 * If the splash screen was not updated correctly on iOS or if you experience a white screen before the splash screen, run `flutter clean` and recompile your app. If that does not solve the problem, delete your app, power down the device, power up the device, install and launch the app as per [this StackOverflow thread](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update).

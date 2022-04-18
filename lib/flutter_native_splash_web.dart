@@ -28,14 +28,15 @@ class FlutterNativeSplashWeb {
           removeSplashFromWeb();
         } catch (e) {
           throw Exception(
-              'Did you forget to run "flutter pub run flutter_native_splash:create"? \n Could not run the JS command removeSplashFromWeb()');
+            'Did you forget to run "flutter pub run flutter_native_splash:create"? \n Could not run the JS command removeSplashFromWeb()',
+          );
         }
         return;
       default:
         throw PlatformException(
           code: 'Unimplemented',
           details:
-              'flutter_native_splash for web doesn\'t implement \'${call.method}\'',
+              "flutter_native_splash for web doesn't implement '${call.method}'",
         );
     }
   }

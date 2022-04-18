@@ -13,13 +13,16 @@ import 'package:flutter/widgets.dart';
 class FlutterNativeSplash {
   static const MethodChannel _channel = MethodChannel('flutter_native_splash');
 
-  static void removeAfter(Function initializeFunction) {
+  @Deprecated('This class is deprecated use [remove]')
+  static void removeAfter(
+    Future<void> Function(BuildContext) initializeFunction,
+  ) {
     final binding = WidgetsFlutterBinding.ensureInitialized();
 
     // Prevents app from closing splash screen, app layout will be build but not displayed.
     binding.deferFirstFrame();
     binding.addPostFrameCallback((_) async {
-      BuildContext? context = binding.renderViewElement;
+      final BuildContext? context = binding.renderViewElement;
       if (context != null) {
         // Run any sync or awaited async function you want to wait for before showing app layout
         await initializeFunction.call(context);
@@ -48,9 +51,9 @@ class FlutterNativeSplash {
       try {
         _channel.invokeMethod('remove');
       } catch (e) {
-        throw Exception(e.toString() +
-            '\nDid you forget to run '
-                '"flutter pub run flutter_native_splash:create"?');
+        throw Exception(
+          '$e\nDid you forget to run "flutter pub run flutter_native_splash:create"?',
+        );
       }
     }
   }
