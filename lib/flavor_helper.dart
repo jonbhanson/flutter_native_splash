@@ -104,7 +104,9 @@ class FlavorHelper {
 
   String get iOSLaunchScreenStoryBoardContent {
     return _iOSLaunchScreenStoryboardContent.replaceAll(
-        '[LAUNCH_IMAGE_PLACEHOLDER]', iOSLaunchImageName);
+      '[LAUNCH_IMAGE_PLACEHOLDER]',
+      iOSLaunchImageName,
+    );
   }
 
   String get iOSLaunchImageName {
@@ -125,7 +127,9 @@ class FlavorHelper {
 
   String get iOSBrandingSubView {
     return _iOSBrandingSubview.replaceAll(
-        '[BRANDING_IMAGE_PLACEHOLDER]', iOSBrandingImageName);
+      '[BRANDING_IMAGE_PLACEHOLDER]',
+      iOSBrandingImageName,
+    );
   }
 
   String get iOSLaunchBackgroundName {
@@ -138,7 +142,9 @@ class FlavorHelper {
 
   String get iOSLaunchBackgroundSubView {
     return _iOSLaunchBackgroundSubview.replaceAll(
-        '[LAUNCH_BACKGROUND_PLACEHOLDER]', iOSLaunchBackgroundName);
+      '[LAUNCH_BACKGROUND_PLACEHOLDER]',
+      iOSLaunchBackgroundName,
+    );
   }
 }
 

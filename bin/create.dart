@@ -10,7 +10,7 @@ void main(List<String> args) {
   final parsedArgs = parser.parse(args);
 
   createSplash(
-    path: parsedArgs['path'].toString(),
-    flavor: parsedArgs['flavor'].toString(),
+    path: parsedArgs['path']?.toString(),
+    flavor: parsedArgs['flavor']?.toString(),
   );
 }

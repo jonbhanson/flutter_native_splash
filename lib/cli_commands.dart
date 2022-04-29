@@ -12,10 +12,10 @@ import 'package:yaml/yaml.dart';
 
 part 'android.dart';
 part 'constants.dart';
+part 'flavor_helper.dart';
 part 'ios.dart';
 part 'templates.dart';
 part 'web.dart';
-part 'flavor_helper.dart';
 
 late FlavorHelper flavorHelper;
 
@@ -212,18 +212,23 @@ String? _checkImageExists({
   required Map<String, dynamic> config,
   required String parameter,
 }) {
-  final String image = config[parameter].toString();
-  if (image.isNotEmpty && !File(image).existsSync()) {
-    print('The file "$image" set as the parameter "$parameter" was not found.');
-    exit(1);
+  final String? image = config[parameter]?.toString();
+  if (image != null) {
+    if (image.isNotEmpty && !File(image).existsSync()) {
+      print(
+        'The file "$image" set as the parameter "$parameter" was not found.',
+      );
+      exit(1);
+    }
+
+    if (p.extension(image).toLowerCase() != '.png') {
+      print(
+        'Unsupported file format: $image  Your image must be a PNG file.',
+      );
+      exit(1);
+    }
   }
 
-  if (image.isNotEmpty && p.extension(image).toLowerCase() != '.png') {
-    print(
-      'Unsupported file format: $image  Your image must be a PNG file.',
-    );
-    exit(1);
-  }
   return image == '' ? null : image;
 }
 
