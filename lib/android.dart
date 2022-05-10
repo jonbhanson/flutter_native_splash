@@ -168,7 +168,7 @@ void _createAndroidSplash({
     android12BrandingImagePath: brandingImagePath,
   );
 
-  if (darkColor != null) {
+  if (darkColor != null || darkBackgroundImage != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
       file: _androidV31StylesNightFile,
