@@ -38,13 +38,16 @@ void createSplashByConfig(Map<String, dynamic> config) {
       _checkImageExists(config: config, parameter: 'background_image');
   String? darkBackgroundImage =
       _checkImageExists(config: config, parameter: 'background_image_dark');
-  if (darkImage == null && darkColor == null) {
-    if (image != null) {
-      darkImage = image;
-    } else {
-      darkColor = color;
-    }
+  if (darkImage == null && image != null) {
+    darkImage = image;
+  }
+  if (darkColor == null && color != null) {
+    darkColor = color;
+  }
+  if (brandingDarkImage == null && brandingImage != null) {
     brandingDarkImage = brandingImage;
+  }
+  if (darkBackgroundImage == null && backgroundImage != null) {
     darkBackgroundImage = backgroundImage;
   }
 
