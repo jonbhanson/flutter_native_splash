@@ -329,30 +329,6 @@ void _checkConfig(Map<String, dynamic> config) {
     );
     exit(1);
   }
-
-  if (config.containsKey('android_12') && config['android_12'] is Map) {
-    final android12Config = config['android_12'] as Map;
-    if (android12Config.containsKey('image_dark') &&
-        !config.containsKey('color_dark') &&
-        !config.containsKey('background_image_dark')) {
-      print(
-        'Your `flutter_native_splash` section contains '
-        '`android_12:image_dark` but does not contain a `color_dark` or a '
-        '`background_image_dark`.',
-      );
-      exit(1);
-    }
-    if (android12Config.containsKey('image_dark') &&
-        !config.containsKey('color_dark') &&
-        !config.containsKey('icon_background_color_dark')) {
-      print(
-        'Your `flutter_native_splash` section contains '
-        '`android_12:icon_background_color_dark` but does not contain a '
-        '`color_dark` or a `background_image_dark`.',
-      );
-      exit(1);
-    }
-  }
 }
 
 @visibleForTesting

@@ -7,7 +7,7 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 # What's New
 
-**\[BETA\]** Support for flavors is in beta. Currently only Android and iOS are supported. For detailed information please follow the instructions bellow at step 4.
+**\[BETA\]** Support for flavors is in beta. Currently only Android and iOS are supported. See instructions below.
 
 You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `preserve` and `remove` methods together to remove the splash screen after your initialization is complete.  See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
 
@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.1.6
+  flutter_native_splash: ^2.2.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -167,7 +167,19 @@ void main() {
 
 NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions of this package.
 
-## 4. \[BETA\] Setup multiple flavors
+## 4. Support the package (optional)
+If you find this package useful, you can support it for free by giving it a thumbs up at the top of this page.  Here's another option to support the package:
+<p align='center'><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></p>
+
+# Android 12 Support
+
+Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  Note that a background image is not supported.
+
+The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
+
+***PLEASE NOTE:*** The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
+  
+# Flavor Support
 If you have a project setup that contains multiple flavors or environments, and you created more than one flavor this would be a feature for you.
 
 Instead of maintaining multiple files and copy/pasting images, you can now, using this tool, create different splash screens for different environments.
@@ -293,18 +305,6 @@ Xcode still doesn't know how to use them, so we need to specify for all the curr
 
 Congrats you finished your setup for multiple flavors,
 
-## 5. Support the package (optional)
-If you find this package useful, you can support it for free by giving it a thumbs up at the top of this page.  Here's another option to support the package:
-<p align='center'><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></p>
-
-# Android 12 Support
-
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background.  Note that a background image is not supported.
-
-The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
-
-***PLEASE NOTE:*** The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
-  
 # FAQs
 ## I got the error "A splash screen was provided to Flutter, but this is deprecated."
 
