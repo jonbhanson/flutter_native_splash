@@ -1,7 +1,7 @@
 part of flutter_native_splash_cli;
 
-class FlavorHelper {
-  FlavorHelper(this._flavor) {
+class _FlavorHelper {
+  _FlavorHelper(this._flavor) {
     if (_flavor != null) {
       _androidResFolder = 'android/app/src/$_flavor/res/';
       _iOSFlavorName = _flavor!.capitalize();

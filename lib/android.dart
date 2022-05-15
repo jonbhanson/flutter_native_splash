@@ -10,8 +10,7 @@ class _AndroidDrawableTemplate {
   });
 }
 
-@visibleForTesting
-final List<_AndroidDrawableTemplate> androidSplashImages =
+final List<_AndroidDrawableTemplate> _androidSplashImages =
     <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', pixelDensity: 1),
   _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', pixelDensity: 1.5),
@@ -20,8 +19,7 @@ final List<_AndroidDrawableTemplate> androidSplashImages =
   _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', pixelDensity: 4),
 ];
 
-@visibleForTesting
-final List<_AndroidDrawableTemplate> androidSplashImagesDark =
+final List<_AndroidDrawableTemplate> _androidSplashImagesDark =
     <_AndroidDrawableTemplate>[
   _AndroidDrawableTemplate(
     directoryName: 'drawable-night-mdpi',
@@ -105,9 +103,9 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        '${flavorHelper.androidNightDrawableFolder}background.png',
+        '${_flavorHelper.androidNightDrawableFolder}background.png',
     backgroundImageDestination:
-        '${flavorHelper.androidDrawableFolder}background.png',
+        '${_flavorHelper.androidDrawableFolder}background.png',
   );
 
   _createBackground(
@@ -116,16 +114,16 @@ void _createAndroidSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        '${flavorHelper.androidNightV21DrawableFolder}background.png',
+        '${_flavorHelper.androidNightV21DrawableFolder}background.png',
     backgroundImageDestination:
-        '${flavorHelper.androidV21DrawableFolder}background.png',
+        '${_flavorHelper.androidV21DrawableFolder}background.png',
   );
 
   print('[Android] Updating launch background(s) with splash image path...');
 
   _applyLaunchBackgroundXml(
     gravity: gravity,
-    launchBackgroundFilePath: flavorHelper.androidLaunchBackgroundFile,
+    launchBackgroundFilePath: _flavorHelper.androidLaunchBackgroundFile,
     showImage: imagePath != null,
     showBranding: brandingImagePath != null,
     brandingGravity: brandingGravity,
@@ -134,17 +132,17 @@ void _createAndroidSplash({
   if (darkColor != null || darkBackgroundImage != null) {
     _applyLaunchBackgroundXml(
       gravity: gravity,
-      launchBackgroundFilePath: flavorHelper.androidLaunchDarkBackgroundFile,
+      launchBackgroundFilePath: _flavorHelper.androidLaunchDarkBackgroundFile,
       showImage: imagePath != null,
       showBranding: brandingImagePath != null,
       brandingGravity: brandingGravity,
     );
   }
 
-  if (Directory(flavorHelper.androidV21DrawableFolder).existsSync()) {
+  if (Directory(_flavorHelper.androidV21DrawableFolder).existsSync()) {
     _applyLaunchBackgroundXml(
       gravity: gravity,
-      launchBackgroundFilePath: flavorHelper.androidV21LaunchBackgroundFile,
+      launchBackgroundFilePath: _flavorHelper.androidV21LaunchBackgroundFile,
       showImage: imagePath != null,
       showBranding: brandingImagePath != null,
       brandingGravity: brandingGravity,
@@ -153,7 +151,7 @@ void _createAndroidSplash({
       _applyLaunchBackgroundXml(
         gravity: gravity,
         launchBackgroundFilePath:
-            flavorHelper.androidV21LaunchDarkBackgroundFile,
+            _flavorHelper.androidV21LaunchDarkBackgroundFile,
         showImage: imagePath != null,
         showBranding: brandingImagePath != null,
         brandingGravity: brandingGravity,
@@ -164,7 +162,7 @@ void _createAndroidSplash({
   print('[Android] Updating styles...');
   _applyStylesXml(
     fullScreen: fullscreen,
-    file: flavorHelper.androidV31StylesFile,
+    file: _flavorHelper.androidV31StylesFile,
     template: _androidV31StylesXml,
     android12BackgroundColor: color,
     android12ImagePath: android12ImagePath,
@@ -175,7 +173,7 @@ void _createAndroidSplash({
   if (darkColor != null || darkBackgroundImage != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
-      file: flavorHelper.androidV31StylesNightFile,
+      file: _flavorHelper.androidV31StylesNightFile,
       template: _androidV31StylesNightXml,
       android12BackgroundColor: darkColor,
       android12ImagePath: android12DarkImagePath,
@@ -186,14 +184,14 @@ void _createAndroidSplash({
 
   _applyStylesXml(
     fullScreen: fullscreen,
-    file: flavorHelper.androidStylesFile,
+    file: _flavorHelper.androidStylesFile,
     template: _androidStylesXml,
   );
 
   if (darkColor != null || darkBackgroundImage != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
-      file: flavorHelper.androidNightStylesFile,
+      file: _flavorHelper.androidNightStylesFile,
       template: _androidStylesNightXml,
     );
   }
@@ -215,7 +213,8 @@ void _applyImageAndroid({
     exit(1);
   }
 
-  for (final template in dark ? androidSplashImagesDark : androidSplashImages) {
+  for (final template
+      in dark ? _androidSplashImagesDark : _androidSplashImages) {
     _saveImageAndroid(template: template, image: image, fileName: fileName);
   }
 }
@@ -241,7 +240,7 @@ void _saveImageAndroid({
   // Default: android/app/src/main/res/
   // With a flavor: android/app/src/[flavor name]/res/
   final file = File(
-    '${flavorHelper.androidResFolder}${template.directoryName}/$fileName',
+    '${_flavorHelper.androidResFolder}${template.directoryName}/$fileName',
   );
   // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
   file.createSync(recursive: true);

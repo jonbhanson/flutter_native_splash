@@ -17,7 +17,7 @@ part 'ios.dart';
 part 'templates.dart';
 part 'web.dart';
 
-late FlavorHelper flavorHelper;
+late _FlavorHelper _flavorHelper;
 
 /// Create splash screens for Android and iOS
 void createSplash({String? path, String? flavor}) {
@@ -35,7 +35,7 @@ void createSplash({String? path, String? flavor}) {
 
   // It is important that the flavor setup occurs as soon as possible.
   // So before we generate anything, we need to setup the flavor (even if it's the default one).
-  flavorHelper = FlavorHelper(flavor);
+  _flavorHelper = _FlavorHelper(flavor);
 
   final config = getConfig(configFile: path);
   _checkConfig(config);
@@ -243,8 +243,8 @@ Map<String, dynamic> getConfig({String? configFile}) {
       print('The config file `$configFile` was not found.');
       exit(1);
     }
-  } else if (flavorHelper.flavor != null) {
-    filePath = 'flutter_native_splash-${flavorHelper.flavor}.yaml';
+  } else if (_flavorHelper.flavor != null) {
+    filePath = 'flutter_native_splash-${_flavorHelper.flavor}.yaml';
   } else if (File('flutter_native_splash.yaml').existsSync()) {
     filePath = 'flutter_native_splash.yaml';
   } else {

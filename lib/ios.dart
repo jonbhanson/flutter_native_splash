@@ -8,7 +8,8 @@ class _IosLaunchImageTemplate {
   _IosLaunchImageTemplate({required this.fileName, required this.pixelDensity});
 }
 
-final List<_IosLaunchImageTemplate> iOSSplashImages = <_IosLaunchImageTemplate>[
+final List<_IosLaunchImageTemplate> _iOSSplashImages =
+    <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImage.png', pixelDensity: 1),
   _IosLaunchImageTemplate(fileName: 'LaunchImage@2x.png', pixelDensity: 2),
   _IosLaunchImageTemplate(
@@ -26,7 +27,7 @@ final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
 ];
 
 //Resource files for branding assets
-final List<_IosLaunchImageTemplate> iOSBrandingImages =
+final List<_IosLaunchImageTemplate> _iOSBrandingImages =
     <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'BrandingImage.png', pixelDensity: 1),
   _IosLaunchImageTemplate(fileName: 'BrandingImage@2x.png', pixelDensity: 2),
@@ -65,12 +66,12 @@ void _createiOSSplash({
   required String? darkBackgroundImage,
 }) {
   if (imagePath != null) {
-    _applyImageiOS(imagePath: imagePath, list: iOSSplashImages);
+    _applyImageiOS(imagePath: imagePath, list: _iOSSplashImages);
   } else {
     final splashImage = Image(1, 1);
-    for (final template in iOSSplashImages) {
+    for (final template in _iOSSplashImages) {
       final file =
-          File(flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
+          File(_flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
       file.createSync(recursive: true);
       file.writeAsBytesSync(encodePng(splashImage));
     }
@@ -85,7 +86,7 @@ void _createiOSSplash({
   } else {
     for (final template in iOSSplashImagesDark) {
       final file =
-          File(flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
+          File(_flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
     }
   }
@@ -93,12 +94,12 @@ void _createiOSSplash({
   if (brandingImagePath != null) {
     _applyImageiOS(
       imagePath: brandingImagePath,
-      list: iOSBrandingImages,
-      targetPath: flavorHelper.iOSAssetsBrandingImageFolder,
+      list: _iOSBrandingImages,
+      targetPath: _flavorHelper.iOSAssetsBrandingImageFolder,
     );
   } else {
-    if (Directory(flavorHelper.iOSAssetsBrandingImageFolder).existsSync()) {
-      Directory(flavorHelper.iOSAssetsBrandingImageFolder)
+    if (Directory(_flavorHelper.iOSAssetsBrandingImageFolder).existsSync()) {
+      Directory(_flavorHelper.iOSAssetsBrandingImageFolder)
           .delete(recursive: true);
     }
   }
@@ -107,18 +108,18 @@ void _createiOSSplash({
       imagePath: brandingDarkImagePath,
       dark: true,
       list: iOSBrandingImagesDark,
-      targetPath: flavorHelper.iOSAssetsBrandingImageFolder,
+      targetPath: _flavorHelper.iOSAssetsBrandingImageFolder,
     );
   } else {
     for (final template in iOSBrandingImagesDark) {
       final file =
-          File(flavorHelper.iOSAssetsBrandingImageFolder + template.fileName);
+          File(_flavorHelper.iOSAssetsBrandingImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
     }
   }
 
   final launchImageFile =
-      File('${flavorHelper.iOSAssetsLaunchImageFolder}Contents.json');
+      File('${_flavorHelper.iOSAssetsLaunchImageFolder}Contents.json');
   launchImageFile.createSync(recursive: true);
   launchImageFile.writeAsStringSync(
     darkImagePath != null ? _iOSContentsJsonDark : _iOSContentsJson,
@@ -126,7 +127,7 @@ void _createiOSSplash({
 
   if (brandingImagePath != null) {
     final brandingImageFile =
-        File('${flavorHelper.iOSAssetsBrandingImageFolder}Contents.json');
+        File('${_flavorHelper.iOSAssetsBrandingImageFolder}Contents.json');
     brandingImageFile.createSync(recursive: true);
     brandingImageFile.writeAsStringSync(
       brandingDarkImagePath != null
@@ -147,13 +148,14 @@ void _createiOSSplash({
     darkBackgroundImageSource: darkBackgroundImage,
     backgroundImageSource: backgroundImage,
     darkBackgroundImageDestination:
-        '${flavorHelper.iOSAssetsLaunchImageBackgroundFolder}darkbackground.png',
+        '${_flavorHelper.iOSAssetsLaunchImageBackgroundFolder}darkbackground.png',
     backgroundImageDestination:
-        '${flavorHelper.iOSAssetsLaunchImageBackgroundFolder}background.png',
+        '${_flavorHelper.iOSAssetsLaunchImageBackgroundFolder}background.png',
   );
 
-  final backgroundImageFile =
-      File('${flavorHelper.iOSAssetsLaunchImageBackgroundFolder}Contents.json');
+  final backgroundImageFile = File(
+    '${_flavorHelper.iOSAssetsLaunchImageBackgroundFolder}Contents.json',
+  );
   backgroundImageFile.createSync(recursive: true);
 
   backgroundImageFile.writeAsStringSync(
@@ -172,7 +174,7 @@ void _applyImageiOS({
 }) {
   // Because the path is no longer static, targetPath can't have a default value.
   // That's why this was added, as a setup for a default value.
-  targetPath ??= flavorHelper.iOSAssetsLaunchImageFolder;
+  targetPath ??= _flavorHelper.iOSAssetsLaunchImageFolder;
 
   print('[iOS] Creating ${dark ? 'dark mode ' : ''} images');
 
@@ -211,11 +213,11 @@ void _applyLaunchScreenStoryboard({
   String? iosBrandingContentMode,
   String? brandingImagePath,
 }) {
-  final file = File(flavorHelper.iOSLaunchScreenStoryboardFile);
+  final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
 
   if (file.existsSync()) {
     print(
-      '[iOS] Updating ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard with width, and height',
+      '[iOS] Updating ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard with width, and height',
     );
     return _updateLaunchScreenStoryboard(
       imagePath: imagePath,
@@ -225,10 +227,10 @@ void _applyLaunchScreenStoryboard({
     );
   } else {
     print(
-      '[iOS] No ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file found in your iOS project',
+      '[iOS] No ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file found in your iOS project',
     );
     print(
-      '[iOS] Creating ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file and adding it '
+      '[iOS] Creating ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file and adding it '
       'to your iOS project',
     );
     return _createLaunchScreenStoryboard(
@@ -249,7 +251,7 @@ void _updateLaunchScreenStoryboard({
 }) {
   String? iosBrandingContentModeValue = iosBrandingContentMode;
   // Load the data
-  final file = File(flavorHelper.iOSLaunchScreenStoryboardFile);
+  final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
   final documentData = xmlDocument.getElement('document');
 
@@ -262,7 +264,7 @@ void _updateLaunchScreenStoryboard({
   if (view == null) {
     print(
       'Default Flutter view Ze5-6b-2t3 not found. '
-      'Did you modify your default ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file?',
+      'Did you modify your default ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file?',
     );
     exit(1);
   }
@@ -271,21 +273,21 @@ void _updateLaunchScreenStoryboard({
   final subViews = view.getElement('subviews');
   if (subViews == null) {
     print(
-      'Not able to find "subviews" in ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard. Image for '
+      'Not able to find "subviews" in ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard. Image for '
       'splash screen not updated. Did you modify your default '
-      '${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file?',
+      '${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file?',
     );
     exit(1);
   }
   final imageView = subViews.children.whereType<XmlElement>().firstWhere(
     (element) =>
         element.name.qualified == 'imageView' &&
-        element.getAttribute('image') == flavorHelper.iOSLaunchImageName,
+        element.getAttribute('image') == _flavorHelper.iOSLaunchImageName,
     orElse: () {
       print(
-        'Not able to find "${flavorHelper.iOSLaunchImageName}" in ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard. Image '
+        'Not able to find "${_flavorHelper.iOSLaunchImageName}" in ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard. Image '
         'for splash screen not updated. Did you modify your default '
-        '${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file? [1]',
+        '${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file? [1]',
       );
       exit(1);
     },
@@ -293,11 +295,11 @@ void _updateLaunchScreenStoryboard({
   subViews.children.whereType<XmlElement>().firstWhere(
     (element) =>
         element.name.qualified == 'imageView' &&
-        element.getAttribute('image') == flavorHelper.iOSLaunchBackgroundName,
+        element.getAttribute('image') == _flavorHelper.iOSLaunchBackgroundName,
     orElse: () {
       subViews.children.insert(
         0,
-        XmlDocument.parse(flavorHelper.iOSLaunchBackgroundSubView)
+        XmlDocument.parse(_flavorHelper.iOSLaunchBackgroundSubView)
             .rootElement
             .copy(),
       );
@@ -317,12 +319,14 @@ void _updateLaunchScreenStoryboard({
         subViews.children.whereType<XmlElement>().firstWhere(
       (element) {
         return element.name.qualified == 'imageView' &&
-            element.getAttribute('image') == flavorHelper.iOSBrandingImageName;
+            element.getAttribute('image') == _flavorHelper.iOSBrandingImageName;
       },
       orElse: () {
         subViews.children.insert(
           subViews.children.length - 1,
-          XmlDocument.parse(flavorHelper.iOSBrandingSubView).rootElement.copy(),
+          XmlDocument.parse(_flavorHelper.iOSBrandingSubView)
+              .rootElement
+              .copy(),
         );
         return XmlElement(XmlName(''));
       },
@@ -336,12 +340,12 @@ void _updateLaunchScreenStoryboard({
       resources?.children.whereType<XmlElement>().firstWhere(
     (element) =>
         element.name.qualified == 'image' &&
-        element.getAttribute('name') == flavorHelper.iOSLaunchImageName,
+        element.getAttribute('name') == _flavorHelper.iOSLaunchImageName,
     orElse: () {
       print(
-        'Not able to find "${flavorHelper.iOSLaunchImageName}" in ${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard. Image '
+        'Not able to find "${_flavorHelper.iOSLaunchImageName}" in ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard. Image '
         'for splash screen not updated. Did you modify your default '
-        '${flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file? [2]',
+        '${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file? [2]',
       );
       exit(1);
     },
@@ -350,13 +354,13 @@ void _updateLaunchScreenStoryboard({
   resources?.children.whereType<XmlElement>().firstWhere(
     (element) =>
         element.name.qualified == 'image' &&
-        element.getAttribute('name') == flavorHelper.iOSLaunchBackgroundName,
+        element.getAttribute('name') == _flavorHelper.iOSLaunchBackgroundName,
     orElse: () {
       // If the color has not been set via background image, set it here:
 
       resources.children.add(
         XmlDocument.parse(
-          '<image name="${flavorHelper.iOSLaunchBackgroundName}" width="1" height="1"/>',
+          '<image name="${_flavorHelper.iOSLaunchBackgroundName}" width="1" height="1"/>',
         ).rootElement.copy(),
       );
       return XmlElement(XmlName(''));
@@ -383,11 +387,11 @@ void _updateLaunchScreenStoryboard({
         resources?.children.whereType<XmlElement>().firstWhere(
       (element) =>
           element.name.qualified == 'image' &&
-          element.getAttribute('name') == flavorHelper.iOSBrandingImageName,
+          element.getAttribute('name') == _flavorHelper.iOSBrandingImageName,
       orElse: () {
         resources.children.add(
           XmlDocument.parse(
-            '<image name="${flavorHelper.iOSBrandingImageName}" width="1" height="1"/>',
+            '<image name="${_flavorHelper.iOSBrandingImageName}" width="1" height="1"/>',
           ).rootElement.copy(),
         );
         return XmlElement(XmlName(''));
@@ -429,9 +433,9 @@ void _createLaunchScreenStoryboard({
   String? iosBrandingContentMode,
   String? brandingImagePath,
 }) {
-  final file = File(flavorHelper.iOSLaunchScreenStoryboardFile);
+  final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
   file.createSync(recursive: true);
-  file.writeAsStringSync(flavorHelper.iOSLaunchScreenStoryBoardContent);
+  file.writeAsStringSync(_flavorHelper.iOSLaunchScreenStoryBoardContent);
 
   return _updateLaunchScreenStoryboard(
     imagePath: imagePath,
@@ -496,7 +500,7 @@ void _applyInfoPList({List<String>? plistFiles, required bool fullscreen}) {
   List<String>? plistFilesValue = plistFiles;
   if (plistFilesValue == null) {
     plistFilesValue = [];
-    plistFilesValue.add(flavorHelper.iOSInfoPlistFile);
+    plistFilesValue.add(_flavorHelper.iOSInfoPlistFile);
   }
 
   for (final plistFile in plistFilesValue) {

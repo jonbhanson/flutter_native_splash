@@ -5,16 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
-  test('Android splash images list is correct size', () {
-    expect(androidSplashImages.length, 5);
-    expect(androidSplashImagesDark.length, 5);
-  });
-
-  test('iOS splash images list is correct size', () {
-    expect(iOSSplashImages.length, 3);
-    expect(iOSSplashImagesDark.length, 3);
-  });
-
   test('parseColor parses values correctly', () {
     expect(parseColor('#ffffff'), 'ffffff');
     expect(parseColor(' FAFAFA '), 'FAFAFA');

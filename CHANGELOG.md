@@ -1,4 +1,4 @@
-## [2.2.0] - (2022-May-15)
+## [2.2.0+1] - (2022-May-15)
 * Added flavor support.  Thanks [Vladimir](https://github.com/vlazdra) for PR [#316](https://github.com/jonbhanson/flutter_native_splash/pull/316)!  Closes [#160](https://github.com/jonbhanson/flutter_native_splash/issues/160).
 * Fix androidV31StylesXml not being generated when darkBackgroundImage is set.  Thanks (Hallot)[https://github.com/Hallot] for PR [#349](https://github.com/jonbhanson/flutter_native_splash/pull/349).
 * Fix incorrect android_12 check for image_dark.  Closes [#347](https://github.com/jonbhanson/flutter_native_splash/issues/347).
