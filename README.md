@@ -7,6 +7,8 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 # What's New
 
+**\[BETA\]** Support for flavors is in beta. Currently only Android and iOS are supported. For detailed information please follow the instructions bellow at step 4.
+
 You can now keep the splash screen up while your app initializes!  No need for a secondary splash screen anymore.  Just use the `preserve` and `remove` methods together to remove the splash screen after your initialization is complete.  See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
 
 # Usage
@@ -165,7 +167,133 @@ void main() {
 
 NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions of this package.
 
-## 4. Support the package (optional)
+## 4. \[BETA\] Setup multiple flavors
+If you have a project setup that contains multiple flavors or environments, and you created more than one flavor this would be a feature for you.
+
+Instead of maintaining multiple files and copy/pasting images, you can now, using this tool, create different splash screens for different environments.
+
+### Pre-requirements
+In order to use the new feature, and generate the desired splash images for you app, a couple of changes are required.
+
+If you want to generate just one flavor and one file you would use either options as described in Step 1. But in order to setup the flavors, you will then be required to move all your setup values to the `flutter_native_splash.yaml` file, but with a prefix.
+
+Let's assume for the rest of the setup that you have 3 different flavors, `Production`, `Acceptance`, `Development`.
+
+First this you will need to do is to create a different setup file for all 3 flavors with a suffix like so:
+```bash
+flutter_native_splash-production.yaml
+flutter_native_splash-acceptance.yaml
+flutter_native_splash-development.yaml
+```
+You would setup those 3 files the same way as you would the one, but with different assets depending on which environment you would be generating. For example (Note: these are just examples, you can use whatever setup you need for your project that is already supported by the package):
+```yaml
+# flutter_native_splash-development.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo-development.png
+  branding: assets/branding-development.png
+  color_dark: "#121212"
+  image_dark: assets/logo-development.png
+  branding_dark: assets/branding-development.png
+
+  android_12:
+    image: assets/logo-development.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/logo-development.png
+    icon_background_color_dark: "#121212"
+  
+  web: false
+
+# flutter_native_splash-acceptance.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo-acceptance.png
+  branding: assets/branding-acceptance.png
+  color_dark: "#121212"
+  image_dark: assets/logo-acceptance.png
+  branding_dark: assets/branding-acceptance.png
+
+  android_12:
+    image: assets/logo-acceptance.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/logo-acceptance.png
+    icon_background_color_dark: "#121212"
+  
+  web: false
+
+# flutter_native_splash-production.yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo-production.png
+  branding: assets/branding-production.png
+  color_dark: "#121212"
+  image_dark: assets/logo-production.png
+  branding_dark: assets/branding-production.png
+
+  android_12:
+    image: assets/logo-production.png
+    icon_background_color: "#ffffff"
+    image_dark: assets/logo-production.png
+    icon_background_color_dark: "#121212"
+  
+  web: false
+```
+
+Great, now comes the fun part running the new command!
+
+The new command is:
+```bash
+# If you have a flavor called production you would do this:
+flutter pub run flutter_native_splash:create --flavor production
+
+# For a flavor with a name staging you would provide it's name like so:
+flutter pub run flutter_native_splash:create --flavor staging
+
+# And if you have a local version for devs you could do that:
+flutter pub run flutter_native_splash:create --flavor development
+```
+
+### Android setup
+You're done! No, really, Android doesn't need any additional setup.
+
+Note: If it didn't work, please make sure that your flavors are named the same as your config files, otherwise the setup will not work.
+
+### iOS setup
+iOS is a bit tricky, so hang tight, it might look scary but most of the steps are just a single click, explained as much as possible to lower the possibility of mistakes.
+
+When you run the new command, you will need to open xCode and follow the steps bellow:
+
+Assumption
+- In order for this setup to work, you would already have 3 different `schemes` setup; production, acceptance and development.
+
+Preparation
+- Open the iOS Flutter project in Xcode (open the Runner.xcworkspace)
+- Find the newly created Storyboard files at the same location where the original is `{project root}/ios/Runner/Base.lproj`
+- Select all of them and drag and drop into Xcode, directly to the left hand side where the current LaunchScreen.storyboard is located already
+- After you drop your files there Xcode will ask you to link them, make sure you select 'Copy if needed'
+- This part is done, you have linked the newly created storyboards in your project.
+
+xCode
+
+Xcode still doesn't know how to use them, so we need to specify for all the current flavors (schemes) which file to use and to use that value inside the Info.plist file.
+- Open the iOS Flutter project in Xcode (open the Runner.xcworkspace)
+- Click the Runner project in the top left corner (usually the first item in the list)
+- In the middle part of the screen, on the left side, select the Runner target
+- On the top part of the screen select Build Settings
+- Make sure that 'All' and 'Combined' are selected
+- Next to 'Combine' you have a '+' button, press it and select 'Add User-Defined Setting'
+- Once you do that Xcode will create a new variable for you to name. Suggestion is to name it `LAUNCH_SCREEN_STORYBOARD`
+- Once you do that, you will have the option to define a specific name for each flavor (scheme) that you have defined in the project. **Make sure that you input the exact name of the LaunchScreen.storyboard that was created by this tool**
+  - Example: If you have a flavor Development, there is a Storyboard created name LaunchScreenDevelopment.storyboard, please add that name (without the storyboard part) to the variable value next to the flavor value
+- After you finish with that, you need to update Info.plist file to link the newly created variable so that it's used correctly
+- Open the Info.plist file
+- Find the entry called 'Launch screen interface file base name'
+- The default value is 'LaunchScreen', change that to the variable name that you create previously. If you follow these steps exactly, it would be LAUNCH_SCREEN_STORYBOARD, so input this `$(LAUNCH_SCREEN_STORYBOARD)`
+- And your done!
+
+Congrats you finished your setup for multiple flavors,
+
+## 5. Support the package (optional)
 If you find this package useful, you can support it for free by giving it a thumbs up at the top of this page.  Here's another option to support the package:
 <p align='center'><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></p>
 

@@ -12,12 +12,31 @@ import 'package:yaml/yaml.dart';
 
 part 'android.dart';
 part 'constants.dart';
+part 'flavor_helper.dart';
 part 'ios.dart';
 part 'templates.dart';
 part 'web.dart';
 
+late FlavorHelper flavorHelper;
+
 /// Create splash screens for Android and iOS
-void createSplash({String? path}) {
+void createSplash({String? path, String? flavor}) {
+  if (flavor != null) {
+    print(
+      '''
+╔════════════════════════════════════════════════════════════════════════════╗
+║                              Flavor detected!                              ║
+╠════════════════════════════════════════════════════════════════════════════╣
+║ Setting up the $flavor flavor.
+╚════════════════════════════════════════════════════════════════════════════╝
+''',
+    );
+  }
+
+  // It is important that the flavor setup occurs as soon as possible.
+  // So before we generate anything, we need to setup the flavor (even if it's the default one).
+  flavorHelper = FlavorHelper(flavor);
+
   final config = getConfig(configFile: path);
   _checkConfig(config);
   createSplashByConfig(config);
@@ -25,6 +44,7 @@ void createSplash({String? path}) {
 
 /// Create splash screens for Android and iOS based on a config argument
 void createSplashByConfig(Map<String, dynamic> config) {
+  // Preparing all the data for later usage
   final String? image = _checkImageExists(config: config, parameter: 'image');
   String? darkImage =
       _checkImageExists(config: config, parameter: 'image_dark');
@@ -62,6 +82,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
   String? android12DarkImage;
   String? android12IconBackgroundColor;
   String? darkAndroid12IconBackgroundColor;
+
   if (config['android_12'] != null) {
     final android12Config = config['android_12'] as Map<String, dynamic>;
     android12Image =
@@ -166,15 +187,21 @@ void removeSplash({String? path}) {
     'color': '#ffffff',
     'color_dark': '#000000'
   };
+
   if (config.containsKey('android')) {
     removeConfig['android'] = config['android'];
   }
+
   if (config.containsKey('ios')) {
     removeConfig['ios'] = config['ios'];
   }
+
   if (config.containsKey('web')) {
     removeConfig['web'] = config['web'];
   }
+
+  /// Checks if the image that was specified in the config file does exist.
+  /// If not the developer will receive an error message and the process will exit.
   if (config.containsKey('info_plist_files')) {
     removeConfig['info_plist_files'] = config['info_plist_files'];
   }
@@ -185,18 +212,23 @@ String? _checkImageExists({
   required Map<String, dynamic> config,
   required String parameter,
 }) {
-  final String image = config[parameter] as String? ?? '';
-  if (image.isNotEmpty && !File(image).existsSync()) {
-    print('The file "$image" set as the parameter "$parameter" was not found.');
-    exit(1);
+  final String? image = config[parameter]?.toString();
+  if (image != null) {
+    if (image.isNotEmpty && !File(image).existsSync()) {
+      print(
+        'The file "$image" set as the parameter "$parameter" was not found.',
+      );
+      exit(1);
+    }
+
+    if (p.extension(image).toLowerCase() != '.png') {
+      print(
+        'Unsupported file format: $image  Your image must be a PNG file.',
+      );
+      exit(1);
+    }
   }
 
-  if (image.isNotEmpty && p.extension(image).toLowerCase() != '.png') {
-    print(
-      'Unsupported file format: $image  Your image must be a PNG file.',
-    );
-    exit(1);
-  }
   return image == '' ? null : image;
 }
 
@@ -211,6 +243,8 @@ Map<String, dynamic> getConfig({String? configFile}) {
       print('The config file `$configFile` was not found.');
       exit(1);
     }
+  } else if (flavorHelper.flavor != null) {
+    filePath = 'flutter_native_splash-${flavorHelper.flavor}.yaml';
   } else if (File('flutter_native_splash.yaml').existsSync()) {
     filePath = 'flutter_native_splash.yaml';
   } else {
@@ -250,6 +284,8 @@ Map<String, dynamic> _yamlToMap(YamlMap yamlMap) {
   return map;
 }
 
+/// Validates if the mix and match of different setup values are not conflicting with each other.
+/// If they do, the developer will get a message where the issue is.
 void _checkConfig(Map<String, dynamic> config) {
   if (config.containsKey('color') && config.containsKey('background_image')) {
     print(
