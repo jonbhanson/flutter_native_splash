@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.0+1
+  flutter_native_splash: ^2.2.1
 ```
 
 Don't forget to `flutter pub get`.
@@ -82,6 +82,9 @@ flutter_native_splash:
     # 768 pixels in diameter.
     #image: assets/android12splash.png
 
+    # Splash screen background color.
+    #color: "#42a5f5"
+
     # App icon background color.
     #icon_background_color: "#111111"
 
@@ -89,6 +92,7 @@ flutter_native_splash:
     # color when the device is in dark mode. If they are not specified, the app will use the
     # parameters from above.
     #image_dark: assets/android12splash-invert.png
+    #color_dark: "#042a49"
     #icon_background_color_dark: "#eeeeee"
 
   # The android, ios and web parameters can be used to disable generating a splash screen on a given

@@ -82,6 +82,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
   String? android12DarkImage;
   String? android12IconBackgroundColor;
   String? darkAndroid12IconBackgroundColor;
+  String? android12Color;
+  String? android12DarkColor;
 
   if (config['android_12'] != null) {
     final android12Config = config['android_12'] as Map<String, dynamic>;
@@ -95,6 +97,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
     darkAndroid12IconBackgroundColor =
         parseColor(android12Config['icon_background_color_dark']) ??
             android12IconBackgroundColor;
+    android12Color = parseColor(android12Config['color']);
+    android12DarkColor = parseColor(android12Config['dark_color']);
   }
 
   if (!config.containsKey('android') || config['android'] as bool) {
@@ -110,8 +114,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkAndroid12IconBackgroundColor: darkAndroid12IconBackgroundColor,
         backgroundImage: backgroundImage,
         darkBackgroundImage: darkBackgroundImage,
-        color: color,
-        darkColor: darkColor,
+        color: android12Color ?? color,
+        darkColor: android12DarkColor ?? darkColor,
         gravity: gravity,
         brandingGravity: brandingGravity,
         fullscreen: fullscreen,
@@ -179,7 +183,8 @@ Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_n
 }
 
 /// Remove any splash screen by setting the default white splash
-void removeSplash({String? path}) {
+void removeSplash({String? path, String? flavor}) {
+  _flavorHelper = _FlavorHelper(flavor);
   print("Restoring Flutter's default native splash screen...");
   final config = getConfig(configFile: path);
 
