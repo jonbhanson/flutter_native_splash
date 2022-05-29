@@ -73,6 +73,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
   if (config['android_gravity'] != null) {
     gravity = config['android_gravity'] as String;
   }
+  final String? androidScreenOrientation =
+      config['android_screen_orientation'] as String?;
   final brandingGravity = config['branding_mode'] as String? ?? 'bottom';
   final bool fullscreen = config['fullscreen'] as bool? ?? false;
   final String iosContentMode =
@@ -97,8 +99,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
     darkAndroid12IconBackgroundColor =
         parseColor(android12Config['icon_background_color_dark']) ??
             android12IconBackgroundColor;
-    android12Color = parseColor(android12Config['color']);
-    android12DarkColor = parseColor(android12Config['dark_color']);
+    android12Color = parseColor(android12Config['color']) ?? color;
+    android12DarkColor = parseColor(android12Config['dark_color']) ?? darkColor;
   }
 
   if (!config.containsKey('android') || config['android'] as bool) {
@@ -119,6 +121,9 @@ void createSplashByConfig(Map<String, dynamic> config) {
         gravity: gravity,
         brandingGravity: brandingGravity,
         fullscreen: fullscreen,
+        android12DarkBackgroundColor: android12DarkColor,
+        android12BackgroundColor: android12Color,
+        screenOrientation: androidScreenOrientation,
       );
     } else {
       print('Android folder not found, skipping Android splash update...');

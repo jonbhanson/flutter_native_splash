@@ -71,6 +71,10 @@ class _FlavorHelper {
     return '${androidNightV21DrawableFolder}launch_background.xml';
   }
 
+  String get androidManifestFile {
+    return 'android/app/src/main/AndroidManifest.xml';
+  }
+
   // iOS related values
   late String? _iOSFlavorName;
 

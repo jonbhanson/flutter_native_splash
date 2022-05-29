@@ -49,6 +49,8 @@ void _createAndroidSplash({
   required String? darkImagePath,
   required String? android12ImagePath,
   required String? android12DarkImagePath,
+  required String? android12BackgroundColor,
+  required String? android12DarkBackgroundColor,
   required String? brandingImagePath,
   required String? brandingDarkImagePath,
   required String? color,
@@ -60,6 +62,7 @@ void _createAndroidSplash({
   required String? darkBackgroundImage,
   required String? android12IconBackgroundColor,
   required String? darkAndroid12IconBackgroundColor,
+  required String? screenOrientation,
 }) {
   if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
@@ -164,7 +167,7 @@ void _createAndroidSplash({
     fullScreen: fullscreen,
     file: _flavorHelper.androidV31StylesFile,
     template: _androidV31StylesXml,
-    android12BackgroundColor: color,
+    android12BackgroundColor: android12BackgroundColor,
     android12ImagePath: android12ImagePath,
     android12IconBackgroundColor: android12IconBackgroundColor,
     android12BrandingImagePath: brandingImagePath,
@@ -175,7 +178,7 @@ void _createAndroidSplash({
       fullScreen: fullscreen,
       file: _flavorHelper.androidV31StylesNightFile,
       template: _androidV31StylesNightXml,
-      android12BackgroundColor: darkColor,
+      android12BackgroundColor: android12DarkBackgroundColor,
       android12ImagePath: android12DarkImagePath,
       android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
       android12BrandingImagePath: brandingDarkImagePath,
@@ -195,6 +198,8 @@ void _createAndroidSplash({
       template: _androidStylesNightXml,
     );
   }
+
+  _applyOrientation(orientation: screenOrientation);
 }
 
 /// Create splash screen as drawables for multiple screens (dpi)
@@ -448,6 +453,41 @@ void removeElement({required XmlElement launchTheme, required String name}) {
     (element) => element.attributes.any(
       (attribute) =>
           attribute.name.toString() == 'name' && attribute.value == name,
+    ),
+  );
+}
+
+void _applyOrientation({required String? orientation}) {
+  final manifestFile = File(_flavorHelper.androidManifestFile);
+  final manifestDocument = XmlDocument.parse(manifestFile.readAsStringSync());
+
+  final manifestRoot = manifestDocument.getElement('manifest');
+  final application = manifestRoot?.getElement('application');
+  final activity = application?.getElement('activity');
+  const String attribute = 'android:screenOrientation';
+  if (orientation == null) {
+    if (activity?.attributes.any((p0) => p0.name.toString() == attribute) ??
+        false) {
+      activity?.removeAttribute(attribute);
+    } else {
+      return;
+    }
+  } else {
+    activity?.setAttribute(attribute, orientation);
+  }
+  manifestFile.writeAsStringSync(
+    manifestDocument.toXmlString(
+      pretty: true,
+      indent: '    ',
+      indentAttribute: (XmlAttribute xmlAttribute) {
+        // Try to preserve AndroidManifest.XML formatting:
+        if (xmlAttribute.name.toString() == "xmlns:android") return false;
+        if (xmlAttribute.value == "android.intent.action.MAIN") return false;
+        if (xmlAttribute.value == "android.intent.category.LAUNCHER") {
+          return false;
+        }
+        return true;
+      },
     ),
   );
 }

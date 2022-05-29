@@ -1,3 +1,7 @@
+## [2.2.2] - (2022-May-29)
+* Corrected Android 12 color overriding color parameter.  Closes [#365](https://github.com/jonbhanson/flutter_native_splash/issues/365).
+* Add support for setting screen orientation in Android.  Closes [#344](https://github.com/jonbhanson/flutter_native_splash/issues/344).
+
 ## [2.2.1] - (2022-May-22)
 * Updated dependencies.  Closes [#358](https://github.com/jonbhanson/flutter_native_splash/issues/358).
 * Added Android 12 background color support.  Closes [#357](https://github.com/jonbhanson/flutter_native_splash/issues/357).
