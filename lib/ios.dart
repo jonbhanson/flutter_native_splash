@@ -136,7 +136,7 @@ void _createiOSSplash({
     );
   }
 
-  _applyLaunchScreenStoryboard(
+  _createLaunchScreenStoryboard(
     imagePath: imagePath,
     brandingImagePath: brandingImagePath,
     iosContentMode: iosContentMode,
@@ -204,42 +204,6 @@ void _saveImageiOS({
   final file = File(targetPath + template.fileName);
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));
-}
-
-/// Update LaunchScreen.storyboard adding width, height and color
-void _applyLaunchScreenStoryboard({
-  required String? imagePath,
-  required String iosContentMode,
-  String? iosBrandingContentMode,
-  String? brandingImagePath,
-}) {
-  final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
-
-  if (file.existsSync()) {
-    print(
-      '[iOS] Updating ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard with width, and height',
-    );
-    return _updateLaunchScreenStoryboard(
-      imagePath: imagePath,
-      brandingImagePath: brandingImagePath,
-      iosContentMode: iosContentMode,
-      iosBrandingContentMode: iosBrandingContentMode,
-    );
-  } else {
-    print(
-      '[iOS] No ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file found in your iOS project',
-    );
-    print(
-      '[iOS] Creating ${_flavorHelper.iOSLaunchScreenStoryboardName}.storyboard file and adding it '
-      'to your iOS project',
-    );
-    return _createLaunchScreenStoryboard(
-      imagePath: imagePath,
-      brandingImagePath: brandingImagePath,
-      iosContentMode: iosContentMode,
-      iosBrandingContentMode: iosBrandingContentMode,
-    );
-  }
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
@@ -430,8 +394,8 @@ void _updateLaunchScreenStoryboard({
 void _createLaunchScreenStoryboard({
   required String? imagePath,
   required String iosContentMode,
-  String? iosBrandingContentMode,
-  String? brandingImagePath,
+  required String? iosBrandingContentMode,
+  required String? brandingImagePath,
 }) {
   final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
   file.createSync(recursive: true);
