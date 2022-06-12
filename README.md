@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.3
+  flutter_native_splash: ^2.2.3+1
 ```
 
 Don't forget to `flutter pub get`.
@@ -187,6 +187,8 @@ Android 12 has a [new method](https://developer.android.com/about/versions/12/fe
 The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
 ***PLEASE NOTE:*** The splash screen may not appear when you launch the app from Android Studio.  However, it should appear when you launch by clicking on the launch icon in Android.
+
+***PLEASE NOTE:*** There are a number of reports that non-Google launchers do not display the launch image correctly.  If the launch image does not display correctly, please try the Google launcher to confirm that this package is working.
   
 # Flavor Support
 If you have a project setup that contains multiple flavors or environments, and you created more than one flavor this would be a feature for you.

@@ -1,3 +1,6 @@
+##[2.2.3+1] - (2022-June-12)
+* Updated readme.
+
 ## [2.2.3] - (2022-June-5)
 * Create new storyboard file rather than try to modify existing file.  Closes [#369](https://github.com/jonbhanson/flutter_native_splash/issues/369).
 * Reverted 2.1.6 change of using light settings for dark mode if omitted.  Fixes [#368](https://github.com/jonbhanson/flutter_native_splash/issues/368).
