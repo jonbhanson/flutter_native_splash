@@ -381,6 +381,12 @@ Future<void> _updateStylesFile({
     value: fullScreen.toString(),
   );
 
+  replaceElement(
+    launchTheme: launchTheme,
+    name: 'android:windowLayoutInDisplayCutoutMode',
+    value: 'shortEdges',
+  );
+
   // In Android 12, the color must be set directly in the styles.xml
   if (android12BackgroundColor != null) {
     replaceElement(

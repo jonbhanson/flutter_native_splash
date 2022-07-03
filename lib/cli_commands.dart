@@ -38,7 +38,6 @@ void createSplash({String? path, String? flavor}) {
   _flavorHelper = _FlavorHelper(flavor);
 
   final config = getConfig(configFile: path);
-  _checkConfig(config);
   createSplashByConfig(config);
 }
 
@@ -46,18 +45,50 @@ void createSplash({String? path, String? flavor}) {
 void createSplashByConfig(Map<String, dynamic> config) {
   // Preparing all the data for later usage
   final String? image = _checkImageExists(config: config, parameter: 'image');
+  final String? imageAndroid =
+      _checkImageExists(config: config, parameter: 'image_android');
+  final String? imageIos =
+      _checkImageExists(config: config, parameter: 'image_ios');
+  final String? imageWeb =
+      _checkImageExists(config: config, parameter: 'image_web');
   final String? darkImage =
       _checkImageExists(config: config, parameter: 'image_dark');
+  final String? darkImageAndroid =
+      _checkImageExists(config: config, parameter: 'image_dark_android');
+  final String? darkImageIos =
+      _checkImageExists(config: config, parameter: 'image_dark_ios');
+  final String? darkImageWeb =
+      _checkImageExists(config: config, parameter: 'image_dark_web');
   final String? brandingImage =
       _checkImageExists(config: config, parameter: 'branding');
+  final String? brandingImageAndroid =
+      _checkImageExists(config: config, parameter: 'branding_android');
+  final String? brandingImageIos =
+      _checkImageExists(config: config, parameter: 'branding_ios');
   final String? brandingDarkImage =
       _checkImageExists(config: config, parameter: 'branding_dark');
+  final String? brandingDarkImageAndroid =
+      _checkImageExists(config: config, parameter: 'branding_dark_android');
+  final String? brandingDarkImageIos =
+      _checkImageExists(config: config, parameter: 'branding_dark_ios');
   final String? color = parseColor(config['color']);
   final String? darkColor = parseColor(config['color_dark']);
   final String? backgroundImage =
       _checkImageExists(config: config, parameter: 'background_image');
+  final String? backgroundImageAndroid =
+      _checkImageExists(config: config, parameter: 'background_android');
+  final String? backgroundImageIos =
+      _checkImageExists(config: config, parameter: 'background_ios');
+  final String? backgroundImageWeb =
+      _checkImageExists(config: config, parameter: 'background_web');
   final String? darkBackgroundImage =
       _checkImageExists(config: config, parameter: 'background_image_dark');
+  final String? darkBackgroundImageAndroid = _checkImageExists(
+      config: config, parameter: 'background_image_dark_android');
+  final String? darkBackgroundImageIos =
+      _checkImageExists(config: config, parameter: 'background_image_dark_ios');
+  final String? darkBackgroundImageWeb =
+      _checkImageExists(config: config, parameter: 'background_image_dark_web');
 
   final plistFiles = config['info_plist_files'] as List<String>?;
   String gravity = (config['fill'] as bool? ?? false) ? 'fill' : 'center';
@@ -95,16 +126,16 @@ void createSplashByConfig(Map<String, dynamic> config) {
   if (!config.containsKey('android') || config['android'] as bool) {
     if (Directory('android').existsSync()) {
       _createAndroidSplash(
-        imagePath: image,
-        darkImagePath: darkImage,
-        brandingImagePath: brandingImage,
-        brandingDarkImagePath: brandingDarkImage,
+        imagePath: imageAndroid ?? image,
+        darkImagePath: darkImageAndroid ?? darkImage,
+        brandingImagePath: brandingImageAndroid ?? brandingImage,
+        brandingDarkImagePath: brandingDarkImageAndroid ?? brandingDarkImage,
         android12ImagePath: android12Image,
         android12DarkImagePath: android12DarkImage,
         android12IconBackgroundColor: android12IconBackgroundColor,
         darkAndroid12IconBackgroundColor: darkAndroid12IconBackgroundColor,
-        backgroundImage: backgroundImage,
-        darkBackgroundImage: darkBackgroundImage,
+        backgroundImage: backgroundImageAndroid ?? backgroundImage,
+        darkBackgroundImage: darkBackgroundImageAndroid ?? darkBackgroundImage,
         color: android12Color ?? color,
         darkColor: android12DarkColor ?? darkColor,
         gravity: gravity,
@@ -122,12 +153,12 @@ void createSplashByConfig(Map<String, dynamic> config) {
   if (!config.containsKey('ios') || config['ios'] as bool) {
     if (Directory('ios').existsSync()) {
       _createiOSSplash(
-        imagePath: image,
-        darkImagePath: darkImage,
-        backgroundImage: backgroundImage,
-        darkBackgroundImage: darkBackgroundImage,
-        brandingImagePath: brandingImage,
-        brandingDarkImagePath: brandingDarkImage,
+        imagePath: imageIos ?? image,
+        darkImagePath: darkImageIos ?? darkImage,
+        backgroundImage: backgroundImageIos ?? backgroundImage,
+        darkBackgroundImage: darkBackgroundImageIos ?? darkBackgroundImage,
+        brandingImagePath: brandingImageIos ?? brandingImage,
+        brandingDarkImagePath: brandingDarkImageIos ?? brandingDarkImage,
         color: color,
         darkColor: darkColor,
         plistFiles: plistFiles,
@@ -143,10 +174,10 @@ void createSplashByConfig(Map<String, dynamic> config) {
   if (!config.containsKey('web') || config['web'] as bool) {
     if (Directory('web').existsSync()) {
       _createWebSplash(
-        imagePath: image,
-        darkImagePath: darkImage,
-        backgroundImage: backgroundImage,
-        darkBackgroundImage: darkBackgroundImage,
+        imagePath: imageWeb ?? image,
+        darkImagePath: darkImageWeb ?? darkImage,
+        backgroundImage: backgroundImageWeb ?? backgroundImage,
+        darkBackgroundImage: darkBackgroundImageWeb ?? darkBackgroundImage,
         color: color,
         darkColor: darkColor,
         imageMode: webImageMode,
@@ -281,53 +312,6 @@ Map<String, dynamic> _yamlToMap(YamlMap yamlMap) {
     }
   }
   return map;
-}
-
-/// Validates if the mix and match of different setup values are not conflicting with each other.
-/// If they do, the developer will get a message where the issue is.
-void _checkConfig(Map<String, dynamic> config) {
-  if (config.containsKey('color') && config.containsKey('background_image')) {
-    print(
-      'Your `flutter_native_splash` section cannot not contain both a '
-      '`color` and `background_image`.',
-    );
-    exit(1);
-  }
-
-  if (!config.containsKey('color') && !config.containsKey('background_image')) {
-    print(
-      'Your `flutter_native_splash` section does not contain a `color` or '
-      '`background_image`.',
-    );
-    exit(1);
-  }
-
-  if (config.containsKey('color_dark') &&
-      config.containsKey('background_image_dark')) {
-    print(
-      'Your `flutter_native_splash` section cannot not contain both a '
-      '`color_dark` and `background_image_dark`.',
-    );
-    exit(1);
-  }
-
-  if (config.containsKey('image_dark') &&
-      !config.containsKey('color_dark') &&
-      !config.containsKey('background_image_dark')) {
-    print(
-      'Your `flutter_native_splash` section contains `image_dark` but '
-      'does not contain a `color_dark` or a `background_image_dark`.',
-    );
-    exit(1);
-  }
-
-  if (config.containsKey('branding_dark') && !config.containsKey('branding')) {
-    print(
-      'Your `flutter_native_splash` section contains `branding_dark` but '
-      'does not contain a `branding`.',
-    );
-    exit(1);
-  }
 }
 
 @visibleForTesting

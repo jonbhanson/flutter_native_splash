@@ -1,13 +1,14 @@
+##[2.2.4] - (2022-July-03)
+* Added parameters for platform-specific images.  Closes [#375](https://github.com/jonbhanson/flutter_native_splash/issues/375).
+* Remove black status bar which appeared on Android devices with a notch.  Fixes [#311](https://github.com/jonbhanson/flutter_native_splash/issues/311).
 ##[2.2.3+1] - (2022-June-12)
 * Updated readme.
-
 ## [2.2.3] - (2022-June-5)
 * Create new storyboard file rather than try to modify existing file.  Closes [#369](https://github.com/jonbhanson/flutter_native_splash/issues/369).
 * Reverted 2.1.6 change of using light settings for dark mode if omitted.  Fixes [#368](https://github.com/jonbhanson/flutter_native_splash/issues/368).
 ## [2.2.2] - (2022-May-29)
 * Corrected Android 12 color overriding color parameter.  Closes [#365](https://github.com/jonbhanson/flutter_native_splash/issues/365).
 * Add support for setting screen orientation in Android.  Closes [#344](https://github.com/jonbhanson/flutter_native_splash/issues/344).
-
 ## [2.2.1] - (2022-May-22)
 * Updated dependencies.  Closes [#358](https://github.com/jonbhanson/flutter_native_splash/issues/358).
 * Added Android 12 background color support.  Closes [#357](https://github.com/jonbhanson/flutter_native_splash/issues/357).
