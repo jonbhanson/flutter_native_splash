@@ -1,7 +1,7 @@
-##[2.2.4] - (2022-July-03)
+## [2.2.4] - (2022-July-03)
 * Added parameters for platform-specific images.  Closes [#375](https://github.com/jonbhanson/flutter_native_splash/issues/375).
 * Remove black status bar which appeared on Android devices with a notch.  Fixes [#311](https://github.com/jonbhanson/flutter_native_splash/issues/311).
-##[2.2.3+1] - (2022-June-12)
+## [2.2.3+1] - (2022-June-12)
 * Updated readme.
 ## [2.2.3] - (2022-June-5)
 * Create new storyboard file rather than try to modify existing file.  Closes [#369](https://github.com/jonbhanson/flutter_native_splash/issues/369).
