@@ -13,6 +13,8 @@ void _createWebSplash({
   required String? darkImagePath,
   required String? color,
   required String? darkColor,
+  required String? brandingImagePath,
+  required String? brandingDarkImagePath,
   required String imageMode,
   required String? backgroundImage,
   required String? darkBackgroundImage,
@@ -41,6 +43,39 @@ void _createWebSplash({
       _WebLaunchImageTemplate(fileName: 'dark-4x.png', pixelDensity: 4),
     ],
   );
+
+  brandingDarkImagePath ??= brandingImagePath;
+  createWebImages(
+    imagePath: brandingImagePath,
+    webSplashImages: [
+      _WebLaunchImageTemplate(fileName: 'branding-1x.png', pixelDensity: 1),
+      _WebLaunchImageTemplate(fileName: 'branding-2x.png', pixelDensity: 2),
+      _WebLaunchImageTemplate(fileName: 'branding-3x.png', pixelDensity: 3),
+      _WebLaunchImageTemplate(fileName: 'branding-4x.png', pixelDensity: 4),
+    ],
+  );
+  createWebImages(
+    imagePath: brandingDarkImagePath,
+    webSplashImages: [
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-1x.png',
+        pixelDensity: 1,
+      ),
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-2x.png',
+        pixelDensity: 2,
+      ),
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-3x.png',
+        pixelDensity: 3,
+      ),
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-4x.png',
+        pixelDensity: 4,
+      ),
+    ],
+  );
+
   createBackgroundImages(
     backgroundImage: backgroundImage,
     darkBackgroundImage: darkBackgroundImage,
