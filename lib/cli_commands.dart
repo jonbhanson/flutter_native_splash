@@ -189,6 +189,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
         color: color,
         darkColor: darkColor,
         imageMode: webImageMode,
+        brandingMode: brandingGravity,
       );
     } else {
       print('Web folder not found, skipping web splash update...');
