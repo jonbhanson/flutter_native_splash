@@ -52,7 +52,7 @@ flutter_native_splash:
   #image: assets/splash.png
 
   # The branding property allows you to specify an image used as branding in the splash screen.
-  # It must be a png file. Currently, it is only supported for Android < v12 and iOS.
+  # It must be a png file. It is supported for Android < v12, iOS and the Web.
   #branding: assets/dart.png
 
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
