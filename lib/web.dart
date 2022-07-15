@@ -233,5 +233,5 @@ void updateIndex({required String imageMode, required String? imagePath}) {
       );
     }
   }
-  webIndex.writeAsStringSync(lines.join('\n'));
+  webIndex.writeAsStringSync('${lines.join('\n')}\n');
 }

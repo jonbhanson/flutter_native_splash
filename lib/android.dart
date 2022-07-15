@@ -298,7 +298,7 @@ void _applyLaunchBackgroundXml({
   }
 
   launchBackgroundFile.writeAsStringSync(
-    launchBackgroundDocument.toXmlString(pretty: true, indent: '    '),
+    '${launchBackgroundDocument.toXmlString(pretty: true, indent: '    ')}\n',
   );
 }
 
@@ -429,7 +429,7 @@ Future<void> _updateStylesFile({
   }
 
   stylesFile.writeAsStringSync(
-    stylesDocument.toXmlString(pretty: true, indent: '    '),
+    '${stylesDocument.toXmlString(pretty: true, indent: '    ')}\n',
   );
 }
 
