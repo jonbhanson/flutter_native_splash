@@ -1,3 +1,8 @@
+## [2.2.5] - (2022-July-17)
+
+- Added Branding Image support for the web platform.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #386](https://github.com/jonbhanson/flutter_native_splash/pull/386).
+- Fix android12 config name.  Thanks [mihiro](https://github.com/mihiron) for [PR #390](https://github.com/jonbhanson/flutter_native_splash/pull/390).
+
 ## [2.2.4] - (2022-July-03)
 
 - Added parameters for platform-specific images. Closes [#375](https://github.com/jonbhanson/flutter_native_splash/issues/375).
