@@ -120,7 +120,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
     darkAndroid12IconBackgroundColor =
         parseColor(android12Config['icon_background_color_dark']);
     android12Color = parseColor(android12Config['color']) ?? color;
-    android12DarkColor = parseColor(android12Config['dark_color']) ?? darkColor;
+    android12DarkColor = parseColor(android12Config['color_dark']) ?? darkColor;
   }
 
   if (!config.containsKey('android') || config['android'] as bool) {
