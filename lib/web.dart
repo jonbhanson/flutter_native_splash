@@ -13,7 +13,10 @@ void _createWebSplash({
   required String? darkImagePath,
   required String? color,
   required String? darkColor,
+  required String? brandingImagePath,
+  required String? brandingDarkImagePath,
   required String imageMode,
+  required String brandingMode,
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
@@ -41,6 +44,39 @@ void _createWebSplash({
       _WebLaunchImageTemplate(fileName: 'dark-4x.png', pixelDensity: 4),
     ],
   );
+
+  brandingDarkImagePath ??= brandingImagePath;
+  createWebImages(
+    imagePath: brandingImagePath,
+    webSplashImages: [
+      _WebLaunchImageTemplate(fileName: 'branding-1x.png', pixelDensity: 1),
+      _WebLaunchImageTemplate(fileName: 'branding-2x.png', pixelDensity: 2),
+      _WebLaunchImageTemplate(fileName: 'branding-3x.png', pixelDensity: 3),
+      _WebLaunchImageTemplate(fileName: 'branding-4x.png', pixelDensity: 4),
+    ],
+  );
+  createWebImages(
+    imagePath: brandingDarkImagePath,
+    webSplashImages: [
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-1x.png',
+        pixelDensity: 1,
+      ),
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-2x.png',
+        pixelDensity: 2,
+      ),
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-3x.png',
+        pixelDensity: 3,
+      ),
+      _WebLaunchImageTemplate(
+        fileName: 'branding-dark-4x.png',
+        pixelDensity: 4,
+      ),
+    ],
+  );
+
   createBackgroundImages(
     backgroundImage: backgroundImage,
     darkBackgroundImage: darkBackgroundImage,
@@ -52,7 +88,12 @@ void _createWebSplash({
     backgroundImage: backgroundImage,
   );
   _createSplashJs();
-  updateIndex(imageMode: imageMode, imagePath: imagePath);
+  updateIndex(
+    imageMode: imageMode,
+    imagePath: imagePath,
+    brandingMode: brandingMode,
+    brandingImagePath: brandingImagePath,
+  );
 }
 
 void createBackgroundImages({
@@ -163,7 +204,12 @@ void _createSplashJs() {
   file.writeAsStringSync(_webJS);
 }
 
-void updateIndex({required String imageMode, required String? imagePath}) {
+void updateIndex({
+  required String imageMode,
+  required String? imagePath,
+  required String brandingMode,
+  required String? brandingImagePath,
+}) {
   print('[Web] Updating index.html');
   final webIndex = File(_webIndex);
   final lines = webIndex.readAsLinesSync();
@@ -174,6 +220,7 @@ void updateIndex({required String imageMode, required String? imagePath}) {
   var headCloseTagLine = 0;
   var bodyOpenTagLine = 0;
   var existingPictureLine = 0;
+  var existingBrandingPictureLine = 0;
 
   const styleSheetLink =
       '<link rel="stylesheet" type="text/css" href="splash/style.css">';
@@ -199,6 +246,8 @@ void updateIndex({required String imageMode, required String? imagePath}) {
       bodyOpenTagLine = x;
     } else if (line.contains('<picture id="splash">')) {
       existingPictureLine = x;
+    } else if (line.contains('<picture id="splash-branding">')) {
+      existingBrandingPictureLine = x;
     }
   }
 
@@ -230,6 +279,27 @@ void updateIndex({required String imageMode, required String? imagePath}) {
       lines.removeRange(
         existingPictureLine,
         existingPictureLine + _indexHtmlPicture.length,
+      );
+    }
+  }
+
+  if (existingBrandingPictureLine == 0) {
+    if (brandingImagePath != null) {
+      for (var x = _indexHtmlBrandingPicture.length - 1; x >= 0; x--) {
+        lines[bodyOpenTagLine + 1] =
+            '${_indexHtmlBrandingPicture[x].replaceFirst('[BRANDINGMODE]', brandingMode)}\n${lines[bodyOpenTagLine + 1]}';
+      }
+    }
+  } else {
+    if (brandingImagePath != null) {
+      for (var x = 0; x < _indexHtmlBrandingPicture.length; x++) {
+        lines[existingBrandingPictureLine + x] = _indexHtmlBrandingPicture[x]
+            .replaceFirst('[BRANDINGMODE]', brandingMode);
+      }
+    } else {
+      lines.removeRange(
+        existingBrandingPictureLine,
+        existingBrandingPictureLine + _indexHtmlBrandingPicture.length,
       );
     }
   }

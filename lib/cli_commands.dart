@@ -65,12 +65,16 @@ void createSplashByConfig(Map<String, dynamic> config) {
       _checkImageExists(config: config, parameter: 'branding_android');
   final String? brandingImageIos =
       _checkImageExists(config: config, parameter: 'branding_ios');
+  final String? brandingImageWeb =
+      _checkImageExists(config: config, parameter: 'branding_web');
   final String? brandingDarkImage =
       _checkImageExists(config: config, parameter: 'branding_dark');
   final String? brandingDarkImageAndroid =
       _checkImageExists(config: config, parameter: 'branding_dark_android');
   final String? brandingDarkImageIos =
       _checkImageExists(config: config, parameter: 'branding_dark_ios');
+  final String? brandingDarkImageWeb =
+      _checkImageExists(config: config, parameter: 'branding_dark_web');
   final String? color = parseColor(config['color']);
   final String? darkColor = parseColor(config['color_dark']);
   final String? backgroundImage =
@@ -84,7 +88,9 @@ void createSplashByConfig(Map<String, dynamic> config) {
   final String? darkBackgroundImage =
       _checkImageExists(config: config, parameter: 'background_image_dark');
   final String? darkBackgroundImageAndroid = _checkImageExists(
-      config: config, parameter: 'background_image_dark_android');
+    config: config,
+    parameter: 'background_image_dark_android',
+  );
   final String? darkBackgroundImageIos =
       _checkImageExists(config: config, parameter: 'background_image_dark_ios');
   final String? darkBackgroundImageWeb =
@@ -178,9 +184,12 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkImagePath: darkImageWeb ?? darkImage,
         backgroundImage: backgroundImageWeb ?? backgroundImage,
         darkBackgroundImage: darkBackgroundImageWeb ?? darkBackgroundImage,
+        brandingImagePath: brandingImageWeb ?? brandingImage,
+        brandingDarkImagePath: brandingDarkImageWeb ?? brandingDarkImage,
         color: color,
         darkColor: darkColor,
         imageMode: webImageMode,
+        brandingMode: brandingGravity,
       );
     } else {
       print('Web folder not found, skipping web splash update...');
