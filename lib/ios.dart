@@ -387,7 +387,9 @@ void _updateLaunchScreenStoryboard({
     }
   }
 
-  file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '    '));
+  file.writeAsStringSync(
+    '${xmlDocument.toXmlString(pretty: true, indent: '    ')}\n',
+  );
 }
 
 /// Creates LaunchScreen.storyboard with splash image path
@@ -556,5 +558,7 @@ void _updateInfoPlistFile({
     }
   }
 
-  file.writeAsStringSync(xmlDocument.toXmlString(pretty: true, indent: '	'));
+  file.writeAsStringSync(
+    '${xmlDocument.toXmlString(pretty: true, indent: '	')}\n',
+  );
 }

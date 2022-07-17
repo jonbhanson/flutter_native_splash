@@ -282,7 +282,6 @@ void updateIndex({
       );
     }
   }
-
   if (existingBrandingPictureLine == 0) {
     if (brandingImagePath != null) {
       for (var x = _indexHtmlBrandingPicture.length - 1; x >= 0; x--) {
@@ -303,5 +302,5 @@ void updateIndex({
       );
     }
   }
-  webIndex.writeAsStringSync(lines.join('\n'));
+  webIndex.writeAsStringSync('${lines.join('\n')}\n');
 }
