@@ -9,7 +9,7 @@ void main() {
     expect(parseColor('#ffffff'), 'ffffff');
     expect(parseColor(' FAFAFA '), 'FAFAFA');
     expect(parseColor('121212'), '121212');
-    expect(parseColor(null), '');
+    expect(parseColor(null), null);
     expect(() => parseColor('badcolor'), throwsException);
   });
 
