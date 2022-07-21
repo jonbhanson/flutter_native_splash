@@ -218,62 +218,55 @@ void _updateHtml({
   document.querySelector(
         'link[rel="stylesheet"][type="text/css"][href="splash/style.css"]',
       ) ??
-      document.querySelector('head')?.append(
-            html_parser.parseFragment(
-              '  <link rel="stylesheet" type="text/css" href="splash/style.css">\n',
-              container: '',
-            ),
-          );
+      document.head?.append(
+        html_parser.parseFragment(
+          '  <link rel="stylesheet" type="text/css" href="splash/style.css">\n',
+          container: '',
+        ),
+      );
 
   // Add meta viewport if it doesn't exist
   document.querySelector(
         'meta[content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"][name="viewport"]',
       ) ??
-      document.querySelector('head')?.append(
-            html_parser.parseFragment(
-              '  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">\n',
-              container: '',
-            ),
-          );
+      document.head?.append(
+        html_parser.parseFragment(
+          '  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">\n',
+          container: '',
+        ),
+      );
 
   // Add javascript if it doesn't exist
   document.querySelector(
         'script[src="splash/splash.js"]',
       ) ??
-      document.querySelector('head')?.append(
-            html_parser.parseFragment(
-              '  <script src="splash/splash.js"></script>\n',
-              container: '',
-            ),
-          );
+      document.head?.append(
+        html_parser.parseFragment(
+          '  <script src="splash/splash.js"></script>\n',
+          container: '',
+        ),
+      );
 
   // Update splash image
+  document.querySelector('picture#splash')?.remove();
   if (imagePath != null) {
-    document.querySelector('picture#splash')?.remove();
-    document.querySelector('body')?.append(
-          html_parser.parseFragment(
-            _indexHtmlPicture.replaceAll('[IMAGEMODE]', imageMode),
-            container: '',
-          ),
-        );
-  } else {
-    document.querySelector('picture#splash')?.remove();
+    document.body?.append(
+      html_parser.parseFragment(
+        _indexHtmlPicture.replaceAll('[IMAGEMODE]', imageMode),
+        container: '',
+      ),
+    );
   }
 
   // Update branding image
+  document.querySelector('picture#splash-branding')?.remove();
   if (brandingImagePath != null) {
-    document.querySelector('picture#splash-branding')?.remove();
-    document.querySelector('body')?.append(
-          html_parser.parseFragment(
-            _indexHtmlBrandingPicture.replaceAll(
-              '[BRANDINGMODE]',
-              brandingMode,
-            ),
-            container: '',
-          ),
-        );
-  } else {
-    document.querySelector('picture#splash-branding')?.remove();
+    document.body?.append(
+      html_parser.parseFragment(
+        _indexHtmlBrandingPicture.replaceAll('[BRANDINGMODE]', brandingMode),
+        container: '',
+      ),
+    );
   }
 
   // Write the updated index.html
