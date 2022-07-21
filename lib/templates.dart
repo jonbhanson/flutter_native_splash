@@ -513,7 +513,7 @@ const List<String> _indexHtmlBrandingPicture = [
   '  <picture id="splash-branding">',
   '    <source srcset="splash/img/branding-1x.png 1x, splash/img/branding-2x.png 2x, splash/img/branding-3x.png 3x, splash/img/branding-4x.png 4x" media="(prefers-color-scheme: light)">',
   '    <source srcset="splash/img/branding-dark-1x.png 1x, splash/img/branding-dark-2x.png 2x, splash/img/branding-dark-3x.png 3x, splash/img/branding-dark-4x.png 4x" media="(prefers-color-scheme: dark)">',
-  '    <img class="[BRANDINGMODE]" aria-hidden="true" src="splash/img/branding-1x.png alt=""/>',
+  '    <img class="[BRANDINGMODE]" aria-hidden="true" src="splash/img/branding-1x.png" alt=""/>',
   '  </picture>',
 ];
 
