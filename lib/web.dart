@@ -250,22 +250,24 @@ void _updateHtml({
   // Update splash image
   document.querySelector('picture#splash')?.remove();
   if (imagePath != null) {
-    document.body?.append(
+    document.body?.insertBefore(
       html_parser.parseFragment(
         _indexHtmlPicture.replaceAll('[IMAGEMODE]', imageMode),
         container: '',
       ),
+      document.body?.firstChild,
     );
   }
 
   // Update branding image
   document.querySelector('picture#splash-branding')?.remove();
   if (brandingImagePath != null) {
-    document.body?.append(
+    document.body?.insertBefore(
       html_parser.parseFragment(
         _indexHtmlBrandingPicture.replaceAll('[BRANDINGMODE]', brandingMode),
         container: '',
       ),
+      document.body?.firstChild,
     );
   }
 
