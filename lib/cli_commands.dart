@@ -3,6 +3,7 @@
 /// This is the main entry point for the Flutter Native Splash package.
 library flutter_native_splash_cli;
 
+import 'package:html/parser.dart' as html_parser;
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
 import 'package:path/path.dart' as p;
