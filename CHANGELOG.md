@@ -1,3 +1,8 @@
+## [2.2.6] - (2022-July-24)
+
+- Fix parseColor test.  Thanks [mihiro](https://github.com/mihiron) for [PR #393](https://github.com/jonbhanson/flutter_native_splash/pull/393).
+- Fix branding image source link broken and optimized code with optional chaining operator.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #394](https://github.com/jonbhanson/flutter_native_splash/pull/394) and [PR #395](https://github.com/jonbhanson/flutter_native_splash/pull/395).
+
 ## [2.2.5] - (2022-July-17)
 
 - Added Branding Image support for the web platform.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #386](https://github.com/jonbhanson/flutter_native_splash/pull/386).
