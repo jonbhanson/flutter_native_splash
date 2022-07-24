@@ -519,14 +519,8 @@ const String _indexHtmlBrandingPicture = '''
 
 const String _webJS = '''
 function removeSplashFromWeb() {
-  const elem = document.getElementById("splash");
-  if (elem) {
-    elem.remove();
-  }
-  const elem2 = document.getElementById("splash-branding");
-  if (elem2) {
-    elem2.remove();
-  }
+  document.getElementById("splash")?.remove();
+  document.getElementById("splash-branding")?.remove();
   document.body.style.background = "transparent";
 }
 ''';
