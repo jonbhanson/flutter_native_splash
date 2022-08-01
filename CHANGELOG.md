@@ -1,3 +1,7 @@
+## [2.2.7] - (2022-July-31)
+
+- Remove branding on Android 12 if branding is not specified.  Fixes [#399](https://github.com/jonbhanson/flutter_native_splash/issues/399).
+
 ## [2.2.6] - (2022-July-24)
 
 - Fix parseColor test.  Thanks [mihiro](https://github.com/mihiron) for [PR #393](https://github.com/jonbhanson/flutter_native_splash/pull/393).
