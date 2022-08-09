@@ -173,7 +173,10 @@ void _createAndroidSplash({
     android12BrandingImagePath: brandingImagePath,
   );
 
-  if (darkColor != null || darkBackgroundImage != null) {
+  if (android12DarkBackgroundColor != null ||
+      android12DarkImagePath != null ||
+      darkAndroid12IconBackgroundColor != null ||
+      brandingDarkImagePath != null) {
     _applyStylesXml(
       fullScreen: fullscreen,
       file: _flavorHelper.androidV31StylesNightFile,
@@ -388,7 +391,12 @@ Future<void> _updateStylesFile({
   );
 
   // In Android 12, the color must be set directly in the styles.xml
-  if (android12BackgroundColor != null) {
+  if (android12BackgroundColor == null) {
+    removeElement(
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenBackground',
+    );
+  } else {
     replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBackground',
@@ -396,7 +404,12 @@ Future<void> _updateStylesFile({
     );
   }
 
-  if (android12BrandingImagePath != null) {
+  if (android12BrandingImagePath == null) {
+    removeElement(
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenBrandingImage',
+    );
+  } else {
     replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBrandingImage',
@@ -404,15 +417,12 @@ Future<void> _updateStylesFile({
     );
   }
 
-  if (android12BrandingImagePath != null) {
-    replaceElement(
+  if (android12ImagePath == null) {
+    removeElement(
       launchTheme: launchTheme,
-      name: 'android:windowSplashScreenBrandingImage',
-      value: '@drawable/branding',
+      name: 'android:windowSplashScreenAnimatedIcon',
     );
-  }
-
-  if (android12ImagePath != null) {
+  } else {
     replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenAnimatedIcon',
@@ -420,7 +430,12 @@ Future<void> _updateStylesFile({
     );
   }
 
-  if (android12IconBackgroundColor != null) {
+  if (android12IconBackgroundColor == null) {
+    removeElement(
+      launchTheme: launchTheme,
+      name: 'android:windowSplashScreenIconBackgroundColor',
+    );
+  } else {
     replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenIconBackgroundColor',
