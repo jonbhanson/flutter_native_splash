@@ -88,7 +88,7 @@ void _createWebSplash({
     backgroundImage: backgroundImage,
   );
   _createSplashJs();
-  updateIndex(
+  _updateHtml(
     imageMode: imageMode,
     imagePath: imagePath,
     brandingMode: brandingMode,
@@ -204,7 +204,7 @@ void _createSplashJs() {
   file.writeAsStringSync(_webJS);
 }
 
-void updateIndex({
+void _updateHtml({
   required String imageMode,
   required String? imagePath,
   required String brandingMode,
@@ -212,95 +212,65 @@ void updateIndex({
 }) {
   print('[Web] Updating index.html');
   final webIndex = File(_webIndex);
-  final lines = webIndex.readAsLinesSync();
+  final document = html_parser.parse(webIndex.readAsStringSync());
 
-  var foundExistingStyleSheet = false;
-  bool foundExistingMetaViewport = false;
-  bool foundExistingJs = false;
-  var headCloseTagLine = 0;
-  var bodyOpenTagLine = 0;
-  var existingPictureLine = 0;
-  var existingBrandingPictureLine = 0;
-
-  const styleSheetLink =
-      '<link rel="stylesheet" type="text/css" href="splash/style.css">';
-  const metaViewport =
-      '<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>';
-  const jsLink = '<script src="splash/splash.js"></script>';
-  for (var x = 0; x < lines.length; x++) {
-    final line = lines[x];
-
-    if (line.contains(styleSheetLink)) {
-      foundExistingStyleSheet = true;
-    }
-    if (line.contains(metaViewport)) {
-      foundExistingMetaViewport = true;
-    }
-    if (line.contains(jsLink)) {
-      foundExistingJs = true;
-    }
-
-    if (line.contains('</head>')) {
-      headCloseTagLine = x;
-    } else if (line.contains('<body')) {
-      bodyOpenTagLine = x;
-    } else if (line.contains('<picture id="splash">')) {
-      existingPictureLine = x;
-    } else if (line.contains('<picture id="splash-branding">')) {
-      existingBrandingPictureLine = x;
-    }
-  }
-
-  if (!foundExistingStyleSheet) {
-    lines[headCloseTagLine] = '  $styleSheetLink\n${lines[headCloseTagLine]}';
-  }
-  if (!foundExistingMetaViewport) {
-    lines[headCloseTagLine] = '  $metaViewport\n${lines[headCloseTagLine]}';
-  }
-
-  if (!foundExistingJs) {
-    lines[headCloseTagLine] = '  $jsLink\n${lines[headCloseTagLine]}';
-  }
-
-  if (existingPictureLine == 0) {
-    if (imagePath != null) {
-      for (var x = _indexHtmlPicture.length - 1; x >= 0; x--) {
-        lines[bodyOpenTagLine + 1] =
-            '${_indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode)}\n${lines[bodyOpenTagLine + 1]}';
-      }
-    }
-  } else {
-    if (imagePath != null) {
-      for (var x = 0; x < _indexHtmlPicture.length; x++) {
-        lines[existingPictureLine + x] =
-            _indexHtmlPicture[x].replaceFirst('[IMAGEMODE]', imageMode);
-      }
-    } else {
-      lines.removeRange(
-        existingPictureLine,
-        existingPictureLine + _indexHtmlPicture.length,
+  // Add style sheet if it doesn't exist
+  document.querySelector(
+        'link[rel="stylesheet"][type="text/css"][href="splash/style.css"]',
+      ) ??
+      document.head?.append(
+        html_parser.parseFragment(
+          '  <link rel="stylesheet" type="text/css" href="splash/style.css">\n',
+          container: '',
+        ),
       );
-    }
-  }
-  if (existingBrandingPictureLine == 0) {
-    if (brandingImagePath != null) {
-      for (var x = _indexHtmlBrandingPicture.length - 1; x >= 0; x--) {
-        lines[bodyOpenTagLine + 1] =
-            '${_indexHtmlBrandingPicture[x].replaceFirst('[BRANDINGMODE]', brandingMode)}\n${lines[bodyOpenTagLine + 1]}';
-      }
-    }
-  } else {
-    if (brandingImagePath != null) {
-      for (var x = 0; x < _indexHtmlBrandingPicture.length; x++) {
-        lines[existingBrandingPictureLine + x] = _indexHtmlBrandingPicture[x]
-            .replaceFirst('[BRANDINGMODE]', brandingMode);
-      }
-    } else {
-      lines.removeRange(
-        existingBrandingPictureLine,
-        existingBrandingPictureLine + _indexHtmlBrandingPicture.length,
+
+  // Add meta viewport if it doesn't exist
+  document.querySelector(
+        'meta[content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"][name="viewport"]',
+      ) ??
+      document.head?.append(
+        html_parser.parseFragment(
+          '  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">\n',
+          container: '',
+        ),
       );
-    }
+
+  // Add javascript if it doesn't exist
+  document.querySelector(
+        'script[src="splash/splash.js"]',
+      ) ??
+      document.head?.append(
+        html_parser.parseFragment(
+          '  <script src="splash/splash.js"></script>\n',
+          container: '',
+        ),
+      );
+
+  // Update splash image
+  document.querySelector('picture#splash')?.remove();
+  if (imagePath != null) {
+    document.body?.insertBefore(
+      html_parser.parseFragment(
+        _indexHtmlPicture.replaceAll('[IMAGEMODE]', imageMode),
+        container: '',
+      ),
+      document.body?.firstChild,
+    );
   }
-  webIndex.writeAsStringSync('${lines.join('\n')}\n');
+
+  // Update branding image
+  document.querySelector('picture#splash-branding')?.remove();
+  if (brandingImagePath != null) {
+    document.body?.insertBefore(
+      html_parser.parseFragment(
+        _indexHtmlBrandingPicture.replaceAll('[BRANDINGMODE]', brandingMode),
+        container: '',
+      ),
+      document.body?.firstChild,
+    );
+  }
+
+  // Write the updated index.html
+  webIndex.writeAsStringSync(document.outerHtml);
 }
