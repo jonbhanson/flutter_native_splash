@@ -1,3 +1,9 @@
+## [2.2.8] - (2022-Aug-21)
+- Use Theme.Light.NoTitleBar.  Fixes [#402](https://github.com/jonbhanson/flutter_native_splash/issues/402).
+- Correct android spelling in readme.  Thanks [Muhammad](https://github.com/itsahmed-dev) for [PR #407](https://github.com/jonbhanson/flutter_native_splash/pull/407).
+- Use html parser.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #396](https://github.com/jonbhanson/flutter_native_splash/pull/396).
+- Separate branding property for Android 12.  Closes [#405](https://github.com/jonbhanson/flutter_native_splash/issues/405).
+
 ## [2.2.7] - (2022-July-31)
 
 - Remove branding on Android 12 if branding is not specified.  Fixes [#399](https://github.com/jonbhanson/flutter_native_splash/issues/399).

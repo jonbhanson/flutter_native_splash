@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.7
+  flutter_native_splash: ^2.2.8
 ```
 
 Don't forget to `flutter pub get`.
@@ -52,7 +52,8 @@ flutter_native_splash:
   #image: assets/splash.png
 
   # The branding property allows you to specify an image used as branding in the splash screen.
-  # It must be a png file. It is supported for Android < v12, iOS and the Web.
+  # It must be a png file. It is supported for Android, iOS and the Web.  For Android 12,
+  # see the Android 12 section below.
   #branding: assets/dart.png
 
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
@@ -88,8 +89,11 @@ flutter_native_splash:
     # App icon background color.
     #icon_background_color: "#111111"
 
-    # The image_dark parameter and icon_background_color_dark set the image and icon background
-    # color when the device is in dark mode. If they are not specified, the app will use the
+    # The branding property allows you to specify an image used as branding in the splash screen.
+    #branding: assets/dart.png
+
+    # The image_dark, color_dark, icon_background_color_dark, and branding_dark set values that
+    # apply when the device is in dark mode. If they are not specified, the app will use the
     # parameters from above.
     #image_dark: assets/android12splash-invert.png
     #color_dark: "#042a49"

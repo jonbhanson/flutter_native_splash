@@ -63,6 +63,8 @@ void _createAndroidSplash({
   required String? android12IconBackgroundColor,
   required String? darkAndroid12IconBackgroundColor,
   required String? screenOrientation,
+  String? android12BrandingImagePath,
+  String? android12DarkBrandingImagePath,
 }) {
   if (imagePath != null) {
     _applyImageAndroid(imagePath: imagePath);
@@ -170,7 +172,7 @@ void _createAndroidSplash({
     android12BackgroundColor: android12BackgroundColor,
     android12ImagePath: android12ImagePath,
     android12IconBackgroundColor: android12IconBackgroundColor,
-    android12BrandingImagePath: brandingImagePath,
+    android12BrandingImagePath: android12BrandingImagePath,
   );
 
   if (android12DarkBackgroundColor != null ||
@@ -184,7 +186,7 @@ void _createAndroidSplash({
       android12BackgroundColor: android12DarkBackgroundColor,
       android12ImagePath: android12DarkImagePath,
       android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
-      android12BrandingImagePath: brandingDarkImagePath,
+      android12BrandingImagePath: android12DarkBrandingImagePath,
     );
   }
 

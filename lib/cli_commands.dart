@@ -115,6 +115,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
   String? darkAndroid12IconBackgroundColor;
   String? android12Color;
   String? android12DarkColor;
+  String? android12BrandingImage;
+  String? android12DarkBrandingImage;
 
   if (config['android_12'] != null) {
     final android12Config = config['android_12'] as Map<String, dynamic>;
@@ -128,6 +130,10 @@ void createSplashByConfig(Map<String, dynamic> config) {
         parseColor(android12Config['icon_background_color_dark']);
     android12Color = parseColor(android12Config['color']) ?? color;
     android12DarkColor = parseColor(android12Config['color_dark']) ?? darkColor;
+    android12BrandingImage =
+        _checkImageExists(config: android12Config, parameter: 'branding');
+    android12DarkBrandingImage =
+        _checkImageExists(config: android12Config, parameter: 'branding_dark');
   }
 
   if (!config.containsKey('android') || config['android'] as bool) {
@@ -141,6 +147,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
         android12DarkImagePath: android12DarkImage,
         android12IconBackgroundColor: android12IconBackgroundColor,
         darkAndroid12IconBackgroundColor: darkAndroid12IconBackgroundColor,
+        android12BrandingImagePath: android12BrandingImage,
+        android12DarkBrandingImagePath: android12DarkBrandingImage,
         backgroundImage: backgroundImageAndroid ?? backgroundImage,
         darkBackgroundImage: darkBackgroundImageAndroid ?? darkBackgroundImage,
         color: android12Color ?? color,
