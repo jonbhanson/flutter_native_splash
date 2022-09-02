@@ -11,13 +11,13 @@ class _AndroidDrawableTemplate {
   });
 }
 
-final _imagesTemplates = _generateImageTemplate();
-final _imageDarkTemplates = _generateImageTemplate(dark: true);
-final _imagesAndroid12Templates = _generateImageTemplate(android12: true);
+final _imagesTemplates = _generateImageTemplates();
+final _imageDarkTemplates = _generateImageTemplates(dark: true);
+final _imagesAndroid12Templates = _generateImageTemplates(android12: true);
 final _imagesAndroid12DarkTemplates =
-    _generateImageTemplate(android12: true, dark: true);
+    _generateImageTemplates(android12: true, dark: true);
 
-List<_AndroidDrawableTemplate> _generateImageTemplate({
+List<_AndroidDrawableTemplate> _generateImageTemplates({
   bool dark = false,
   bool android12 = false,
 }) {
@@ -220,8 +220,9 @@ void _applyImageAndroid({
   bool android12 = false,
   String fileName = 'splash.png',
 }) {
+  final templates = _getAssociatedTemplates(android12: android12, dark: dark);
   if (imagePath == null) {
-    for (final template in _getAssociatedTemplates(android12, dark)) {
+    for (final template in templates) {
       _deleteImageAndroid(template: template, fileName: fileName);
     }
   } else {
@@ -236,16 +237,16 @@ void _applyImageAndroid({
       exit(1);
     }
 
-    for (final template in _getAssociatedTemplates(android12, dark)) {
+    for (final template in templates) {
       _saveImageAndroid(template: template, image: image, fileName: fileName);
     }
   }
 }
 
-List<_AndroidDrawableTemplate> _getAssociatedTemplates(
-  bool android12,
-  bool dark,
-) {
+List<_AndroidDrawableTemplate> _getAssociatedTemplates({
+  required bool android12,
+  required bool dark,
+}) {
   if (android12) {
     return dark ? _imagesAndroid12DarkTemplates : _imagesAndroid12Templates;
   } else {
