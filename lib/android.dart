@@ -290,9 +290,7 @@ void _deleteImageAndroid({
     '${_flavorHelper.androidResFolder}${template.directoryName}/$fileName',
   );
   if (file.existsSync()) {
-    print(
-      '[Android] Deleting $fileName',
-    );
+    print('[Android] Deleting $fileName');
     file.deleteSync(recursive: true);
   }
 }
