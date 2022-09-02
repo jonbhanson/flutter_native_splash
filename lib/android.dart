@@ -11,86 +11,41 @@ class _AndroidDrawableTemplate {
   });
 }
 
-final List<_AndroidDrawableTemplate> _androidImages =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', pixelDensity: 1),
-  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', pixelDensity: 1.5),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', pixelDensity: 2),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', pixelDensity: 3),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', pixelDensity: 4),
-];
+final _imagesTemplates = _generateImageTemplate();
+final _imageDarkTemplates = _generateImageTemplate(dark: true);
+final _imagesAndroid12Templates = _generateImageTemplate(android12: true);
+final _imagesAndroid12DarkTemplates =
+    _generateImageTemplate(android12: true, dark: true);
 
-final List<_AndroidDrawableTemplate> _androidImagesDark =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-mdpi',
-    pixelDensity: 1,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-hdpi',
-    pixelDensity: 1.5,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xhdpi',
-    pixelDensity: 2,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xxhdpi',
-    pixelDensity: 3,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xxxhdpi',
-    pixelDensity: 4,
-  ),
-];
-
-final List<_AndroidDrawableTemplate> _android12Images =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-mdpi-v31',
-    pixelDensity: 1,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-hdpi-v31',
-    pixelDensity: 1.5,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-xhdpi-v31',
-    pixelDensity: 2,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-xxhdpi-v31',
-    pixelDensity: 3,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-xxxhdpi-v31',
-    pixelDensity: 4,
-  ),
-];
-
-final List<_AndroidDrawableTemplate> _android12ImagesDark =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-mdpi-v31',
-    pixelDensity: 1,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-hdpi-v31',
-    pixelDensity: 1.5,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xhdpi-v31',
-    pixelDensity: 2,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xxhdpi-v31',
-    pixelDensity: 3,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xxxhdpi-v31',
-    pixelDensity: 4,
-  ),
-];
+List<_AndroidDrawableTemplate> _generateImageTemplate({
+  bool dark = false,
+  bool android12 = false,
+}) {
+  final prefix = "drawable${dark ? '-night' : ''}";
+  final suffix = android12 ? '-v31' : '';
+  return <_AndroidDrawableTemplate>[
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-mdpi$suffix',
+      pixelDensity: 1,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-hdpi$suffix',
+      pixelDensity: 1.5,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-xhdpi$suffix',
+      pixelDensity: 2,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-xxhdpi$suffix',
+      pixelDensity: 3,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-xxxhdpi$suffix',
+      pixelDensity: 4,
+    ),
+  ];
+}
 
 /// Create Android splash screen
 void _createAndroidSplash({
@@ -272,7 +227,7 @@ void _applyImageAndroid({
   } else {
     print(
       '[Android] Creating ${dark ? 'dark mode ' : 'default '}'
-      '${android12 ? 'android 12 ' : ''}${fileName.split('.')[0]} images',
+      '${fileName.split('.')[0]} images',
     );
 
     final image = decodeImage(File(imagePath).readAsBytesSync());
@@ -292,9 +247,9 @@ List<_AndroidDrawableTemplate> _getAssociatedTemplates(
   bool dark,
 ) {
   if (android12) {
-    return dark ? _android12ImagesDark : _android12Images;
+    return dark ? _imagesAndroid12DarkTemplates : _imagesAndroid12Templates;
   } else {
-    return dark ? _androidImagesDark : _androidImages;
+    return dark ? _imageDarkTemplates : _imagesTemplates;
   }
 }
 
