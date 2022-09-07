@@ -4,44 +4,48 @@ part of flutter_native_splash_cli;
 class _AndroidDrawableTemplate {
   final String directoryName;
   final double pixelDensity;
+
   _AndroidDrawableTemplate({
     required this.directoryName,
     required this.pixelDensity,
   });
 }
 
-final List<_AndroidDrawableTemplate> _androidSplashImages =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(directoryName: 'drawable-mdpi', pixelDensity: 1),
-  _AndroidDrawableTemplate(directoryName: 'drawable-hdpi', pixelDensity: 1.5),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xhdpi', pixelDensity: 2),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxhdpi', pixelDensity: 3),
-  _AndroidDrawableTemplate(directoryName: 'drawable-xxxhdpi', pixelDensity: 4),
-];
+final _imagesTemplates = _generateImageTemplates();
+final _imageDarkTemplates = _generateImageTemplates(dark: true);
+final _imagesAndroid12Templates = _generateImageTemplates(android12: true);
+final _imagesAndroid12DarkTemplates =
+    _generateImageTemplates(android12: true, dark: true);
 
-final List<_AndroidDrawableTemplate> _androidSplashImagesDark =
-    <_AndroidDrawableTemplate>[
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-mdpi',
-    pixelDensity: 1,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-hdpi',
-    pixelDensity: 1.5,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xhdpi',
-    pixelDensity: 2,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xxhdpi',
-    pixelDensity: 3,
-  ),
-  _AndroidDrawableTemplate(
-    directoryName: 'drawable-night-xxxhdpi',
-    pixelDensity: 4,
-  ),
-];
+List<_AndroidDrawableTemplate> _generateImageTemplates({
+  bool dark = false,
+  bool android12 = false,
+}) {
+  final prefix = "drawable${dark ? '-night' : ''}";
+  final suffix = android12 ? '-v31' : '';
+  return <_AndroidDrawableTemplate>[
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-mdpi$suffix',
+      pixelDensity: 1,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-hdpi$suffix',
+      pixelDensity: 1.5,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-xhdpi$suffix',
+      pixelDensity: 2,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-xxhdpi$suffix',
+      pixelDensity: 3,
+    ),
+    _AndroidDrawableTemplate(
+      directoryName: '$prefix-xxxhdpi$suffix',
+      pixelDensity: 4,
+    ),
+  ];
+}
 
 /// Create Android splash screen
 void _createAndroidSplash({
@@ -66,41 +70,43 @@ void _createAndroidSplash({
   String? android12BrandingImagePath,
   String? android12DarkBrandingImagePath,
 }) {
-  if (imagePath != null) {
-    _applyImageAndroid(imagePath: imagePath);
-  }
+  _applyImageAndroid(imagePath: imagePath);
 
-  if (darkImagePath != null) {
-    _applyImageAndroid(imagePath: darkImagePath, dark: true);
-  }
+  _applyImageAndroid(imagePath: darkImagePath, dark: true);
 
   //create resources for branding image if provided
-  if (brandingImagePath != null) {
-    _applyImageAndroid(imagePath: brandingImagePath, fileName: 'branding.png');
-  }
-  if (brandingDarkImagePath != null) {
-    _applyImageAndroid(
-      imagePath: brandingDarkImagePath,
-      dark: true,
-      fileName: 'branding.png',
-    );
-  }
+  _applyImageAndroid(imagePath: brandingImagePath, fileName: 'branding.png');
+
+  _applyImageAndroid(
+    imagePath: brandingDarkImagePath,
+    dark: true,
+    fileName: 'branding.png',
+  );
 
   //create android 12 image if provided.  (otherwise uses launch icon)
-  if (android12ImagePath != null) {
-    _applyImageAndroid(
-      imagePath: android12ImagePath,
-      fileName: 'android12splash.png',
-    );
-  }
+  _applyImageAndroid(
+    imagePath: android12ImagePath,
+    fileName: 'android12splash.png',
+  );
 
-  if (android12DarkImagePath != null) {
-    _applyImageAndroid(
-      imagePath: android12DarkImagePath,
-      dark: true,
-      fileName: 'android12splash.png',
-    );
-  }
+  _applyImageAndroid(
+    imagePath: android12DarkImagePath,
+    dark: true,
+    fileName: 'android12splash.png',
+  );
+
+  _applyImageAndroid(
+    imagePath: android12BrandingImagePath,
+    android12: true,
+    fileName: 'android12branding.png',
+  );
+
+  _applyImageAndroid(
+    imagePath: android12DarkBrandingImagePath,
+    dark: true,
+    android12: true,
+    fileName: 'android12branding.png',
+  );
 
   _createBackground(
     colorString: color,
@@ -209,23 +215,42 @@ void _createAndroidSplash({
 
 /// Create splash screen as drawables for multiple screens (dpi)
 void _applyImageAndroid({
-  required String imagePath,
+  String? imagePath,
   bool dark = false,
+  bool android12 = false,
   String fileName = 'splash.png',
 }) {
-  print(
-    '[Android] Creating ${dark ? 'dark mode ' : ''}${fileName.split('.')[0]} images',
-  );
+  final templates = _getAssociatedTemplates(android12: android12, dark: dark);
+  if (imagePath == null) {
+    for (final template in templates) {
+      _deleteImageAndroid(template: template, fileName: fileName);
+    }
+  } else {
+    print(
+      '[Android] Creating ${dark ? 'dark mode ' : 'default '}'
+      '${fileName.split('.')[0]} images',
+    );
 
-  final image = decodeImage(File(imagePath).readAsBytesSync());
-  if (image == null) {
-    print('The file $imagePath could not be read.');
-    exit(1);
+    final image = decodeImage(File(imagePath).readAsBytesSync());
+    if (image == null) {
+      print('The file $imagePath could not be read.');
+      exit(1);
+    }
+
+    for (final template in templates) {
+      _saveImageAndroid(template: template, image: image, fileName: fileName);
+    }
   }
+}
 
-  for (final template
-      in dark ? _androidSplashImagesDark : _androidSplashImages) {
-    _saveImageAndroid(template: template, image: image, fileName: fileName);
+List<_AndroidDrawableTemplate> _getAssociatedTemplates({
+  required bool android12,
+  required bool dark,
+}) {
+  if (android12) {
+    return dark ? _imagesAndroid12DarkTemplates : _imagesAndroid12Templates;
+  } else {
+    return dark ? _imageDarkTemplates : _imagesTemplates;
   }
 }
 
@@ -255,6 +280,19 @@ void _saveImageAndroid({
   // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
   file.createSync(recursive: true);
   file.writeAsBytesSync(encodePng(newFile));
+}
+
+void _deleteImageAndroid({
+  required _AndroidDrawableTemplate template,
+  required fileName,
+}) {
+  final file = File(
+    '${_flavorHelper.androidResFolder}${template.directoryName}/$fileName',
+  );
+  if (file.existsSync()) {
+    print('[Android] Deleting $fileName');
+    file.deleteSync(recursive: true);
+  }
 }
 
 /// Updates launch_background.xml adding splash image path
@@ -415,7 +453,7 @@ Future<void> _updateStylesFile({
     replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBrandingImage',
-      value: '@drawable/branding',
+      value: '@drawable/android12branding',
     );
   }
 
