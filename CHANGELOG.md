@@ -1,4 +1,12 @@
+## [2.2.9] - (2022-Sep-07)
+
+- Update pub.dev links.  Thanks [Joachim](https://github.com/nohli) for [PR #415](https://github.com/jonbhanson/flutter_native_splash/pull/415).
+- Fix Android 12 branding issue.  Thanks [Matías](https://github.com/mirland) for [PR #414](https://github.com/jonbhanson/flutter_native_splash/pull/414).
+- Corrected copyright notice.  Closes [#416](https://github.com/jonbhanson/flutter_native_splash/issues/416).
+- Added Android 12 example.  Closes [#412](https://github.com/jonbhanson/flutter_native_splash/issues/412).
+
 ## [2.2.8] - (2022-Aug-21)
+
 - Use Theme.Light.NoTitleBar.  Fixes [#402](https://github.com/jonbhanson/flutter_native_splash/issues/402).
 - Correct android spelling in readme.  Thanks [Muhammad](https://github.com/itsahmed-dev) for [PR #407](https://github.com/jonbhanson/flutter_native_splash/pull/407).
 - Use html parser.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #396](https://github.com/jonbhanson/flutter_native_splash/pull/396).
