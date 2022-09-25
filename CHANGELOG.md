@@ -1,3 +1,8 @@
+## [2.2.10] - (2022-Sep-25)
+
+- Update bug report template.
+- Package housekeeping to stay up to date with Flutter.
+
 ## [2.2.9] - (2022-Sep-07)
 
 - Update pub.dev links.  Thanks [Joachim](https://github.com/nohli) for [PR #415](https://github.com/jonbhanson/flutter_native_splash/pull/415).

@@ -7,28 +7,29 @@ assignees: ''
 
 ---
 
+Attention: If you open a bug report without sufficient details, it will be closed.  Is your question
+related to Android 12?  Please check the notes on Android 12 first (https://pub.dev/packages/flutter_native_splash#android-12-support).
+
 **Describe the bug**
+
 A clear and concise description of what the bug is.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+**Configuration**
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
-
-**Screenshots**
-If applicable, add screenshots to help explain your problem.
+Paste the flutter_native_splash section of your yaml config.
 
 **Device (please complete the following information):**
  - Device: [e.g. iPhone6]
  - OS: [e.g. iOS8.1]
 
-**Flutter doctor**
-Please paste the results of the `flutter doctor -v` here
+**To Reproduce**
+Steps to reproduce the behavior, using the example app:
+1. Set the config on the example app to '...'
+2. Run in an emulator configured with '...'
+3. See error
+
+**Screenshots**
+If applicable, add screenshots to help explain your problem.  If in doubt, attach a screenshot.
 
 **Additional context**
 Add any other context about the problem here.
