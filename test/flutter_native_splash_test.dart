@@ -17,19 +17,12 @@ void main() {
     final testDir =
         p.join('.dart_tool', 'flutter_native_splash', 'test', 'config_file');
 
-    late String currentDirectory;
     void setCurrentDirectory(String path) {
       final pathValue = p.join(testDir, path);
-      Directory(path).createSync(recursive: true);
+      Directory(pathValue).createSync(recursive: true);
       Directory.current = pathValue;
     }
 
-    setUp(() {
-      currentDirectory = Directory.current.path;
-    });
-    tearDown(() {
-      Directory.current = currentDirectory;
-    });
     test('default', () {
       setCurrentDirectory('default');
       File('flutter_native_splash.yaml').writeAsStringSync(
@@ -40,6 +33,7 @@ flutter_native_splash:
       );
       final Map<String, dynamic> config = getConfig(
         configFile: 'flutter_native_splash.yaml',
+        flavor: null,
       );
       File('flutter_native_splash.yaml').deleteSync();
       expect(config, isNotNull);
@@ -53,13 +47,16 @@ flutter_native_splash:
   color: "#00ff00"
 ''',
       );
-      final Map<String, dynamic> config = getConfig();
+      final Map<String, dynamic> config = getConfig(
+        configFile: null,
+        flavor: null,
+      );
       File('pubspec.yaml').deleteSync();
       expect(config, isNotNull);
       expect(config['color'], '#00ff00');
 
       // fails if config file is missing
-      expect(() => getConfig(), throwsException);
+      expect(() => getConfig(configFile: null, flavor: null), throwsException);
     });
   });
 }

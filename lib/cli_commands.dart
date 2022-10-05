@@ -21,24 +21,23 @@ part 'web.dart';
 late _FlavorHelper _flavorHelper;
 
 /// Create splash screens for Android and iOS
-void createSplash({String? path, String? flavor}) {
+void createSplash({
+  required String? path,
+  required String? flavor,
+}) {
   if (flavor != null) {
     print(
       '''
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║                              Flavor detected!                              ║
 ╠════════════════════════════════════════════════════════════════════════════╣
-║ Setting up the $flavor flavor.
+║ Setting up the $flavor flavor.                                             ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ''',
     );
   }
 
-  // It is important that the flavor setup occurs as soon as possible.
-  // So before we generate anything, we need to setup the flavor (even if it's the default one).
-  _flavorHelper = _FlavorHelper(flavor);
-
-  final config = getConfig(configFile: path);
+  final config = getConfig(configFile: path, flavor: flavor);
   createSplashByConfig(config);
 }
 
@@ -226,10 +225,12 @@ Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_n
 }
 
 /// Remove any splash screen by setting the default white splash
-void removeSplash({String? path, String? flavor}) {
-  _flavorHelper = _FlavorHelper(flavor);
+void removeSplash({
+  required String? path,
+  required String? flavor,
+}) {
   print("Restoring Flutter's default native splash screen...");
-  final config = getConfig(configFile: path);
+  final config = getConfig(configFile: path, flavor: flavor);
 
   final removeConfig = <String, dynamic>{
     'color': '#ffffff',
@@ -281,7 +282,13 @@ String? _checkImageExists({
 }
 
 /// Get config from `pubspec.yaml` or `flutter_native_splash.yaml`
-Map<String, dynamic> getConfig({String? configFile}) {
+Map<String, dynamic> getConfig({
+  required String? configFile,
+  required String? flavor,
+}) {
+  // It is important that the flavor setup occurs as soon as possible.
+  // So before we generate anything, we need to setup the flavor (even if it's the default one).
+  _flavorHelper = _FlavorHelper(flavor);
   // if `flutter_native_splash.yaml` exists use it as config file, otherwise use `pubspec.yaml`
   String filePath;
   if (configFile != null) {
