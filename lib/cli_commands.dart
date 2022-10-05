@@ -205,14 +205,14 @@ void createSplashByConfig(Map<String, dynamic> config) {
     }
   }
 
-  const String _greet = '''
+  const String greet = '''
 
 ✅ Native splash complete.
 Now go finish building something awesome! 💪 You rock! 🤘🤩
 Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_native_splash
 ''';
 
-  const String _whatsNew = '''
+  const String whatsNew = '''
 ╔════════════════════════════════════════════════════════════════════════════╗
 ║                                 WHAT IS NEW:                               ║
 ╠════════════════════════════════════════════════════════════════════════════╣
@@ -222,7 +222,7 @@ Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_n
 ║ Check the docs for more info.                                              ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ''';
-  print(_whatsNew + _greet);
+  print(whatsNew + greet);
 }
 
 /// Remove any splash screen by setting the default white splash
