@@ -1,0 +1,24 @@
+name: flutter_native_splash
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: subosito/flutter-action@v2
+      - name: Install Dependencies
+        run: flutter packages get
+      - name: Format
+        run: flutter format . --set-exit-if-changed
+      - name: Analyze
+        run: flutter analyze .
