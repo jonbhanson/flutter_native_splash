@@ -1,4 +1,10 @@
-## [2.2.10] - (2022-Sep-25)
+## [2.2.11] - (2022-Oct-09)
+
+- Fixed Android 11 color issue.  Fixes [#429](https://github.com/jonbhanson/flutter_native_splash/issues/429).
+- Fix index.html getting extra blank lines.  Fixes [#430](https://github.com/jonbhanson/flutter_native_splash/issues/430).
+- Update the readme.  Closes [#431](https://github.com/jonbhanson/flutter_native_splash/issues/431).
+
+## [2.2.10+1] - (2022-Sep-25)
 
 - Update bug report template.
 - Package housekeeping to stay up to date with Flutter.

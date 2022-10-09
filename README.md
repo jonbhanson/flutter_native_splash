@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.10
+  flutter_native_splash: ^2.2.11
 ```
 
 Don't forget to `flutter pub get`.
@@ -197,7 +197,7 @@ void main() {
 
 ```
 
-NOTE: In order to use this method, the `flutter_native_splash` dependency must be in the `dependencies` section of `pubspec.yaml`, not in the `dev_dependencies` as was the case in previous versions of this package.
+NOTE: If you do not need to use the `preserve()` and `remove()` methods, you can place the `flutter_native_splash` dependency in the `dev_dependencies` section of `pubspec.yaml`.
 
 ## 4. Support the package (optional)
 
