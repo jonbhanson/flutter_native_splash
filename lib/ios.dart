@@ -18,7 +18,7 @@ final List<_IosLaunchImageTemplate> _iOSSplashImages =
   ), // original image must be @4x
 ];
 
-final List<_IosLaunchImageTemplate> iOSSplashImagesDark =
+final List<_IosLaunchImageTemplate> _iOSSplashImagesDark =
     <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'LaunchImageDark.png', pixelDensity: 1),
   _IosLaunchImageTemplate(fileName: 'LaunchImageDark@2x.png', pixelDensity: 2),
@@ -36,7 +36,7 @@ final List<_IosLaunchImageTemplate> _iOSBrandingImages =
     pixelDensity: 3,
   ), // original image must be @4x
 ];
-final List<_IosLaunchImageTemplate> iOSBrandingImagesDark =
+final List<_IosLaunchImageTemplate> _iOSBrandingImagesDark =
     <_IosLaunchImageTemplate>[
   _IosLaunchImageTemplate(fileName: 'BrandingImageDark.png', pixelDensity: 1),
   _IosLaunchImageTemplate(
@@ -81,10 +81,10 @@ void _createiOSSplash({
     _applyImageiOS(
       imagePath: darkImagePath,
       dark: true,
-      list: iOSSplashImagesDark,
+      list: _iOSSplashImagesDark,
     );
   } else {
-    for (final template in iOSSplashImagesDark) {
+    for (final template in _iOSSplashImagesDark) {
       final file =
           File(_flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();
@@ -107,11 +107,11 @@ void _createiOSSplash({
     _applyImageiOS(
       imagePath: brandingDarkImagePath,
       dark: true,
-      list: iOSBrandingImagesDark,
+      list: _iOSBrandingImagesDark,
       targetPath: _flavorHelper.iOSAssetsBrandingImageFolder,
     );
   } else {
-    for (final template in iOSBrandingImagesDark) {
+    for (final template in _iOSBrandingImagesDark) {
       final file =
           File(_flavorHelper.iOSAssetsBrandingImageFolder + template.fileName);
       if (file.existsSync()) file.deleteSync();

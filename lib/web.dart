@@ -26,7 +26,7 @@ void _createWebSplash({
   }
 
   darkImagePath ??= imagePath;
-  createWebImages(
+  _createWebImages(
     imagePath: imagePath,
     webSplashImages: [
       _WebLaunchImageTemplate(fileName: 'light-1x.png', pixelDensity: 1),
@@ -35,7 +35,7 @@ void _createWebSplash({
       _WebLaunchImageTemplate(fileName: 'light-4x.png', pixelDensity: 4),
     ],
   );
-  createWebImages(
+  _createWebImages(
     imagePath: darkImagePath,
     webSplashImages: [
       _WebLaunchImageTemplate(fileName: 'dark-1x.png', pixelDensity: 1),
@@ -46,7 +46,7 @@ void _createWebSplash({
   );
 
   brandingDarkImagePath ??= brandingImagePath;
-  createWebImages(
+  _createWebImages(
     imagePath: brandingImagePath,
     webSplashImages: [
       _WebLaunchImageTemplate(fileName: 'branding-1x.png', pixelDensity: 1),
@@ -55,7 +55,7 @@ void _createWebSplash({
       _WebLaunchImageTemplate(fileName: 'branding-4x.png', pixelDensity: 4),
     ],
   );
-  createWebImages(
+  _createWebImages(
     imagePath: brandingDarkImagePath,
     webSplashImages: [
       _WebLaunchImageTemplate(
@@ -124,7 +124,7 @@ void createBackgroundImages({
   }
 }
 
-void createWebImages({
+void _createWebImages({
   required String? imagePath,
   required List<_WebLaunchImageTemplate> webSplashImages,
 }) {
