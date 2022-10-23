@@ -1,3 +1,8 @@
+## [2.2.12] - (2022-Oct-23)
+
+- Updated readme and dependancies.
+- Add CI, resolve some lints, and fix tests.  Thanks [lsaudon](https://github.com/lsaudon) for [PR #433](https://github.com/jonbhanson/flutter_native_splash/pull/433).
+
 ## [2.2.11] - (2022-Oct-09)
 
 - Fixed Android 11 color issue.  Fixes [#429](https://github.com/jonbhanson/flutter_native_splash/issues/429).
@@ -87,7 +92,7 @@
 
 - Add branding support in Android 12. Thanks [Vladimir](https://github.com/vlazdra) for the [PR](https://github.com/jonbhanson/flutter_native_splash/pull/316).
 - Updated readme. Closes [#317](https://github.com/jonbhanson/flutter_native_splash/issues/317). Closes [#318](https://github.com/jonbhanson/flutter_native_splash/issues/318).
-- Don't create a blank branding imageset. Fixes [#264](https://github.com/jonbhanson/flutter_native_splash/issues/264).
+- Don't create a blank branding image set. Fixes [#264](https://github.com/jonbhanson/flutter_native_splash/issues/264).
 
 ## [2.1.1] - (2022-Mar-13)
 

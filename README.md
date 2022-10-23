@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.11
+  flutter_native_splash: ^2.2.12
 ```
 
 Don't forget to `flutter pub get`.
@@ -211,9 +211,11 @@ Android 12 has a [new method](https://developer.android.com/about/versions/12/fe
 
 The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
 
-**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio. However, it should appear when you launch by clicking on the launch icon in Android.
+~~**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio. However, it should appear when you launch by clicking on the launch icon in Android.~~  This seems to be resolved now.
 
 **_PLEASE NOTE:_** There are a number of reports that non-Google launchers do not display the launch image correctly. If the launch image does not display correctly, please try the Google launcher to confirm that this package is working.
+
+**_PLEASE NOTE:_** The splash screen does not appear when you launch the app from a notification.  Apparently this is the intended behavior on Android 12: [core-splashscreen Icon not shown when cold launched from notification](https://issuetracker.google.com/issues/199776339?pli=1).
 
 # Flavor Support
 
