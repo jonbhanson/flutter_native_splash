@@ -1,3 +1,7 @@
+## [2.2.13] - (2022-Oct-30)
+
+- Corrected Android 12 dark parameters not defaulting to light parameters.  Thanks [elliotrtd](https://github.com/elliotrtd) for the [heads up](https://github.com/jonbhanson/flutter_native_splash/issues/400#issuecomment-1235100173) on this issue.
+
 ## [2.2.12] - (2022-Oct-23)
 
 - Updated readme and dependancies.

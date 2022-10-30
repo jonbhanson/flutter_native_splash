@@ -142,12 +142,6 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkImagePath: darkImageAndroid ?? darkImage,
         brandingImagePath: brandingImageAndroid ?? brandingImage,
         brandingDarkImagePath: brandingDarkImageAndroid ?? brandingDarkImage,
-        android12ImagePath: android12Image,
-        android12DarkImagePath: android12DarkImage,
-        android12IconBackgroundColor: android12IconBackgroundColor,
-        darkAndroid12IconBackgroundColor: darkAndroid12IconBackgroundColor,
-        android12BrandingImagePath: android12BrandingImage,
-        android12DarkBrandingImagePath: android12DarkBrandingImage,
         backgroundImage: backgroundImageAndroid ?? backgroundImage,
         darkBackgroundImage: darkBackgroundImageAndroid ?? darkBackgroundImage,
         color: color,
@@ -155,9 +149,17 @@ void createSplashByConfig(Map<String, dynamic> config) {
         gravity: gravity,
         brandingGravity: brandingGravity,
         fullscreen: fullscreen,
-        android12DarkBackgroundColor: android12DarkColor,
-        android12BackgroundColor: android12Color,
         screenOrientation: androidScreenOrientation,
+        android12ImagePath: android12Image,
+        android12DarkImagePath: android12DarkImage ?? android12Image,
+        android12BackgroundColor: android12Color,
+        android12DarkBackgroundColor: android12DarkColor ?? android12Color,
+        android12IconBackgroundColor: android12IconBackgroundColor,
+        darkAndroid12IconBackgroundColor:
+            darkAndroid12IconBackgroundColor ?? android12IconBackgroundColor,
+        android12BrandingImagePath: android12BrandingImage,
+        android12DarkBrandingImagePath:
+            android12DarkBrandingImage ?? android12BrandingImage,
       );
     } else {
       print('Android folder not found, skipping Android splash update...');
