@@ -1,3 +1,8 @@
+## [2.2.14] - (2022-Nov-07)
+
+- Don't update `values-31` if there is no `android_12` section in the config.  Closes [#447](https://github.com/jonbhanson/flutter_native_splash/issues/447).
+- Additional fix for index.html getting extra blank lines. Fixes [#430](https://github.com/jonbhanson/flutter_native_splash/issues/430).
+
 ## [2.2.13] - (2022-Oct-30)
 
 - Corrected Android 12 dark parameters not defaulting to light parameters.  Thanks [elliotrtd](https://github.com/elliotrtd) for the [heads up](https://github.com/jonbhanson/flutter_native_splash/issues/400#issuecomment-1235100173) on this issue.

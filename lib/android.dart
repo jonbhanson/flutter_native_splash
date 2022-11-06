@@ -171,15 +171,20 @@ void _createAndroidSplash({
   }
 
   print('[Android] Updating styles...');
-  _applyStylesXml(
-    fullScreen: fullscreen,
-    file: _flavorHelper.androidV31StylesFile,
-    template: _androidV31StylesXml,
-    android12BackgroundColor: android12BackgroundColor,
-    android12ImagePath: android12ImagePath,
-    android12IconBackgroundColor: android12IconBackgroundColor,
-    android12BrandingImagePath: android12BrandingImagePath,
-  );
+  if (android12BackgroundColor != null ||
+      android12ImagePath != null ||
+      android12IconBackgroundColor != null ||
+      android12BrandingImagePath != null) {
+    _applyStylesXml(
+      fullScreen: fullscreen,
+      file: _flavorHelper.androidV31StylesFile,
+      template: _androidV31StylesXml,
+      android12BackgroundColor: android12BackgroundColor,
+      android12ImagePath: android12ImagePath,
+      android12IconBackgroundColor: android12IconBackgroundColor,
+      android12BrandingImagePath: android12BrandingImagePath,
+    );
+  }
 
   if (android12DarkBackgroundColor != null ||
       android12DarkImagePath != null ||
