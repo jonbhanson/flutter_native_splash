@@ -344,8 +344,7 @@ const String _iOSLaunchBackgroundDarkJson = '''
   "images" : [
     {
       "filename" : "background.png",
-      "idiom" : "universal",
-      "scale" : "1x"
+      "idiom" : "universal"
     },
     {
       "appearances" : [
@@ -355,36 +354,7 @@ const String _iOSLaunchBackgroundDarkJson = '''
         }
       ],
       "filename" : "darkbackground.png",
-      "idiom" : "universal",
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "idiom" : "universal",
-      "scale" : "2x"
-    },
-    {
-      "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "idiom" : "universal",
-      "scale" : "3x"
+      "idiom" : "universal"
     }
   ],
   "info" : {
@@ -439,7 +409,7 @@ const String _webCss = '''
 body {
   margin:0;
   height:100%;
-  background: [LIGHTBACKGROUNDCOLOR];
+  background-color: [LIGHTBACKGROUNDCOLOR];
   [LIGHTBACKGROUNDIMAGE]
   background-size: 100% 100%;
 }
@@ -489,12 +459,15 @@ body {
   bottom: 0;
   right: 0;
 }
+''';
+
+const String _webCssDark = '''
 
 @media (prefers-color-scheme: dark) {
   body {
     margin:0;
     height:100%;
-    background: [DARKBACKGROUNDCOLOR];
+    background-color: [DARKBACKGROUNDCOLOR];
     [DARKBACKGROUNDIMAGE]
     background-size: 100% 100%;
   }

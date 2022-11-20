@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.14
+  flutter_native_splash: ^2.2.15
 ```
 
 Don't forget to `flutter pub get`.
@@ -107,6 +107,12 @@ flutter_native_splash:
 
   # Platform specific images can be specified with the following parameters, which will override
   # the respective image parameter.  You may specify all, selected, or none of these parameters:
+  #color_android: "#42a5f5"
+  #color_dark_android: "#042a49"
+  #color_ios: "#42a5f5"
+  #color_dark_ios: "#042a49"
+  #color_web: "#42a5f5"
+  #color_dark_web: "#042a49"
   #image_android: assets/splash-android.png
   #image_dark_android: assets/splash-invert-android.png
   #image_ios: assets/splash-ios.png

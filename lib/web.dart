@@ -86,6 +86,7 @@ void _createWebSplash({
     darkColor: darkColor,
     darkBackgroundImage: darkBackgroundImage,
     backgroundImage: backgroundImage,
+    hasDarkImage: darkBackgroundImage != null,
   );
   _createSplashJs();
   _updateHtml(
@@ -167,16 +168,19 @@ void _createSplashCss({
   required String? darkColor,
   required String? backgroundImage,
   required String? darkBackgroundImage,
+  required bool hasDarkImage,
 }) {
   print('[Web] Creating CSS');
   color ??= '000000';
-  darkColor ??= color;
-  var cssContent = _webCss
-      .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#$color')
-      .replaceFirst('[DARKBACKGROUNDCOLOR]', '#$darkColor');
+  var cssContent = _webCss.replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#$color');
+  if (darkColor != null || darkBackgroundImage != null || hasDarkImage) {
+    darkColor ??= color;
+    cssContent +=
+        _webCssDark.replaceFirst('[DARKBACKGROUNDCOLOR]', '#$darkColor');
+  }
 
   if (backgroundImage == null) {
-    cssContent = cssContent.replaceFirst('[LIGHTBACKGROUNDIMAGE]', '');
+    cssContent = cssContent.replaceFirst('  [LIGHTBACKGROUNDIMAGE]\n', '');
   } else {
     cssContent = cssContent.replaceFirst(
       '[LIGHTBACKGROUNDIMAGE]',
@@ -185,7 +189,7 @@ void _createSplashCss({
   }
 
   if (backgroundImage == null) {
-    cssContent = cssContent.replaceFirst('[DARKBACKGROUNDIMAGE]', '');
+    cssContent = cssContent.replaceFirst('    [DARKBACKGROUNDIMAGE]\n', '');
   } else {
     cssContent = cssContent.replaceFirst(
       '[DARKBACKGROUNDIMAGE]',

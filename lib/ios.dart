@@ -159,7 +159,9 @@ void _createiOSSplash({
   backgroundImageFile.createSync(recursive: true);
 
   backgroundImageFile.writeAsStringSync(
-    darkColor != null ? _iOSLaunchBackgroundDarkJson : _iOSLaunchBackgroundJson,
+    (darkColor != null || darkBackgroundImage != null)
+        ? _iOSLaunchBackgroundDarkJson
+        : _iOSLaunchBackgroundJson,
   );
 
   _applyInfoPList(plistFiles: plistFiles, fullscreen: fullscreen);

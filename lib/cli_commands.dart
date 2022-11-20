@@ -44,70 +44,79 @@ void createSplash({
 /// Create splash screens for Android and iOS based on a config argument
 void createSplashByConfig(Map<String, dynamic> config) {
   // Preparing all the data for later usage
-  final String? image = _checkImageExists(config: config, parameter: 'image');
+  final String? image =
+      _checkImageExists(config: config, parameter: _Parameter.image);
   final String? imageAndroid =
-      _checkImageExists(config: config, parameter: 'image_android');
+      _checkImageExists(config: config, parameter: _Parameter.imageAndroid);
   final String? imageIos =
-      _checkImageExists(config: config, parameter: 'image_ios');
+      _checkImageExists(config: config, parameter: _Parameter.imageIos);
   final String? imageWeb =
-      _checkImageExists(config: config, parameter: 'image_web');
+      _checkImageExists(config: config, parameter: _Parameter.imageWeb);
   final String? darkImage =
-      _checkImageExists(config: config, parameter: 'image_dark');
+      _checkImageExists(config: config, parameter: _Parameter.darkImage);
   final String? darkImageAndroid =
-      _checkImageExists(config: config, parameter: 'image_dark_android');
+      _checkImageExists(config: config, parameter: _Parameter.darkImageAndroid);
   final String? darkImageIos =
-      _checkImageExists(config: config, parameter: 'image_dark_ios');
+      _checkImageExists(config: config, parameter: _Parameter.darkImageIos);
   final String? darkImageWeb =
-      _checkImageExists(config: config, parameter: 'image_dark_web');
+      _checkImageExists(config: config, parameter: _Parameter.darkImageWeb);
   final String? brandingImage =
-      _checkImageExists(config: config, parameter: 'branding');
-  final String? brandingImageAndroid =
-      _checkImageExists(config: config, parameter: 'branding_android');
+      _checkImageExists(config: config, parameter: _Parameter.brandingImage);
+  final String? brandingImageAndroid = _checkImageExists(
+      config: config, parameter: _Parameter.brandingImageAndroid);
   final String? brandingImageIos =
-      _checkImageExists(config: config, parameter: 'branding_ios');
+      _checkImageExists(config: config, parameter: _Parameter.brandingImageIos);
   final String? brandingImageWeb =
-      _checkImageExists(config: config, parameter: 'branding_web');
-  final String? brandingDarkImage =
-      _checkImageExists(config: config, parameter: 'branding_dark');
-  final String? brandingDarkImageAndroid =
-      _checkImageExists(config: config, parameter: 'branding_dark_android');
-  final String? brandingDarkImageIos =
-      _checkImageExists(config: config, parameter: 'branding_dark_ios');
-  final String? brandingDarkImageWeb =
-      _checkImageExists(config: config, parameter: 'branding_dark_web');
-  final String? color = parseColor(config['color']);
-  final String? darkColor = parseColor(config['color_dark']);
+      _checkImageExists(config: config, parameter: _Parameter.brandingImageWeb);
+  final String? brandingDarkImage = _checkImageExists(
+      config: config, parameter: _Parameter.brandingDarkImage);
+  final String? brandingDarkImageAndroid = _checkImageExists(
+      config: config, parameter: _Parameter.brandingDarkImageAndroid);
+  final String? brandingDarkImageIos = _checkImageExists(
+      config: config, parameter: _Parameter.brandingDarkImageIos);
+  final String? brandingDarkImageWeb = _checkImageExists(
+      config: config, parameter: _Parameter.brandingDarkImageWeb);
+  final String? color = parseColor(config[_Parameter.color]);
+  final String? colorAndroid = parseColor(config[_Parameter.colorAndroid]);
+  final String? colorIos = parseColor(config[_Parameter.colorIos]);
+  final String? colorWeb = parseColor(config[_Parameter.colorWeb]);
+  final String? darkColor = parseColor(config[_Parameter.darkColor]);
+  final String? darkColorAndroid =
+      parseColor(config[_Parameter.darkColorAndroid]);
+  final String? darkColorIos = parseColor(config[_Parameter.darkColorIos]);
+  final String? darkColorWeb = parseColor(config[_Parameter.darkColorWeb]);
   final String? backgroundImage =
-      _checkImageExists(config: config, parameter: 'background_image');
-  final String? backgroundImageAndroid =
-      _checkImageExists(config: config, parameter: 'background_android');
-  final String? backgroundImageIos =
-      _checkImageExists(config: config, parameter: 'background_ios');
-  final String? backgroundImageWeb =
-      _checkImageExists(config: config, parameter: 'background_web');
-  final String? darkBackgroundImage =
-      _checkImageExists(config: config, parameter: 'background_image_dark');
+      _checkImageExists(config: config, parameter: _Parameter.backgroundImage);
+  final String? backgroundImageAndroid = _checkImageExists(
+      config: config, parameter: _Parameter.backgroundImageAndroid);
+  final String? backgroundImageIos = _checkImageExists(
+      config: config, parameter: _Parameter.backgroundImageIos);
+  final String? backgroundImageWeb = _checkImageExists(
+      config: config, parameter: _Parameter.backgroundImageWeb);
+  final String? darkBackgroundImage = _checkImageExists(
+      config: config, parameter: _Parameter.darkBackgroundImage);
   final String? darkBackgroundImageAndroid = _checkImageExists(
     config: config,
-    parameter: 'background_image_dark_android',
+    parameter: _Parameter.darkBackgroundImageAndroid,
   );
-  final String? darkBackgroundImageIos =
-      _checkImageExists(config: config, parameter: 'background_image_dark_ios');
-  final String? darkBackgroundImageWeb =
-      _checkImageExists(config: config, parameter: 'background_image_dark_web');
+  final String? darkBackgroundImageIos = _checkImageExists(
+      config: config, parameter: _Parameter.darkBackgroundImageIos);
+  final String? darkBackgroundImageWeb = _checkImageExists(
+      config: config, parameter: _Parameter.darkBackgroundImageWeb);
 
-  final plistFiles = config['info_plist_files'] as List<String>?;
+  final plistFiles = config[_Parameter.plistFiles] as List<String>?;
   String gravity = (config['fill'] as bool? ?? false) ? 'fill' : 'center';
-  if (config['android_gravity'] != null) {
-    gravity = config['android_gravity'] as String;
+  if (config[_Parameter.gravity] != null) {
+    gravity = config[_Parameter.gravity] as String;
   }
   final String? androidScreenOrientation =
-      config['android_screen_orientation'] as String?;
-  final brandingGravity = config['branding_mode'] as String? ?? 'bottom';
-  final bool fullscreen = config['fullscreen'] as bool? ?? false;
+      config[_Parameter.androidScreenOrientation] as String?;
+  final brandingGravity =
+      config[_Parameter.brandingGravity] as String? ?? 'bottom';
+  final bool fullscreen = config[_Parameter.fullscreen] as bool? ?? false;
   final String iosContentMode =
-      config['ios_content_mode'] as String? ?? 'center';
-  final webImageMode = config['web_image_mode'] as String? ?? 'center';
+      config[_Parameter.iosContentMode] as String? ?? 'center';
+  final webImageMode = config[_Parameter.webImageMode] as String? ?? 'center';
   String? android12Image;
   String? android12DarkImage;
   String? android12IconBackgroundColor;
@@ -117,25 +126,28 @@ void createSplashByConfig(Map<String, dynamic> config) {
   String? android12BrandingImage;
   String? android12DarkBrandingImage;
 
-  if (config['android_12'] != null) {
-    final android12Config = config['android_12'] as Map<String, dynamic>;
+  if (config[_Parameter.android12Section] != null) {
+    final android12Config =
+        config[_Parameter.android12Section] as Map<String, dynamic>;
     android12Image =
-        _checkImageExists(config: android12Config, parameter: 'image');
-    android12DarkImage =
-        _checkImageExists(config: android12Config, parameter: 'image_dark');
+        _checkImageExists(config: android12Config, parameter: _Parameter.image);
+    android12DarkImage = _checkImageExists(
+        config: android12Config, parameter: _Parameter.darkImage);
     android12IconBackgroundColor =
-        parseColor(android12Config['icon_background_color']);
+        parseColor(android12Config[_Parameter.iconBackgroundColor]);
     darkAndroid12IconBackgroundColor =
-        parseColor(android12Config['icon_background_color_dark']);
-    android12Color = parseColor(android12Config['color']) ?? color;
-    android12DarkColor = parseColor(android12Config['color_dark']) ?? darkColor;
-    android12BrandingImage =
-        _checkImageExists(config: android12Config, parameter: 'branding');
-    android12DarkBrandingImage =
-        _checkImageExists(config: android12Config, parameter: 'branding_dark');
+        parseColor(android12Config[_Parameter.iconBackgroundColorDark]);
+    android12Color = parseColor(android12Config[_Parameter.color]) ?? color;
+    android12DarkColor =
+        parseColor(android12Config[_Parameter.darkColor]) ?? darkColor;
+    android12BrandingImage = _checkImageExists(
+        config: android12Config, parameter: _Parameter.brandingImage);
+    android12DarkBrandingImage = _checkImageExists(
+        config: android12Config, parameter: _Parameter.brandingDarkImage);
   }
 
-  if (!config.containsKey('android') || config['android'] as bool) {
+  if (!config.containsKey(_Parameter.android) ||
+      config[_Parameter.android] as bool) {
     if (Directory('android').existsSync()) {
       _createAndroidSplash(
         imagePath: imageAndroid ?? image,
@@ -144,8 +156,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
         brandingDarkImagePath: brandingDarkImageAndroid ?? brandingDarkImage,
         backgroundImage: backgroundImageAndroid ?? backgroundImage,
         darkBackgroundImage: darkBackgroundImageAndroid ?? darkBackgroundImage,
-        color: color,
-        darkColor: darkColor,
+        color: colorAndroid ?? color,
+        darkColor: darkColorAndroid ?? darkColor,
         gravity: gravity,
         brandingGravity: brandingGravity,
         fullscreen: fullscreen,
@@ -166,7 +178,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
     }
   }
 
-  if (!config.containsKey('ios') || config['ios'] as bool) {
+  if (!config.containsKey(_Parameter.ios) || config[_Parameter.ios] as bool) {
     if (Directory('ios').existsSync()) {
       _createiOSSplash(
         imagePath: imageIos ?? image,
@@ -175,8 +187,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkBackgroundImage: darkBackgroundImageIos ?? darkBackgroundImage,
         brandingImagePath: brandingImageIos ?? brandingImage,
         brandingDarkImagePath: brandingDarkImageIos ?? brandingDarkImage,
-        color: color,
-        darkColor: darkColor,
+        color: colorIos ?? color,
+        darkColor: darkColorIos ?? darkColor,
         plistFiles: plistFiles,
         iosContentMode: iosContentMode,
         iosBrandingContentMode: brandingGravity,
@@ -187,7 +199,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
     }
   }
 
-  if (!config.containsKey('web') || config['web'] as bool) {
+  if (!config.containsKey(_Parameter.web) || config[_Parameter.web] as bool) {
     if (Directory('web').existsSync()) {
       _createWebSplash(
         imagePath: imageWeb ?? image,
@@ -196,8 +208,8 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkBackgroundImage: darkBackgroundImageWeb ?? darkBackgroundImage,
         brandingImagePath: brandingImageWeb ?? brandingImage,
         brandingDarkImagePath: brandingDarkImageWeb ?? brandingDarkImage,
-        color: color,
-        darkColor: darkColor,
+        color: colorWeb ?? color,
+        darkColor: darkColorWeb ?? darkColor,
         imageMode: webImageMode,
         brandingMode: brandingGravity,
       );
@@ -235,26 +247,26 @@ void removeSplash({
   final config = getConfig(configFile: path, flavor: flavor);
 
   final removeConfig = <String, dynamic>{
-    'color': '#ffffff',
-    'color_dark': '#000000'
+    _Parameter.color: '#ffffff',
+    _Parameter.darkColor: '#000000'
   };
 
-  if (config.containsKey('android')) {
-    removeConfig['android'] = config['android'];
+  if (config.containsKey(_Parameter.android)) {
+    removeConfig[_Parameter.android] = config[_Parameter.android];
   }
 
-  if (config.containsKey('ios')) {
-    removeConfig['ios'] = config['ios'];
+  if (config.containsKey(_Parameter.ios)) {
+    removeConfig[_Parameter.ios] = config[_Parameter.ios];
   }
 
-  if (config.containsKey('web')) {
-    removeConfig['web'] = config['web'];
+  if (config.containsKey(_Parameter.web)) {
+    removeConfig[_Parameter.web] = config[_Parameter.web];
   }
 
   /// Checks if the image that was specified in the config file does exist.
   /// If not the developer will receive an error message and the process will exit.
-  if (config.containsKey('info_plist_files')) {
-    removeConfig['info_plist_files'] = config['info_plist_files'];
+  if (config.containsKey(_Parameter.plistFiles)) {
+    removeConfig[_Parameter.plistFiles] = config[_Parameter.plistFiles];
   }
   createSplashByConfig(removeConfig);
 }
@@ -353,4 +365,52 @@ String? parseColor(dynamic color) {
   if (colorValue == null) return null;
 
   throw Exception('Invalid color value');
+}
+
+class _Parameter {
+  static const android = 'android';
+  static const android12Section = 'android_12';
+  static const androidScreenOrientation = 'android_screen_orientation';
+  static const backgroundImage = 'background_image';
+  static const backgroundImageAndroid = 'background_android';
+  static const backgroundImageIos = 'background_ios';
+  static const backgroundImageWeb = 'background_web';
+  static const brandingDarkImage = 'branding_dark';
+  static const brandingDarkImageAndroid = 'branding_dark_android';
+  static const brandingDarkImageIos = 'branding_dark_ios';
+  static const brandingDarkImageWeb = 'branding_dark_web';
+  static const brandingGravity = 'branding_mode';
+  static const brandingImage = 'branding';
+  static const brandingImageAndroid = 'branding_android';
+  static const brandingImageIos = 'branding_ios';
+  static const brandingImageWeb = 'branding_web';
+  static const color = 'color';
+  static const colorAndroid = "color_android";
+  static const colorIos = "color_ios";
+  static const colorWeb = "color_web";
+  static const darkBackgroundImage = 'background_image_dark';
+  static const darkBackgroundImageAndroid = 'background_image_dark_android';
+  static const darkBackgroundImageIos = 'background_image_dark_ios';
+  static const darkBackgroundImageWeb = 'background_image_dark_web';
+  static const darkColor = 'color_dark';
+  static const darkColorAndroid = "color_dark_android";
+  static const darkColorIos = "color_dark_ios";
+  static const darkColorWeb = "color_dark_web";
+  static const darkImage = 'image_dark';
+  static const darkImageAndroid = 'image_dark_android';
+  static const darkImageIos = 'image_dark_ios';
+  static const darkImageWeb = 'image_dark_web';
+  static const fullscreen = 'fullscreen';
+  static const gravity = 'android_gravity';
+  static const iconBackgroundColor = 'icon_background_color';
+  static const iconBackgroundColorDark = 'icon_background_color_dark';
+  static const image = 'image';
+  static const imageAndroid = 'image_android';
+  static const imageIos = 'image_ios';
+  static const imageWeb = 'image_web';
+  static const ios = 'ios';
+  static const iosContentMode = 'ios_content_mode';
+  static const plistFiles = 'info_plist_files';
+  static const web = 'web';
+  static const webImageMode = 'web_image_mode';
 }

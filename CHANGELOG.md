@@ -1,3 +1,10 @@
+## [2.2.15] - (2022-Nov-20)
+
+- Fix iOS background image build incorrectly when background dark image is used.  Fixes [#452](https://github.com/jonbhanson/flutter_native_splash/issues/452), fixes [#439](https://github.com/jonbhanson/flutter_native_splash/issues/439).
+- Correct background image/color handling on web.  Fixes [#450](https://github.com/jonbhanson/flutter_native_splash/issues/450).
+- Don't include dark styling in web if not specified in config.  Fixes [453](https://github.com/jonbhanson/flutter_native_splash/issues/453).
+- Add _Parameters class to hold parameters.
+
 ## [2.2.14] - (2022-Nov-07)
 
 - Don't update `values-31` if there is no `android_12` section in the config.  Closes [#447](https://github.com/jonbhanson/flutter_native_splash/issues/447).
