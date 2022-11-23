@@ -28,6 +28,12 @@ Don't forget to `flutter pub get`.
 
 Customize the following settings and add to your project's `pubspec.yaml` file or place in a new file in your root project folder named `flutter_native_splash.yaml`.
 
+Here is the image reference template:
+<p align='center'>
+   <a href="https://ibb.co/VDhvbGX"><img src="https://i.ibb.co/0ZWf1LP/image.png" alt="image" border="0"></a>
+</p>
+
+
 ```yaml
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen
