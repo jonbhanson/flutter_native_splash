@@ -4,6 +4,7 @@ part of flutter_native_splash_cli;
 class _WebLaunchImageTemplate {
   final String fileName;
   final double pixelDensity;
+
   _WebLaunchImageTemplate({required this.fileName, required this.pixelDensity});
 }
 
@@ -171,10 +172,10 @@ void _createSplashCss({
   required bool hasDarkImage,
 }) {
   print('[Web] Creating CSS');
-  color ??= '000000';
+  color ??= 'ffffff';
   var cssContent = _webCss.replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#$color');
   if (darkColor != null || darkBackgroundImage != null || hasDarkImage) {
-    darkColor ??= color;
+    darkColor ??= '000000';
     cssContent +=
         _webCssDark.replaceFirst('[DARKBACKGROUNDCOLOR]', '#$darkColor');
   }
