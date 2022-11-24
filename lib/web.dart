@@ -101,27 +101,30 @@ void createBackgroundImages({
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
-  const backgroundDestination = '${_webSplashImagesFolder}light-background.png';
+  print('[Web] Creating background images');
+  _createBackgroundImage(
+    backgroundImage: backgroundImage,
+    fileName: "light-background.png",
+  );
+  _createBackgroundImage(
+    backgroundImage: darkBackgroundImage,
+    fileName: "dark-background.png",
+  );
+}
+
+void _createBackgroundImage({
+  required String? backgroundImage,
+  required String fileName,
+}) {
+  final backgroundDestination = '$_webSplashImagesFolder$fileName';
   if (backgroundImage == null) {
     final file = File(backgroundDestination);
     if (file.existsSync()) file.deleteSync();
   } else {
-    // Copy will not work if the directory does not exist, so createSync
-    // will ensure that the directory exists.
-    File(backgroundDestination).createSync(recursive: true);
-    File(backgroundImage).copySync(backgroundDestination);
-  }
-
-  const darkBackgroundDestination =
-      '${_webSplashImagesFolder}dark-background.png';
-  if (darkBackgroundImage == null) {
-    final file = File(darkBackgroundDestination);
-    if (file.existsSync()) file.deleteSync();
-  } else {
-    // Copy will not work if the directory does not exist, so createSync
-    // will ensure that the directory exists.
-    File(darkBackgroundDestination).createSync(recursive: true);
-    File(darkBackgroundImage).copySync(darkBackgroundDestination);
+    createBackgroundImage(
+      imageDestination: backgroundDestination,
+      imageSource: backgroundImage,
+    );
   }
 }
 
