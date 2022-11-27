@@ -284,15 +284,49 @@ String? _checkImageExists({
       exit(1);
     }
 
-    if (p.extension(image).toLowerCase() != '.png') {
+    // https://github.com/brendan-duncan/image#supported-image-formats
+    final List<String> supportedFormats = [
+      "png", "apng", // PNG
+      "jpg", "jpeg", "jpe", "jfif", // JPEG
+      "tga", "tpic", // TGA
+      "gif", // GIF
+      "ico", // ICO
+      "bmp", "dib", // BMP
+    ];
+
+    if (!supportedFormats
+        .any((format) => p.extension(image).toLowerCase() == ".$format")) {
       print(
-        'Unsupported file format: $image  Your image must be a PNG file.',
+        'Unsupported file format: $image  Your image must be in one of the following formats: $supportedFormats',
       );
       exit(1);
     }
   }
 
   return image == '' ? null : image;
+}
+
+void createBackgroundImage({
+  required String imageDestination,
+  required String imageSource,
+}) {
+  // Copy will not work if the directory does not exist, so createSync
+  // will ensure that the directory exists.
+  File(imageDestination).createSync(recursive: true);
+
+  // If source image is not already png, convert it, otherwise just copy it.
+  if (p.extension(imageSource).toLowerCase() != '.png') {
+    final image = decodeImage(File(imageSource).readAsBytesSync());
+    if (image == null) {
+      print('$imageSource could not be read');
+      exit(1);
+    }
+    File(imageDestination)
+      ..createSync(recursive: true)
+      ..writeAsBytesSync(encodePng(image));
+  } else {
+    File(imageSource).copySync(imageDestination);
+  }
 }
 
 /// Get config from `pubspec.yaml` or `flutter_native_splash.yaml`
