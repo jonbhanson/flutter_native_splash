@@ -169,7 +169,7 @@ flutter_native_splash:
   #web: false
 
   # Platform specific images can be specified with the following parameters, which will override
-  # the respective image parameter.  You may specify all, selected, or none of these parameters:
+  # the respective parameter.  You may specify all, selected, or none of these parameters:
   #color_android: "#42a5f5"
   #color_dark_android: "#042a49"
   #color_ios: "#42a5f5"

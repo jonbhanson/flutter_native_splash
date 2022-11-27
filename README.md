@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.15
+  flutter_native_splash: ^2.2.16
 ```
 
 Don't forget to `flutter pub get`.
@@ -106,7 +106,7 @@ flutter_native_splash:
   #web: false
 
   # Platform specific images can be specified with the following parameters, which will override
-  # the respective image parameter.  You may specify all, selected, or none of these parameters:
+  # the respective parameter.  You may specify all, selected, or none of these parameters:
   #color_android: "#42a5f5"
   #color_dark_android: "#042a49"
   #color_ios: "#42a5f5"
@@ -211,11 +211,24 @@ If you find this package useful, you can support it for free by giving it a thum
 
 <p align='center'><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></p>
 
-# Android 12 Support
+# Android 12+ Support
 
 Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background. Note that a background image is not supported.
 
-The package provides Android 12 support while maintaining the legacy splash screen for previous versions of Android.
+<img src="https://developer.android.com/static/images/guide/topics/ui/splash-screen/splash-screen-composition.png"/>
+
+Be aware of the following considerations regarding these elements:
+
+1. `image` parameter. By default, the launcher icon is used:
+
+    * App icon without an icon background, as shown on the left: This should be 1152×1152 pixels, and fit within a circle 768 pixels in diameter.
+    * App icon with an icon background, as shown on the right: This should be 960×960 pixels, and fit within a circle 640 pixels in diameter.
+
+2. `icon_background_color` is optional, and is useful if you need more contrast between the icon and the window background.
+
+3. One-third of the foreground is masked.
+
+4. `color` the window background consists of a single opaque color. 
 
 ~~**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio. However, it should appear when you launch by clicking on the launch icon in Android.~~  This seems to be resolved now.
 
