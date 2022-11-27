@@ -406,9 +406,13 @@ const String _iOSBrandingRightBottomConstraints = '''
 
 /// Web related templates
 const String _webCss = '''
+html {
+  height: 100%
+}
+
 body {
-  margin:0;
-  height:100%;
+  margin: 0;
+  min-height: 100%;
   background-color: [LIGHTBACKGROUNDCOLOR];
   [LIGHTBACKGROUNDIMAGE]
   background-size: 100% 100%;
@@ -465,11 +469,8 @@ const String _webCssDark = '''
 
 @media (prefers-color-scheme: dark) {
   body {
-    margin:0;
-    height:100%;
     background-color: [DARKBACKGROUNDCOLOR];
     [DARKBACKGROUNDIMAGE]
-    background-size: 100% 100%;
   }
 }
 ''';
