@@ -159,7 +159,7 @@ void _saveImageWeb({
     image,
     width: image.width * template.pixelDensity ~/ 4,
     height: image.height * template.pixelDensity ~/ 4,
-    interpolation: Interpolation.linear,
+    interpolation: Interpolation.cubic,
   );
 
   final file = File(_webSplashImagesFolder + template.fileName);

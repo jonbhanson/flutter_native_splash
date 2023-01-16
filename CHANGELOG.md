@@ -1,3 +1,7 @@
+## [2.2.17] - (2023-Jan-15)
+- Updated image dependency to v4.0.10.  Fixes [#497](https://github.com/jonbhanson/flutter_native_splash/issues/497).
+- Changed image processing from linear to cubic to improve image quality.  Fixes [#472](https://github.com/jonbhanson/flutter_native_splash/issues/472).
+
 ## [2.2.16] - (2022-Nov-27)
 
 - Update documentation on Android 12.
