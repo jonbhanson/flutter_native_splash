@@ -6,7 +6,7 @@ repository: https://github.com/jonbhanson/flutter_native_splash
 issue_tracker: https://github.com/jonbhanson/flutter_native_splash/issues
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=2.18.6 <3.0.0'
   flutter: ">=2.5.0"
 
 dependencies:
