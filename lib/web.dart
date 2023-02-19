@@ -26,6 +26,36 @@ void _createWebSplash({
     return;
   }
 
+  // Config for removing splash screen:
+  if (imagePath == null &&
+      darkImagePath == null &&
+      color == "ffffff" &&
+      darkColor == "000000" &&
+      brandingImagePath == null &&
+      brandingDarkImagePath == null &&
+      backgroundImage == null &&
+      darkBackgroundImage == null) {
+    Directory splashFolder = Directory(_webSplashFolder);
+    if (splashFolder.existsSync()) splashFolder.deleteSync(recursive: true);
+    final webIndex = File(_webIndex);
+    final document = html_parser.parse(webIndex.readAsStringSync());
+    // Remove items that may have been added to index.html:
+    document
+        .querySelector(
+            'link[rel="stylesheet"][type="text/css"][href="splash/style.css"]')
+        ?.remove();
+    document
+        .querySelector(
+          'meta[content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"][name="viewport"]',
+        )
+        ?.remove();
+    document.querySelector('script[src="splash/splash.js"]')?.remove();
+    document.querySelector('picture#splash')?.remove();
+    document.querySelector('picture#splash-branding')?.remove();
+    webIndex.writeAsStringSync(document.outerHtml);
+    return;
+  }
+
   darkImagePath ??= imagePath;
   _createWebImages(
     imagePath: imagePath,

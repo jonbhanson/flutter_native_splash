@@ -184,6 +184,9 @@ void _createAndroidSplash({
       android12IconBackgroundColor: android12IconBackgroundColor,
       android12BrandingImagePath: android12BrandingImagePath,
     );
+  } else {
+    File file = File(_flavorHelper.androidV31StylesFile);
+    if (file.existsSync()) file.deleteSync();
   }
 
   if (android12DarkBackgroundColor != null ||
@@ -199,6 +202,9 @@ void _createAndroidSplash({
       android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
       android12BrandingImagePath: android12DarkBrandingImagePath,
     );
+  } else {
+    File file = File(_flavorHelper.androidV31StylesNightFile);
+    if (file.existsSync()) file.deleteSync();
   }
 
   _applyStylesXml(

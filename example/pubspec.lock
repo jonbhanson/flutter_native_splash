@@ -14,7 +14,7 @@ packages:
       name: args
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.1"
+    version: "2.4.0"
   async:
     dependency: transitive
     description:
@@ -96,7 +96,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "2.2.17"
+    version: "2.2.18"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -120,7 +120,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.10"
+    version: "4.0.15"
   js:
     dependency: transitive
     description:
@@ -230,7 +230,7 @@ packages:
       name: universal_io
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.4"
+    version: "2.2.0"
   vector_math:
     dependency: transitive
     description:

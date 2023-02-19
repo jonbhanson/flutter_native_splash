@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.17
+  flutter_native_splash: ^2.2.18
 ```
 
 Don't forget to `flutter pub get`.
@@ -230,7 +230,7 @@ Be aware of the following considerations regarding these elements:
 
 4. `color` the window background consists of a single opaque color. 
 
-~~**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio. However, it should appear when you launch by clicking on the launch icon in Android.~~  This seems to be resolved now.
+**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio on API 31. However, it should appear when you launch by clicking on the launch icon in Android.  This seems to be resolved in API 32+.
 
 **_PLEASE NOTE:_** There are a number of reports that non-Google launchers do not display the launch image correctly. If the launch image does not display correctly, please try the Google launcher to confirm that this package is working.
 
