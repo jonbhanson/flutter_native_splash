@@ -31,7 +31,6 @@ const String _androidStylesXml = '''
         <!-- Show a splash screen on the activity. Automatically removed when
              the Flutter engine draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
-        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
     </style>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
@@ -54,7 +53,6 @@ const String _androidStylesNightXml = '''
              the Flutter engine draws its first frame -->
         <item name="android:windowBackground">@drawable/launch_background</item>
         <item name="android:forceDarkAllowed">false</item>
-        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
     </style>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
@@ -74,7 +72,6 @@ const String _androidV31StylesXml = '''
     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
     <style name="LaunchTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowSplashScreenBackground">@drawable/launch_background</item>
-        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
     </style>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your
@@ -94,7 +91,6 @@ const String _androidV31StylesNightXml = '''
     <!-- Theme applied to the Android Window while the process is starting when the OS's Dark Mode setting is off -->
     <style name="LaunchTheme" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="android:windowSplashScreenBackground">@drawable/launch_background</item>
-        <item name="android:windowSplashScreenBehavior">icon_preferred</item>
     </style>
     <!-- Theme applied to the Android Window as soon as the process has started.
          This theme determines the color of the Android Window while your

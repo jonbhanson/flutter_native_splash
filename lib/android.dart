@@ -442,6 +442,12 @@ Future<void> _updateStylesFile({
 
   replaceElement(
     launchTheme: launchTheme,
+    name: 'android:windowSplashScreenBehavior',
+    value: "icon_preferred",
+  );
+
+  replaceElement(
+    launchTheme: launchTheme,
     name: 'android:windowLayoutInDisplayCutoutMode',
     value: 'shortEdges',
   );
