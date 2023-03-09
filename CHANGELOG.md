@@ -1,8 +1,16 @@
+## [2.2.19] - (2023-Mar-05)
+
+- Refresh the example with the latest version of Flutter.
+- Fix Notification bar incorrectly still showing on Xiaomi devices. Fixes [#517](https://github.com/jonbhanson/flutter_native_splash/issues/517).
+- Updated dependencies.
+
 ## [2.2.18] - (2023-Feb-19)
+
 - Remove `v31/styles.xml` files if not in use.  Fixes [#514](https://github.com/jonbhanson/flutter_native_splash/issues/514).
 - Remove web changes on `remove` command.  Fixes [#516](https://github.com/jonbhanson/flutter_native_splash/issues/516).
 
 ## [2.2.17] - (2023-Jan-15)
+
 - Updated image dependency to v4.0.10.  Fixes [#497](https://github.com/jonbhanson/flutter_native_splash/issues/497).
 - Changed image processing from linear to cubic to improve image quality.  Fixes [#472](https://github.com/jonbhanson/flutter_native_splash/issues/472).
 

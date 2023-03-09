@@ -436,6 +436,11 @@ Future<void> _updateStylesFile({
   );
 
   replaceElement(
+      launchTheme: launchTheme,
+      name: 'android:windowDrawsSystemBarBackgrounds',
+      value: fullScreen.toString());
+
+  replaceElement(
     launchTheme: launchTheme,
     name: 'android:windowLayoutInDisplayCutoutMode',
     value: 'shortEdges',
