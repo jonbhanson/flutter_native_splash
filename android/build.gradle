@@ -22,6 +22,10 @@ rootProject.allprojects {
 apply plugin: 'com.android.library'
 
 android {
+    if (project.android.hasProperty("namespace")) {
+        namespace("net.jonhanson.flutter_native_splash")
+    }
+
     compileSdkVersion 31
 
     compileOptions {
