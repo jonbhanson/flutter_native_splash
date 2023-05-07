@@ -406,73 +406,74 @@ const String _iOSBrandingRightBottomConstraints = '''
 
 /// Web related templates
 const String _webCss = '''
-html {
-  height: 100%
-}
+  <style id="splash-screen-style">
+    html {
+      height: 100%
+    }
 
-body {
-  margin: 0;
-  min-height: 100%;
-  background-color: [LIGHTBACKGROUNDCOLOR];
-  [LIGHTBACKGROUNDIMAGE]
-  background-size: 100% 100%;
-}
+    body {
+      margin: 0;
+      min-height: 100%;
+      background-color: [LIGHTBACKGROUNDCOLOR];
+      [LIGHTBACKGROUNDIMAGE]
+      background-size: 100% 100%;
+    }
 
-.center {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-}
+    .center {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
 
-.contain {
-  display:block;
-  width:100%; height:100%;
-  object-fit: contain;
-}
+    .contain {
+      display:block;
+      width:100%; height:100%;
+      object-fit: contain;
+    }
 
-.stretch {
-  display:block;
-  width:100%; height:100%;
-}
+    .stretch {
+      display:block;
+      width:100%; height:100%;
+    }
 
-.cover {
-  display:block;
-  width:100%; height:100%;
-  object-fit: cover;
-}
+    .cover {
+      display:block;
+      width:100%; height:100%;
+      object-fit: cover;
+    }
 
-.bottom {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  -ms-transform: translate(-50%, 0);
-  transform: translate(-50%, 0);
-}
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      -ms-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+    }
 
-.bottomLeft {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-}
+    .bottomLeft {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
 
-.bottomRight {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
+    .bottomRight {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
 ''';
 
 const String _webCssDark = '''
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background-color: [DARKBACKGROUNDCOLOR];
-    [DARKBACKGROUNDIMAGE]
-  }
-}
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: [DARKBACKGROUNDCOLOR];
+        [DARKBACKGROUNDIMAGE]
+      }
+    }
 ''';
 
 // XML's insertBefore can't have a newline at the end:
@@ -492,9 +493,11 @@ const String _indexHtmlBrandingPicture = '''
   </picture>''';
 
 const String _webJS = '''
-function removeSplashFromWeb() {
-  document.getElementById("splash")?.remove();
-  document.getElementById("splash-branding")?.remove();
-  document.body.style.background = "transparent";
-}
+  <script id="splash-screen-script">
+    function removeSplashFromWeb() {
+      document.getElementById("splash")?.remove();
+      document.getElementById("splash-branding")?.remove();
+      document.body.style.background = "transparent";
+    }
+  </script>
 ''';
