@@ -278,7 +278,7 @@ void _createSplashCss({
 
     cssContent = cssContent.replaceFirst(
       '[LIGHTBACKGROUNDIMAGE]',
-      'background-image: url("img/light-background.$bgExtension");',
+      'background-image: url("splash/img/light-background.$bgExtension");',
     );
   }
 
@@ -290,19 +290,41 @@ void _createSplashCss({
 
     cssContent = cssContent.replaceFirst(
       '[DARKBACKGROUNDIMAGE]',
-      'background-image: url("img/dark-background.$darkBgExtension");',
+      'background-image: url("splash/img/dark-background.$darkBgExtension");',
     );
   }
 
-  final file = File(_webFolder + _webRelativeStyleFile);
-  file.createSync(recursive: true);
-  file.writeAsStringSync(cssContent);
+  cssContent += '  </style>\n';
+
+  // Add css as an inline style in head tag
+  final webIndex = File(_webIndex);
+  final document = html_parser.parse(webIndex.readAsStringSync());
+
+  // Update splash css style tag
+  document.head
+    ?..querySelector('style#splash-screen-style')?.remove()
+    ..append(
+      html_parser.parseFragment(cssContent, container: ''),
+    );
+
+  // Write the updated index.html
+  webIndex.writeAsStringSync(document.outerHtml);
 }
 
 void _createSplashJs() {
-  final file = File(_webFolder + _webRelativeJSFile);
-  file.createSync(recursive: true);
-  file.writeAsStringSync(_webJS);
+  // Add js as an inline script in head tag
+  final webIndex = File(_webIndex);
+  final document = html_parser.parse(webIndex.readAsStringSync());
+
+  // Update splash js script tag
+  document.head
+    ?..querySelector('script#splash-screen-script')?.remove()
+    ..append(
+      html_parser.parseFragment(_webJS, container: ''),
+    );
+
+  // Write the updated index.html
+  webIndex.writeAsStringSync(document.outerHtml);
 }
 
 void _updateHtml({
@@ -315,16 +337,12 @@ void _updateHtml({
   final webIndex = File(_webIndex);
   final document = html_parser.parse(webIndex.readAsStringSync());
 
-  // Add style sheet if it doesn't exist
-  document.querySelector(
+  // Remove previously used style sheet (migrating to inline style)
+  document
+      .querySelector(
         'link[rel="stylesheet"][type="text/css"][href="splash/style.css"]',
-      ) ??
-      document.head?.append(
-        html_parser.parseFragment(
-          '  <link rel="stylesheet" type="text/css" href="splash/style.css">\n',
-          container: '',
-        ),
-      );
+      )
+      ?.remove();
 
   // Add meta viewport if it doesn't exist
   document.querySelector(
@@ -337,31 +355,25 @@ void _updateHtml({
         ),
       );
 
-  // Add javascript if it doesn't exist
-  document.querySelector(
+  // Remove previously used src script tag (migrating to inline script)
+  document
+      .querySelector(
         'script[src="splash/splash.js"]',
-      ) ??
-      document.head?.append(
-        html_parser.parseFragment(
-          '  <script src="splash/splash.js"></script>\n',
-          container: '',
-        ),
-      );
+      )
+      ?.remove();
 
   // Update splash image
   document.querySelector('picture#splash')?.remove();
   if (imagePath != null) {
     document.body?.insertBefore(
       html_parser.parseFragment(
-        _indexHtmlPicture
-            .replaceAll(
+        '\n${_indexHtmlPicture.replaceAll(
               '[IMAGEMODE]',
               imageMode,
-            )
-            .replaceAll(
+            ).replaceAll(
               '[IMAGEEXTENSION]',
               imagePath.endsWith('.gif') ? 'gif' : 'png',
-            ),
+            )}',
         container: '',
       ),
       document.body?.firstChild,
@@ -373,15 +385,13 @@ void _updateHtml({
   if (brandingImagePath != null) {
     document.body?.insertBefore(
       html_parser.parseFragment(
-        _indexHtmlBrandingPicture
-            .replaceAll(
+        '\n${_indexHtmlBrandingPicture.replaceAll(
               '[BRANDINGMODE]',
               brandingMode,
-            )
-            .replaceAll(
+            ).replaceAll(
               '[BRANDINGEXTENSION]',
               brandingImagePath.endsWith('.gif') ? 'gif' : 'png',
-            ),
+            )}',
         container: '',
       ),
       document.body?.firstChild,
