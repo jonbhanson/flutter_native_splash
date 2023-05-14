@@ -479,17 +479,17 @@ const String _webCssDark = '''
 // XML's insertBefore can't have a newline at the end:
 const String _indexHtmlPicture = '''
   <picture id="splash">
-      <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light)">
-      <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">
-      <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.png" alt=""/>
+      <source srcset="splash/img/light-1x.[IMAGEEXTENSION] 1x, splash/img/light-2x.[IMAGEEXTENSION] 2x, splash/img/light-3x.[IMAGEEXTENSION] 3x, splash/img/light-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: light)">
+      <source srcset="splash/img/dark-1x.[IMAGEEXTENSION] 1x, splash/img/dark-2x.[IMAGEEXTENSION] 2x, splash/img/dark-3x.[IMAGEEXTENSION] 3x, splash/img/dark-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: dark)">
+      <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.[IMAGEEXTENSION]" alt=""/>
   </picture>''';
 
 // XML's insertBefore can't have a newline at the end:
 const String _indexHtmlBrandingPicture = '''
   <picture id="splash-branding">
-    <source srcset="splash/img/branding-1x.png 1x, splash/img/branding-2x.png 2x, splash/img/branding-3x.png 3x, splash/img/branding-4x.png 4x" media="(prefers-color-scheme: light)">
-    <source srcset="splash/img/branding-dark-1x.png 1x, splash/img/branding-dark-2x.png 2x, splash/img/branding-dark-3x.png 3x, splash/img/branding-dark-4x.png 4x" media="(prefers-color-scheme: dark)">
-    <img class="[BRANDINGMODE]" aria-hidden="true" src="splash/img/branding-1x.png" alt=""/>
+    <source srcset="splash/img/branding-1x.[BRANDINGEXTENSION] 1x, splash/img/branding-2x.[BRANDINGEXTENSION] 2x, splash/img/branding-3x.[BRANDINGEXTENSION] 3x, splash/img/branding-4x.[BRANDINGEXTENSION] 4x" media="(prefers-color-scheme: light)">
+    <source srcset="splash/img/branding-dark-1x.[BRANDINGEXTENSION] 1x, splash/img/branding-dark-2x.[BRANDINGEXTENSION] 2x, splash/img/branding-dark-3x.[BRANDINGEXTENSION] 3x, splash/img/branding-dark-4x.[BRANDINGEXTENSION] 4x" media="(prefers-color-scheme: dark)">
+    <img class="[BRANDINGMODE]" aria-hidden="true" src="splash/img/branding-1x.[BRANDINGEXTENSION]" alt=""/>
   </picture>''';
 
 const String _webJS = '''
