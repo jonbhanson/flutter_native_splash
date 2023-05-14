@@ -500,7 +500,7 @@ void _updateInfoPlistFile({
   var elementFound = true;
   final uIStatusBarHidden = dict.children.whereType<XmlElement>().firstWhere(
     (element) {
-      return element.text == 'UIStatusBarHidden';
+      return element.innerText == 'UIStatusBarHidden';
     },
     orElse: () {
       final builder = XmlBuilder();
@@ -529,7 +529,7 @@ void _updateInfoPlistFile({
     final uIViewControllerBasedStatusBarAppearance =
         dict.children.whereType<XmlElement>().firstWhere(
       (element) {
-        return element.text == 'UIViewControllerBasedStatusBarAppearance';
+        return element.innerText == 'UIViewControllerBasedStatusBarAppearance';
       },
       orElse: () {
         final builder = XmlBuilder();
