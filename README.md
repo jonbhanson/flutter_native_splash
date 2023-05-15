@@ -7,7 +7,7 @@ When your app is opened, there is a brief time while the native app loads Flutte
 
 # What's New
 
-**\[BETA\]** Support for flavors is in beta. Currently only Android and iOS are supported. See instructions below.
+Support for GIF images in web.
 
 You can now keep the splash screen up while your app initializes! No need for a secondary splash screen anymore. Just use the `preserve` and `remove` methods together to remove the splash screen after your initialization is complete. See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
 
@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.2.19
+  flutter_native_splash: ^2.3.0
 ```
 
 Don't forget to `flutter pub get`.
@@ -117,8 +117,8 @@ flutter_native_splash:
   #image_dark_android: assets/splash-invert-android.png
   #image_ios: assets/splash-ios.png
   #image_dark_ios: assets/splash-invert-ios.png
-  #image_web: assets/splash-web.png
-  #image_dark_web: assets/splash-invert-web.png
+  #image_web: assets/splash-web.gif
+  #image_dark_web: assets/splash-invert-web.gif
   #background_image_android: "assets/background-android.png"
   #background_image_dark_android: "assets/dark-background-android.png"
   #background_image_ios: "assets/background-ios.png"
@@ -127,8 +127,8 @@ flutter_native_splash:
   #background_image_dark_web: "assets/dark-background-web.png"
   #branding_android: assets/brand-android.png
   #branding_dark_android: assets/dart_dark-android.png
-  #branding_ios: assets/brand-ios.png
-  #branding_dark_ios: assets/dart_dark-ios.png
+  #branding_ios: assets/brand-ios.gif
+  #branding_dark_ios: assets/dart_dark-ios.gif
 
   # The position of the splash image can be set with android_gravity, ios_content_mode, and
   # web_image_mode parameters.  All default to center.

@@ -1,3 +1,12 @@
+## [2.3.0] - (2023-May-15)
+- Support for GIFs in splash screen for web. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #547](https://github.com/jonbhanson/flutter_native_splash/pull/547).
+- Using inline css & js in index.html to decrease load time. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #548](https://github.com/jonbhanson/flutter_native_splash/pull/548).
+- Update example app for Flutter 3.10. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #551](https://github.com/jonbhanson/flutter_native_splash/pull/551).
+- Replaced deprecated code with suggested ones. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #550](https://github.com/jonbhanson/flutter_native_splash/pull/550).
+- Update ci.yaml with latest flutter CLI commands. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #552](https://github.com/jonbhanson/flutter_native_splash/pull/552).
+- Fix compatibility with AGP 8.0.  Thanks [Aljoscha](https://github.com/Almighty-Alpaca) for [PR #545](https://github.com/jonbhanson/flutter_native_splash/pull/545).
+- Migrate to systemUIMode. Thanks [Milind](https://github.com/milindgoel15) for [PR #534](https://github.com/jonbhanson/flutter_native_splash/pull/534).
+
 ## [2.2.19] - (2023-Mar-05)
 
 - Refresh the example with the latest version of Flutter.
