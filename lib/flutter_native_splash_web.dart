@@ -28,7 +28,7 @@ class FlutterNativeSplashWeb {
           removeSplashFromWeb();
         } catch (e) {
           throw Exception(
-            'Did you forget to run "flutter pub run flutter_native_splash:create"? \n Could not run the JS command removeSplashFromWeb()',
+            'Did you forget to run "dart run flutter_native_splash:create"? \n Could not run the JS command removeSplashFromWeb()',
           );
         }
         return;
