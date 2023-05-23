@@ -185,9 +185,6 @@ void _applyImageiOS({
     print('$imagePath could not be loaded.');
     exit(1);
   }
-  // for (final template in list) {
-  //   _saveImageiOS(template: template, image: image, targetPath: targetPath);
-  // }
 
   await Future.wait(
     list.map(
