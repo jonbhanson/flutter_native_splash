@@ -3,6 +3,8 @@
 /// This is the main entry point for the Flutter Native Splash package.
 library flutter_native_splash_cli;
 
+import 'dart:isolate';
+
 import 'package:html/parser.dart' as html_parser;
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
@@ -29,10 +31,9 @@ void createSplash({
     print(
       '''
 ╔════════════════════════════════════════════════════════════════════════════╗
-║                              Flavor detected!                              ║
-╠════════════════════════════════════════════════════════════════════════════╣
-║ Setting up the $flavor flavor.                                             ║
+║                             Setting up flavors!                            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
+===> Setting up the $flavor flavor.
 ''',
     );
   }
