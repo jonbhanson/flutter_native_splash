@@ -313,20 +313,26 @@ flutter_native_splash:
   web: false
 ```
 
-Great, now comes the fun part running the new command!
-
-The new command is:
+If you'd like to generate only a single flavor (maybe you are
+testing something out), you can use only the single command like this:
 
 ```bash
 # If you have a flavor called production you would do this:
 flutter pub run flutter_native_splash:create --flavor production
 
 # For a flavor with a name staging you would provide it's name like so:
-flutter pub run flutter_native_splash:create --flavor staging
+flutter pub run flutter_native_splash:create --flavor acceptance
 
 # And if you have a local version for devs you could do that:
 flutter pub run flutter_native_splash:create --flavor development
 ```
+
+You also have the ability to specify all the flavors in one command
+as shown bellow:
+```bash
+flutter pub run flutter_native_splash:create --flavors development,staging,production
+```
+Note: the available flavors need to be comma separated for this option to work.
 
 ### Android setup
 
