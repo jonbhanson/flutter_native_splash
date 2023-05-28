@@ -33,9 +33,9 @@ flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen
   # with background color and splash image.
   # Customize the parameters below, and run the following command in the terminal:
-  # flutter pub run flutter_native_splash:create
+  # dart run flutter_native_splash:create
   # To restore Flutter's default white splash screen, run the following command in the terminal:
-  # flutter pub run flutter_native_splash:remove
+  # dart run flutter_native_splash:remove
 
   # color or background_image is the only required parameter.  Use color to set the background
   # of your splash screen to a solid color.  Use background_image to set the background of your
@@ -174,7 +174,7 @@ flutter_native_splash:
 After adding your settings, run the following command in the terminal:
 
 ```
-flutter pub run flutter_native_splash:create
+dart run flutter_native_splash:create
 ```
 
 When the package finishes running, your splash screen is ready.
@@ -182,7 +182,7 @@ When the package finishes running, your splash screen is ready.
 To specify the YAML file location just add --path with the command in the terminal:
 
 ```
-flutter pub run flutter_native_splash:create --path=path/to/my/file.yaml
+dart run flutter_native_splash:create --path=path/to/my/file.yaml
 ```
 
 ## 3. Set up app initialization (optional)
@@ -319,13 +319,13 @@ The new command is:
 
 ```bash
 # If you have a flavor called production you would do this:
-flutter pub run flutter_native_splash:create --flavor production
+dart run flutter_native_splash:create --flavor production
 
 # For a flavor with a name staging you would provide it's name like so:
-flutter pub run flutter_native_splash:create --flavor staging
+dart run flutter_native_splash:create --flavor staging
 
 # And if you have a local version for devs you could do that:
-flutter pub run flutter_native_splash:create --flavor development
+dart run flutter_native_splash:create --flavor development
 ```
 
 ### Android setup

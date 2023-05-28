@@ -52,7 +52,7 @@ class FlutterNativeSplash {
         _channel.invokeMethod('remove');
       } catch (e) {
         throw Exception(
-          '$e\nDid you forget to run "flutter pub run flutter_native_splash:create"?',
+          '$e\nDid you forget to run "dart run flutter_native_splash:create"?',
         );
       }
     }
