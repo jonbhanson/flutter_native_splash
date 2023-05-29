@@ -10,14 +10,14 @@ The pubspec.yaml file has been modified to add a color and icon to the splash sc
 
 ```
 flutter pub get
-flutter pub run flutter_native_splash:create
+dart run flutter_native_splash:create
 ```
 
 Or, to try specifying a config by setting the path, run the following command in the terminal:
 
 ```
 flutter pub get
-flutter pub run flutter_native_splash:create --path=red.yaml
+dart run flutter_native_splash:create --path=red.yaml
 ```
 
 The updated splash screen will now appear when you run the app, followed by the secondary splash screen.
