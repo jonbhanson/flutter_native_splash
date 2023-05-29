@@ -188,15 +188,15 @@ void _applyImageiOS({
 
   await Future.wait(
     list.map(
-      (e) => Isolate.run(() async {
+      (template) => Isolate.run(() async {
         final newFile = copyResize(
           image,
-          width: image.width * e.pixelDensity ~/ 4,
-          height: image.height * e.pixelDensity ~/ 4,
+          width: image.width * template.pixelDensity ~/ 4,
+          height: image.height * template.pixelDensity ~/ 4,
           interpolation: Interpolation.cubic,
         );
 
-        final file = File(targetPath! + e.fileName);
+        final file = File(targetPath! + template.fileName);
         await file.create(recursive: true);
         await file.writeAsBytes(encodePng(newFile));
       }),
