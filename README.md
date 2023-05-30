@@ -330,7 +330,7 @@ dart run flutter_native_splash:create --flavor development
 You also have the ability to specify all the flavors in one command
 as shown bellow:
 ```bash
-flutter pub run flutter_native_splash:create --flavors development,staging,production
+dart run flutter_native_splash:create --flavors development,staging,production
 ```
 Note: the available flavors need to be comma separated for this option to work.
 
