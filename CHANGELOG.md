@@ -1,6 +1,8 @@
-## Unreleased
-- Package speed up using Isolates to generate files at the same time
+## [2.3.1] - (2023-Jun-04)
+- Package speed up using Isolates to generate files at the same time. Thanks [Vladimir](https://github.com/vlazdra) for [PR #558](https://github.com/jonbhanson/flutter_native_splash/pull/558).
 - New command for generating all flavors at once: --flavors
+- Replaced deprecated 'flutter pub run' with 'dart run'. Thanks [Aditya](https://github.com/adityar224) for [PR #554](https://github.com/jonbhanson/flutter_native_splash/pull/554).
+- Fix fullscreen switch not working for Android <12v in System.dark mode. Fixes [#559](https://github.com/jonbhanson/flutter_native_splash/issues/559).
 
 ## [2.3.0] - (2023-May-15)
 - Support for GIFs in splash screen for web. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #547](https://github.com/jonbhanson/flutter_native_splash/pull/547).

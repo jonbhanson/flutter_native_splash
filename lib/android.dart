@@ -171,41 +171,25 @@ void _createAndroidSplash({
   }
 
   print('[Android] Updating styles...');
-  if (android12BackgroundColor != null ||
-      android12ImagePath != null ||
-      android12IconBackgroundColor != null ||
-      android12BrandingImagePath != null) {
-    _applyStylesXml(
-      fullScreen: fullscreen,
-      file: _flavorHelper.androidV31StylesFile,
-      template: _androidV31StylesXml,
-      android12BackgroundColor: android12BackgroundColor,
-      android12ImagePath: android12ImagePath,
-      android12IconBackgroundColor: android12IconBackgroundColor,
-      android12BrandingImagePath: android12BrandingImagePath,
-    );
-  } else {
-    File file = File(_flavorHelper.androidV31StylesFile);
-    if (file.existsSync()) file.deleteSync();
-  }
+  _applyStylesXml(
+    fullScreen: fullscreen,
+    file: _flavorHelper.androidV31StylesFile,
+    template: _androidV31StylesXml,
+    android12BackgroundColor: android12BackgroundColor,
+    android12ImagePath: android12ImagePath,
+    android12IconBackgroundColor: android12IconBackgroundColor,
+    android12BrandingImagePath: android12BrandingImagePath,
+  );
 
-  if (android12DarkBackgroundColor != null ||
-      android12DarkImagePath != null ||
-      darkAndroid12IconBackgroundColor != null ||
-      brandingDarkImagePath != null) {
-    _applyStylesXml(
-      fullScreen: fullscreen,
-      file: _flavorHelper.androidV31StylesNightFile,
-      template: _androidV31StylesNightXml,
-      android12BackgroundColor: android12DarkBackgroundColor,
-      android12ImagePath: android12DarkImagePath,
-      android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
-      android12BrandingImagePath: android12DarkBrandingImagePath,
-    );
-  } else {
-    File file = File(_flavorHelper.androidV31StylesNightFile);
-    if (file.existsSync()) file.deleteSync();
-  }
+  _applyStylesXml(
+    fullScreen: fullscreen,
+    file: _flavorHelper.androidV31StylesNightFile,
+    template: _androidV31StylesNightXml,
+    android12BackgroundColor: android12DarkBackgroundColor,
+    android12ImagePath: android12DarkImagePath,
+    android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
+    android12BrandingImagePath: android12DarkBrandingImagePath,
+  );
 
   _applyStylesXml(
     fullScreen: fullscreen,
@@ -213,13 +197,11 @@ void _createAndroidSplash({
     template: _androidStylesXml,
   );
 
-  if (darkColor != null || darkBackgroundImage != null) {
-    _applyStylesXml(
-      fullScreen: fullscreen,
-      file: _flavorHelper.androidNightStylesFile,
-      template: _androidStylesNightXml,
-    );
-  }
+  _applyStylesXml(
+    fullScreen: fullscreen,
+    file: _flavorHelper.androidNightStylesFile,
+    template: _androidStylesNightXml,
+  );
 
   _applyOrientation(orientation: screenOrientation);
 }
