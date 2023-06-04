@@ -248,9 +248,12 @@ void _applyImageAndroid({
       exit(1);
     }
 
-    for (final template in templates) {
-      _saveImageAndroid(template: template, image: image, fileName: fileName);
-    }
+    _saveImageAndroid(
+      templates: templates,
+      image: image,
+      fileName: fileName,
+      androidResFolder: _flavorHelper.androidResFolder,
+    );
   }
 }
 
@@ -269,28 +272,35 @@ List<_AndroidDrawableTemplate> _getAssociatedTemplates({
 /// Note: Do not change interpolation unless you end up with better results
 /// https://github.com/fluttercommunity/flutter_launcher_icons/issues/101#issuecomment-495528733
 void _saveImageAndroid({
-  required _AndroidDrawableTemplate template,
+  required List<_AndroidDrawableTemplate> templates,
   required Image image,
   required fileName,
-}) {
-  //added file name attribute to make this method generic for splash image and branding image.
-  final newFile = copyResize(
-    image,
-    width: image.width * template.pixelDensity ~/ 4,
-    height: image.height * template.pixelDensity ~/ 4,
-    interpolation: Interpolation.cubic,
-  );
+  required String androidResFolder,
+}) async {
+  await Future.wait(
+    templates.map(
+      (template) => Isolate.run(() async {
+        //added file name attribute to make this method generic for splash image and branding image.
+        final newFile = copyResize(
+          image,
+          width: image.width * template.pixelDensity ~/ 4,
+          height: image.height * template.pixelDensity ~/ 4,
+          interpolation: Interpolation.cubic,
+        );
 
-  // Whne the flavor value is not specified we will place all the data inside the main directory.
-  // However if the flavor value is specified, we need to place the data in the correct directory.
-  // Default: android/app/src/main/res/
-  // With a flavor: android/app/src/[flavor name]/res/
-  final file = File(
-    '${_flavorHelper.androidResFolder}${template.directoryName}/$fileName',
+        // When the flavor value is not specified we will place all the data inside the main directory.
+        // However if the flavor value is specified, we need to place the data in the correct directory.
+        // Default: android/app/src/main/res/
+        // With a flavor: android/app/src/[flavor name]/res/
+        final file = File(
+          '$androidResFolder${template.directoryName}/$fileName',
+        );
+        // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
+        await file.create(recursive: true);
+        await file.writeAsBytes(encodePng(newFile));
+      }),
+    ),
   );
-  // File(_androidResFolder + template.directoryName + '/' + 'splash.png');
-  file.createSync(recursive: true);
-  file.writeAsBytesSync(encodePng(newFile));
 }
 
 void _deleteImageAndroid({

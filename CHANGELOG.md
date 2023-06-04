@@ -1,3 +1,7 @@
+## Unreleased
+- Package speed up using Isolates to generate files at the same time
+- New command for generating all flavors at once: --flavors
+
 ## [2.3.0] - (2023-May-15)
 - Support for GIFs in splash screen for web. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #547](https://github.com/jonbhanson/flutter_native_splash/pull/547).
 - Using inline css & js in index.html to decrease load time. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #548](https://github.com/jonbhanson/flutter_native_splash/pull/548).

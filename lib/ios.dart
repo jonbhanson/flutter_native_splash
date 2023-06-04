@@ -173,7 +173,7 @@ void _applyImageiOS({
   bool dark = false,
   required List<_IosLaunchImageTemplate> list,
   String? targetPath,
-}) {
+}) async {
   // Because the path is no longer static, targetPath can't have a default value.
   // That's why this was added, as a setup for a default value.
   targetPath ??= _flavorHelper.iOSAssetsLaunchImageFolder;
@@ -185,27 +185,23 @@ void _applyImageiOS({
     print('$imagePath could not be loaded.');
     exit(1);
   }
-  for (final template in list) {
-    _saveImageiOS(template: template, image: image, targetPath: targetPath);
-  }
-}
 
-/// Saves splash screen image to the project
-void _saveImageiOS({
-  required _IosLaunchImageTemplate template,
-  required Image image,
-  required String targetPath,
-}) {
-  final newFile = copyResize(
-    image,
-    width: image.width * template.pixelDensity ~/ 4,
-    height: image.height * template.pixelDensity ~/ 4,
-    interpolation: Interpolation.cubic,
+  await Future.wait(
+    list.map(
+      (template) => Isolate.run(() async {
+        final newFile = copyResize(
+          image,
+          width: image.width * template.pixelDensity ~/ 4,
+          height: image.height * template.pixelDensity ~/ 4,
+          interpolation: Interpolation.cubic,
+        );
+
+        final file = File(targetPath! + template.fileName);
+        await file.create(recursive: true);
+        await file.writeAsBytes(encodePng(newFile));
+      }),
+    ),
   );
-
-  final file = File(targetPath + template.fileName);
-  file.createSync(recursive: true);
-  file.writeAsBytesSync(encodePng(newFile));
 }
 
 /// Updates LaunchScreen.storyboard adding splash image path
