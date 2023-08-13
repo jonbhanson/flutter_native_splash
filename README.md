@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.1
+  flutter_native_splash: ^2.3.2
 ```
 
 Don't forget to `flutter pub get`.
@@ -396,11 +396,11 @@ The solution is to remove the above code. Note that this will also remove the fa
 
 ## Are animations/lottie/GIF images supported?
 
-Not at this time. PRs are always welcome!
+GIFs are now supported on web.  Lotties are not yet supported. PRs are always welcome!
 
 ## I got the error AAPT: error: style attribute 'android:attr/windowSplashScreenBackground' not found
 
-This attribute is only found in Android 12, so if you are getting this error, it means your project is not fully set up for Android 12. Did you [update your app's build configuration](https://developer.android.com/about/versions/12/setup-sdk#config)?
+This attribute was added in Android 12, so if you are getting this error, it means your project is not fully set up for Android 12+. Did you [update your app's build configuration](https://developer.android.com/about/versions/12/setup-sdk#config)?
 
 ## I see a flash of the wrong splash screen on iOS
 
@@ -446,7 +446,7 @@ No. This package creates a splash screen that is displayed before Flutter is loa
 
 # Acknowledgments
 
-This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and it is currently maintained by [Jon Hanson](https://github.com/jonbhanson).
+This package was originally created by [Henrique Arthur](https://github.com/henriquearthur) and is now maintained by [Jon Hanson](https://github.com/jonbhanson).
 
 # Bugs or Requests
 

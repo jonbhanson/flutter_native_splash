@@ -1,3 +1,6 @@
+## [2.3.2] - (2023-Aug-13)
+- Update the example.
+- Update the `environment` value in the `pubspec.yaml`.
 ## [2.3.1] - (2023-Jun-04)
 - Package speed up using Isolates to generate files at the same time. Thanks [Vladimir](https://github.com/vlazdra) for [PR #558](https://github.com/jonbhanson/flutter_native_splash/pull/558).
 - New command for generating all flavors at once: --flavors

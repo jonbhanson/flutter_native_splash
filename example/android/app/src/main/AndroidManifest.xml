@@ -1,6 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="net.jonhanson.flutter_native_splash_example">
-   <application
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <application
         android:label="flutter_native_splash_example"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
