@@ -228,12 +228,11 @@ Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_n
 
   const String whatsNew = '''
 ╔════════════════════════════════════════════════════════════════════════════╗
-║                                 WHAT IS NEW:                               ║
+║                       NEED A GREAT FLUTTER DEVELOPER?                      ║
 ╠════════════════════════════════════════════════════════════════════════════╣
-║ You can now keep the splash screen up while your app initializes!          ║
-║ No need for a secondary splash screen anymore. Just use the remove()       ║
-║ method to remove the splash screen after your initialization is complete.  ║
-║ Check the docs for more info.                                              ║
+║                                                                            ║
+║   I am available!  Find me at https://www.linkedin.com/in/hansonjon/       ║
+║                                                                            ║
 ╚════════════════════════════════════════════════════════════════════════════╝
 ''';
   print(whatsNew + greet);

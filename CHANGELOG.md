@@ -1,3 +1,5 @@
+## [2.3.3] - (2023-Oct-02)
+- Updated dependencies.
 ## [2.3.2] - (2023-Aug-13)
 - Update the example.
 - Update the `environment` value in the `pubspec.yaml`.
