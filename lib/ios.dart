@@ -67,7 +67,7 @@ void _createiOSSplash({
 }) {
   if (imagePath != null) {
     _applyImageiOS(imagePath: imagePath, list: _iOSSplashImages);
-  } else {
+  } else if(imagePath.isNotEmpty) {
     final splashImage = Image(width: 1, height: 1);
     for (final template in _iOSSplashImages) {
       final file =
