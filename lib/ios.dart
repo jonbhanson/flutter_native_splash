@@ -62,11 +62,20 @@ void _createiOSSplash({
   required String iosContentMode,
   String? iosBrandingContentMode,
   required bool fullscreen,
+  bool shouldCreateImagePath = false;
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
   if (imagePath != null) {
     _applyImageiOS(imagePath: imagePath, list: _iOSSplashImages);
+  } else if(shouldCreateImagePath) {
+    final splashImage = Image(width: 1, height: 1);
+    for (final template in _iOSSplashImages) {
+      final file =
+          File(_flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
+      file.createSync(recursive: true);
+      file.writeAsBytesSync(encodePng(splashImage));
+    }
   }
 
   if (darkImagePath != null) {
