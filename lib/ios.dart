@@ -52,7 +52,7 @@ final List<_IosLaunchImageTemplate> _iOSBrandingImagesDark =
 
 /// Create iOS splash screen
 void _createiOSSplash({
-  bool shouldSkipImagePath = true,
+  bool shouldSkipImage = true,
   required String? imagePath,
   required String? darkImagePath,
   String? brandingImagePath,
@@ -66,7 +66,7 @@ void _createiOSSplash({
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
-  if(shouldSkipImagePath) {
+  if(shouldSkipImage) {
      if (Directory(_flavorHelper.iOSAssetsLaunchImageFolder).existsSync()) {
       Directory(_flavorHelper.iOSAssetsLaunchImageFolder)
           .delete(recursive: true);

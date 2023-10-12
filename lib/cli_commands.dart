@@ -115,6 +115,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
   final brandingGravity =
       config[_Parameter.brandingGravity] as String? ?? 'bottom';
   final bool fullscreen = config[_Parameter.fullscreen] as bool? ?? false;
+  final bool shouldSkipImageIos = config[_Parameter.shouldSkipImageIos] as bool? ?? false;
   final String iosContentMode =
       config[_Parameter.iosContentMode] as String? ?? 'center';
   final webImageMode = config[_Parameter.webImageMode] as String? ?? 'center';
@@ -194,6 +195,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
         iosContentMode: iosContentMode,
         iosBrandingContentMode: brandingGravity,
         fullscreen: fullscreen,
+        shouldSkipImage: shouldSkipImageIos,
       );
     } else {
       print('iOS folder not found, skipping iOS splash update...');
@@ -435,6 +437,7 @@ class _Parameter {
   static const darkImageIos = 'image_dark_ios';
   static const darkImageWeb = 'image_dark_web';
   static const fullscreen = 'fullscreen';
+  static const shouldSkipImageIos = 'should_skip_image_ios';
   static const gravity = 'android_gravity';
   static const iconBackgroundColor = 'icon_background_color';
   static const iconBackgroundColorDark = 'icon_background_color_dark';
