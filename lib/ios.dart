@@ -66,7 +66,12 @@ void _createiOSSplash({
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
-  if(!shouldSkipImagePath) {
+  if(shouldSkipImagePath) {
+     if (Directory(_flavorHelper.iOSAssetsLaunchImageFolder).existsSync()) {
+      Directory(_flavorHelper.iOSAssetsLaunchImageFolder)
+          .delete(recursive: true);
+    }
+  } else {
     if (imagePath != null) {
       _applyImageiOS(imagePath: imagePath, list: _iOSSplashImages);
     } else {
