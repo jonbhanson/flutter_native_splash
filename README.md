@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.3
+  flutter_native_splash: ^2.3.4
 ```
 
 Don't forget to `flutter pub get`.

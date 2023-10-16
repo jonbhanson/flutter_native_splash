@@ -1,15 +1,25 @@
+## [2.3.4] - (2023-Oct-16)
+
+- Use `average` for image interpolation to reduce aliasing.  Thanks [Shawn](https://github.com/esDotDev) for the tip.  Fixes [#598](https://github.com/jonbhanson/flutter_native_splash/issues/598).
+
 ## [2.3.3] - (2023-Oct-02)
+
 - Updated dependencies.
+
 ## [2.3.2] - (2023-Aug-13)
+
 - Update the example.
 - Update the `environment` value in the `pubspec.yaml`.
+
 ## [2.3.1] - (2023-Jun-04)
+
 - Package speed up using Isolates to generate files at the same time. Thanks [Vladimir](https://github.com/vlazdra) for [PR #558](https://github.com/jonbhanson/flutter_native_splash/pull/558).
 - New command for generating all flavors at once: --flavors
 - Replaced deprecated 'flutter pub run' with 'dart run'. Thanks [Aditya](https://github.com/adityar224) for [PR #554](https://github.com/jonbhanson/flutter_native_splash/pull/554).
 - Fix fullscreen switch not working for Android <12v in System.dark mode. Fixes [#559](https://github.com/jonbhanson/flutter_native_splash/issues/559).
 
 ## [2.3.0] - (2023-May-15)
+
 - Support for GIFs in splash screen for web. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #547](https://github.com/jonbhanson/flutter_native_splash/pull/547).
 - Using inline css & js in index.html to decrease load time. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #548](https://github.com/jonbhanson/flutter_native_splash/pull/548).
 - Update example app for Flutter 3.10. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #551](https://github.com/jonbhanson/flutter_native_splash/pull/551).

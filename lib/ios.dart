@@ -193,7 +193,7 @@ void _applyImageiOS({
           image,
           width: image.width * template.pixelDensity ~/ 4,
           height: image.height * template.pixelDensity ~/ 4,
-          interpolation: Interpolation.cubic,
+          interpolation: Interpolation.average,
         );
 
         final file = File(targetPath! + template.fileName);
