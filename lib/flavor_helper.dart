@@ -1,19 +1,29 @@
 part of 'cli_commands.dart';
 
 class _FlavorHelper {
-  _FlavorHelper(this._flavor) {
+  _FlavorHelper(this._appModule, this._flavor) {
     if (_flavor != null) {
-      _androidResFolder = 'android/app/src/$_flavor/res/';
+      _androidResFolder = '${appModulePrefix}android/app/src/$_flavor/res/';
       _iOSFlavorName = _flavor!.capitalize();
     } else {
-      _androidResFolder = 'android/app/src/main/res/';
+      _androidResFolder = '${appModulePrefix}android/app/src/main/res/';
       _iOSFlavorName = '';
     }
   }
 
+  // Custom path
+  final String? _appModule;
+
   // Android related path values
   final String? _flavor;
   late String _androidResFolder;
+
+  String get appModulePrefix {
+    if (_appModule == null || _appModule?.isEmpty == true) {
+      return '';
+    }
+    return '../$_appModule/';
+  }
 
   String? get flavor {
     return _flavor;
@@ -72,7 +82,7 @@ class _FlavorHelper {
   }
 
   String get androidManifestFile {
-    return 'android/app/src/main/AndroidManifest.xml';
+    return '${appModulePrefix}android/app/src/main/AndroidManifest.xml';
   }
 
   // iOS related values
@@ -83,15 +93,15 @@ class _FlavorHelper {
   }
 
   String get iOSAssetsLaunchImageFolder {
-    return 'ios/Runner/Assets.xcassets/LaunchImage$_iOSFlavorName.imageset/';
+    return '${appModulePrefix}ios/Runner/Assets.xcassets/LaunchImage$_iOSFlavorName.imageset/';
   }
 
   String get iOSAssetsBrandingImageFolder {
-    return 'ios/Runner/Assets.xcassets/BrandingImage$_iOSFlavorName.imageset/';
+    return '${appModulePrefix}ios/Runner/Assets.xcassets/BrandingImage$_iOSFlavorName.imageset/';
   }
 
   String get iOSLaunchScreenStoryboardFile {
-    return 'ios/Runner/Base.lproj/$iOSLaunchScreenStoryboardName.storyboard';
+    return '${appModulePrefix}ios/Runner/Base.lproj/$iOSLaunchScreenStoryboardName.storyboard';
   }
 
   String get iOSLaunchScreenStoryboardName {
@@ -99,11 +109,11 @@ class _FlavorHelper {
   }
 
   String get iOSInfoPlistFile {
-    return 'ios/Runner/Info.plist';
+    return '${appModulePrefix}ios/Runner/Info.plist';
   }
 
   String get iOSAssetsLaunchImageBackgroundFolder {
-    return 'ios/Runner/Assets.xcassets/LaunchBackground$_iOSFlavorName.imageset/';
+    return '${appModulePrefix}ios/Runner/Assets.xcassets/LaunchBackground$_iOSFlavorName.imageset/';
   }
 
   String get iOSLaunchScreenStoryBoardContent {
@@ -152,7 +162,7 @@ class _FlavorHelper {
   }
 }
 
-extension _StringExtension on String {
+extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
   }

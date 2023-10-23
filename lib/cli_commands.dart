@@ -15,10 +15,15 @@ import 'package:xml/xml.dart';
 import 'package:yaml/yaml.dart';
 
 part 'android.dart';
+
 part 'constants.dart';
+
 part 'flavor_helper.dart';
+
 part 'ios.dart';
+
 part 'templates.dart';
+
 part 'web.dart';
 
 late _FlavorHelper _flavorHelper;
@@ -27,6 +32,7 @@ late _FlavorHelper _flavorHelper;
 void createSplash({
   required String? path,
   required String? flavor,
+  required String? module,
 }) {
   if (flavor != null) {
     print(
@@ -39,12 +45,12 @@ void createSplash({
     );
   }
 
-  final config = getConfig(configFile: path, flavor: flavor);
-  _createSplashByConfig(config);
+  final config = getConfig(configFile: path, flavor: flavor, module: module);
+  _createSplashByConfig(config, module);
 }
 
 /// Create splash screens for Android and iOS based on a config argument
-void _createSplashByConfig(Map<String, dynamic> config) {
+void _createSplashByConfig(Map<String, dynamic> config, String? module) {
   // Preparing all the data for later usage
   final String? image =
       _checkImageExists(config: config, parameter: _Parameter.image);
@@ -150,7 +156,14 @@ void _createSplashByConfig(Map<String, dynamic> config) {
 
   if (!config.containsKey(_Parameter.android) ||
       config[_Parameter.android] as bool) {
-    if (Directory('android').existsSync()) {
+    // Custom path android
+    bool folderAndroidExist = false;
+    if (module != null && module.isNotEmpty) {
+      folderAndroidExist = Directory('../$module/android').existsSync();
+    } else {
+      folderAndroidExist = Directory('android').existsSync();
+    }
+    if (folderAndroidExist) {
       _createAndroidSplash(
         imagePath: imageAndroid ?? image,
         darkImagePath: darkImageAndroid ?? darkImage,
@@ -181,7 +194,14 @@ void _createSplashByConfig(Map<String, dynamic> config) {
   }
 
   if (!config.containsKey(_Parameter.ios) || config[_Parameter.ios] as bool) {
-    if (Directory('ios').existsSync()) {
+    // Custom path ios
+    bool folderIOSExist = false;
+    if (module != null && module.isNotEmpty) {
+      folderIOSExist = Directory('../$module/ios').existsSync();
+    } else {
+      folderIOSExist = Directory('ios').existsSync();
+    }
+    if (folderIOSExist) {
       _createiOSSplash(
         imagePath: imageIos ?? image,
         darkImagePath: darkImageIos ?? darkImage,
@@ -202,7 +222,14 @@ void _createSplashByConfig(Map<String, dynamic> config) {
   }
 
   if (!config.containsKey(_Parameter.web) || config[_Parameter.web] as bool) {
-    if (Directory('web').existsSync()) {
+    // Custom path ios
+    bool folderWebExist = false;
+    if (module != null && module.isNotEmpty) {
+      folderWebExist = Directory('../$module/web').existsSync();
+    } else {
+      folderWebExist = Directory('web').existsSync();
+    }
+    if (folderWebExist) {
       _createWebSplash(
         imagePath: imageWeb ?? image,
         darkImagePath: darkImageWeb ?? darkImage,
@@ -235,9 +262,10 @@ Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_n
 void removeSplash({
   required String? path,
   required String? flavor,
+  required String? module,
 }) {
   print("Restoring Flutter's default native splash screen...");
-  final config = getConfig(configFile: path, flavor: flavor);
+  final config = getConfig(configFile: path, flavor: flavor, module: module);
 
   final removeConfig = <String, dynamic>{
     _Parameter.color: '#ffffff',
@@ -261,7 +289,7 @@ void removeSplash({
   if (config.containsKey(_Parameter.plistFiles)) {
     removeConfig[_Parameter.plistFiles] = config[_Parameter.plistFiles];
   }
-  _createSplashByConfig(removeConfig);
+  _createSplashByConfig(removeConfig, module);
 }
 
 String? _checkImageExists({
@@ -326,10 +354,11 @@ void createBackgroundImage({
 Map<String, dynamic> getConfig({
   required String? configFile,
   required String? flavor,
+  required String? module,
 }) {
   // It is important that the flavor setup occurs as soon as possible.
   // So before we generate anything, we need to setup the flavor (even if it's the default one).
-  _flavorHelper = _FlavorHelper(flavor);
+  _flavorHelper = _FlavorHelper(module, flavor);
   // if `flutter_native_splash.yaml` exists use it as config file, otherwise use `pubspec.yaml`
   String filePath;
   if (configFile != null) {

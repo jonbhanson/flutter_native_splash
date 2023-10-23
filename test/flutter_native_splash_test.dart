@@ -34,6 +34,7 @@ flutter_native_splash:
       final Map<String, dynamic> config = getConfig(
         configFile: 'flutter_native_splash.yaml',
         flavor: null,
+        module: null,
       );
       File('flutter_native_splash.yaml').deleteSync();
       expect(config, isNotNull);
@@ -50,13 +51,15 @@ flutter_native_splash:
       final Map<String, dynamic> config = getConfig(
         configFile: null,
         flavor: null,
+        module: null,
       );
       File('pubspec.yaml').deleteSync();
       expect(config, isNotNull);
       expect(config['color'], '#00ff00');
 
       // fails if config file is missing
-      expect(() => getConfig(configFile: null, flavor: null), throwsException);
+      expect(() => getConfig(configFile: null, flavor: null, module: null),
+          throwsException);
     });
   });
 }

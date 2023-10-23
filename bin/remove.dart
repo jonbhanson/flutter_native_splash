@@ -6,11 +6,13 @@ void main(List<String> args) {
 
   parser.addOption('path');
   parser.addOption('flavor');
+  parser.addOption('module');
 
   final parsedArgs = parser.parse(args);
 
   removeSplash(
     path: parsedArgs['path']?.toString(),
     flavor: parsedArgs['flavor']?.toString(),
+    module: parsedArgs['module']?.toString(),
   );
 }

@@ -7,6 +7,7 @@ void main(List<String> args) {
   parser.addOption('path');
   parser.addOption('flavor');
   parser.addOption('flavors');
+  parser.addOption('module');
 
   final parsedArgs = parser.parse(args);
 
@@ -18,6 +19,7 @@ void main(List<String> args) {
     createSplash(
       path: parsedArgs['path']?.toString(),
       flavor: parsedArgs['flavor']?.toString(),
+      module: parsedArgs['module']?.toString(),
     );
   } else if (parsedArgs['flavors'] != null) {
     final flavors = parsedArgs['flavors']?.toString().split(',');
@@ -25,12 +27,14 @@ void main(List<String> args) {
       createSplash(
         path: parsedArgs['path']?.toString(),
         flavor: flavor,
+        module: parsedArgs['module']?.toString(),
       );
     }
   } else {
     createSplash(
       path: parsedArgs['path']?.toString(),
       flavor: null,
+      module: parsedArgs['module']?.toString(),
     );
   }
 }
