@@ -7,6 +7,7 @@
 library flutter_native_splash;
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
@@ -48,13 +49,16 @@ class FlutterNativeSplash {
     _widgetsBinding?.allowFirstFrame();
     _widgetsBinding = null;
     if (kIsWeb) {
-      try {
-        _channel.invokeMethod('remove');
-      } catch (e) {
-        throw Exception(
-          '$e\nDid you forget to run "dart run flutter_native_splash:create"?',
-        );
-      }
+      // Use SchedulerBinding to avoid white flash on splash removal.
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        try {
+          _channel.invokeMethod('remove');
+        } catch (e) {
+          throw Exception(
+            '$e\nDid you forget to run "dart run flutter_native_splash:create"?',
+          );
+        }
+      });
     }
   }
 }

@@ -1,3 +1,7 @@
+## [2.3.5] - (2023-Oct-29)
+
+- Remove white flash on web.  Thanks [eggp](https://github.com/eggp) for pointing out the problem and solution.  Closes [#607](https://github.com/jonbhanson/flutter_native_splash/issues/607).
+
 ## [2.3.4] - (2023-Oct-16)
 
 - Use `average` for image interpolation to reduce aliasing.  Thanks [Shawn](https://github.com/esDotDev) for the tip.  Fixes [#598](https://github.com/jonbhanson/flutter_native_splash/issues/598).
