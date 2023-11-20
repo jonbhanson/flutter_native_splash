@@ -1,3 +1,8 @@
+## [2.3.6] - (2023-Nov-20)
+
+- Add fade between splash and app on web.  Thanks [eggp](https://github.com/eggp) for the suggestion and example code.  Closes [#608](https://github.com/jonbhanson/flutter_native_splash/issues/608).
+- Add check of parameter names to catch user typos in the parameters.
+
 ## [2.3.5] - (2023-Oct-29)
 
 - Remove white flash on web.  Thanks [eggp](https://github.com/eggp) for pointing out the problem and solution.  Closes [#607](https://github.com/jonbhanson/flutter_native_splash/issues/607).

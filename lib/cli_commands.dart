@@ -5,6 +5,7 @@ library flutter_native_splash_cli;
 
 import 'dart:isolate';
 
+import 'package:ansicolor/ansicolor.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
@@ -118,6 +119,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
   final String iosContentMode =
       config[_Parameter.iosContentMode] as String? ?? 'center';
   final webImageMode = config[_Parameter.webImageMode] as String? ?? 'center';
+  final fadeTimeMs = config[_Parameter.fadeTimeMs] as int? ?? 250;
   String? android12Image;
   String? android12DarkImage;
   String? android12IconBackgroundColor;
@@ -213,6 +215,7 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkColor: darkColorWeb ?? darkColor,
         imageMode: webImageMode,
         brandingMode: brandingGravity,
+        fadeTimeMs: fadeTimeMs,
       );
     } else {
       print('Web folder not found, skipping web splash update...');
@@ -370,6 +373,13 @@ Map<String, dynamic> getConfig({
 Map<String, dynamic> _yamlToMap(YamlMap yamlMap) {
   final Map<String, dynamic> map = <String, dynamic>{};
   for (final MapEntry<dynamic, dynamic> entry in yamlMap.entries) {
+    if (!_Parameter.all.contains(entry.key)) {
+      AnsiPen pen = AnsiPen()..red(bold: true);
+      print(pen("⚠️ The parameter \"${entry.key}\" was found "
+          "in your flutter_native_splash config, but \"${entry.key}\" "
+          "is not a valid flutter_native_splash parameter."));
+      exit(0);
+    }
     if (entry.value is YamlList) {
       final list = <String>[];
       for (final value in entry.value as YamlList) {
@@ -447,4 +457,54 @@ class _Parameter {
   static const plistFiles = 'info_plist_files';
   static const web = 'web';
   static const webImageMode = 'web_image_mode';
+  static const fadeTimeMs = 'web_splash_fade_time_ms';
+
+  static List<String> all = [
+    android,
+    android12Section,
+    androidScreenOrientation,
+    backgroundImage,
+    backgroundImageAndroid,
+    backgroundImageIos,
+    backgroundImageWeb,
+    brandingDarkImage,
+    brandingDarkImageAndroid,
+    brandingDarkImageIos,
+    brandingDarkImageWeb,
+    brandingGravity,
+    brandingImage,
+    brandingImageAndroid,
+    brandingImageIos,
+    brandingImageWeb,
+    color,
+    colorAndroid,
+    colorIos,
+    colorWeb,
+    darkBackgroundImage,
+    darkBackgroundImageAndroid,
+    darkBackgroundImageIos,
+    darkBackgroundImageWeb,
+    darkColor,
+    darkColorAndroid,
+    darkColorIos,
+    darkColorWeb,
+    darkImage,
+    darkImageAndroid,
+    darkImageIos,
+    darkImageWeb,
+    fullscreen,
+    gravity,
+    iconBackgroundColor,
+    iconBackgroundColorDark,
+    image,
+    imageAndroid,
+    imageIos,
+    imageWeb,
+    ios,
+    iosContentMode,
+    plistFiles,
+    web,
+    webImageMode,
+    fadeTimeMs,
+  ];
 }
