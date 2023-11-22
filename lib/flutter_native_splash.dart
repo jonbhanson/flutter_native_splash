@@ -39,6 +39,12 @@ class FlutterNativeSplash {
 
   static WidgetsBinding? _widgetsBinding;
 
+  static void initWeb() {
+    if (kIsWeb) {
+      _channel.invokeMethod('show');
+    }
+  }
+
   // Prevents app from closing splash screen, app layout will be build but not displayed.
   static void preserve({required WidgetsBinding widgetsBinding}) {
     _widgetsBinding = widgetsBinding;

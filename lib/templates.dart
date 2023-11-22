@@ -427,7 +427,7 @@ const String _webCss = '''
         -webkit-font-smoothing: antialiased;
     }
     
-    #splash.remove {
+    #splash.hide {
       /* enable click through when run animation */
       pointer-events: none;
       /* start animation */
@@ -511,13 +511,38 @@ const String _indexHtmlBrandingPicture = '''
 
 const String _webJS = '''
   <script id="splash-screen-script">
-    function removeSplashFromWeb() {
-      const splashElement = document.getElementById("splash");
-      splashElement.classList.add("remove");
+    function showSplashWeb(){
+      const splashElement = document.getElementById('splash');
+      if(splashElement.classList.contains('hide')) {
+        splashElement.style.display = 'block';
+        splashElement.classList.remove('hide');
+      }
+    }
+    
+    function hideSplashWeb(callback){
+      const splashElement = document.getElementById('splash');
+      splashElement.classList.add('hide');
       setTimeout(function () {
-        splashElement.remove();
-        document.getElementById("splash-screen-script")?.remove();
+        splashElement.style.display = 'none';
+      
+        if(typeof callback === 'function') {
+          callback();
+        } 
       }, [FADETIME] /* animation time + wait rendering and others(500ms) */);
+    }
+    
+    function removeSplashFromWeb(callback) {
+      hideSplashWeb(() => {
+        const splashElement = document.getElementById('splash');
+        splashElement.remove();
+        
+        document.getElementById('splash-screen-script')?.remove();      
+        document.getElementById('splash-screen-style')?.remove();
+        
+        if(typeof callback === 'function') {
+          callback();
+        } 
+      });
     }
   </script>
 ''';
