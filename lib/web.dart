@@ -20,7 +20,6 @@ void _createWebSplash({
   required String brandingMode,
   required String? backgroundImage,
   required String? darkBackgroundImage,
-  required int fadeTimeMs,
 }) {
   if (!File(_webIndex).existsSync()) {
     print('[Web] $_webIndex not found.  Skipping Web.');
@@ -167,9 +166,8 @@ void _createWebSplash({
     darkBackgroundImage: darkBackgroundImage,
     backgroundImage: backgroundImage,
     hasDarkImage: darkBackgroundImage != null,
-    fadeTimeMs: fadeTimeMs,
   );
-  _createSplashJs(fadeTimeMs: fadeTimeMs);
+  _createSplashJs();
   _updateHtml(
     imageMode: imageMode,
     imagePath: imagePath,
@@ -262,13 +260,10 @@ void _createSplashCss({
   required String? backgroundImage,
   required String? darkBackgroundImage,
   required bool hasDarkImage,
-  required int fadeTimeMs,
 }) {
   print('[Web] Creating CSS');
   color ??= 'ffffff';
-  var cssContent = _webCss
-      .replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#$color')
-      .replaceFirst('[FADETIME]', "${fadeTimeMs / 1000}s");
+  var cssContent = _webCss.replaceFirst('[LIGHTBACKGROUNDCOLOR]', '#$color');
   if (darkColor != null || darkBackgroundImage != null || hasDarkImage) {
     darkColor ??= '000000';
     cssContent += _webCssDark.replaceFirst(
@@ -317,7 +312,7 @@ void _createSplashCss({
   webIndex.writeAsStringSync(document.outerHtml);
 }
 
-void _createSplashJs({required int fadeTimeMs}) {
+void _createSplashJs() {
   // Add js as an inline script in head tag
   final webIndex = File(_webIndex);
   final document = html_parser.parse(webIndex.readAsStringSync());
@@ -326,9 +321,7 @@ void _createSplashJs({required int fadeTimeMs}) {
   document.head
     ?..querySelector('script#splash-screen-script')?.remove()
     ..append(
-      html_parser.parseFragment(
-          _webJS.replaceFirst("[FADETIME]", (fadeTimeMs + 500).toString()),
-          container: ''),
+      html_parser.parseFragment(_webJS, container: ''),
     );
 
   // Write the updated index.html
@@ -392,8 +385,7 @@ void _updateHtml({
   // Update branding image
   document.querySelector('picture#splash-branding')?.remove();
   if (brandingImagePath != null) {
-    var div = document.querySelector('div#splash');
-    div?.insertBefore(
+    document.body?.insertBefore(
       html_parser.parseFragment(
         '\n${_indexHtmlBrandingPicture.replaceAll(
               '[BRANDINGMODE]',
@@ -404,7 +396,7 @@ void _updateHtml({
             )}',
         container: '',
       ),
-      div.firstChild,
+      document.body?.firstChild,
     );
   }
 

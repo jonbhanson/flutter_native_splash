@@ -21,7 +21,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.6
+  flutter_native_splash: ^2.3.7
 ```
 
 Don't forget to `flutter pub get`.
@@ -169,10 +169,6 @@ flutter_native_splash:
   #       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top], );
   #fullscreen: true
 
-  # On web, the splash screen fades out in 250ms.  This fade delay can be adjusted by changing
-  # the web_splash_fade_time_ms parameter.
-  #web_splash_fade_time_ms: 250
-  
   # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s)
   # with the info_plist_files parameter.  Remove only the # characters in the three lines below,
   # do not remove any spaces:

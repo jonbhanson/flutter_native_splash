@@ -407,34 +407,19 @@ const String _iOSBrandingRightBottomConstraints = '''
 /// Web related templates
 const String _webCss = '''
   <style id="splash-screen-style">
-    .flutter-loader {
-      z-index: 999999;
-    }
-    
-    #splash {
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        top: 0px;
-        left: 0px;
-        z-index: 999998;
-        opacity: 1;
-        /* animation type and duration */
-        transition: opacity [FADETIME];
-        background-color: [LIGHTBACKGROUNDCOLOR];
-        [LIGHTBACKGROUNDIMAGE]
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-font-smoothing: antialiased;
-    }
-    
-    #splash.remove {
-      /* enable click through when run animation */
-      pointer-events: none;
-      /* start animation */
-      opacity: 0;
+    html {
+      height: 100%
     }
 
-    #splash .center {
+    body {
+      margin: 0;
+      min-height: 100%;
+      background-color: [LIGHTBACKGROUNDCOLOR];
+      [LIGHTBACKGROUNDIMAGE]
+      background-size: 100% 100%;
+    }
+
+    .center {
       margin: 0;
       position: absolute;
       top: 50%;
@@ -443,24 +428,24 @@ const String _webCss = '''
       transform: translate(-50%, -50%);
     }
 
-    #splash .contain {
+    .contain {
       display:block;
       width:100%; height:100%;
       object-fit: contain;
     }
 
-    #splash .stretch {
+    .stretch {
       display:block;
       width:100%; height:100%;
     }
 
-    #splash .cover {
+    .cover {
       display:block;
       width:100%; height:100%;
       object-fit: cover;
     }
 
-    #splash .bottom {
+    .bottom {
       position: absolute;
       bottom: 0;
       left: 50%;
@@ -468,13 +453,13 @@ const String _webCss = '''
       transform: translate(-50%, 0);
     }
 
-    #splash .bottomLeft {
+    .bottomLeft {
       position: absolute;
       bottom: 0;
       left: 0;
     }
 
-    #splash .bottomRight {
+    .bottomRight {
       position: absolute;
       bottom: 0;
       right: 0;
@@ -484,7 +469,7 @@ const String _webCss = '''
 const String _webCssDark = '''
 
     @media (prefers-color-scheme: dark) {
-      #splash {
+      body {
         background-color: [DARKBACKGROUNDCOLOR];
         [DARKBACKGROUNDIMAGE]
       }
@@ -493,13 +478,11 @@ const String _webCssDark = '''
 
 // XML's insertBefore can't have a newline at the end:
 const String _indexHtmlPicture = '''
-  <div id="splash">
-    <picture>
-        <source srcset="splash/img/light-1x.[IMAGEEXTENSION] 1x, splash/img/light-2x.[IMAGEEXTENSION] 2x, splash/img/light-3x.[IMAGEEXTENSION] 3x, splash/img/light-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: light)">
-        <source srcset="splash/img/dark-1x.[IMAGEEXTENSION] 1x, splash/img/dark-2x.[IMAGEEXTENSION] 2x, splash/img/dark-3x.[IMAGEEXTENSION] 3x, splash/img/dark-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: dark)">
-        <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.[IMAGEEXTENSION]" alt=""/>
-    </picture>
-  </div>''';
+  <picture id="splash">
+      <source srcset="splash/img/light-1x.[IMAGEEXTENSION] 1x, splash/img/light-2x.[IMAGEEXTENSION] 2x, splash/img/light-3x.[IMAGEEXTENSION] 3x, splash/img/light-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: light)">
+      <source srcset="splash/img/dark-1x.[IMAGEEXTENSION] 1x, splash/img/dark-2x.[IMAGEEXTENSION] 2x, splash/img/dark-3x.[IMAGEEXTENSION] 3x, splash/img/dark-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: dark)">
+      <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.[IMAGEEXTENSION]" alt=""/>
+  </picture>''';
 
 // XML's insertBefore can't have a newline at the end:
 const String _indexHtmlBrandingPicture = '''
@@ -512,12 +495,9 @@ const String _indexHtmlBrandingPicture = '''
 const String _webJS = '''
   <script id="splash-screen-script">
     function removeSplashFromWeb() {
-      const splashElement = document.getElementById("splash");
-      splashElement.classList.add("remove");
-      setTimeout(function () {
-        splashElement.remove();
-        document.getElementById("splash-screen-script")?.remove();
-      }, [FADETIME] /* animation time + wait rendering and others(500ms) */);
+      document.getElementById("splash")?.remove();
+      document.getElementById("splash-branding")?.remove();
+      document.body.style.background = "transparent";
     }
   </script>
 ''';

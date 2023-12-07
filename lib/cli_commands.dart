@@ -119,7 +119,6 @@ void createSplashByConfig(Map<String, dynamic> config) {
   final String iosContentMode =
       config[_Parameter.iosContentMode] as String? ?? 'center';
   final webImageMode = config[_Parameter.webImageMode] as String? ?? 'center';
-  final fadeTimeMs = config[_Parameter.fadeTimeMs] as int? ?? 250;
   String? android12Image;
   String? android12DarkImage;
   String? android12IconBackgroundColor;
@@ -215,7 +214,6 @@ void createSplashByConfig(Map<String, dynamic> config) {
         darkColor: darkColorWeb ?? darkColor,
         imageMode: webImageMode,
         brandingMode: brandingGravity,
-        fadeTimeMs: fadeTimeMs,
       );
     } else {
       print('Web folder not found, skipping web splash update...');
@@ -457,7 +455,6 @@ class _Parameter {
   static const plistFiles = 'info_plist_files';
   static const web = 'web';
   static const webImageMode = 'web_image_mode';
-  static const fadeTimeMs = 'web_splash_fade_time_ms';
 
   static List<String> all = [
     android,
@@ -505,6 +502,5 @@ class _Parameter {
     plistFiles,
     web,
     webImageMode,
-    fadeTimeMs,
   ];
 }

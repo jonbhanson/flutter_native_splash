@@ -1,3 +1,7 @@
+## [2.3.7] - (2023-Dec-06)
+
+- Roll back web fade as it was a breaking change.  Fixes [#628](https://github.com/jonbhanson/flutter_native_splash/issues/628). Fixes [#627](https://github.com/jonbhanson/flutter_native_splash/issues/627).  Fixes [#622](https://github.com/jonbhanson/flutter_native_splash/issues/622).
+
 ## [2.3.6] - (2023-Nov-20)
 
 - Add fade between splash and app on web.  Thanks [eggp](https://github.com/eggp) for the suggestion and example code.  Closes [#608](https://github.com/jonbhanson/flutter_native_splash/issues/608).
