@@ -156,7 +156,7 @@ void _createWebSplash({
     ],
   );
 
-  createBackgroundImages(
+  _createBackgroundImages(
     backgroundImage: backgroundImage,
     darkBackgroundImage: darkBackgroundImage,
   );
@@ -176,7 +176,7 @@ void _createWebSplash({
   );
 }
 
-void createBackgroundImages({
+void _createBackgroundImages({
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {

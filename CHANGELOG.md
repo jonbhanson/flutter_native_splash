@@ -1,3 +1,7 @@
+## [2.3.8]
+
+- Make functions private that should not be public.
+
 ## [2.3.7] - (2023-Dec-06)
 
 - Roll back web fade as it was a breaking change.  Fixes [#628](https://github.com/jonbhanson/flutter_native_splash/issues/628). Fixes [#627](https://github.com/jonbhanson/flutter_native_splash/issues/627).  Fixes [#622](https://github.com/jonbhanson/flutter_native_splash/issues/622).

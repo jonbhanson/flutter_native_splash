@@ -415,24 +415,24 @@ Future<void> _updateStylesFile({
     return;
   }
 
-  replaceElement(
+  _replaceElement(
     launchTheme: launchTheme,
     name: 'android:forceDarkAllowed',
     value: "false",
   );
 
-  replaceElement(
+  _replaceElement(
     launchTheme: launchTheme,
     name: 'android:windowFullscreen',
     value: fullScreen.toString(),
   );
 
-  replaceElement(
+  _replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowDrawsSystemBarBackgrounds',
       value: fullScreen.toString());
 
-  replaceElement(
+  _replaceElement(
     launchTheme: launchTheme,
     name: 'android:windowLayoutInDisplayCutoutMode',
     value: 'shortEdges',
@@ -440,12 +440,12 @@ Future<void> _updateStylesFile({
 
   // In Android 12, the color must be set directly in the styles.xml
   if (android12BackgroundColor == null) {
-    removeElement(
+    _removeElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBackground',
     );
   } else {
-    replaceElement(
+    _replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBackground',
       value: '#$android12BackgroundColor',
@@ -453,12 +453,12 @@ Future<void> _updateStylesFile({
   }
 
   if (android12BrandingImagePath == null) {
-    removeElement(
+    _removeElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBrandingImage',
     );
   } else {
-    replaceElement(
+    _replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenBrandingImage',
       value: '@drawable/android12branding',
@@ -466,12 +466,12 @@ Future<void> _updateStylesFile({
   }
 
   if (android12ImagePath == null) {
-    removeElement(
+    _removeElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenAnimatedIcon',
     );
   } else {
-    replaceElement(
+    _replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenAnimatedIcon',
       value: '@drawable/android12splash',
@@ -479,12 +479,12 @@ Future<void> _updateStylesFile({
   }
 
   if (android12IconBackgroundColor == null) {
-    removeElement(
+    _removeElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenIconBackgroundColor',
     );
   } else {
-    replaceElement(
+    _replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenIconBackgroundColor',
       value: '#$android12IconBackgroundColor',
@@ -496,7 +496,7 @@ Future<void> _updateStylesFile({
   );
 }
 
-void replaceElement({
+void _replaceElement({
   required XmlElement launchTheme,
   required String name,
   required String value,
@@ -517,7 +517,7 @@ void replaceElement({
   );
 }
 
-void removeElement({required XmlElement launchTheme, required String name}) {
+void _removeElement({required XmlElement launchTheme, required String name}) {
   launchTheme.children.removeWhere(
     (element) => element.attributes.any(
       (attribute) =>

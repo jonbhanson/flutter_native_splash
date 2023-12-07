@@ -1,5 +1,3 @@
-# **Need a great Flutter developer?  [I'm available](https://www.linkedin.com/in/hansonjon/)!**
-
 When your app is opened, there is a brief time while the native app loads Flutter. By default, during this time, the native app displays a white splash screen. This package automatically generates iOS, Android, and Web-native code for customizing this native splash screen background color and splash image. Supports dark mode, full screen, and platform-specific options.
 
 <p align='center'>
@@ -21,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.7
+  flutter_native_splash: ^2.3.8
 ```
 
 Don't forget to `flutter pub get`.
@@ -417,7 +415,7 @@ This is caused by an [iOS splash caching bug](https://stackoverflow.com/question
 ## I see a white screen between splash screen and app
 
 1. It may be caused by an [iOS splash caching bug](https://stackoverflow.com/questions/33002829/ios-keeping-old-launch-screen-and-app-icon-after-update), which can be solved by uninstalling your app, powering off your device, power back on, and then try reinstalling.
-2. It may be caused by the delay due to initialization in your app. To solve this, put any initialization code in the `removeAfter` method.
+2. It may be caused by the delay due to initialization in your app. To solve this, use the `preserve` and `remove` calls to keep the splash on screen while your app initializes.
 
 ## Can I base light/dark mode on app settings?
 

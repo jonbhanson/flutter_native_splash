@@ -40,11 +40,11 @@ void createSplash({
   }
 
   final config = getConfig(configFile: path, flavor: flavor);
-  createSplashByConfig(config);
+  _createSplashByConfig(config);
 }
 
 /// Create splash screens for Android and iOS based on a config argument
-void createSplashByConfig(Map<String, dynamic> config) {
+void _createSplashByConfig(Map<String, dynamic> config) {
   // Preparing all the data for later usage
   final String? image =
       _checkImageExists(config: config, parameter: _Parameter.image);
@@ -227,15 +227,7 @@ Now go finish building something awesome! 💪 You rock! 🤘🤩
 Like the package? Please give it a 👍 here: https://pub.dev/packages/flutter_native_splash
 ''';
 
-  const String whatsNew = '''
-╔════════════════════════════════════════════════════════════════════════════╗
-║                       NEED A GREAT FLUTTER DEVELOPER?                      ║
-╠════════════════════════════════════════════════════════════════════════════╣
-║                                                                            ║
-║   I am available!  Find me at https://www.linkedin.com/in/hansonjon/       ║
-║                                                                            ║
-╚════════════════════════════════════════════════════════════════════════════╝
-''';
+  const String whatsNew = '';
   print(whatsNew + greet);
 }
 
@@ -269,7 +261,7 @@ void removeSplash({
   if (config.containsKey(_Parameter.plistFiles)) {
     removeConfig[_Parameter.plistFiles] = config[_Parameter.plistFiles];
   }
-  createSplashByConfig(removeConfig);
+  _createSplashByConfig(removeConfig);
 }
 
 String? _checkImageExists({
