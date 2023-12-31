@@ -1,4 +1,4 @@
-part of flutter_native_splash_cli;
+part of 'cli_commands.dart';
 
 // Web-related constants
 const String _webFolder = 'web/';

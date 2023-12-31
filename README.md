@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.8
+  flutter_native_splash: ^2.3.9
 ```
 
 Don't forget to `flutter pub get`.
@@ -386,6 +386,10 @@ Xcode still doesn't know how to use them, so we need to specify for all the curr
 Congrats you finished your setup for multiple flavors,
 
 # FAQs
+
+## I got the error 'module flutter_native_splash' not found.
+
+You may need to run the `pod install` command in your app's `ios` folder.
 
 ## I got the error "A splash screen was provided to Flutter, but this is deprecated."
 

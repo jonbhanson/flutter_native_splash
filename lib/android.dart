@@ -1,4 +1,4 @@
-part of flutter_native_splash_cli;
+part of 'cli_commands.dart';
 
 /// Image template
 class _AndroidDrawableTemplate {

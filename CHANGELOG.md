@@ -1,3 +1,7 @@
+## [2.3.9]
+
+- Resolve lint warnings.  Update readme.
+
 ## [2.3.8]
 
 - Make functions private that should not be public.
