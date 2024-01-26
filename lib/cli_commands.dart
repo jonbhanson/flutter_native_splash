@@ -368,7 +368,7 @@ Map<String, dynamic> _yamlToMap(YamlMap yamlMap) {
       print(pen("⚠️ The parameter \"${entry.key}\" was found "
           "in your flutter_native_splash config, but \"${entry.key}\" "
           "is not a valid flutter_native_splash parameter."));
-      exit(0);
+      exit(1);
     }
     if (entry.value is YamlList) {
       final list = <String>[];
