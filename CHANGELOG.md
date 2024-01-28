@@ -1,8 +1,14 @@
-## [2.3.9]
+## [2.3.10] - (2024-Jan-28)
+
+- Fixed parameter `background_image_android`.  Fixes [#652](https://github.com/jonbhanson/flutter_native_splash/issues/652).
+- Exit process with error code when unexpected config provided in YAML.  Thanks [smit-ghl](https://github.com/smit-ghl) for [PR #657](https://github.com/jonbhanson/flutter_native_splash/pull/657).
+- Updated readme.  Thanks [Mercutio1243](https://github.com/Mercutio1243) for the suggestions.  Closes [#658](https://github.com/jonbhanson/flutter_native_splash/issues/658).
+
+## [2.3.9] - (2023-Dec-31)
 
 - Resolve lint warnings.  Update readme.
 
-## [2.3.8]
+## [2.3.8] - (2023-Dec-07)
 
 - Make functions private that should not be public.
 

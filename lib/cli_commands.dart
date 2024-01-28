@@ -406,7 +406,7 @@ class _Parameter {
   static const android12Section = 'android_12';
   static const androidScreenOrientation = 'android_screen_orientation';
   static const backgroundImage = 'background_image';
-  static const backgroundImageAndroid = 'background_android';
+  static const backgroundImageAndroid = 'background_image_android';
   static const backgroundImageIos = 'background_ios';
   static const backgroundImageWeb = 'background_web';
   static const brandingDarkImage = 'branding_dark';

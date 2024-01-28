@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.9
+  flutter_native_splash: ^2.3.10
 ```
 
 Don't forget to `flutter pub get`.
@@ -74,9 +74,9 @@ flutter_native_splash:
   #image_dark: assets/splash-invert.png
   #branding_dark: assets/dart_dark.png
 
-  # Android 12 handles the splash screen differently than previous versions.  Please visit
-  # https://developer.android.com/guide/topics/ui/splash-screen
-  # Following are Android 12 specific parameter.
+  # From Android 12 onwards, the splash screen is handled differently than in previous versions.
+  # Please visit https://developer.android.com/guide/topics/ui/splash-screen
+  # Following are specific parameters for Android 12+.
   android_12:
     # The image parameter sets the splash screen icon image.  If this parameter is not specified,
     # the app's launcher icon will be used instead.
