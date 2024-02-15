@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.10
+  flutter_native_splash: ^2.3.11
 ```
 
 Don't forget to `flutter pub get`.
@@ -40,7 +40,7 @@ flutter_native_splash:
   # IMPORTANT NOTE: These parameter do not affect the configuration of Android 12 and later, which
   # handle splash screens differently that prior versions of Android.  Android 12 and later must be
   # configured specifically in the android_12 section below.
-  
+
   # color or background_image is the only required parameter.  Use color to set the background
   # of your splash screen to a solid color.  Use background_image to set the background of your
   # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
@@ -227,20 +227,20 @@ Be aware of the following considerations regarding these elements:
 
 1. `image` parameter. By default, the launcher icon is used:
 
-    * App icon without an icon background, as shown on the left: This should be 1152×1152 pixels, and fit within a circle 768 pixels in diameter.
-    * App icon with an icon background, as shown on the right: This should be 960×960 pixels, and fit within a circle 640 pixels in diameter.
+   - App icon without an icon background, as shown on the left: This should be 1152×1152 pixels, and fit within a circle 768 pixels in diameter.
+   - App icon with an icon background, as shown on the right: This should be 960×960 pixels, and fit within a circle 640 pixels in diameter.
 
 2. `icon_background_color` is optional, and is useful if you need more contrast between the icon and the window background.
 
 3. One-third of the foreground is masked.
 
-4. `color` the window background consists of a single opaque color. 
+4. `color` the window background consists of a single opaque color.
 
-**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio on API 31. However, it should appear when you launch by clicking on the launch icon in Android.  This seems to be resolved in API 32+.
+**_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio on API 31. However, it should appear when you launch by clicking on the launch icon in Android. This seems to be resolved in API 32+.
 
 **_PLEASE NOTE:_** There are a number of reports that non-Google launchers do not display the launch image correctly. If the launch image does not display correctly, please try the Google launcher to confirm that this package is working.
 
-**_PLEASE NOTE:_** The splash screen does not appear when you launch the app from a notification.  Apparently this is the intended behavior on Android 12: [core-splashscreen Icon not shown when cold launched from notification](https://issuetracker.google.com/issues/199776339?pli=1).
+**_PLEASE NOTE:_** The splash screen does not appear when you launch the app from a notification. Apparently this is the intended behavior on Android 12: [core-splashscreen Icon not shown when cold launched from notification](https://issuetracker.google.com/issues/199776339?pli=1).
 
 # Flavor Support
 
@@ -335,9 +335,11 @@ dart run flutter_native_splash:create --flavor development
 
 You also have the ability to specify all the flavors in one command
 as shown bellow:
+
 ```bash
 dart run flutter_native_splash:create --flavors development,staging,production
 ```
+
 Note: the available flavors need to be comma separated for this option to work.
 
 ### Android setup
@@ -406,7 +408,7 @@ The solution is to remove the above code. Note that this will also remove the fa
 
 ## Are animations/lottie/GIF images supported?
 
-GIFs are now supported on web.  Lotties are not yet supported. PRs are always welcome!
+GIFs are now supported on web. Lotties are not yet supported. PRs are always welcome!
 
 ## I got the error AAPT: error: style attribute 'android:attr/windowSplashScreenBackground' not found
 

@@ -1,12 +1,16 @@
+## [2.3.11] - (2024-Feb-14)
+
+- Updated dependencies.
+
 ## [2.3.10] - (2024-Jan-28)
 
-- Fixed parameter `background_image_android`.  Fixes [#652](https://github.com/jonbhanson/flutter_native_splash/issues/652).
-- Exit process with error code when unexpected config provided in YAML.  Thanks [smit-ghl](https://github.com/smit-ghl) for [PR #657](https://github.com/jonbhanson/flutter_native_splash/pull/657).
-- Updated readme.  Thanks [Mercutio1243](https://github.com/Mercutio1243) for the suggestions.  Closes [#658](https://github.com/jonbhanson/flutter_native_splash/issues/658).
+- Fixed parameter `background_image_android`. Fixes [#652](https://github.com/jonbhanson/flutter_native_splash/issues/652).
+- Exit process with error code when unexpected config provided in YAML. Thanks [smit-ghl](https://github.com/smit-ghl) for [PR #657](https://github.com/jonbhanson/flutter_native_splash/pull/657).
+- Updated readme. Thanks [Mercutio1243](https://github.com/Mercutio1243) for the suggestions. Closes [#658](https://github.com/jonbhanson/flutter_native_splash/issues/658).
 
 ## [2.3.9] - (2023-Dec-31)
 
-- Resolve lint warnings.  Update readme.
+- Resolve lint warnings. Update readme.
 
 ## [2.3.8] - (2023-Dec-07)
 
@@ -14,20 +18,20 @@
 
 ## [2.3.7] - (2023-Dec-06)
 
-- Roll back web fade as it was a breaking change.  Fixes [#628](https://github.com/jonbhanson/flutter_native_splash/issues/628). Fixes [#627](https://github.com/jonbhanson/flutter_native_splash/issues/627).  Fixes [#622](https://github.com/jonbhanson/flutter_native_splash/issues/622).
+- Roll back web fade as it was a breaking change. Fixes [#628](https://github.com/jonbhanson/flutter_native_splash/issues/628). Fixes [#627](https://github.com/jonbhanson/flutter_native_splash/issues/627). Fixes [#622](https://github.com/jonbhanson/flutter_native_splash/issues/622).
 
 ## [2.3.6] - (2023-Nov-20)
 
-- Add fade between splash and app on web.  Thanks [eggp](https://github.com/eggp) for the suggestion and example code.  Closes [#608](https://github.com/jonbhanson/flutter_native_splash/issues/608).
+- Add fade between splash and app on web. Thanks [eggp](https://github.com/eggp) for the suggestion and example code. Closes [#608](https://github.com/jonbhanson/flutter_native_splash/issues/608).
 - Add check of parameter names to catch user typos in the parameters.
 
 ## [2.3.5] - (2023-Oct-29)
 
-- Remove white flash on web.  Thanks [eggp](https://github.com/eggp) for pointing out the problem and solution.  Closes [#607](https://github.com/jonbhanson/flutter_native_splash/issues/607).
+- Remove white flash on web. Thanks [eggp](https://github.com/eggp) for pointing out the problem and solution. Closes [#607](https://github.com/jonbhanson/flutter_native_splash/issues/607).
 
 ## [2.3.4] - (2023-Oct-16)
 
-- Use `average` for image interpolation to reduce aliasing.  Thanks [Shawn](https://github.com/esDotDev) for the tip.  Fixes [#598](https://github.com/jonbhanson/flutter_native_splash/issues/598).
+- Use `average` for image interpolation to reduce aliasing. Thanks [Shawn](https://github.com/esDotDev) for the tip. Fixes [#598](https://github.com/jonbhanson/flutter_native_splash/issues/598).
 
 ## [2.3.3] - (2023-Oct-02)
 
@@ -52,7 +56,7 @@
 - Update example app for Flutter 3.10. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #551](https://github.com/jonbhanson/flutter_native_splash/pull/551).
 - Replaced deprecated code with suggested ones. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #550](https://github.com/jonbhanson/flutter_native_splash/pull/550).
 - Update ci.yaml with latest flutter CLI commands. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #552](https://github.com/jonbhanson/flutter_native_splash/pull/552).
-- Fix compatibility with AGP 8.0.  Thanks [Aljoscha](https://github.com/Almighty-Alpaca) for [PR #545](https://github.com/jonbhanson/flutter_native_splash/pull/545).
+- Fix compatibility with AGP 8.0. Thanks [Aljoscha](https://github.com/Almighty-Alpaca) for [PR #545](https://github.com/jonbhanson/flutter_native_splash/pull/545).
 - Migrate to systemUIMode. Thanks [Milind](https://github.com/milindgoel15) for [PR #534](https://github.com/jonbhanson/flutter_native_splash/pull/534).
 
 ## [2.2.19] - (2023-Mar-05)
@@ -63,46 +67,46 @@
 
 ## [2.2.18] - (2023-Feb-19)
 
-- Remove `v31/styles.xml` files if not in use.  Fixes [#514](https://github.com/jonbhanson/flutter_native_splash/issues/514).
-- Remove web changes on `remove` command.  Fixes [#516](https://github.com/jonbhanson/flutter_native_splash/issues/516).
+- Remove `v31/styles.xml` files if not in use. Fixes [#514](https://github.com/jonbhanson/flutter_native_splash/issues/514).
+- Remove web changes on `remove` command. Fixes [#516](https://github.com/jonbhanson/flutter_native_splash/issues/516).
 
 ## [2.2.17] - (2023-Jan-15)
 
-- Updated image dependency to v4.0.10.  Fixes [#497](https://github.com/jonbhanson/flutter_native_splash/issues/497).
-- Changed image processing from linear to cubic to improve image quality.  Fixes [#472](https://github.com/jonbhanson/flutter_native_splash/issues/472).
+- Updated image dependency to v4.0.10. Fixes [#497](https://github.com/jonbhanson/flutter_native_splash/issues/497).
+- Changed image processing from linear to cubic to improve image quality. Fixes [#472](https://github.com/jonbhanson/flutter_native_splash/issues/472).
 
 ## [2.2.16] - (2022-Nov-27)
 
 - Update documentation on Android 12.
-- Fix web background image.  Thanks [Severin](https://github.com/Bungeefan) for [PR #459](https://github.com/jonbhanson/flutter_native_splash/pull/459).
-- Support more image formats.  Thanks [Severin](https://github.com/Bungeefan) for [PR #460](https://github.com/jonbhanson/flutter_native_splash/pull/460).
+- Fix web background image. Thanks [Severin](https://github.com/Bungeefan) for [PR #459](https://github.com/jonbhanson/flutter_native_splash/pull/459).
+- Support more image formats. Thanks [Severin](https://github.com/Bungeefan) for [PR #460](https://github.com/jonbhanson/flutter_native_splash/pull/460).
 
 ## [2.2.15] - (2022-Nov-20)
 
-- Fix iOS background image build incorrectly when background dark image is used.  Fixes [#452](https://github.com/jonbhanson/flutter_native_splash/issues/452), fixes [#439](https://github.com/jonbhanson/flutter_native_splash/issues/439).
-- Correct background image/color handling on web.  Fixes [#450](https://github.com/jonbhanson/flutter_native_splash/issues/450), fixes [324](https://github.com/jonbhanson/flutter_native_splash/issues/324).
-- Don't include dark styling in web if not specified in config.  Fixes [#453](https://github.com/jonbhanson/flutter_native_splash/issues/453).
-- Add _Parameters class to hold parameters.
+- Fix iOS background image build incorrectly when background dark image is used. Fixes [#452](https://github.com/jonbhanson/flutter_native_splash/issues/452), fixes [#439](https://github.com/jonbhanson/flutter_native_splash/issues/439).
+- Correct background image/color handling on web. Fixes [#450](https://github.com/jonbhanson/flutter_native_splash/issues/450), fixes [324](https://github.com/jonbhanson/flutter_native_splash/issues/324).
+- Don't include dark styling in web if not specified in config. Fixes [#453](https://github.com/jonbhanson/flutter_native_splash/issues/453).
+- Add \_Parameters class to hold parameters.
 
 ## [2.2.14] - (2022-Nov-07)
 
-- Don't update `values-31` if there is no `android_12` section in the config.  Closes [#447](https://github.com/jonbhanson/flutter_native_splash/issues/447).
+- Don't update `values-31` if there is no `android_12` section in the config. Closes [#447](https://github.com/jonbhanson/flutter_native_splash/issues/447).
 - Additional fix for index.html getting extra blank lines. Fixes [#430](https://github.com/jonbhanson/flutter_native_splash/issues/430).
 
 ## [2.2.13] - (2022-Oct-30)
 
-- Corrected Android 12 dark parameters not defaulting to light parameters.  Thanks [elliotrtd](https://github.com/elliotrtd) for the [heads up](https://github.com/jonbhanson/flutter_native_splash/issues/400#issuecomment-1235100173) on this issue.
+- Corrected Android 12 dark parameters not defaulting to light parameters. Thanks [elliotrtd](https://github.com/elliotrtd) for the [heads up](https://github.com/jonbhanson/flutter_native_splash/issues/400#issuecomment-1235100173) on this issue.
 
 ## [2.2.12] - (2022-Oct-23)
 
 - Updated readme and dependancies.
-- Add CI, resolve some lints, and fix tests.  Thanks [lsaudon](https://github.com/lsaudon) for [PR #433](https://github.com/jonbhanson/flutter_native_splash/pull/433).
+- Add CI, resolve some lints, and fix tests. Thanks [lsaudon](https://github.com/lsaudon) for [PR #433](https://github.com/jonbhanson/flutter_native_splash/pull/433).
 
 ## [2.2.11] - (2022-Oct-09)
 
-- Fixed Android 11 color issue.  Fixes [#429](https://github.com/jonbhanson/flutter_native_splash/issues/429).
-- Fix index.html getting extra blank lines.  Fixes [#430](https://github.com/jonbhanson/flutter_native_splash/issues/430).
-- Update the readme.  Closes [#431](https://github.com/jonbhanson/flutter_native_splash/issues/431).
+- Fixed Android 11 color issue. Fixes [#429](https://github.com/jonbhanson/flutter_native_splash/issues/429).
+- Fix index.html getting extra blank lines. Fixes [#430](https://github.com/jonbhanson/flutter_native_splash/issues/430).
+- Update the readme. Closes [#431](https://github.com/jonbhanson/flutter_native_splash/issues/431).
 
 ## [2.2.10+1] - (2022-Sep-25)
 
@@ -111,31 +115,31 @@
 
 ## [2.2.9] - (2022-Sep-07)
 
-- Update pub.dev links.  Thanks [Joachim](https://github.com/nohli) for [PR #415](https://github.com/jonbhanson/flutter_native_splash/pull/415).
-- Fix Android 12 branding issue.  Thanks [Matías](https://github.com/mirland) for [PR #414](https://github.com/jonbhanson/flutter_native_splash/pull/414).
-- Corrected copyright notice.  Closes [#416](https://github.com/jonbhanson/flutter_native_splash/issues/416).
-- Added Android 12 example.  Closes [#412](https://github.com/jonbhanson/flutter_native_splash/issues/412).
+- Update pub.dev links. Thanks [Joachim](https://github.com/nohli) for [PR #415](https://github.com/jonbhanson/flutter_native_splash/pull/415).
+- Fix Android 12 branding issue. Thanks [Matías](https://github.com/mirland) for [PR #414](https://github.com/jonbhanson/flutter_native_splash/pull/414).
+- Corrected copyright notice. Closes [#416](https://github.com/jonbhanson/flutter_native_splash/issues/416).
+- Added Android 12 example. Closes [#412](https://github.com/jonbhanson/flutter_native_splash/issues/412).
 
 ## [2.2.8] - (2022-Aug-21)
 
-- Use Theme.Light.NoTitleBar.  Fixes [#402](https://github.com/jonbhanson/flutter_native_splash/issues/402).
-- Correct android spelling in readme.  Thanks [Muhammad](https://github.com/itsahmed-dev) for [PR #407](https://github.com/jonbhanson/flutter_native_splash/pull/407).
-- Use html parser.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #396](https://github.com/jonbhanson/flutter_native_splash/pull/396).
-- Separate branding property for Android 12.  Closes [#405](https://github.com/jonbhanson/flutter_native_splash/issues/405).
+- Use Theme.Light.NoTitleBar. Fixes [#402](https://github.com/jonbhanson/flutter_native_splash/issues/402).
+- Correct android spelling in readme. Thanks [Muhammad](https://github.com/itsahmed-dev) for [PR #407](https://github.com/jonbhanson/flutter_native_splash/pull/407).
+- Use html parser. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #396](https://github.com/jonbhanson/flutter_native_splash/pull/396).
+- Separate branding property for Android 12. Closes [#405](https://github.com/jonbhanson/flutter_native_splash/issues/405).
 
 ## [2.2.7] - (2022-July-31)
 
-- Remove branding on Android 12 if branding is not specified.  Fixes [#399](https://github.com/jonbhanson/flutter_native_splash/issues/399).
+- Remove branding on Android 12 if branding is not specified. Fixes [#399](https://github.com/jonbhanson/flutter_native_splash/issues/399).
 
 ## [2.2.6] - (2022-July-24)
 
-- Fix parseColor test.  Thanks [mihiro](https://github.com/mihiron) for [PR #393](https://github.com/jonbhanson/flutter_native_splash/pull/393).
-- Fix branding image source link broken and optimized code with optional chaining operator.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #394](https://github.com/jonbhanson/flutter_native_splash/pull/394) and [PR #395](https://github.com/jonbhanson/flutter_native_splash/pull/395).
+- Fix parseColor test. Thanks [mihiro](https://github.com/mihiron) for [PR #393](https://github.com/jonbhanson/flutter_native_splash/pull/393).
+- Fix branding image source link broken and optimized code with optional chaining operator. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #394](https://github.com/jonbhanson/flutter_native_splash/pull/394) and [PR #395](https://github.com/jonbhanson/flutter_native_splash/pull/395).
 
 ## [2.2.5] - (2022-July-17)
 
-- Added Branding Image support for the web platform.  Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #386](https://github.com/jonbhanson/flutter_native_splash/pull/386).
-- Fix android12 config name.  Thanks [mihiro](https://github.com/mihiron) for [PR #390](https://github.com/jonbhanson/flutter_native_splash/pull/390).
+- Added Branding Image support for the web platform. Thanks [OutdatedGuy](https://github.com/OutdatedGuy) for [PR #386](https://github.com/jonbhanson/flutter_native_splash/pull/386).
+- Fix android12 config name. Thanks [mihiro](https://github.com/mihiron) for [PR #390](https://github.com/jonbhanson/flutter_native_splash/pull/390).
 
 ## [2.2.4] - (2022-July-03)
 
