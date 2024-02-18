@@ -1,3 +1,8 @@
+## [2.3.12] - (2024-Feb-18)
+
+- Fix incorrect rejection of parameter values.  Fixes [#652](https://github.com/jonbhanson/flutter_native_splash/issues/652).
+- Updated dependencies.
+
 ## [2.3.11] - (2024-Feb-14)
 
 - Updated dependencies.

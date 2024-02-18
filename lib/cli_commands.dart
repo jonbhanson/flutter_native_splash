@@ -407,8 +407,8 @@ class _Parameter {
   static const androidScreenOrientation = 'android_screen_orientation';
   static const backgroundImage = 'background_image';
   static const backgroundImageAndroid = 'background_image_android';
-  static const backgroundImageIos = 'background_ios';
-  static const backgroundImageWeb = 'background_web';
+  static const backgroundImageIos = 'background_image_ios';
+  static const backgroundImageWeb = 'background_image_web';
   static const brandingDarkImage = 'branding_dark';
   static const brandingDarkImageAndroid = 'branding_dark_android';
   static const brandingDarkImageIos = 'branding_dark_ios';
