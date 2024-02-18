@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.3.12
+  flutter_native_splash: ^2.3.13
 ```
 
 Don't forget to `flutter pub get`.
@@ -177,7 +177,7 @@ flutter_native_splash:
 
 ## 2. Run the package
 
-After adding your settings, run the following command in the terminal:
+After adding your settings to `pubspec.yaml`, run the following command in the terminal:
 
 ```
 dart run flutter_native_splash:create
@@ -185,7 +185,7 @@ dart run flutter_native_splash:create
 
 When the package finishes running, your splash screen is ready.
 
-To specify the YAML file location just add --path with the command in the terminal:
+(Optionally), If you added your config to a separate YAML file instead of `pubspec.yaml`, just add --path with the command in the terminal:
 
 ```
 dart run flutter_native_splash:create --path=path/to/my/file.yaml

@@ -1,3 +1,7 @@
+## [2.3.13] - (2024-Feb-18)
+
+- Added better exception handling based on [this comment](https://github.com/jonbhanson/flutter_native_splash/issues/643#issuecomment-1938416308).  Thanks [BujusKrachus](https://github.com/BujusKrachus) for the detailed explanation.
+
 ## [2.3.12] - (2024-Feb-18)
 
 - Fix incorrect rejection of parameter values.  Fixes [#652](https://github.com/jonbhanson/flutter_native_splash/issues/652).

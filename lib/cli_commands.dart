@@ -347,7 +347,12 @@ Map<String, dynamic> getConfig({
     filePath = 'pubspec.yaml';
   }
 
-  final Map yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
+  final Map yamlMap;
+  try {
+    yamlMap = loadYaml(File(filePath).readAsStringSync()) as Map;
+  } catch (e) {
+    throw Exception('Your `$filePath` appears to be empty or malformed.');
+  }
 
   if (yamlMap['flutter_native_splash'] is! Map) {
     throw Exception(
