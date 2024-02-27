@@ -20,9 +20,14 @@ void _createWebSplash({
   required String brandingMode,
   required String? backgroundImage,
   required String? darkBackgroundImage,
+  required String? module,
 }) {
-  if (!File(_webIndex).existsSync()) {
-    print('[Web] $_webIndex not found.  Skipping Web.');
+  String folderWeb = _webIndex;
+  if (module != null && module.isNotEmpty) {
+    folderWeb = '../$module/$_webIndex';
+  }
+  if (!File(folderWeb).existsSync()) {
+    print('[Web] $folderWeb not found.  Skipping Web.');
     return;
   }
 
@@ -37,7 +42,7 @@ void _createWebSplash({
       darkBackgroundImage == null) {
     Directory splashFolder = Directory(_webSplashFolder);
     if (splashFolder.existsSync()) splashFolder.deleteSync(recursive: true);
-    final webIndex = File(_webIndex);
+    final webIndex = File(folderWeb);
     final document = html_parser.parse(webIndex.readAsStringSync());
     // Remove items that may have been added to index.html:
     document
@@ -81,6 +86,7 @@ void _createWebSplash({
         pixelDensity: 4,
       ),
     ],
+    module: module,
   );
   final darkImageExtension =
       (darkImagePath?.endsWith('.gif') ?? false) ? 'gif' : 'png';
@@ -104,6 +110,7 @@ void _createWebSplash({
         pixelDensity: 4,
       ),
     ],
+    module: module,
   );
 
   brandingDarkImagePath ??= brandingImagePath;
@@ -130,6 +137,7 @@ void _createWebSplash({
         pixelDensity: 4,
       ),
     ],
+    module: module,
   );
 
   final darkBrandingExtension =
@@ -154,6 +162,7 @@ void _createWebSplash({
         pixelDensity: 4,
       ),
     ],
+    module: module,
   );
 
   _createBackgroundImages(
@@ -166,6 +175,7 @@ void _createWebSplash({
     darkBackgroundImage: darkBackgroundImage,
     backgroundImage: backgroundImage,
     hasDarkImage: darkBackgroundImage != null,
+    module: module,
   );
   _createSplashJs();
   _updateHtml(
@@ -173,6 +183,7 @@ void _createWebSplash({
     imagePath: imagePath,
     brandingMode: brandingMode,
     brandingImagePath: brandingImagePath,
+    module: module,
   );
 }
 
@@ -216,10 +227,15 @@ void _createBackgroundImage({
 void _createWebImages({
   required String? imagePath,
   required List<_WebLaunchImageTemplate> webSplashImages,
+  required String? module,
 }) {
+  String folderWeb = _webSplashImagesFolder;
+  if (module != null && module.isNotEmpty) {
+    folderWeb = '../$module/$_webSplashImagesFolder';
+  }
   if (imagePath == null) {
     for (final template in webSplashImages) {
-      final file = File(_webSplashImagesFolder + template.fileName);
+      final file = File(folderWeb + template.fileName);
       if (file.existsSync()) file.deleteSync();
     }
   } else {
@@ -231,7 +247,7 @@ void _createWebImages({
     }
     print('[Web] Creating images');
     for (final template in webSplashImages) {
-      _saveImageWeb(template: template, image: image);
+      _saveImageWeb(template: template, image: image, module: module);
     }
   }
 }
@@ -239,6 +255,7 @@ void _createWebImages({
 void _saveImageWeb({
   required _WebLaunchImageTemplate template,
   required Image image,
+  required String? module,
 }) {
   final newFile = copyResize(
     image,
@@ -246,8 +263,11 @@ void _saveImageWeb({
     height: image.height * template.pixelDensity ~/ 4,
     interpolation: Interpolation.average,
   );
-
-  final file = File(_webSplashImagesFolder + template.fileName);
+  String folderWeb = _webSplashImagesFolder;
+  if (module != null && module.isNotEmpty) {
+    folderWeb = '../$module/$_webSplashImagesFolder';
+  }
+  final file = File(folderWeb + template.fileName);
   file.createSync(recursive: true);
   file.writeAsBytesSync(
     (template.fileName.endsWith('.gif') ? encodeGif : encodePng)(newFile),
@@ -260,6 +280,7 @@ void _createSplashCss({
   required String? backgroundImage,
   required String? darkBackgroundImage,
   required bool hasDarkImage,
+  required String? module,
 }) {
   print('[Web] Creating CSS');
   color ??= 'ffffff';
@@ -298,7 +319,11 @@ void _createSplashCss({
   cssContent += '  </style>\n';
 
   // Add css as an inline style in head tag
-  final webIndex = File(_webIndex);
+  String folderWeb = _webIndex;
+  if (module != null && module.isNotEmpty) {
+    folderWeb = '../$module/$_webIndex';
+  }
+  final webIndex = File(folderWeb);
   final document = html_parser.parse(webIndex.readAsStringSync());
 
   // Update splash css style tag
@@ -333,9 +358,14 @@ void _updateHtml({
   required String? imagePath,
   required String brandingMode,
   required String? brandingImagePath,
+  required String? module,
 }) {
+  String folderWeb = _webIndex;
+  if (module != null && module.isNotEmpty) {
+    folderWeb = '../$module/$_webIndex';
+  }
   print('[Web] Updating index.html');
-  final webIndex = File(_webIndex);
+  final webIndex = File(folderWeb);
   final document = html_parser.parse(webIndex.readAsStringSync());
 
   // Remove previously used style sheet (migrating to inline style)
