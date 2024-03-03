@@ -17,6 +17,7 @@ A new Flutter project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
+  s.resource_bundles = {'flutter_native_splash_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
