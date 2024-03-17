@@ -1,7 +1,7 @@
 @JS()
 library remove_splash_from_web;
 
-import "package:js/js.dart";
+import 'dart:js_interop';
 
 @JS("removeSplashFromWeb")
 external void removeSplashFromWeb();
