@@ -68,6 +68,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
       config[_Parameter.brandingBottomPadding]?.toString();
   final String? brandingImageAndroid = _checkImageExists(
       config: config, parameter: _Parameter.brandingImageAndroid);
+  final String? brandingBottomPaddingAndroid =
+      config[_Parameter.brandingBottomPaddingAndroid]?.toString();
   final String? brandingImageIos =
       _checkImageExists(config: config, parameter: _Parameter.brandingImageIos);
   final String? brandingBottomPaddingIos =
@@ -159,6 +161,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         imagePath: imageAndroid ?? image,
         darkImagePath: darkImageAndroid ?? darkImage,
         brandingImagePath: brandingImageAndroid ?? brandingImage,
+        brandingBottomPadding:
+            brandingBottomPaddingAndroid ?? brandingBottomPadding,
         brandingDarkImagePath: brandingDarkImageAndroid ?? brandingDarkImage,
         backgroundImage: backgroundImageAndroid ?? backgroundImage,
         darkBackgroundImage: darkBackgroundImageAndroid ?? darkBackgroundImage,
@@ -428,6 +432,7 @@ class _Parameter {
   static const brandingImage = 'branding';
   static const brandingBottomPadding = 'branding_bottom_padding';
   static const brandingImageAndroid = 'branding_android';
+  static const brandingBottomPaddingAndroid = 'branding_bottom_padding_android';
   static const brandingImageIos = 'branding_ios';
   static const brandingBottomPaddingIos = 'branding_bottom_padding_ios';
   static const brandingImageWeb = 'branding_web';
@@ -479,6 +484,7 @@ class _Parameter {
     brandingImageAndroid,
     brandingImageIos,
     brandingBottomPaddingIos,
+    brandingBottomPaddingAndroid,
     brandingImageWeb,
     color,
     colorAndroid,
