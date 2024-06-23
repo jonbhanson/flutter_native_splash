@@ -379,11 +379,10 @@ void _updateLaunchScreenStoryboard({
     }
     final element = view.getElement('constraints');
 
-    toParse.replaceAll("{bottom_padding}", brandingBottomPadding ?? "0");
-
-    print('toParse: $toParse');
-
-    final doc = XmlDocument.parse(toParse).rootElement.copy();
+    final toParseBottomPadding =
+        toParse.replaceAll("{bottom_padding}", brandingBottomPadding ?? "0");
+    print("[iOS] branding bottom padding: $brandingBottomPadding");
+    final doc = XmlDocument.parse(toParseBottomPadding).rootElement.copy();
     if (doc.firstChild != null) {
       print('[iOS] updating constraints with splash branding');
       for (final v in doc.children) {
