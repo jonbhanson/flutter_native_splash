@@ -9,7 +9,7 @@ const String _androidLaunchItemXml = '''
 ''';
 
 const String _androidBrandingItemXml = '''
-    <item android:bottom="24dp">
+    <item android:bottom="{bottom_padding}dp">
         <bitmap android:gravity="center" android:src="@drawable/branding" />
     </item>
 ''';
