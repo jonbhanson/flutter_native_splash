@@ -55,6 +55,7 @@ void _createiOSSplash({
   required String? imagePath,
   required String? darkImagePath,
   String? brandingImagePath,
+  String? brandingBottomPadding,
   String? brandingDarkImagePath,
   required String? color,
   required String? darkColor,
@@ -141,6 +142,7 @@ void _createiOSSplash({
     brandingImagePath: brandingImagePath,
     iosContentMode: iosContentMode,
     iosBrandingContentMode: iosBrandingContentMode,
+    brandingBottomPadding: brandingBottomPadding,
   );
   _createBackground(
     colorString: color,
@@ -209,6 +211,7 @@ void _updateLaunchScreenStoryboard({
   required String? imagePath,
   required String iosContentMode,
   String? brandingImagePath,
+  String? brandingBottomPadding,
   String? iosBrandingContentMode,
 }) {
   String? iosBrandingContentModeValue = iosBrandingContentMode;
@@ -376,7 +379,10 @@ void _updateLaunchScreenStoryboard({
     }
     final element = view.getElement('constraints');
 
-    final doc = XmlDocument.parse(toParse).rootElement.copy();
+    final toParseBottomPadding =
+        toParse.replaceAll("{bottom_padding}", brandingBottomPadding ?? "0");
+    print("[iOS] branding bottom padding: ${brandingBottomPadding ?? "0"}");
+    final doc = XmlDocument.parse(toParseBottomPadding).rootElement.copy();
     if (doc.firstChild != null) {
       print('[iOS] updating constraints with splash branding');
       for (final v in doc.children) {
@@ -396,6 +402,7 @@ void _createLaunchScreenStoryboard({
   required String iosContentMode,
   required String? iosBrandingContentMode,
   required String? brandingImagePath,
+  required String? brandingBottomPadding,
 }) {
   final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
   file.createSync(recursive: true);
@@ -404,6 +411,7 @@ void _createLaunchScreenStoryboard({
   return _updateLaunchScreenStoryboard(
     imagePath: imagePath,
     brandingImagePath: brandingImagePath,
+    brandingBottomPadding: brandingBottomPadding,
     iosContentMode: iosContentMode,
     iosBrandingContentMode: iosBrandingContentMode,
   );

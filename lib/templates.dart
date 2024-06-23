@@ -9,7 +9,7 @@ const String _androidLaunchItemXml = '''
 ''';
 
 const String _androidBrandingItemXml = '''
-    <item android:bottom="24dp">
+    <item android:bottom="{bottom_padding}dp">
         <bitmap android:gravity="center" android:src="@drawable/branding" />
     </item>
 ''';
@@ -386,21 +386,21 @@ const String _iOSLaunchBackgroundConstraints = '''
 const String _iOSBrandingCenterBottomConstraints = '''
 <constraints>
   <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>
-  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" constant="24" id="8Yb-q4-8bl"/>
+  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" constant="{bottom_padding}" id="8Yb-q4-8bl"/>
 </constraints>
 ''';
 
 const String _iOSBrandingLeftBottomConstraints = '''
 <constraints>
   <constraint firstAttribute="leading" secondItem="Uyq-Kz-ftE" secondAttribute="leading" id="3kg-TC-cPP"/>
-  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" constant="24" id="8Yb-q4-8bl"/>
+  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" constant="{bottom_padding}" id="8Yb-q4-8bl"/>
 </constraints>
 ''';
 
 const String _iOSBrandingRightBottomConstraints = '''
 <constraints>
   <constraint firstAttribute="trailing" secondItem="Uyq-Kz-ftE" secondAttribute="trailing" id="3kg-TC-cPP"/>                            
-  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" constant="24" id="8Yb-q4-8lb"/>                            
+  <constraint firstAttribute="bottom" secondItem="Uyq-Kz-ftE" secondAttribute="bottom" constant="{bottom_padding}" id="8Yb-q4-8lb"/>                            
 </constraints>
 ''';
 
