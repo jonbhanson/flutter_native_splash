@@ -64,10 +64,14 @@ void _createSplashByConfig(Map<String, dynamic> config) {
       _checkImageExists(config: config, parameter: _Parameter.darkImageWeb);
   final String? brandingImage =
       _checkImageExists(config: config, parameter: _Parameter.brandingImage);
+  final String? brandingBottomPadding = _checkImageExists(
+      config: config, parameter: _Parameter.brandingBottomPadding);
   final String? brandingImageAndroid = _checkImageExists(
       config: config, parameter: _Parameter.brandingImageAndroid);
   final String? brandingImageIos =
       _checkImageExists(config: config, parameter: _Parameter.brandingImageIos);
+  final String? brandingBottomPaddingIos = _checkImageExists(
+      config: config, parameter: _Parameter.brandingBottomPaddingIos);
   final String? brandingImageWeb =
       _checkImageExists(config: config, parameter: _Parameter.brandingImageWeb);
   final String? brandingDarkImage = _checkImageExists(
@@ -189,6 +193,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         darkBackgroundImage: darkBackgroundImageIos ?? darkBackgroundImage,
         brandingImagePath: brandingImageIos ?? brandingImage,
         brandingDarkImagePath: brandingDarkImageIos ?? brandingDarkImage,
+        brandingBottomPadding:
+            brandingBottomPaddingIos ?? brandingBottomPadding,
         color: colorIos ?? color,
         darkColor: darkColorIos ?? darkColor,
         plistFiles: plistFiles,
@@ -420,8 +426,10 @@ class _Parameter {
   static const brandingDarkImageWeb = 'branding_dark_web';
   static const brandingGravity = 'branding_mode';
   static const brandingImage = 'branding';
+  static const brandingBottomPadding = 'branding_bottom_padding';
   static const brandingImageAndroid = 'branding_android';
   static const brandingImageIos = 'branding_ios';
+  static const brandingBottomPaddingIos = 'branding_bottom_padding_ios';
   static const brandingImageWeb = 'branding_web';
   static const color = 'color';
   static const colorAndroid = "color_android";
