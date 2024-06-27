@@ -331,11 +331,11 @@ void _applyLaunchBackgroundXml({
 
   if (showBranding && gravity != brandingGravityValue) {
     //add branding when splash image and branding image are not at the same position
-    final androidRandingItemXml = _androidBrandingItemXml.replaceAll(
+    final androidBrandingItemXml = _androidBrandingItemXml.replaceAll(
         "{bottom_padding}", brandingBottomPadding ?? "0");
     print('[Android] branding bottom padding: ${brandingBottomPadding ?? "0"}');
     final brandingItem =
-        XmlDocument.parse(androidRandingItemXml).rootElement.copy();
+        XmlDocument.parse(androidBrandingItemXml).rootElement.copy();
     if (brandingGravityValue == 'bottomRight') {
       brandingGravityValue = 'bottom|right';
     } else if (brandingGravityValue == 'bottomLeft') {
