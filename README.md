@@ -63,6 +63,9 @@ flutter_native_splash:
   # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
   # and bottomLeft. The default values is bottom if not specified or specified something else.
   #branding_mode: bottom
+  
+  # Set the branding padding from the bottom of the screen.  The default value is 0
+  # branding_bottom_padding: 24
 
   # The color_dark, background_image_dark, image_dark, branding_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
@@ -130,8 +133,10 @@ flutter_native_splash:
   #background_image_web: "assets/background-web.png"
   #background_image_dark_web: "assets/dark-background-web.png"
   #branding_android: assets/brand-android.png
+  #branding_bottom_padding_android: 24
   #branding_dark_android: assets/dart_dark-android.png
   #branding_ios: assets/brand-ios.png
+  #branding_bottom_padding_ios: 24
   #branding_dark_ios: assets/dart_dark-ios.png
   #branding_web: assets/brand-web.gif
   #branding_dark_web: assets/dart_dark-web.gif
@@ -289,6 +294,7 @@ flutter_native_splash:
   color: "#ffffff"
   image: assets/logo-acceptance.png
   branding: assets/branding-acceptance.png
+  branding_bottom_padding: 24
   color_dark: "#121212"
   image_dark: assets/logo-acceptance.png
   branding_dark: assets/branding-acceptance.png
@@ -306,6 +312,7 @@ flutter_native_splash:
   color: "#ffffff"
   image: assets/logo-production.png
   branding: assets/branding-production.png
+  branding_bottom_padding: 24
   color_dark: "#121212"
   image_dark: assets/logo-production.png
   branding_dark: assets/branding-production.png

@@ -64,10 +64,16 @@ void _createSplashByConfig(Map<String, dynamic> config) {
       _checkImageExists(config: config, parameter: _Parameter.darkImageWeb);
   final String? brandingImage =
       _checkImageExists(config: config, parameter: _Parameter.brandingImage);
+  final String? brandingBottomPadding =
+      config[_Parameter.brandingBottomPadding]?.toString();
   final String? brandingImageAndroid = _checkImageExists(
       config: config, parameter: _Parameter.brandingImageAndroid);
+  final String? brandingBottomPaddingAndroid =
+      config[_Parameter.brandingBottomPaddingAndroid]?.toString();
   final String? brandingImageIos =
       _checkImageExists(config: config, parameter: _Parameter.brandingImageIos);
+  final String? brandingBottomPaddingIos =
+      config[_Parameter.brandingBottomPaddingIos]?.toString();
   final String? brandingImageWeb =
       _checkImageExists(config: config, parameter: _Parameter.brandingImageWeb);
   final String? brandingDarkImage = _checkImageExists(
@@ -155,6 +161,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         imagePath: imageAndroid ?? image,
         darkImagePath: darkImageAndroid ?? darkImage,
         brandingImagePath: brandingImageAndroid ?? brandingImage,
+        brandingBottomPadding:
+            brandingBottomPaddingAndroid ?? brandingBottomPadding,
         brandingDarkImagePath: brandingDarkImageAndroid ?? brandingDarkImage,
         backgroundImage: backgroundImageAndroid ?? backgroundImage,
         darkBackgroundImage: darkBackgroundImageAndroid ?? darkBackgroundImage,
@@ -189,6 +197,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         darkBackgroundImage: darkBackgroundImageIos ?? darkBackgroundImage,
         brandingImagePath: brandingImageIos ?? brandingImage,
         brandingDarkImagePath: brandingDarkImageIos ?? brandingDarkImage,
+        brandingBottomPadding:
+            brandingBottomPaddingIos ?? brandingBottomPadding,
         color: colorIos ?? color,
         darkColor: darkColorIos ?? darkColor,
         plistFiles: plistFiles,
@@ -420,8 +430,11 @@ class _Parameter {
   static const brandingDarkImageWeb = 'branding_dark_web';
   static const brandingGravity = 'branding_mode';
   static const brandingImage = 'branding';
+  static const brandingBottomPadding = 'branding_bottom_padding';
   static const brandingImageAndroid = 'branding_android';
+  static const brandingBottomPaddingAndroid = 'branding_bottom_padding_android';
   static const brandingImageIos = 'branding_ios';
+  static const brandingBottomPaddingIos = 'branding_bottom_padding_ios';
   static const brandingImageWeb = 'branding_web';
   static const color = 'color';
   static const colorAndroid = "color_android";
@@ -467,8 +480,11 @@ class _Parameter {
     brandingDarkImageWeb,
     brandingGravity,
     brandingImage,
+    brandingBottomPadding,
     brandingImageAndroid,
     brandingImageIos,
+    brandingBottomPaddingIos,
+    brandingBottomPaddingAndroid,
     brandingImageWeb,
     color,
     colorAndroid,
