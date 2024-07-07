@@ -1,6 +1,12 @@
+## [2.4.1] - (2024-Jun-07)
+
+- Added support for bottom padding of branding image. Thanks [Mudassir](https://github.com/Lzyct) for [PR #709](https://github.com/jonbhanson/flutter_native_splash/pull/709). Closes [#694](https://github.com/jonbhanson/flutter_native_splash/issues/694).
+- Updated dependencies.
+- Corrected comment in template.  Closes [#705](https://github.com/jonbhanson/flutter_native_splash/issues/705).
+
 ## [2.4.0] - (2024-Mar-17)
 
-- Migrate from  [js](https://pub.dev/packages/js) to [js_interop](https://dart.dev/interop/js-interop). Closes [#676](https://github.com/jonbhanson/flutter_native_splash/issues/676).  Closes [#671](https://github.com/jonbhanson/flutter_native_splash/issues/671).
+- Migrate from [js](https://pub.dev/packages/js) to [js_interop](https://dart.dev/interop/js-interop). Closes [#676](https://github.com/jonbhanson/flutter_native_splash/issues/676). Closes [#671](https://github.com/jonbhanson/flutter_native_splash/issues/671).
 
 ## [2.3.13] - (2024-Feb-18)
 
