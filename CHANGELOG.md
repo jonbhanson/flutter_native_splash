@@ -1,3 +1,8 @@
+## [2.4.2] - (2024-Oct-20)
+
+- Updated dependencies.
+- Clarified documentation.  Closes [#743](https://github.com/jonbhanson/flutter_native_splash/issues/743).
+
 ## [2.4.1] - (2024-Jun-07)
 
 - Added support for bottom padding of branding image. Thanks [Mudassir](https://github.com/Lzyct) for [PR #709](https://github.com/jonbhanson/flutter_native_splash/pull/709). Closes [#694](https://github.com/jonbhanson/flutter_native_splash/issues/694).
