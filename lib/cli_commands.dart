@@ -1,7 +1,7 @@
 /// ## Flutter Native Splash
 ///
 /// This is the main entry point for the Flutter Native Splash package.
-library flutter_native_splash_cli;
+library;
 
 import 'dart:isolate';
 

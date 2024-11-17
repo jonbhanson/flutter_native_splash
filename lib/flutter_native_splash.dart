@@ -4,7 +4,7 @@
 /// Web-native code for customizing this native splash screen background color
 /// and splash image. Supports dark mode, full screen, and platform-specific
 /// options.
-library flutter_native_splash;
+library;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/scheduler.dart';

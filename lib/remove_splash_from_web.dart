@@ -1,5 +1,5 @@
 @JS()
-library remove_splash_from_web;
+library;
 
 import 'dart:js_interop';
 

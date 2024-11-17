@@ -4,20 +4,20 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'flutter_native_splash'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter project.'
+  s.version          = '2.4.3'
+  s.summary          = 'Flutter Native Splash'
   s.description      = <<-DESC
-A new Flutter project.
+Customize Flutter's default white native splash screen with background color and splash image. Supports dark mode, full screen, and more.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/jonbhanson/flutter_native_splash'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Jon Hanson' => 'jon@jonhanson.net' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'flutter_native_splash/Sources/flutter_native_splash/**/*'
+  s.public_header_files = 'flutter_native_splash/Sources/flutter_native_splash/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
-  s.resource_bundles = {'flutter_native_splash_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
+  s.resource_bundles = {'flutter_native_splash_privacy' => ['flutter_native_splash/Sources/flutter_native_splash/PrivacyInfo.xcprivacy']}
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

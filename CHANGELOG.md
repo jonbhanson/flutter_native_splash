@@ -1,3 +1,8 @@
+## [2.4.3] - (2024-Nov-17)
+
+- Add Swift Package Manager support.  Closes [#749](https://github.com/jonbhanson/flutter_native_splash/issues/749).
+- Update example to use Kotlin.
+
 ## [2.4.2] - (2024-Oct-20)
 
 - Updated dependencies.
