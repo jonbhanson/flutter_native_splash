@@ -1,3 +1,7 @@
+## [2.4.4] - ()
+
+- Added the ability to generate all flavors with a single flag. Closes [#751](https://github.com/jonbhanson/flutter_native_splash/issues/751)
+
 ## [2.4.3] - (2024-Nov-17)
 
 - Add Swift Package Manager support.  Closes [#749](https://github.com/jonbhanson/flutter_native_splash/issues/749).
