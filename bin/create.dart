@@ -78,11 +78,8 @@ void main(List<String> args) {
         .listSync()
         .whereType<File>()
         .map((entity) => entity.path.split(Platform.pathSeparator).last)
-        .where((fileName) =>
-            RegExp(r'^flutter_native_splash-.*\.yaml$').hasMatch(fileName))
-        .map((fileName) => fileName
-            .replaceAll('flutter_native_splash-', '')
-            .replaceAll('.yaml', ''))
+        .where(HelperUtils.isValidFlavorConfigFileName)
+        .map(HelperUtils.getFlavorNameFromFileName)
         .toList();
 
     print('Found ${flavors.length} flavor configurations: $flavors');
