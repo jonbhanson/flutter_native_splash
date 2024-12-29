@@ -194,9 +194,19 @@ When the package finishes running, your splash screen is ready.
 
 (Optionally), If you added your config to a separate YAML file instead of `pubspec.yaml`, just add --path with the command in the terminal:
 
-```
+```bash
 dart run flutter_native_splash:create --path=path/to/my/file.yaml
 ```
+
+| Command                | Description                                                                                                                                    |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| -h, --[no-]help        | Show help                                                                                                                                      |
+| -p, --path             | Path to the flutter project, if the project is not in it's default location.                                                                   |
+| -f, --flavor           | Flavor to create the splash for. The flavor must match the pattern flutter_native_splash-*.yaml (where * is the flavor name).                  |
+| -F, --flavors          | Comma separated list of flavors to create the splash screens for. Match the pattern flutter_native_splash-*.yaml (where * is the flavor name). |
+| -A, --[no-]all-flavors | Create the splash screens for all flavors that match the pattern flutter_native_splash-*.yaml (where * is the flavor name).                    |
+
+> Note: Only one flavor option is allowed.
 
 ## 3. Set up app initialization (optional)
 
@@ -255,15 +265,15 @@ If you have a project setup that contains multiple flavors or environments, and 
 
 Instead of maintaining multiple files and copy/pasting images, you can now, using this tool, create different splash screens for different environments.
 
-### Pre-requirements
+## Pre-requirements
 
-In order to use the new feature, and generate the desired splash images for you app, a couple of changes are required.
+In order to use this feature, and generate the desired splash images for your app, a couple of changes are required.
 
 If you want to generate just one flavor and one file you would use either options as described in Step 1. But in order to setup the flavors, you will then be required to move all your setup values to the `flutter_native_splash.yaml` file, but with a prefix.
 
 Let's assume for the rest of the setup that you have 3 different flavors, `Production`, `Acceptance`, `Development`.
 
-First this you will need to do is to create a different setup file for all 3 flavors with a suffix like so:
+First thing you will need to do is to create a different setup file for all 3 flavors with a suffix like so:
 
 ```bash
 flutter_native_splash-production.yaml
@@ -271,7 +281,7 @@ flutter_native_splash-acceptance.yaml
 flutter_native_splash-development.yaml
 ```
 
-You would setup those 3 files the same way as you would the one, but with different assets depending on which environment you would be generating. For example (Note: these are just examples, you can use whatever setup you need for your project that is already supported by the package):
+You would setup those 3 files the same way as you would the one, but with different assets depending on which environment you would be generating. For example:
 
 ```yaml
 # flutter_native_splash-development.yaml
@@ -328,6 +338,10 @@ flutter_native_splash:
   web: false
 ```
 
+> Note: these are just example values. You should substitute them with real values.
+
+## One by one
+
 If you'd like to generate only a single flavor (maybe you are
 testing something out), you can use only the single command like this:
 
@@ -342,6 +356,8 @@ dart run flutter_native_splash:create --flavor acceptance
 dart run flutter_native_splash:create --flavor development
 ```
 
+## More than one
+
 You also have the ability to specify all the flavors in one command
 as shown bellow:
 
@@ -349,7 +365,19 @@ as shown bellow:
 dart run flutter_native_splash:create --flavors development,staging,production
 ```
 
-Note: the available flavors need to be comma separated for this option to work.
+> Note: the available flavors need to be comma separated for this option to work.
+
+## All flavors
+
+And if you have many different flavors available in your project, and wish to generate the splash screen for all of them, you can use this command (starting from 2.4.4):
+
+```bash
+dart run flutter_native_splash:create --all-flavors
+# OR you can use the shorthand option
+dart run flutter_native_splash:create -A
+```
+
+This will take all files from the root of the project, scan through them and match for the pattern `flutter_native_splash-*.yaml` where the value at the place of the star will be used as the flavor name and will be consumed to generate the files.
 
 ### Android setup
 
