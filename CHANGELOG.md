@@ -1,6 +1,7 @@
-## [2.4.4] - ()
+## [2.4.4] - (2024-Dec-29)
 
 - Added the ability to generate all flavors with a single flag. Closes [#751](https://github.com/jonbhanson/flutter_native_splash/issues/751)
+- Update the docs to clarify dark mode parameters.  Closes [#720](https://github.com/jonbhanson/flutter_native_splash/issues/720).
 
 ## [2.4.3] - (2024-Nov-17)
 

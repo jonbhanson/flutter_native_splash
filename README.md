@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.4.3
+  flutter_native_splash: ^2.4.4
 ```
 
 Don't forget to `flutter pub get`.
@@ -69,9 +69,9 @@ flutter_native_splash:
 
   # The color_dark, background_image_dark, image_dark, branding_dark are parameters that set the background
   # and image when the device is in dark mode. If they are not specified, the app will use the
-  # parameters from above. If the image_dark parameter is specified, color_dark or
-  # background_image_dark must be specified.  color_dark and background_image_dark cannot both be
-  # set.
+  # parameters from above.  If there is no parameter above, the app will use the light mode values.
+  # If the image_dark parameter is specified, color_dark or background_image_dark must be specified.  
+  # color_dark and background_image_dark cannot both be set.
   #color_dark: "#042a49"
   #background_image_dark: "assets/dark-background.png"
   #image_dark: assets/splash-invert.png
@@ -103,7 +103,7 @@ flutter_native_splash:
 
     # The image_dark, color_dark, icon_background_color_dark, and branding_dark set values that
     # apply when the device is in dark mode. If they are not specified, the app will use the
-    # parameters from above.
+    # parameters from above.  If there is no parameter above, the app will use the light mode values.
     #image_dark: assets/android12splash-invert.png
     #color_dark: "#042a49"
     #icon_background_color_dark: "#eeeeee"
