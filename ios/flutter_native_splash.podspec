@@ -13,8 +13,8 @@ Customize Flutter's default white native splash screen with background color and
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Jon Hanson' => 'jon@jonhanson.net' }
   s.source           = { :path => '.' }
-  s.source_files = 'flutter_native_splash/Sources/flutter_native_splash//*.{h,m}'
-  s.public_header_files = 'flutter_native_splash/Sources/flutter_native_splash/include//*.h'
+  s.source_files = 'flutter_native_splash/Sources/flutter_native_splash/**/*.{h,m}'
+  s.public_header_files = 'flutter_native_splash/Sources/flutter_native_splash/include/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '9.0'
   s.resource_bundles = {'flutter_native_splash_privacy' => ['flutter_native_splash/Sources/flutter_native_splash/PrivacyInfo.xcprivacy']}
