@@ -149,7 +149,9 @@ flutter_native_splash:
   # android_gravity can be one of the following Android Gravity (see
   # https://developer.android.com/reference/android/view/Gravity): bottom, center,
   # center_horizontal, center_vertical, clip_horizontal, clip_vertical, end, fill, fill_horizontal,
-  # fill_vertical, left, right, start, or top.
+  # fill_vertical, left, right, start, or top. android_gravity can be combined using the | operator to achieve multiple effects. 
+  # For example:
+  # `android_gravity: fill|clip_vertical` - This will fill the width while maintaining the image's vertical aspect ratio
   #android_gravity: center
   #
   # ios_content_mode can be one of the following iOS UIView.ContentMode (see
