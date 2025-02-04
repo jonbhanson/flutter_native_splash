@@ -345,17 +345,6 @@ void _updateHtml({
       )
       ?.remove();
 
-  // Add meta viewport if it doesn't exist
-  document.querySelector(
-        'meta[content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"][name="viewport"]',
-      ) ??
-      document.head?.append(
-        html_parser.parseFragment(
-          '  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">\n',
-          container: '',
-        ),
-      );
-
   // Remove previously used src script tag (migrating to inline script)
   document
       .querySelector(
