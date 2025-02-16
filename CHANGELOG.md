@@ -1,3 +1,8 @@
+## [2.4.5] - (2025-Feb-16)
+- Updated readme.  Closes [#765](https://github.com/jonbhanson/flutter_native_splash/issues/765).  Thanks [Jason](https://github.com/kingdomseed) for [PR #767](https://github.com/jonbhanson/flutter_native_splash/pull/767).
+- Fixes for Swift Package Manager.  Thanks [Dimas](https://github.com/dinyok) for [PR #762](https://github.com/jonbhanson/flutter_native_splash/pull/762) and [Maarten](https://github.com/lazytesting) for [PR #760](https://github.com/jonbhanson/flutter_native_splash/pull/760).
+- Updated dependencies.
+
 ## [2.4.4] - (2024-Dec-29)
 
 - Added the ability to generate all flavors with a single flag. Closes [#751](https://github.com/jonbhanson/flutter_native_splash/issues/751)

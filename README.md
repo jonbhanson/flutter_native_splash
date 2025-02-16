@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.4.4
+  flutter_native_splash: ^2.4.5
 ```
 
 Don't forget to `flutter pub get`.
@@ -65,6 +65,7 @@ flutter_native_splash:
   #branding_mode: bottom
   
   # Set the branding padding from the bottom of the screen.  The default value is 0
+  # (Not supported on web yet)
   # branding_bottom_padding: 24
 
   # The color_dark, background_image_dark, image_dark, branding_dark are parameters that set the background
