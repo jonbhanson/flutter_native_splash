@@ -19,7 +19,7 @@ First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.4.4
+  flutter_native_splash: ^2.4.5
 ```
 
 Don't forget to `flutter pub get`.
@@ -65,6 +65,7 @@ flutter_native_splash:
   #branding_mode: bottom
   
   # Set the branding padding from the bottom of the screen.  The default value is 0
+  # (Not supported on web yet)
   # branding_bottom_padding: 24
 
   # The color_dark, background_image_dark, image_dark, branding_dark are parameters that set the background
@@ -149,7 +150,9 @@ flutter_native_splash:
   # android_gravity can be one of the following Android Gravity (see
   # https://developer.android.com/reference/android/view/Gravity): bottom, center,
   # center_horizontal, center_vertical, clip_horizontal, clip_vertical, end, fill, fill_horizontal,
-  # fill_vertical, left, right, start, or top.
+  # fill_vertical, left, right, start, or top. android_gravity can be combined using the | operator to achieve multiple effects. 
+  # For example:
+  # `android_gravity: fill|clip_vertical` - This will fill the width while maintaining the image's vertical aspect ratio
   #android_gravity: center
   #
   # ios_content_mode can be one of the following iOS UIView.ContentMode (see

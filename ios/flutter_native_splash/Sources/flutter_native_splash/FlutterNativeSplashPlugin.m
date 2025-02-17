@@ -1,4 +1,4 @@
-#import "FlutterNativeSplashPlugin.h"
+#import "./include/flutter_native_splash/FlutterNativeSplashPlugin.h"
 
 @implementation FlutterNativeSplashPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
