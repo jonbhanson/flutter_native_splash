@@ -124,6 +124,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
   final bool fullscreen = config[_Parameter.fullscreen] as bool? ?? false;
   final String iosContentMode =
       config[_Parameter.iosContentMode] as String? ?? 'center';
+  final String iosBackgroundContentMode =
+      config[_Parameter.iosBackgroundContentMode] as String? ?? 'scaleToFill';
   final webImageMode = config[_Parameter.webImageMode] as String? ?? 'center';
   String? android12Image;
   String? android12DarkImage;
@@ -203,6 +205,7 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         darkColor: darkColorIos ?? darkColor,
         plistFiles: plistFiles,
         iosContentMode: iosContentMode,
+        iosBackgroundContentMode: iosBackgroundContentMode,
         iosBrandingContentMode: brandingGravity,
         fullscreen: fullscreen,
       );
@@ -462,6 +465,7 @@ class _Parameter {
   static const imageWeb = 'image_web';
   static const ios = 'ios';
   static const iosContentMode = 'ios_content_mode';
+  static const iosBackgroundContentMode = 'ios_background_content_mode';
   static const plistFiles = 'info_plist_files';
   static const web = 'web';
   static const webImageMode = 'web_image_mode';
@@ -512,6 +516,7 @@ class _Parameter {
     imageWeb,
     ios,
     iosContentMode,
+    iosBackgroundContentMode,
     plistFiles,
     web,
     webImageMode,
