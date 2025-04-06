@@ -1,5 +1,5 @@
-group 'net.jonhanson.flutter_native_splash'
-version '1.0'
+group = "net.jonhanson.flutter_native_splash"
+version = "1.0"
 
 buildscript {
     repositories {
@@ -8,7 +8,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.2'
+        classpath("com.android.tools.build:gradle:8.7.0")
     }
 }
 
@@ -19,18 +19,16 @@ rootProject.allprojects {
     }
 }
 
-apply plugin: 'com.android.library'
+apply plugin: "com.android.library"
 
 android {
-    if (project.android.hasProperty("namespace")) {
-        namespace("net.jonhanson.flutter_native_splash")
-    }
+    namespace = "net.jonhanson.flutter_native_splash"
 
-    compileSdkVersion 31
+    compileSdk = 35
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     defaultConfig {

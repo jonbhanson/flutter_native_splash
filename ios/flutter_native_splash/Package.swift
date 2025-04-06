@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "flutter_native_splash",
     platforms: [
-        .iOS("12.0"),
+        .iOS("12.0")
     ],
     products: [
         .library(name: "flutter-native-splash", targets: ["flutter_native_splash"])
