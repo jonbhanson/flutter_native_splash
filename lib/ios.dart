@@ -61,6 +61,7 @@ void _createiOSSplash({
   required String? darkColor,
   List<String>? plistFiles,
   required String iosContentMode,
+  String? iosBackgroundContentMode,
   String? iosBrandingContentMode,
   required bool fullscreen,
   required String? backgroundImage,
@@ -141,6 +142,7 @@ void _createiOSSplash({
     imagePath: imagePath,
     brandingImagePath: brandingImagePath,
     iosContentMode: iosContentMode,
+    iosBackgroundContentMode: iosBackgroundContentMode,
     iosBrandingContentMode: iosBrandingContentMode,
     brandingBottomPadding: brandingBottomPadding,
   );
@@ -210,6 +212,7 @@ void _applyImageiOS({
 void _updateLaunchScreenStoryboard({
   required String? imagePath,
   required String iosContentMode,
+  String? iosBackgroundContentMode,
   String? brandingImagePath,
   String? brandingBottomPadding,
   String? iosBrandingContentMode,
@@ -257,22 +260,25 @@ void _updateLaunchScreenStoryboard({
       exit(1);
     },
   );
-  subViews.children.whereType<XmlElement>().firstWhere(
+  final backgroundImageView = subViews.children.whereType<XmlElement>().firstWhere(
     (element) =>
         element.name.qualified == 'imageView' &&
         element.getAttribute('image') == _flavorHelper.iOSLaunchBackgroundName,
     orElse: () {
+      final backgroundSubView = XmlDocument.parse(_flavorHelper.iOSLaunchBackgroundSubView)
+          .rootElement
+          .copy();
+      backgroundSubView.setAttribute('contentMode', iosBackgroundContentMode);
       subViews.children.insert(
         0,
-        XmlDocument.parse(_flavorHelper.iOSLaunchBackgroundSubView)
-            .rootElement
-            .copy(),
+        backgroundSubView,
       );
       return XmlElement(XmlName(''));
     },
   );
   // Update the fill property
   imageView.setAttribute('contentMode', iosContentMode);
+  backgroundImageView.setAttribute('contentMode', iosBackgroundContentMode);
 
   if (!['bottom', 'bottomRight', 'bottomLeft']
       .contains(iosBrandingContentModeValue)) {
@@ -400,6 +406,7 @@ void _updateLaunchScreenStoryboard({
 void _createLaunchScreenStoryboard({
   required String? imagePath,
   required String iosContentMode,
+  required String? iosBackgroundContentMode,
   required String? iosBrandingContentMode,
   required String? brandingImagePath,
   required String? brandingBottomPadding,
@@ -413,6 +420,7 @@ void _createLaunchScreenStoryboard({
     brandingImagePath: brandingImagePath,
     brandingBottomPadding: brandingBottomPadding,
     iosContentMode: iosContentMode,
+    iosBackgroundContentMode: iosBackgroundContentMode,
     iosBrandingContentMode: iosBrandingContentMode,
   );
 }
