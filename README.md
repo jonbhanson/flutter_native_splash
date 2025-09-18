@@ -32,157 +32,157 @@ Customize the following settings and add to your project's `pubspec.yaml` file o
 flutter_native_splash:
   # This package generates native code to customize Flutter's default white native splash screen
   # with background color and splash image.
-  # Customize the parameters below, and run the following command in the terminal:
+  # Steps to make this work:
+  # 1. Customize the parameters below.
+  # 2. run the following command in the terminal:
   # dart run flutter_native_splash:create
-  # To restore Flutter's default white splash screen, run the following command in the terminal:
+  # or if you place this not in pubspec.yaml and not in flutter_native_splash.yaml:
+  # dart run flutter_native_splash:create -p ../your-filepath.yaml
+  # 3. voila, done!
+
+  # NOTES:
+  # - in case you got some trouble, cleaning up flutter project might help:
+  # flutter clean ; flutter pub get
+  # - To restore Flutter's default white splash screen, run the following command in the terminal:
   # dart run flutter_native_splash:remove
+  # or if you place this not in pubspec.yaml and not in flutter_native_splash.yaml:
+  # dart run flutter_native_splash:remove -p ../your-filepath.yaml
 
   # IMPORTANT NOTE: These parameter do not affect the configuration of Android 12 and later, which
   # handle splash screens differently that prior versions of Android.  Android 12 and later must be
-  # configured specifically in the android_12 section below.
+  # configured specifically in the android_12 section below, at the very end.
 
-  # color or background_image is the only required parameter.  Use color to set the background
-  # of your splash screen to a solid color.  Use background_image to set the background of your
-  # splash screen to a png image.  This is useful for gradients. The image will be stretch to the
-  # size of the app. Only one parameter can be used, color and background_image cannot both be set.
-  color: "#42a5f5"
-  #background_image: "assets/background.png"
-
-  # Optional parameters are listed below.  To enable a parameter, uncomment the line by removing
-  # the leading # character.
-
-  # The image parameter allows you to specify an image used in the splash screen.  It must be a
-  # png file and should be sized for 4x pixel density.
-  #image: assets/splash.png
-
-  # The branding property allows you to specify an image used as branding in the splash screen.
-  # It must be a png file. It is supported for Android, iOS and the Web.  For Android 12,
-  # see the Android 12 section below.
-  #branding: assets/dart.png
-
-  # To position the branding image at the bottom of the screen you can use bottom, bottomRight,
-  # and bottomLeft. The default values is bottom if not specified or specified something else.
-  #branding_mode: bottom
+  #======================================================================
   
-  # Set the branding padding from the bottom of the screen.  The default value is 0
-  # (Not supported on web yet)
-  # branding_bottom_padding: 24
+  # uncomment this if you want to disable this package for specific platform:
+  # android: false
+  # ios: false
+  # web: false
+  
+  #======================================================================
 
-  # The color_dark, background_image_dark, image_dark, branding_dark are parameters that set the background
-  # and image when the device is in dark mode. If they are not specified, the app will use the
-  # parameters from above.  If there is no parameter above, the app will use the light mode values.
-  # If the image_dark parameter is specified, color_dark or background_image_dark must be specified.  
-  # color_dark and background_image_dark cannot both be set.
+  #! FOR ALL PLATFORM, except Android 12+:
+
+  # general color for all platform (except android 12+):
+  # see there only 2 lines in all parameters that marked as [required], so others
+  # remain optional. NOTE that if you specify the [required] color, then you cant 
+  # use the [required] background_image in the next section. the reverse is true.
+  # select one, they cant work together.
+  color: "#42a5f5"  ##====================================[REQUIRED]==========
   #color_dark: "#042a49"
-  #background_image_dark: "assets/dark-background.png"
-  #image_dark: assets/splash-invert.png
-  #branding_dark: assets/dart_dark.png
-
-  # From Android 12 onwards, the splash screen is handled differently than in previous versions.
-  # Please visit https://developer.android.com/guide/topics/ui/splash-screen
-  # Following are specific parameters for Android 12+.
-  android_12:
-    # The image parameter sets the splash screen icon image.  If this parameter is not specified,
-    # the app's launcher icon will be used instead.
-    # Please note that the splash screen will be clipped to a circle on the center of the screen.
-    # App icon with an icon background: This should be 960×960 pixels, and fit within a circle
-    # 640 pixels in diameter.
-    # App icon without an icon background: This should be 1152×1152 pixels, and fit within a circle
-    # 768 pixels in diameter.  To fit a 1152x1152 image within a circle with a 768 diameter, simply 
-    # ensure that the most important design elements of your image are placed within a circular area
-    # with a 768 diameter at the center of the 1152x1152 canvas.
-    #image: assets/android12splash.png
-
-    # Splash screen background color.
-    #color: "#42a5f5"
-
-    # App icon background color.
-    #icon_background_color: "#111111"
-
-    # The branding property allows you to specify an image used as branding in the splash screen.
-    #branding: assets/dart.png
-
-    # The image_dark, color_dark, icon_background_color_dark, and branding_dark set values that
-    # apply when the device is in dark mode. If they are not specified, the app will use the
-    # parameters from above.  If there is no parameter above, the app will use the light mode values.
-    #image_dark: assets/android12splash-invert.png
-    #color_dark: "#042a49"
-    #icon_background_color_dark: "#eeeeee"
-
-  # The android, ios and web parameters can be used to disable generating a splash screen on a given
-  # platform.
-  #android: false
-  #ios: false
-  #web: false
-
-  # Platform specific images can be specified with the following parameters, which will override
-  # the respective parameter.  You may specify all, selected, or none of these parameters:
+  # platform-specific color. will override general color if active:
   #color_android: "#42a5f5"
   #color_dark_android: "#042a49"
   #color_ios: "#42a5f5"
   #color_dark_ios: "#042a49"
   #color_web: "#42a5f5"
   #color_dark_web: "#042a49"
-  #image_android: assets/splash-android.png
-  #image_dark_android: assets/splash-invert-android.png
-  #image_ios: assets/splash-ios.png
-  #image_dark_ios: assets/splash-invert-ios.png
-  #image_web: assets/splash-web.gif
-  #image_dark_web: assets/splash-invert-web.gif
-  #background_image_android: "assets/background-android.png"
-  #background_image_dark_android: "assets/dark-background-android.png"
-  #background_image_ios: "assets/background-ios.png"
-  #background_image_dark_ios: "assets/dark-background-ios.png"
-  #background_image_web: "assets/background-web.png"
-  #background_image_dark_web: "assets/dark-background-web.png"
-  #branding_android: assets/brand-android.png
-  #branding_bottom_padding_android: 24
-  #branding_dark_android: assets/dart_dark-android.png
-  #branding_ios: assets/brand-ios.png
-  #branding_bottom_padding_ios: 24
-  #branding_dark_ios: assets/dart_dark-ios.png
-  #branding_web: assets/brand-web.gif
-  #branding_dark_web: assets/dart_dark-web.gif
 
-  # The position of the splash image can be set with android_gravity, ios_content_mode, and
-  # web_image_mode parameters.  All default to center.
-  #
-  # android_gravity can be one of the following Android Gravity (see
-  # https://developer.android.com/reference/android/view/Gravity): bottom, center,
-  # center_horizontal, center_vertical, clip_horizontal, clip_vertical, end, fill, fill_horizontal,
-  # fill_vertical, left, right, start, or top. android_gravity can be combined using the | operator to achieve multiple effects. 
-  # For example:
-  # `android_gravity: fill|clip_vertical` - This will fill the width while maintaining the image's vertical aspect ratio
-  #android_gravity: center
-  #
-  # ios_content_mode can be one of the following iOS UIView.ContentMode (see
-  # https://developer.apple.com/documentation/uikit/uiview/contentmode): scaleToFill,
-  # scaleAspectFit, scaleAspectFill, center, top, bottom, left, right, topLeft, topRight,
-  # bottomLeft, or bottomRight.
-  #ios_content_mode: center
-  #
-  # web_image_mode can be one of the following modes: center, contain, stretch, and cover.
-  #web_image_mode: center
+  # general background_image for all platform (except android 12+)
+  # if you specify this [required] background_image, then you should comment the 
+  # [required] color in previous section. select one, they cant work together.
+  #background_image:      "assets/background.png" #========[REQUIRED]============
+  #background_image_dark: "assets/dark-background.png"
+  # platform-specific background_image. will override general background_image if active:
+  #background_image_android:      "assets/background-android.png"
+  #background_image_dark_android: "assets/dark-background-android.png"
+  #background_image_ios:          "assets/background-ios.png"
+  #background_image_dark_ios:     "assets/dark-background-ios.png"
+  #background_image_web:          "assets/background-web.png"
+  #background_image_dark_web:     "assets/dark-background-web.png"
+
+  # general image for all platform (except android 12+):
+  # allows you to specify an image used in the splash screen. It must be a
+  # png file and should be sized for 4x pixel density.
+  image:                assets/splash.png
+  #image_dark:          assets/splash-invert.png
+  # platform-specific image. will override general image if active:
+  #image_android:       assets/splash-android.png
+  #image_dark_android:  assets/splash-invert-android.png
+  #image_ios:           assets/splash-ios.png
+  #image_dark_ios:      assets/splash-invert-ios.png
+  #image_web:           assets/splash-web.gif
+  #image_dark_web:      assets/splash-invert-web.gif  
+
+  # image alignment (default center if not specified, or speccified something else):
+  #android_gravity: center       # bottom, center, center_horizontal, center_vertical, 
+  # clip_horizontal, clip_vertical, end, fill, fill_horizontal, fill_vertical, left, right, start, top. could also be a combination like `android_gravity: fill|clip_vertical`
+  # This will fill the width while maintaining the image's vertical aspect ratio.
+  # visit https://developer.android.com/reference/android/view/Gravity
+  #ios_content_mode: center      # scaleToFill, scaleAspectFit, scaleAspectFill, 
+  # center, top, bottom, left, right, topLeft, topRight, bottomLeft, or bottomRight.
+  # visit https://developer.apple.com/documentation/uikit/uiview/contentmode
+  #web_image_mode: center        # center, contain, stretch, cover
+
+  # general branding for all platform (except android 12+):
+  # allows you to specify an image used as branding in the splash screen. should be png.
+  #branding:      assets/dart.png
+  #branding_dark: assets/dart_dark.png
+  # platform-specific branding. will override general branding if active:
+  #branding_android:      assets/brand-android.png
+  #branding_dark_android: assets/dart_dark-android.png
+  #branding_ios:          assets/brand-ios.png
+  #branding_dark_ios:     assets/dart_dark-ios.png
+  #branding_web:          assets/brand-web.gif
+  #branding_dark_web:     assets/dart_dark-web.gif
+
+  # branding position:
+  # you can use bottom, bottomRight, and bottomLeft. The default values is 
+  # bottom if not specified or specified something else.
+  #branding_mode: bottom                # default bottom
+  #branding_bottom_padding: 24          # default 24
+  #branding_bottom_padding_android: 24  # default 24
+  #branding_bottom_padding_ios: 24      # default 24
+  # branding bottom padding web is not available yet.
 
   # The screen orientation can be set in Android with the android_screen_orientation parameter.
   # Valid parameters can be found here:
   # https://developer.android.com/guide/topics/manifest/activity-element#screen
   #android_screen_orientation: sensorLandscape
 
-  # To hide the notification bar, use the fullscreen parameter.  Has no effect in web since web
-  # has no notification bar.  Defaults to false.
-  # NOTE: Unlike Android, iOS will not automatically show the notification bar when the app loads.
-  #       To show the notification bar, add the following code to your Flutter app:
-  #       WidgetsFlutterBinding.ensureInitialized();
-  #       SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top], );
-  #fullscreen: true
-
+  # hide notif bar on android. ios already hides it by default. 
+  # Has no effect in web since web has no notification bar.
+  fullscreen: true                # default false
+  # if you dont want to hide notif bar, for android just set this to false,
+  # but for ios, add this to your flutter main():
+  # WidgetsFlutterBinding.ensureInitialized(); 
+  # SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top], );
+    
+  #! extra note for IOS:
   # If you have changed the name(s) of your info.plist file(s), you can specify the filename(s)
   # with the info_plist_files parameter.  Remove only the # characters in the three lines below,
   # do not remove any spaces:
   #info_plist_files:
   #  - 'ios/Runner/Info-Debug.plist'
   #  - 'ios/Runner/Info-Release.plist'
+
+  #========================================================================
+
+  # what we did above won't affect Android 12 and newer at all. they have different
+  # handling concept. visit https://developer.android.com/guide/topics/ui/splash-screen
+  
+  #! ANDROID 12+ configuration:
+  android_12:
+    # background color
+    color: "#42a5f5"
+    # color_dark: "#042a49"
+
+    # center-logo
+    # If this parameter is not specified, the app's launcher icon will be used instead. 
+    # Please note that the splash screen will be clipped to a circle on the center of the screen. 
+    # with background: 960×960 px (fit within circle 640px in diameter)    
+    # without background: 1152×1152 px (fit within circle 768px in diameter)
+    # ensure that the most important design elements of your image are placed within a circular area 
+    image: assets/images/logo/blank.png    
+    # image_dark: assets/images/logo/logo-splash2.png  
+
+    # center-logo background color
+    icon_background_color: "#111111"
+    # icon_background_color_dark: "#eeeeee"
+
+    # branding:
+    #branding:      assets/dart.png      
+    #branding_dark: assets/dart_dark.png
 ```
 
 ## 2. Run the package
