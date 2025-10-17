@@ -44,6 +44,7 @@ void main(List<String> args) {
   final helpArg = parsedArgs[ArgEnums.help.name] as bool?;
 
   if (helpArg == true) {
+    // ignore_for_file: avoid_print
     print(parser.usage);
     return;
   }

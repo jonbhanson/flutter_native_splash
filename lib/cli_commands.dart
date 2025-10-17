@@ -29,6 +29,7 @@ void createSplash({
   required String? flavor,
 }) {
   if (flavor != null) {
+    // ignore_for_file: avoid_print
     print(
       '''
 ╔════════════════════════════════════════════════════════════════════════════╗

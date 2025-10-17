@@ -28,6 +28,7 @@ void main(List<String> args) {
   final helpArg = parsedArgs[ArgEnums.help.name];
 
   if (helpArg != null) {
+    // ignore_for_file: avoid_print
     print(parser.usage);
     return;
   }

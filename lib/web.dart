@@ -22,6 +22,7 @@ void _createWebSplash({
   required String? darkBackgroundImage,
 }) {
   if (!File(_webIndex).existsSync()) {
+    // ignore_for_file: avoid_print
     print('[Web] $_webIndex not found.  Skipping Web.');
     return;
   }

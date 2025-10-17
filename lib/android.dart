@@ -131,6 +131,7 @@ void _createAndroidSplash({
         '${_flavorHelper.androidV21DrawableFolder}background.png',
   );
 
+  // ignore_for_file: avoid_print
   print('[Android] Updating launch background(s) with splash image path...');
 
   _applyLaunchBackgroundXml(

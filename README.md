@@ -5,21 +5,13 @@ When your app is opened, there is a brief time while the native app loads Flutte
     <img src="https://raw.githubusercontent.com/jonbhanson/flutter_native_splash/master/splash_demo_dark.gif" />
 </p>
 
-# What's New
-
-Support for GIF images in web.
-
-You can now keep the splash screen up while your app initializes! No need for a secondary splash screen anymore. Just use the `preserve` and `remove` methods together to remove the splash screen after your initialization is complete. See [details below](https://pub.dev/packages/flutter_native_splash#3-set-up-app-initialization-optional).
-
 # Usage
-
-Would you prefer a video tutorial instead? Check out <a href="https://www.youtube.com/watch?v=dB0dOnc2k10">Johannes Milke's tutorial</a>.
 
 First, add `flutter_native_splash` as a dependency in your pubspec.yaml file.
 
 ```yaml
 dependencies:
-  flutter_native_splash: ^2.4.6
+  flutter_native_splash: ^2.4.7
 ```
 
 Don't forget to `flutter pub get`.
@@ -130,9 +122,9 @@ flutter_native_splash:
   # you can use bottom, bottomRight, and bottomLeft. The default values is 
   # bottom if not specified or specified something else.
   #branding_mode: bottom                # default bottom
-  #branding_bottom_padding: 24          # default 24
-  #branding_bottom_padding_android: 24  # default 24
-  #branding_bottom_padding_ios: 24      # default 24
+  #branding_bottom_padding: 24          # default 0
+  #branding_bottom_padding_android: 24  # default 0
+  #branding_bottom_padding_ios: 24      # default 0
   # branding bottom padding web is not available yet.
 
   # The screen orientation can be set in Android with the android_screen_orientation parameter.
@@ -181,6 +173,7 @@ flutter_native_splash:
     # icon_background_color_dark: "#eeeeee"
 
     # branding:
+    # The branding image dimensions must be 800x320 px.
     #branding:      assets/dart.png      
     #branding_dark: assets/dart_dark.png
 ```
@@ -237,9 +230,9 @@ If you find this package useful, you can support it for free by giving it a thum
 
 <p align='center'><a href="https://www.buymeacoffee.com/jonhanson"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a coffee&emoji=&slug=jonhanson&button_colour=5F7FFF&font_colour=ffffff&font_family=Cookie&outline_colour=000000&coffee_colour=FFDD00"></a></p>
 
-# Android 12+ Support
+# Android 12 and Later
 
-Android 12 has a [new method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background. Note that a background image is not supported.
+Android 12 and later has a [different method](https://developer.android.com/about/versions/12/features/splash-screen) of adding splash screens, which consists of a window background, icon, and the icon background. Note that a background image is not supported.
 
 <img src="https://developer.android.com/static/images/guide/topics/ui/splash-screen/splash-screen-composition.png"/>
 
@@ -255,6 +248,8 @@ Be aware of the following considerations regarding these elements:
 3. One-third of the foreground is masked.
 
 4. `color` the window background consists of a single opaque color.
+
+5. `branding` parameter. The branding image dimensions must be 800x320 px.
 
 **_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio on API 31. However, it should appear when you launch by clicking on the launch icon in Android. This seems to be resolved in API 32+.
 

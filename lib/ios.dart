@@ -180,6 +180,7 @@ void _applyImageiOS({
   // That's why this was added, as a setup for a default value.
   targetPath ??= _flavorHelper.iOSAssetsLaunchImageFolder;
 
+// ignore_for_file: avoid_print
   print('[iOS] Creating ${dark ? 'dark mode ' : ''} images');
 
   final image = decodeImage(File(imagePath).readAsBytesSync());
