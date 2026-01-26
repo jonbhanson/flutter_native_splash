@@ -52,8 +52,6 @@ void _createWebSplash({
         )
         ?.remove();
     document.querySelector('script[src="splash/splash.js"]')?.remove();
-    document.querySelector('picture#splash')?.remove();
-    document.querySelector('picture#splash-branding')?.remove();
     document.querySelector('div#splash')?.remove();
     webIndex.writeAsStringSync(document.outerHtml);
     return;
@@ -296,18 +294,26 @@ void _createSplashCss({
     );
   }
 
-  cssContent += '  </style>\n';
+  cssContent += '  </style>';
 
   // Add css as an inline style in head tag
   final webIndex = File(_webIndex);
   final document = html_parser.parse(webIndex.readAsStringSync());
 
   // Update splash css style tag
-  document.head
-    ?..querySelector('style#splash-screen-style')?.remove()
-    ..append(
-      html_parser.parseFragment(cssContent, container: ''),
-    );
+  Element? splashScreenStyle =
+      document.querySelector('style#splash-screen-style');
+  if (splashScreenStyle == null) {
+    document.head?.append(html_parser.parseFragment(
+      "\n  $cssContent",
+      container: '',
+    ));
+  } else {
+    splashScreenStyle.replaceWith(html_parser.parseFragment(
+      cssContent,
+      container: '',
+    ));
+  }
 
   // Write the updated index.html
   webIndex.writeAsStringSync(document.outerHtml);
@@ -319,11 +325,19 @@ void _createSplashJs() {
   final document = html_parser.parse(webIndex.readAsStringSync());
 
   // Update splash js script tag
-  document.head
-    ?..querySelector('script#splash-screen-script')?.remove()
-    ..append(
-      html_parser.parseFragment(_webJS, container: ''),
-    );
+  Element? splashScreenScript =
+      document.querySelector('script#splash-screen-script');
+  if (splashScreenScript == null) {
+    document.head?.append(html_parser.parseFragment(
+      "\n\n  $_webJS\n",
+      container: '',
+    ));
+  } else {
+    splashScreenScript.replaceWith(html_parser.parseFragment(
+      _webJS,
+      container: '',
+    ));
+  }
 
   // Write the updated index.html
   webIndex.writeAsStringSync(document.outerHtml);
@@ -365,40 +379,64 @@ void _updateHtml({
       ?.remove();
 
   // Update splash image
-  document.querySelector('picture#splash')?.remove();
-  document.querySelector('div#splash')?.remove();
-  if (imagePath != null) {
-    document.body?.insertBefore(
-      html_parser.parseFragment(
-        '\n${_indexHtmlPicture.replaceAll(
-              '[IMAGEMODE]',
-              imageMode,
-            ).replaceAll(
-              '[IMAGEEXTENSION]',
-              imagePath.endsWith('.gif') ? 'gif' : 'png',
-            )}',
+  Element? splashPicture = document.querySelector('picture#splash');
+  if (imagePath == null) {
+    splashPicture?.remove();
+  } else {
+    final fragmentContent = _indexHtmlPicture
+        .replaceAll(
+          '[IMAGEMODE]',
+          imageMode,
+        )
+        .replaceAll(
+          '[IMAGEEXTENSION]',
+          imagePath.endsWith('.gif') ? 'gif' : 'png',
+        );
+    if (splashPicture == null) {
+      document.body?.insertBefore(
+        html_parser.parseFragment(
+          "\n  $fragmentContent\n",
+          container: '',
+        ),
+        document.body?.firstChild,
+      );
+    } else {
+      splashPicture.replaceWith(html_parser.parseFragment(
+        fragmentContent,
         container: '',
-      ),
-      document.body?.firstChild,
-    );
+      ));
+    }
   }
 
   // Update branding image
-  document.querySelector('picture#splash-branding')?.remove();
-  if (brandingImagePath != null) {
-    document.body?.insertBefore(
-      html_parser.parseFragment(
-        '\n${_indexHtmlBrandingPicture.replaceAll(
-              '[BRANDINGMODE]',
-              brandingMode,
-            ).replaceAll(
-              '[BRANDINGEXTENSION]',
-              brandingImagePath.endsWith('.gif') ? 'gif' : 'png',
-            )}',
+  Element? splashBrandingPicture =
+      document.querySelector('picture#splash-branding');
+  if (brandingImagePath == null) {
+    splashBrandingPicture?.remove();
+  } else {
+    final fragmentContent = _indexHtmlBrandingPicture
+        .replaceAll(
+          '[BRANDINGMODE]',
+          brandingMode,
+        )
+        .replaceAll(
+          '[BRANDINGEXTENSION]',
+          brandingImagePath.endsWith('.gif') ? 'gif' : 'png',
+        );
+    if (splashBrandingPicture == null) {
+      document.body?.insertBefore(
+        html_parser.parseFragment(
+          "\n  $fragmentContent\n",
+          container: '',
+        ),
+        document.body?.firstChild,
+      );
+    } else {
+      splashBrandingPicture.replaceWith(html_parser.parseFragment(
+        fragmentContent,
         container: '',
-      ),
-      document.body?.firstChild,
-    );
+      ));
+    }
   }
 
   // Write the updated index.html
