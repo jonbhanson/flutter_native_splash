@@ -92,8 +92,8 @@ void _createAndroidSplash({
       _flavorHelper.getAndroidV21DrawableFolder(androidMinSdk);
   final androidV21LaunchBackgroundFile =
       _flavorHelper.getAndroidV21LaunchBackgroundFile(androidMinSdk);
-  final androidNightV21DrawableFolder =
-      _flavorHelper.getAndroidNightV21DrawableFolder(androidMinSdk);
+  final androidV21NightDrawableFolder =
+      _flavorHelper.getAndroidV21NightDrawableFolder(androidMinSdk);
   final androidV21LaunchDarkBackgroundFile =
       _flavorHelper.getAndroidV21LaunchDarkBackgroundFile(androidMinSdk);
 
@@ -147,7 +147,7 @@ void _createAndroidSplash({
     );
   }
 
-  if (androidNightV21DrawableFolder != null &&
+  if (androidV21NightDrawableFolder != null &&
       androidV21DrawableFolder != null) {
     _createBackground(
       colorString: color,
@@ -155,7 +155,7 @@ void _createAndroidSplash({
       darkBackgroundImageSource: darkBackgroundImage,
       backgroundImageSource: backgroundImage,
       darkBackgroundImageDestination:
-          '${androidNightV21DrawableFolder}background.png',
+          '${androidV21NightDrawableFolder}background.png',
       backgroundImageDestination: '${androidV21DrawableFolder}background.png',
     );
   }
