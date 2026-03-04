@@ -71,6 +71,60 @@ class _FlavorHelper {
     return '${androidNightV21DrawableFolder}launch_background.xml';
   }
 
+  String? getAndroidDrawableFolder(int minSdk) {
+    return minSdk < 21 ? androidDrawableFolder : null;
+  }
+
+  String? getAndroidNightDrawableFolder(int minSdk) {
+    return minSdk < 21 ? androidNightDrawableFolder : null;
+  }
+
+  String? getAndroidLaunchBackgroundFile(int minSdk) {
+    return minSdk < 21 ? androidLaunchBackgroundFile : null;
+  }
+
+  String? getAndroidLaunchDarkBackgroundFile(int minSdk) {
+    return minSdk < 21 ? androidLaunchDarkBackgroundFile : null;
+  }
+
+  String? getAndroidStylesFile(int minSdk) {
+    return minSdk < 31 ? androidStylesFile : null;
+  }
+
+  String? getAndroidNightStylesFile(int minSdk) {
+    return minSdk < 31 ? androidNightStylesFile : null;
+  }
+
+  String? getAndroidV31StylesFile(int minSdk) {
+    return minSdk < 31 ? androidV31StylesFile : androidStylesFile;
+  }
+
+  String? getAndroidV31NightStylesFile(int minSdk) {
+    return minSdk < 31 ? androidV31StylesNightFile : androidNightStylesFile;
+  }
+
+  String? getAndroidV21DrawableFolder(int minSdk) {
+    return minSdk < 21 ? androidV21DrawableFolder : androidDrawableFolder;
+  }
+
+  String? getAndroidV21LaunchBackgroundFile(int minSdk) {
+    return minSdk < 21
+        ? androidV21LaunchBackgroundFile
+        : androidLaunchBackgroundFile;
+  }
+
+  String? getAndroidNightV21DrawableFolder(int minSdk) {
+    return minSdk < 21
+        ? androidNightV21DrawableFolder
+        : androidNightDrawableFolder;
+  }
+
+  String? getAndroidV21LaunchDarkBackgroundFile(int minSdk) {
+    return minSdk < 21
+        ? androidV21LaunchDarkBackgroundFile
+        : androidLaunchDarkBackgroundFile;
+  }
+
   String get androidManifestFile {
     return 'android/app/src/main/AndroidManifest.xml';
   }
