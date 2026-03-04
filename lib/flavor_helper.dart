@@ -113,7 +113,7 @@ class _FlavorHelper {
         : androidLaunchBackgroundFile;
   }
 
-  String? getAndroidNightV21DrawableFolder(int minSdk) {
+  String? getAndroidV21NightDrawableFolder(int minSdk) {
     return minSdk < 21
         ? androidNightV21DrawableFolder
         : androidNightDrawableFolder;
