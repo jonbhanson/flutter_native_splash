@@ -132,6 +132,10 @@ flutter_native_splash:
   # https://developer.android.com/guide/topics/manifest/activity-element#screen
   #android_screen_orientation: sensorLandscape
 
+  # By specifying the used minimum SDK version of Android, flutter_native_splash might be able to
+  # merge/remove certain styles and drawables.
+  #android_min_sdk: 24  # default 16
+
   # hide notif bar on android. ios already hides it by default. 
   # Has no effect in web since web has no notification bar.
   fullscreen: true                # default false
