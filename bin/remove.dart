@@ -25,9 +25,9 @@ void main(List<String> args) {
 
   final parsedArgs = parser.parse(args);
 
-  final helpArg = parsedArgs[ArgEnums.help.name];
+  final helpArg = parsedArgs[ArgEnums.help.name] as bool?;
 
-  if (helpArg != null) {
+  if (helpArg == true) {
     // ignore_for_file: avoid_print
     print(parser.usage);
     return;
