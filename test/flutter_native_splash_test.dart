@@ -5,12 +5,32 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:path/path.dart' as p;
 
 void main() {
-  test('parseColor parses values correctly', () {
-    expect(parseColor('#ffffff'), 'ffffff');
-    expect(parseColor(' FAFAFA '), 'FAFAFA');
-    expect(parseColor('121212'), '121212');
-    expect(parseColor(null), null);
-    expect(() => parseColor('badcolor'), throwsException);
+  group('parseColor', () {
+    test('parses string values correctly', () {
+      expect(parseColor('#ffffff'), 'ffffff');
+      expect(parseColor(' FAFAFA '), 'FAFAFA');
+      expect(parseColor('121212'), '121212');
+      expect(parseColor('#000000'), '000000');
+      expect(parseColor('F9E524'), 'F9E524');
+    });
+
+    test('returns null for null input', () {
+      expect(parseColor(null), null);
+    });
+
+    test('throws for invalid color strings', () {
+      expect(() => parseColor('badcolor'), throwsException);
+      expect(() => parseColor('#12345'), throwsException);
+      expect(() => parseColor('1234567'), throwsException);
+      expect(() => parseColor(''), throwsException);
+    });
+
+    test('handles integer values from YAML parsing', () {
+      // YAML parses unquoted numeric values like 000000 as int 0
+      expect(parseColor(0), '000000');
+      // YAML parses 123456 as int
+      expect(parseColor(123456), '123456');
+    });
   });
 
   group('config file from args', () {
