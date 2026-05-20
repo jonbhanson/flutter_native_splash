@@ -49,10 +49,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: net.jonhanson.flutter_native_splash
-        pluginClass: FlutterNativeSplashPlugin
       ios:
-        pluginClass: FlutterNativeSplashPlugin
       web:
         pluginClass: FlutterNativeSplashWeb
         fileName: flutter_native_splash_web.dart
