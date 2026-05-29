@@ -1,3 +1,9 @@
+## [2.4.8] - (2026-May-29)
+- Introduce `android_min_sdk` parameter. Thanks [Nico](https://github.com/ThexXTURBOXx) for [PR #820](https://github.com/jonbhanson/flutter_native_splash/pull/820).
+- Remove unnecessary native code. Thanks [Nico](https://github.com/ThexXTURBOXx) for [PR #828](https://github.com/jonbhanson/flutter_native_splash/pull/828).
+- Fix `remove` command always showing help instead of executing. Thanks [ersanKolay](https://github.com/ersanKolay) for [PR #823](https://github.com/jonbhanson/flutter_native_splash/pull/823). Fixes [#822](https://github.com/jonbhanson/flutter_native_splash/issues/822), [#804](https://github.com/jonbhanson/flutter_native_splash/issues/804), [#786](https://github.com/jonbhanson/flutter_native_splash/issues/786).
+- Updated dependencies.
+
 ## [2.4.7] - (2025-Oct-16)
 - Updated documentation.  Thanks [Ideeyn](https://github.com/ideeyn) for [PR #806](https://github.com/jonbhanson/flutter_native_splash/pull/806).
 - Specify branding dimensions.  Thanks [Ivan](https://github.com/divan) for the [tip](https://github.com/jonbhanson/flutter_native_splash/issues/729#issuecomment-3172822059).
