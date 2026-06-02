@@ -383,6 +383,40 @@ const String _iOSLaunchBackgroundConstraints = '''
 </constraints>
 ''';
 
+const String _iOSLaunchBackgroundAnchoredConstraints = '''
+<constraints>
+  [HORIZONTAL_CONSTRAINT]
+  [VERTICAL_CONSTRAINT]
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="height" secondItem="YRO-k0-Ey4" secondAttribute="width" multiplier="[IMAGE_HEIGHT]:[IMAGE_WIDTH]" id="A0i-OJ-jvQ"/>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" relation="[RELATION]" id="Yvb-jT-CaE"/>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" relation="[RELATION]" id="7Sc-BN-WV5"/>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" priority="750" id="S8n-mp-2UQ"/>
+  <constraint firstItem="YRO-k0-Ey4" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" priority="750" id="TFv-a4-eRM"/>
+  <constraint firstItem="tWc-Dq-wcI" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="RPx-PI-7Xg"/>
+  <constraint firstItem="tWc-Dq-wcI" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="SdS-ul-q2q"/>
+  <constraint firstAttribute="trailing" secondItem="tWc-Dq-wcI" secondAttribute="trailing" id="Swv-Gf-Rwn"/>
+  <constraint firstItem="tWc-Dq-wcI" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="kV7-tw-vXt"/>
+</constraints>
+''';
+
+const String _iOSLaunchImageHorizontalLeadingConstraint =
+    '<constraint firstItem="YRO-k0-Ey4" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="iOa-x7-RaF"/>';
+
+const String _iOSLaunchImageHorizontalCenterConstraint =
+    '<constraint firstItem="YRO-k0-Ey4" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="1a2-6s-vTC"/>';
+
+const String _iOSLaunchImageHorizontalTrailingConstraint =
+    '<constraint firstAttribute="trailing" secondItem="YRO-k0-Ey4" secondAttribute="trailing" id="2gE-C3-A1T"/>';
+
+const String _iOSLaunchImageVerticalTopConstraint =
+    '<constraint firstItem="YRO-k0-Ey4" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="xPn-NY-SIU"/>';
+
+const String _iOSLaunchImageVerticalCenterConstraint =
+    '<constraint firstItem="YRO-k0-Ey4" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="4X2-HB-R7a"/>';
+
+const String _iOSLaunchImageVerticalBottomConstraint =
+    '<constraint firstAttribute="bottom" secondItem="YRO-k0-Ey4" secondAttribute="bottom" id="duK-uY-Gun"/>';
+
 const String _iOSBrandingCenterBottomConstraints = '''
 <constraints>
   <constraint firstItem="Uyq-Kz-ftE" firstAttribute="centerX" secondItem="YRO-k0-Ey4" secondAttribute="centerX" id="3kg-TC-cPP"/>

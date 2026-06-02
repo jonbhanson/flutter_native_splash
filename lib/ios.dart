@@ -215,7 +215,18 @@ void _updateLaunchScreenStoryboard({
   String? brandingBottomPadding,
   String? iosBrandingContentMode,
 }) {
+  final parsedIosContentMode = _parseIosContentMode(iosContentMode);
   String? iosBrandingContentModeValue = iosBrandingContentMode;
+  Image? splashImage;
+
+  if (imagePath != null) {
+    splashImage = decodeImage(File(imagePath).readAsBytesSync());
+    if (splashImage == null) {
+      print('$imagePath could not be loaded.');
+      exit(1);
+    }
+  }
+
   // Load the data
   final file = File(_flavorHelper.iOSLaunchScreenStoryboardFile);
   final xmlDocument = XmlDocument.parse(file.readAsStringSync());
@@ -273,7 +284,7 @@ void _updateLaunchScreenStoryboard({
     },
   );
   // Update the fill property
-  imageView.setAttribute('contentMode', iosContentMode);
+  imageView.setAttribute('contentMode', parsedIosContentMode.contentMode);
 
   if (!['bottom', 'bottomRight', 'bottomLeft']
       .contains(iosBrandingContentModeValue)) {
@@ -334,18 +345,22 @@ void _updateLaunchScreenStoryboard({
   );
 
   view.children.remove(view.getElement('constraints'));
+  final String constraints = parsedIosContentMode.anchor != null &&
+          splashImage != null
+      ? _buildLaunchBackgroundConstraintsWithAnchor(
+          contentMode: parsedIosContentMode.contentMode,
+          anchor: parsedIosContentMode.anchor!,
+          imageWidth: splashImage.width,
+          imageHeight: splashImage.height,
+        )
+      : _iOSLaunchBackgroundConstraints;
   view.children.add(
-    XmlDocument.parse(_iOSLaunchBackgroundConstraints).rootElement.copy(),
+    XmlDocument.parse(constraints).rootElement.copy(),
   );
 
-  if (imagePath != null) {
-    final image = decodeImage(File(imagePath).readAsBytesSync());
-    if (image == null) {
-      print('$imagePath could not be loaded.');
-      exit(1);
-    }
-    launchImageResource?.setAttribute('width', image.width.toString());
-    launchImageResource?.setAttribute('height', image.height.toString());
+  if (splashImage != null) {
+    launchImageResource?.setAttribute('width', splashImage.width.toString());
+    launchImageResource?.setAttribute('height', splashImage.height.toString());
   }
 
   if (brandingImagePath != null) {
@@ -395,6 +410,150 @@ void _updateLaunchScreenStoryboard({
   file.writeAsStringSync(
     '${xmlDocument.toXmlString(pretty: true, indent: '    ')}\n',
   );
+}
+
+class _IosContentModeConfig {
+  final String contentMode;
+  final String? anchor;
+
+  _IosContentModeConfig({
+    required this.contentMode,
+    this.anchor,
+  });
+}
+
+_IosContentModeConfig _parseIosContentMode(String iosContentMode) {
+  final trimmed = iosContentMode.trim();
+
+  if (!trimmed.contains('|')) {
+    return _IosContentModeConfig(
+      contentMode: _canonicalIosContentMode(trimmed),
+    );
+  }
+
+  final separatorIndex = trimmed.indexOf('|');
+  final modeToken = trimmed.substring(0, separatorIndex).trim();
+  final anchorToken = trimmed.substring(separatorIndex + 1).trim();
+  final canonicalMode = _canonicalIosContentMode(modeToken);
+  final anchor = _normalizeIosAnchor(anchorToken);
+
+  final bool supportsAnchors =
+      canonicalMode == 'scaleAspectFit' || canonicalMode == 'scaleAspectFill';
+  if (supportsAnchors && anchor != null) {
+    return _IosContentModeConfig(
+      contentMode: canonicalMode,
+      anchor: anchor,
+    );
+  }
+
+  if (supportsAnchors && anchor == null) {
+    print(
+      '[iOS] Unsupported anchor "$anchorToken" in ios_content_mode. '
+      'Supported anchors: center, top, bottom, left, right, '
+      'topLeft, topRight, bottomLeft, bottomRight.',
+    );
+  }
+
+  return _IosContentModeConfig(contentMode: canonicalMode);
+}
+
+String _canonicalIosContentMode(String value) {
+  final normalized = value.toLowerCase().replaceAll(RegExp(r'[\s_-]'), '');
+  switch (normalized) {
+    case 'scaletofill':
+      return 'scaleToFill';
+    case 'scaleaspectfit':
+      return 'scaleAspectFit';
+    case 'scaleaspectfill':
+      return 'scaleAspectFill';
+    case 'center':
+      return 'center';
+    case 'top':
+      return 'top';
+    case 'bottom':
+      return 'bottom';
+    case 'left':
+      return 'left';
+    case 'right':
+      return 'right';
+    case 'topleft':
+      return 'topLeft';
+    case 'topright':
+      return 'topRight';
+    case 'bottomleft':
+      return 'bottomLeft';
+    case 'bottomright':
+      return 'bottomRight';
+    default:
+      return value;
+  }
+}
+
+String? _normalizeIosAnchor(String value) {
+  final normalized = value.toLowerCase().replaceAll(RegExp(r'[\s_-]'), '');
+  switch (normalized) {
+    case 'center':
+      return 'center';
+    case 'top':
+      return 'top';
+    case 'bottom':
+      return 'bottom';
+    case 'left':
+      return 'left';
+    case 'right':
+      return 'right';
+    case 'topleft':
+      return 'topLeft';
+    case 'topright':
+      return 'topRight';
+    case 'bottomleft':
+      return 'bottomLeft';
+    case 'bottomright':
+      return 'bottomRight';
+    default:
+      return null;
+  }
+}
+
+String _buildLaunchBackgroundConstraintsWithAnchor({
+  required String contentMode,
+  required String anchor,
+  required int imageWidth,
+  required int imageHeight,
+}) {
+  final relation = contentMode == 'scaleAspectFill'
+      ? 'greaterThanOrEqual'
+      : 'lessThanOrEqual';
+
+  final bool isLeftAligned = anchor == 'left' ||
+      anchor == 'topLeft' ||
+      anchor == 'bottomLeft';
+  final bool isRightAligned = anchor == 'right' ||
+      anchor == 'topRight' ||
+      anchor == 'bottomRight';
+  final bool isTopAligned =
+      anchor == 'top' || anchor == 'topLeft' || anchor == 'topRight';
+  final bool isBottomAligned =
+      anchor == 'bottom' || anchor == 'bottomLeft' || anchor == 'bottomRight';
+
+  final horizontalConstraint = isLeftAligned
+      ? _iOSLaunchImageHorizontalLeadingConstraint
+      : isRightAligned
+          ? _iOSLaunchImageHorizontalTrailingConstraint
+          : _iOSLaunchImageHorizontalCenterConstraint;
+
+  final verticalConstraint = isTopAligned
+      ? _iOSLaunchImageVerticalTopConstraint
+      : isBottomAligned
+          ? _iOSLaunchImageVerticalBottomConstraint
+          : _iOSLaunchImageVerticalCenterConstraint;
+
+  return _iOSLaunchBackgroundAnchoredConstraints
+      .replaceAll('[HORIZONTAL_CONSTRAINT]', horizontalConstraint)
+      .replaceAll('[VERTICAL_CONSTRAINT]', verticalConstraint)
+      .replaceAll('[IMAGE_HEIGHT]', imageHeight.toString())
+      .replaceAll('[IMAGE_WIDTH]', imageWidth.toString())
+      .replaceAll('[RELATION]', relation);
 }
 
 /// Creates LaunchScreen.storyboard with splash image path

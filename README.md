@@ -104,6 +104,9 @@ flutter_native_splash:
   #ios_content_mode: center      # scaleToFill, scaleAspectFit, scaleAspectFill, 
   # center, top, bottom, left, right, topLeft, topRight, bottomLeft, or bottomRight.
   # visit https://developer.apple.com/documentation/uikit/uiview/contentmode
+  # You can combine scaleAspectFit or scaleAspectFill with an anchor, for example:
+  #ios_content_mode: scaleAspectFit|top
+  #ios_content_mode: scaleAspectFill|bottomRight
   #web_image_mode: center        # center, contain, stretch, cover
 
   # general branding for all platform (except android 12+):
