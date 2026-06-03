@@ -301,8 +301,7 @@ void _createSplashCss({
   final document = html_parser.parse(webIndex.readAsStringSync());
 
   // Update splash css style tag
-  Element? splashScreenStyle =
-      document.querySelector('style#splash-screen-style');
+  var splashScreenStyle = document.querySelector('style#splash-screen-style');
   if (splashScreenStyle == null) {
     document.head?.append(html_parser.parseFragment(
       "\n  $cssContent",
@@ -325,7 +324,7 @@ void _createSplashJs() {
   final document = html_parser.parse(webIndex.readAsStringSync());
 
   // Update splash js script tag
-  Element? splashScreenScript =
+  var splashScreenScript =
       document.querySelector('script#splash-screen-script');
   if (splashScreenScript == null) {
     document.head?.append(html_parser.parseFragment(
@@ -379,7 +378,7 @@ void _updateHtml({
       ?.remove();
 
   // Update splash image
-  Element? splashPicture = document.querySelector('picture#splash');
+  var splashPicture = document.querySelector('picture#splash');
   if (imagePath == null) {
     splashPicture?.remove();
   } else {
@@ -409,8 +408,7 @@ void _updateHtml({
   }
 
   // Update branding image
-  Element? splashBrandingPicture =
-      document.querySelector('picture#splash-branding');
+  var splashBrandingPicture = document.querySelector('picture#splash-branding');
   if (brandingImagePath == null) {
     splashBrandingPicture?.remove();
   } else {

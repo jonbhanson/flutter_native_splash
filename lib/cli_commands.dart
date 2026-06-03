@@ -6,7 +6,6 @@ library;
 import 'dart:isolate';
 
 import 'package:ansicolor/ansicolor.dart';
-import 'package:html/dom.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
