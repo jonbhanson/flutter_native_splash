@@ -3,6 +3,7 @@
 /// This is the main entry point for the Flutter Native Splash package.
 library;
 
+import 'dart:convert';
 import 'dart:isolate';
 
 import 'package:ansicolor/ansicolor.dart';
@@ -51,8 +52,11 @@ void _createSplashByConfig(Map<String, dynamic> config) {
       _checkImageExists(config: config, parameter: _Parameter.image);
   final String? imageAndroid =
       _checkImageExists(config: config, parameter: _Parameter.imageAndroid);
-  final String? imageIos =
-      _checkImageExists(config: config, parameter: _Parameter.imageIos);
+  final String? imageIos = _checkImageExists(
+    config: config,
+    parameter: _Parameter.imageIos,
+    supportsSvg: true,
+  );
   final String? imageWeb =
       _checkImageExists(config: config, parameter: _Parameter.imageWeb);
   final String? darkImage =
@@ -280,6 +284,7 @@ void removeSplash({
 String? _checkImageExists({
   required Map<String, dynamic> config,
   required String parameter,
+  bool supportsSvg = false,
 }) {
   final String? image = config[parameter]?.toString();
   if (image != null) {
@@ -298,6 +303,7 @@ String? _checkImageExists({
       "gif", // GIF
       "ico", // ICO
       "bmp", "dib", // BMP
+      if (supportsSvg) "svg",
     ];
 
     if (!supportedFormats
