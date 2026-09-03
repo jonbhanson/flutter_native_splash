@@ -66,8 +66,12 @@ void _createiOSSplash({
   required String? backgroundImage,
   required String? darkBackgroundImage,
 }) {
-  if (imagePath != null) {
+  final imageSvgDimensions = _getSvgDimensions(imagePath);
+  if (imageSvgDimensions != null) {
+    _applySvgImageiOS(imagePath!);
+  } else if (imagePath != null) {
     _applyImageiOS(imagePath: imagePath, list: _iOSSplashImages);
+    _deleteSvgImageiOS();
   } else {
     final splashImage = Image(width: 1, height: 1);
     for (final template in _iOSSplashImages) {
@@ -76,6 +80,7 @@ void _createiOSSplash({
       file.createSync(recursive: true);
       file.writeAsBytesSync(encodePng(splashImage));
     }
+    _deleteSvgImageiOS();
   }
 
   if (darkImagePath != null) {
@@ -123,7 +128,11 @@ void _createiOSSplash({
       File('${_flavorHelper.iOSAssetsLaunchImageFolder}Contents.json');
   launchImageFile.createSync(recursive: true);
   launchImageFile.writeAsStringSync(
-    darkImagePath != null ? _iOSContentsJsonDark : _iOSContentsJson,
+    imageSvgDimensions == null
+        ? darkImagePath != null
+            ? _iOSContentsJsonDark
+            : _iOSContentsJson
+        : _createSvgContentsJson(darkImagePath != null),
   );
 
   if (brandingImagePath != null) {
@@ -139,6 +148,7 @@ void _createiOSSplash({
 
   _createLaunchScreenStoryboard(
     imagePath: imagePath,
+    imageSvgDimensions: imageSvgDimensions,
     brandingImagePath: brandingImagePath,
     iosContentMode: iosContentMode,
     iosBrandingContentMode: iosBrandingContentMode,
@@ -207,9 +217,107 @@ void _applyImageiOS({
   );
 }
 
+/// Copies the configured SVG into the launch image set and removes the light
+/// raster variants that it replaces.
+void _applySvgImageiOS(String imagePath) {
+  final svgFile = File(
+    '${_flavorHelper.iOSAssetsLaunchImageFolder}LaunchImage.svg',
+  );
+  svgFile.createSync(recursive: true);
+  File(imagePath).copySync(svgFile.path);
+  for (final template in _iOSSplashImages) {
+    final file =
+        File(_flavorHelper.iOSAssetsLaunchImageFolder + template.fileName);
+    if (file.existsSync()) file.deleteSync();
+  }
+}
+
+/// Removes an SVG left by an earlier run when the current configuration uses
+/// a raster image or no splash image.
+void _deleteSvgImageiOS() {
+  final file = File(
+    '${_flavorHelper.iOSAssetsLaunchImageFolder}LaunchImage.svg',
+  );
+  if (file.existsSync()) file.deleteSync();
+}
+
+/// Creates the asset catalog manifest for an SVG light image and, when
+/// configured, the existing raster dark-image variants.
+String _createSvgContentsJson(bool hasDarkImage) {
+  return '${const JsonEncoder.withIndent('  ').convert({
+        'images': [
+          {'filename': 'LaunchImage.svg', 'idiom': 'universal', 'scale': '1x'},
+          if (hasDarkImage)
+            for (final template in _iOSSplashImagesDark)
+              {
+                'appearances': [
+                  {'appearance': 'luminosity', 'value': 'dark'},
+                ],
+                'filename': template.fileName,
+                'idiom': 'universal',
+                'scale': '${template.pixelDensity.toInt()}x',
+              },
+        ],
+        'info': {'author': 'xcode', 'version': 1},
+        'properties': {'preserves-vector-representation': true},
+      })}\n';
+}
+
+/// Returns the point size to write to the launch storyboard for an SVG image.
+///
+/// Explicit dimensions take precedence over the `viewBox`. Validation happens
+/// before generated assets are changed so invalid SVG input leaves them intact.
+({double width, double height})? _getSvgDimensions(String? imagePath) {
+  if (imagePath == null || p.extension(imagePath).toLowerCase() != '.svg') {
+    return null;
+  }
+  final svg = XmlDocument.parse(File(imagePath).readAsStringSync()).rootElement;
+  if (svg.name.local != 'svg') {
+    throw Exception('The SVG file $imagePath does not contain an SVG root.');
+  }
+  final width = _parseSvgDimension(svg.getAttribute('width'));
+  final height = _parseSvgDimension(svg.getAttribute('height'));
+  if (width != null && height != null) return (width: width, height: height);
+
+  final viewBox = svg.getAttribute('viewBox')?.trim().split(RegExp(r'[\s,]+'));
+  if (viewBox != null && viewBox.length == 4) {
+    final width = double.tryParse(viewBox[2]);
+    final height = double.tryParse(viewBox[3]);
+    if (_isPositive(width) && _isPositive(height)) {
+      return (width: width!, height: height!);
+    }
+  }
+  throw Exception(
+    'The SVG file $imagePath must define positive width and height values '
+    'or a valid viewBox.',
+  );
+}
+
+/// Parses a positive SVG dimension expressed without a unit or in `px`/`pt`.
+double? _parseSvgDimension(String? value) {
+  if (value == null) return null;
+  var number = value.trim();
+  for (final unit in ['px', 'pt']) {
+    if (number.endsWith(unit)) {
+      number = number.substring(0, number.length - unit.length).trim();
+      break;
+    }
+  }
+  final dimension = double.tryParse(number);
+  return _isPositive(dimension) ? dimension : null;
+}
+
+/// Whether a parsed SVG dimension can be used as a storyboard size.
+bool _isPositive(double? value) => value != null && value.isFinite && value > 0;
+
+/// Formats a storyboard dimension without an unnecessary decimal suffix.
+String _formatDimension(double value) =>
+    value == value.truncateToDouble() ? value.toInt().toString() : '$value';
+
 /// Updates LaunchScreen.storyboard adding splash image path
 void _updateLaunchScreenStoryboard({
   required String? imagePath,
+  required ({double width, double height})? imageSvgDimensions,
   required String iosContentMode,
   String? brandingImagePath,
   String? brandingBottomPadding,
@@ -339,13 +447,24 @@ void _updateLaunchScreenStoryboard({
   );
 
   if (imagePath != null) {
-    final image = decodeImage(File(imagePath).readAsBytesSync());
-    if (image == null) {
-      print('$imagePath could not be loaded.');
-      exit(1);
+    if (imageSvgDimensions != null) {
+      launchImageResource?.setAttribute(
+        'width',
+        _formatDimension(imageSvgDimensions.width),
+      );
+      launchImageResource?.setAttribute(
+        'height',
+        _formatDimension(imageSvgDimensions.height),
+      );
+    } else {
+      final image = decodeImage(File(imagePath).readAsBytesSync());
+      if (image == null) {
+        print('$imagePath could not be loaded.');
+        exit(1);
+      }
+      launchImageResource?.setAttribute('width', image.width.toString());
+      launchImageResource?.setAttribute('height', image.height.toString());
     }
-    launchImageResource?.setAttribute('width', image.width.toString());
-    launchImageResource?.setAttribute('height', image.height.toString());
   }
 
   if (brandingImagePath != null) {
@@ -400,6 +519,7 @@ void _updateLaunchScreenStoryboard({
 /// Creates LaunchScreen.storyboard with splash image path
 void _createLaunchScreenStoryboard({
   required String? imagePath,
+  required ({double width, double height})? imageSvgDimensions,
   required String iosContentMode,
   required String? iosBrandingContentMode,
   required String? brandingImagePath,
@@ -411,6 +531,7 @@ void _createLaunchScreenStoryboard({
 
   return _updateLaunchScreenStoryboard(
     imagePath: imagePath,
+    imageSvgDimensions: imageSvgDimensions,
     brandingImagePath: brandingImagePath,
     brandingBottomPadding: brandingBottomPadding,
     iosContentMode: iosContentMode,

@@ -91,7 +91,7 @@ flutter_native_splash:
   # platform-specific image. will override general image if active:
   #image_android:       assets/splash-android.png
   #image_dark_android:  assets/splash-invert-android.png
-  #image_ios:           assets/splash-ios.png
+  #image_ios:           assets/splash-ios.png # Raster or SVG
   #image_dark_ios:      assets/splash-invert-ios.png
   #image_web:           assets/splash-web.gif
   #image_dark_web:      assets/splash-invert-web.gif  
@@ -448,6 +448,24 @@ The solution is to remove the above code. Note that this will also remove the fa
 ## Are animations/lottie/GIF images supported?
 
 GIFs are now supported on web. Lotties are not yet supported. PRs are always welcome!
+
+## Can I use SVG images?
+
+SVG files are supported for `image_ios`. Use a raster image as the cross-platform fallback and override it for iOS:
+
+```yaml
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/splash.png
+  image_ios: assets/splash.svg
+```
+
+The root `<svg>` element must define positive `width` and `height` values (unitless, `px`, or `pt`), or a valid
+`viewBox`. These dimensions are used as the image's point size in `LaunchScreen.storyboard`.
+
+SVG image assets require Xcode 12 or later. Preserving the vector representation requires an iOS 13 or later deployment
+target. Use a raster image if the app must build with an older Xcode version. See Apple's
+[Xcode 12 release notes](https://developer.apple.com/documentation/xcode-release-notes/xcode-12-release-notes#Asset-Catalogs).
 
 ## I got the error AAPT: error: style attribute 'android:attr/windowSplashScreenBackground' not found
 
