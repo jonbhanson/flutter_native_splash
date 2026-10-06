@@ -104,6 +104,24 @@ const String _androidV31StylesNightXml = '''
 </resources>
 ''';
 
+/// Wraps the Android 12+ splash icon bitmaps in a one-frame animation-list.
+///
+/// Android 12+ pre-draws a still windowSplashScreenAnimatedIcon into a bitmap
+/// at the 108dp default icon size and then scales that bitmap up to the final
+/// icon size (160dp, or 192dp without an icon background), so a still icon is
+/// blurry however large the source image is. An Animatable icon is drawn
+/// straight from its drawable at the final size instead. One frame played
+/// once never schedules a redraw, so nothing moves.
+const String _androidV31SplashIconXml = '''
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="true">
+    <item
+        android:drawable="@drawable/android12splash"
+        android:duration="0" />
+</animation-list>
+''';
+
 // iOS-related templates
 const String _iOSLaunchScreenStoryboardContent = '''
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>

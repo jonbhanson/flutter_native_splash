@@ -122,6 +122,10 @@ void _createAndroidSplash({
     fileName: 'android12splash.png',
   );
 
+  _applyAndroid12SplashIcon(
+    showIcon: android12ImagePath != null || android12DarkImagePath != null,
+  );
+
   _applyImageAndroid(
     imagePath: android12BrandingImagePath,
     android12: true,
@@ -346,6 +350,20 @@ void _deleteImageAndroid({
   }
 }
 
+/// Creates or deletes the drawable that Android 12+ styles use as the splash
+/// icon. It points at the android12splash bitmaps; see
+/// [_androidV31SplashIconXml] for why they are wrapped.
+void _applyAndroid12SplashIcon({required bool showIcon}) {
+  final file = File(_flavorHelper.androidV31SplashIconFile);
+  if (showIcon) {
+    file.createSync(recursive: true);
+    file.writeAsStringSync(_androidV31SplashIconXml);
+  } else if (file.existsSync()) {
+    print('[Android] Deleting android12splash_icon.xml');
+    file.deleteSync();
+  }
+}
+
 /// Updates launch_background.xml adding splash image path
 void _applyLaunchBackgroundXml({
   required String launchBackgroundFilePath,
@@ -526,7 +544,7 @@ Future<void> _updateStylesFile({
     _replaceElement(
       launchTheme: launchTheme,
       name: 'android:windowSplashScreenAnimatedIcon',
-      value: '@drawable/android12splash',
+      value: '@drawable/android12splash_icon',
     );
   }
 

@@ -55,6 +55,10 @@ class _FlavorHelper {
     return '${_androidResFolder}values-night-v31/styles.xml';
   }
 
+  String get androidV31SplashIconFile {
+    return '${_androidResFolder}drawable-v31/android12splash_icon.xml';
+  }
+
   String get androidV21DrawableFolder {
     return '${_androidResFolder}drawable-v21/';
   }

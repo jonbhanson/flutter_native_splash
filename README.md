@@ -255,6 +255,8 @@ Be aware of the following considerations regarding these elements:
 
 5. `branding` parameter. The branding image dimensions must be 800x320 px.
 
+6. The package writes `drawable-v31/android12splash_icon.xml`, a one-frame animation that wraps the `image` bitmaps, and points the splash theme at it. Android 12+ draws a still icon at a reduced size and scales it up, which blurs it; an animated icon is drawn at full size, so the image stays sharp. Nothing moves.
+
 **_PLEASE NOTE:_** The splash screen may not appear when you launch the app from Android Studio on API 31. However, it should appear when you launch by clicking on the launch icon in Android. This seems to be resolved in API 32+.
 
 **_PLEASE NOTE:_** There are a number of reports that non-Google launchers do not display the launch image correctly. If the launch image does not display correctly, please try the Google launcher to confirm that this package is working.
