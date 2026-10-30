@@ -464,6 +464,17 @@ const String _webCss = '''
       bottom: 0;
       right: 0;
     }
+
+    #splash,
+    #splash img,
+    #splash-branding,
+    #splash-branding img {
+      pointer-events: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-user-drag: none;
+    }
 ''';
 
 const String _webCssDark = '''
@@ -481,7 +492,7 @@ const String _indexHtmlPicture = '''
   <picture id="splash">
       <source srcset="splash/img/light-1x.[IMAGEEXTENSION] 1x, splash/img/light-2x.[IMAGEEXTENSION] 2x, splash/img/light-3x.[IMAGEEXTENSION] 3x, splash/img/light-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: light)">
       <source srcset="splash/img/dark-1x.[IMAGEEXTENSION] 1x, splash/img/dark-2x.[IMAGEEXTENSION] 2x, splash/img/dark-3x.[IMAGEEXTENSION] 3x, splash/img/dark-4x.[IMAGEEXTENSION] 4x" media="(prefers-color-scheme: dark)">
-      <img class="[IMAGEMODE]" aria-hidden="true" src="splash/img/light-1x.[IMAGEEXTENSION]" alt=""/>
+      <img class="[IMAGEMODE]" aria-hidden="true" draggable="false" src="splash/img/light-1x.[IMAGEEXTENSION]" alt=""/>
   </picture>''';
 
 // XML's insertBefore can't have a newline at the end:
@@ -489,15 +500,34 @@ const String _indexHtmlBrandingPicture = '''
   <picture id="splash-branding">
     <source srcset="splash/img/branding-1x.[BRANDINGEXTENSION] 1x, splash/img/branding-2x.[BRANDINGEXTENSION] 2x, splash/img/branding-3x.[BRANDINGEXTENSION] 3x, splash/img/branding-4x.[BRANDINGEXTENSION] 4x" media="(prefers-color-scheme: light)">
     <source srcset="splash/img/branding-dark-1x.[BRANDINGEXTENSION] 1x, splash/img/branding-dark-2x.[BRANDINGEXTENSION] 2x, splash/img/branding-dark-3x.[BRANDINGEXTENSION] 3x, splash/img/branding-dark-4x.[BRANDINGEXTENSION] 4x" media="(prefers-color-scheme: dark)">
-    <img class="[BRANDINGMODE]" aria-hidden="true" src="splash/img/branding-1x.[BRANDINGEXTENSION]" alt=""/>
+    <img class="[BRANDINGMODE]" aria-hidden="true" draggable="false" src="splash/img/branding-1x.[BRANDINGEXTENSION]" alt=""/>
   </picture>''';
 
 const String _webJS = '''
   <script id="splash-screen-script">
     function removeSplashFromWeb() {
-      document.getElementById("splash")?.remove();
-      document.getElementById("splash-branding")?.remove();
+      // Clear src/srcset before removal so Chrome on Android drops the decoded
+      // bitmap. Otherwise a long-press can still select the splash image after
+      // the app has covered it. An empty data URL avoids a new network request.
+      function unload(id) {
+        var element = document.getElementById(id);
+        if (!element) return;
+        element.querySelectorAll("source").forEach(function (source) {
+          source.removeAttribute("srcset");
+        });
+        element.querySelectorAll("img").forEach(function (img) {
+          img.removeAttribute("srcset");
+          img.src = "data:,";
+        });
+        element.remove();
+      }
+      unload("splash");
+      unload("splash-branding");
       document.body.style.background = "transparent";
     }
+    // Flutter draws over the splash on the first frame but does not remove
+    // these elements. preserve() defers that frame, so this still waits for
+    // FlutterNativeSplash.remove().
+    window.addEventListener("flutter-first-frame", removeSplashFromWeb);
   </script>
 ''';
