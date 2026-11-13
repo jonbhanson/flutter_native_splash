@@ -70,6 +70,7 @@ void _createAndroidSplash({
   required String? screenOrientation,
   String? android12BrandingImagePath,
   String? android12DarkBrandingImagePath,
+  bool android12AppThemeStyles = false,
   int? androidMinSdk,
 }) {
   androidMinSdk ??= 16;
@@ -232,6 +233,59 @@ void _createAndroidSplash({
       android12ImagePath: android12DarkImagePath,
       android12IconBackgroundColor: darkAndroid12IconBackgroundColor,
       android12BrandingImagePath: android12DarkBrandingImagePath,
+    );
+  }
+
+  // A drawable with a night variant follows the phone's theme, so when the dark
+  // image differs, the fixed light and dark styles get copies without one.
+  final copyImage =
+      android12AppThemeStyles && android12DarkImagePath != android12ImagePath;
+  final copyBranding = android12AppThemeStyles &&
+      android12DarkBrandingImagePath != android12BrandingImagePath;
+  _applyImageAndroid(
+    imagePath: copyImage ? android12ImagePath : null,
+    fileName: 'android12splash_light.png',
+  );
+  _applyImageAndroid(
+    imagePath: copyImage ? android12DarkImagePath : null,
+    fileName: 'android12splash_dark.png',
+  );
+  _applyImageAndroid(
+    imagePath: copyBranding ? android12BrandingImagePath : null,
+    android12: true,
+    fileName: 'android12branding_light.png',
+  );
+  _applyImageAndroid(
+    imagePath: copyBranding ? android12DarkBrandingImagePath : null,
+    android12: true,
+    fileName: 'android12branding_dark.png',
+  );
+
+  if (androidV31StylesFile != null) {
+    String? drawable(String? path, String name, bool copy, String variant) =>
+        path == null ? null : (copy ? '${name}_$variant' : name);
+    _applyAppThemeStyles(
+      file: androidV31StylesFile,
+      light: android12AppThemeStyles
+          ? (
+              backgroundColor: android12BackgroundColor,
+              image: drawable(
+                  android12ImagePath, 'android12splash', copyImage, 'light'),
+              iconBackgroundColor: android12IconBackgroundColor,
+              brandingImage: drawable(android12BrandingImagePath,
+                  'android12branding', copyBranding, 'light'),
+            )
+          : null,
+      dark: android12AppThemeStyles
+          ? (
+              backgroundColor: android12DarkBackgroundColor,
+              image: drawable(
+                  android12DarkImagePath, 'android12splash', copyImage, 'dark'),
+              iconBackgroundColor: darkAndroid12IconBackgroundColor,
+              brandingImage: drawable(android12DarkBrandingImagePath,
+                  'android12branding', copyBranding, 'dark'),
+            )
+          : null,
     );
   }
 
@@ -491,58 +545,93 @@ Future<void> _updateStylesFile({
   );
 
   // In Android 12, the color must be set directly in the styles.xml
-  if (android12BackgroundColor == null) {
-    _removeElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenBackground',
-    );
-  } else {
-    _replaceElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenBackground',
-      value: '#$android12BackgroundColor',
-    );
+  _setAndroid12SplashItems(launchTheme, (
+    backgroundColor: android12BackgroundColor,
+    image: android12ImagePath == null ? null : 'android12splash',
+    iconBackgroundColor: android12IconBackgroundColor,
+    brandingImage:
+        android12BrandingImagePath == null ? null : 'android12branding',
+  ));
+
+  stylesFile.writeAsStringSync(
+    '${stylesDocument.toXmlString(pretty: true, indent: '    ')}\n',
+  );
+}
+
+/// The Android 12+ splash of a style: colors as hex without `#`, images as
+/// drawable names. A null value removes its item from the style.
+typedef _Android12Splash = ({
+  String? backgroundColor,
+  String? image,
+  String? iconBackgroundColor,
+  String? brandingImage,
+});
+
+void _setAndroid12SplashItems(XmlElement style, _Android12Splash splash) {
+  final items = {
+    'android:windowSplashScreenBackground':
+        splash.backgroundColor == null ? null : '#${splash.backgroundColor}',
+    'android:windowSplashScreenBrandingImage': splash.brandingImage == null
+        ? null
+        : '@drawable/${splash.brandingImage}',
+    'android:windowSplashScreenAnimatedIcon':
+        splash.image == null ? null : '@drawable/${splash.image}',
+    'android:windowSplashScreenIconBackgroundColor':
+        splash.iconBackgroundColor == null
+            ? null
+            : '#${splash.iconBackgroundColor}',
+  };
+  items.forEach((name, value) {
+    if (value == null) {
+      _removeElement(launchTheme: style, name: name);
+    } else {
+      _replaceElement(launchTheme: style, name: name, value: value);
+    }
+  });
+}
+
+/// Adds the NativeSplashLight and NativeSplashDark styles to [file], or
+/// removes them when [light] and [dark] are null. An app passes them to
+/// SplashScreen.setSplashScreenTheme so the splash follows its own light/dark
+/// setting. They only go in the non-night styles file, so neither changes with
+/// the phone's theme. Android stores the chosen style by name: never rename
+/// them.
+void _applyAppThemeStyles({
+  required String file,
+  required _Android12Splash? light,
+  required _Android12Splash? dark,
+}) {
+  final stylesFile = File(file);
+  if (!stylesFile.existsSync()) return;
+  final stylesDocument = XmlDocument.parse(stylesFile.readAsStringSync());
+  final resources = stylesDocument.getElement('resources');
+  if (resources == null) return;
+
+  var changed = false;
+  for (final (name, parent, splash) in [
+    ('NativeSplashLight', '@android:style/Theme.Light.NoTitleBar', light),
+    ('NativeSplashDark', '@android:style/Theme.Black.NoTitleBar', dark),
+  ]) {
+    var style = resources
+        .findElements('style')
+        .where((element) => element.getAttribute('name') == name)
+        .firstOrNull;
+    if (splash == null) {
+      style?.remove();
+      changed |= style != null;
+      continue;
+    }
+    if (style == null) {
+      style = XmlElement.tag('style')
+        ..setAttribute('name', name)
+        ..setAttribute('parent', parent);
+      resources.children.add(style);
+    }
+    _setAndroid12SplashItems(style, splash);
+    changed = true;
   }
 
-  if (android12BrandingImagePath == null) {
-    _removeElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenBrandingImage',
-    );
-  } else {
-    _replaceElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenBrandingImage',
-      value: '@drawable/android12branding',
-    );
-  }
-
-  if (android12ImagePath == null) {
-    _removeElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenAnimatedIcon',
-    );
-  } else {
-    _replaceElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenAnimatedIcon',
-      value: '@drawable/android12splash',
-    );
-  }
-
-  if (android12IconBackgroundColor == null) {
-    _removeElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenIconBackgroundColor',
-    );
-  } else {
-    _replaceElement(
-      launchTheme: launchTheme,
-      name: 'android:windowSplashScreenIconBackgroundColor',
-      value: '#$android12IconBackgroundColor',
-    );
-  }
-
+  if (!changed) return;
   stylesFile.writeAsStringSync(
     '${stylesDocument.toXmlString(pretty: true, indent: '    ')}\n',
   );

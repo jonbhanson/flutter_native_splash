@@ -135,6 +135,7 @@ void _createSplashByConfig(Map<String, dynamic> config) {
   String? android12DarkColor;
   String? android12BrandingImage;
   String? android12DarkBrandingImage;
+  bool android12AppThemeStyles = false;
 
   if (config[_Parameter.android12Section] != null) {
     final android12Config =
@@ -154,6 +155,8 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         config: android12Config, parameter: _Parameter.brandingImage);
     android12DarkBrandingImage = _checkImageExists(
         config: android12Config, parameter: _Parameter.brandingDarkImage);
+    android12AppThemeStyles =
+        android12Config[_Parameter.appThemeStyles] as bool? ?? false;
   }
 
   if (!config.containsKey(_Parameter.android) ||
@@ -185,6 +188,7 @@ void _createSplashByConfig(Map<String, dynamic> config) {
         android12BrandingImagePath: android12BrandingImage,
         android12DarkBrandingImagePath:
             android12DarkBrandingImage ?? android12BrandingImage,
+        android12AppThemeStyles: android12AppThemeStyles,
       );
     } else {
       print('Android folder not found, skipping Android splash update...');
@@ -424,6 +428,7 @@ class _Parameter {
   static const android12Section = 'android_12';
   static const androidMinSdk = 'android_min_sdk';
   static const androidScreenOrientation = 'android_screen_orientation';
+  static const appThemeStyles = 'app_theme_styles';
   static const backgroundImage = 'background_image';
   static const backgroundImageAndroid = 'background_image_android';
   static const backgroundImageIos = 'background_image_ios';
@@ -475,6 +480,7 @@ class _Parameter {
     android12Section,
     androidMinSdk,
     androidScreenOrientation,
+    appThemeStyles,
     backgroundImage,
     backgroundImageAndroid,
     backgroundImageIos,
