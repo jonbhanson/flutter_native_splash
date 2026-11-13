@@ -166,6 +166,10 @@ flutter_native_splash:
   #color_dark: "#042a49"
     #icon_background_color_dark: "#111111"
 
+  # Set app_theme_styles to true if your app has its own light/dark setting. See "Following your
+  # app's light/dark setting" in the README.
+    #app_theme_styles: true
+
   # The android, ios and web parameters can be used to disable generating a splash screen on a given
   # platform.
   #android: false

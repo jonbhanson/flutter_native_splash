@@ -180,6 +180,11 @@ flutter_native_splash:
     # The branding image dimensions must be 800x320 px.
     #branding:      assets/dart.png      
     #branding_dark: assets/dart_dark.png
+
+    # app theme styles:
+    # Set to true if your app has its own light/dark setting. Adds the NativeSplashLight and
+    # NativeSplashDark styles. See "Following your app's light/dark setting" below.
+    #app_theme_styles: true
 ```
 
 ## 2. Run the package
@@ -260,6 +265,51 @@ Be aware of the following considerations regarding these elements:
 **_PLEASE NOTE:_** There are a number of reports that non-Google launchers do not display the launch image correctly. If the launch image does not display correctly, please try the Google launcher to confirm that this package is working.
 
 **_PLEASE NOTE:_** The splash screen does not appear when you launch the app from a notification. Apparently this is the intended behavior on Android 12: [core-splashscreen Icon not shown when cold launched from notification](https://issuetracker.google.com/issues/199776339?pli=1).
+
+## Following your app's light/dark setting
+
+The Android 12+ splash screen follows the phone's dark mode. If your app lets people choose light or dark in the app, the splash screen can follow that choice instead:
+
+1. Add `app_theme_styles: true` to the `android_12` section and run the package. This adds two styles, `NativeSplashLight` and `NativeSplashDark`, which keep their colors and images whatever the phone's theme.
+
+2. Whenever the setting changes, pass one of them to [`SplashScreen.setSplashScreenTheme`](https://developer.android.com/reference/android/window/SplashScreen#setSplashScreenTheme(int)), or `Resources.ID_NULL` to follow the phone again. Android remembers the choice, and uses it the next time the app starts. This package has no native code, so add a method channel to your `MainActivity.kt`:
+
+```kotlin
+import android.content.res.Resources
+import android.os.Build
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+
+class MainActivity : FlutterActivity() {
+    override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
+        super.configureFlutterEngine(flutterEngine)
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "splash_theme")
+            .setMethodCallHandler { call, result ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    splashScreen.setSplashScreenTheme(
+                        when (call.arguments) {
+                            "light" -> R.style.NativeSplashLight
+                            "dark" -> R.style.NativeSplashDark
+                            else -> Resources.ID_NULL // follow the phone
+                        }
+                    )
+                }
+                result.success(null)
+            }
+    }
+}
+```
+
+and call it from Dart when the user picks a theme:
+
+```dart
+const splashTheme = MethodChannel('splash_theme');
+
+await splashTheme.invokeMethod('set', 'dark'); // 'light', 'dark' or 'system'
+```
+
+`UiModeManager.setApplicationNightMode` is not enough on its own: some launchers, such as Samsung's One UI launcher, draw the splash screen in the phone's theme anyway when the app is opened from its icon.
 
 # Flavor Support
 
@@ -464,7 +514,9 @@ This is caused by an [iOS splash caching bug](https://stackoverflow.com/question
 
 ## Can I base light/dark mode on app settings?
 
-No. This package creates a splash screen that is displayed before Flutter is loaded. Because of this, when the splash screen loads, internal app settings are not available to the splash screen. Unfortunately, this means that it is impossible to control light/dark settings of the splash from app settings.
+On Android 12 and later, yes: see [Following your app's light/dark setting](#following-your-apps-lightdark-setting).
+
+Elsewhere, no. This package creates a splash screen that is displayed before Flutter is loaded. Because of this, when the splash screen loads, internal app settings are not available to the splash screen. Unfortunately, this means that it is impossible to control light/dark settings of the splash from app settings.
 
 # Notes
 
