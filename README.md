@@ -201,10 +201,10 @@ dart run flutter_native_splash:create --path=path/to/my/file.yaml
 | Command                | Description                                                                                                                                    |
 | ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
 | -h, --[no-]help        | Show help                                                                                                                                      |
-| -p, --path             | Path to the flutter project, if the project is not in it's default location.                                                                   |
-| -f, --flavor           | Flavor to create the splash for. The flavor must match the pattern flutter_native_splash-*.yaml (where * is the flavor name).                  |
-| -F, --flavors          | Comma separated list of flavors to create the splash screens for. Match the pattern flutter_native_splash-*.yaml (where * is the flavor name). |
-| -A, --[no-]all-flavors | Create the splash screens for all flavors that match the pattern flutter_native_splash-*.yaml (where * is the flavor name).                    |
+| -p, --path             | Path to the YAML configuration file. Can be combined with `--flavor`. |
+| -f, --flavor           | Flavor to create the splash for. By default, reads `flutter_native_splash-<flavor>.yaml` from the project root. Use `--path` to select another file. |
+| -F, --flavors          | Comma separated list of flavors to create the splash screens for. By default, reads `flutter_native_splash-<flavor>.yaml` from the project root for each flavor. |
+| -A, --[no-]all-flavors | Discover flavor names from `flutter_native_splash-*.yaml` files in the project root and create their splash screens. |
 
 > Note: Only one flavor option is allowed.
 
@@ -358,6 +358,14 @@ dart run flutter_native_splash:create --flavor acceptance
 dart run flutter_native_splash:create --flavor development
 ```
 
+To keep a single flavor's configuration in another directory, combine `--path` with `--flavor`:
+
+```bash
+dart run flutter_native_splash:create --path=config/staging.yaml --flavor staging
+```
+
+Run this command from the Flutter project root. The selected YAML file can have any name; the flavor controls the generated resource names and locations, such as `ios/Runner/Base.lproj/LaunchScreenStaging.storyboard` and `android/app/src/staging/res/`.
+
 ## More than one
 
 You also have the ability to specify all the flavors in one command
@@ -423,6 +431,10 @@ Xcode still doesn't know how to use them, so we need to specify for all the curr
 - Find the entry called 'Launch screen interface file base name'
 - The default value is 'LaunchScreen', change that to the variable name that you create previously. If you follow these steps exactly, it would be LAUNCH_SCREEN_STORYBOARD, so input this `$(LAUNCH_SCREEN_STORYBOARD)`
 - And your done!
+
+**CI and clean checkouts:** With the setup above, Xcode compiles every storyboard in the Runner target's **Copy Bundle Resources** phase. `LAUNCH_SCREEN_STORYBOARD` selects the launch screen for each configuration; the other storyboards in that phase are still build inputs.
+
+Generate all referenced flavors before building, even when building only one flavor. Use `--all-flavors` when the configuration files follow the `flutter_native_splash-*.yaml` pattern in the project root. For configuration files in other directories, run `--path` with `--flavor` for each referenced flavor. Alternatively, commit the generated iOS resources, including all referenced storyboards, so they are available on a clean checkout.
 
 Congrats you finished your setup for multiple flavors,
 
